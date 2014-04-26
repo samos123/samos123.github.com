@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Full migration/clone of linux installation to a new system(Without reinstalling)</title>
+        <link rel="stylesheet" href="http://samos-it.com/theme/css/main.css" />
+        <link href="http://samos-it.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Sam Stoelinga (Samos IT) - Blog Atom Feed" />
+
+        <!--[if IE]>
+            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+<a href="http://github.com/samos123/">
+<img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub" />
+</a>
+        <header id="banner" class="body">
+                <h1><a href="http://samos-it.com/">Sam Stoelinga (Samos IT) - Blog </a></h1>
+                <nav><ul>
+                    <li class="active"><a href="http://samos-it.com/category/linux.html">Linux</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="http://samos-it.com/full-migration-of-archlinux-installation-to-a-new-system.html" rel="bookmark"
+           title="Permalink to Full migration/clone of linux installation to a new system(Without reinstalling)">Full migration/clone of linux installation to a new system(Without reinstalling)</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2012-11-14T13:26:00">
+                Published: Wed 14 November 2012
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="http://samos-it.com/author/sam-stoelinga.html">Sam Stoelinga</a>
+        </address>
+<p>In <a href="http://samos-it.com/category/linux.html">Linux</a>. </p>
+<p>tags: <a href="http://samos-it.com/tag/archlinux.html">archlinux</a> <a href="http://samos-it.com/tag/geek.html">geek</a> <a href="http://samos-it.com/tag/linux.html">linux</a> <a href="http://samos-it.com/tag/migration.html">migration</a> </p>
+</footer><!-- /.post-info -->      <p>I'm switching to a new laptop, but don't want to have to install
+Archlinux again. So instead of re-installing I will try to copy all
+files and hope the system will work. In this blogpost I will describe
+the steps and issues I encountered while doing so.</p>
+<p><strong>Status: Succeeded!!!!</strong></p>
+<p>Summary of plan: Boot from a live usb on the new system, create
+partitions with gparted, copy all the files over, change /etc/fstab to
+partition uuids, regenerate the mkinitcpio stuff (Still should read what
+this actually is).</p>
+<p>On the new laptop:
+Boot from a Ubuntu live cd and start gparted
+Create a / partition (ext4)
+Create a /home parition (ext4)
+Create a /boot partition (ext2)
+Mount the newly created partitions under /mnt/
+Copy all files of old / /home to new / /home using rsync
+Chroot into the copied files on the new laptop
+Change the /etc/fstab to point to the new partition UUIDs
+Install grub on new harddrive and reconfigure Grub
+Recreate the ramdisk:</p>
+<p>Environment:
+Old Laptop:
+Archlinux 64 bits, 8GB memory, crappy processor
+IP: 192.168.1.108
+Connected to router via internet cable, WIFI was way too slow to copy files</p>
+<p>New laptop:
+Previously got Ubuntu installed but will totally wipe that away.
+IP: 192.168.1.111</p>
+<p>Detailed steps:
+Boot from a live ubuntu USB on the new laptop and do the following:
+Use gparted or fdisk to create the following partitions:
+/dev/sda1 filesystem: ext2 size: 512mb label: boot (100mb is needed, but had enough space will become /boot)
+/dev/sda2 filesystem: ext4 size: 30gb label: root(will become root /)
+/dev/sda3 filesystem: ext4 size: 180gb label: home(will become home /home)</p>
+<p>After you've created the partitions successfully, mount all partitions to /mnt
+[bash]
+mount /dev/sda2 /mnt
+mkdir /mnt/boot
+mount /dev/sda1 /mnt/boot
+mkdir /mnt/home
+mount /dev/sda3 /mnt/home
+[/bash]</p>
+<p>Now go back to the old Archlinux laptop and copy all files to the newly created partitions:
+[bash]rsync -azv --progress --exclude=/dev --exclude=/sys / root@192.168.1.111:/mnt/[/bash]</p>
+<p>This may take a while..................</p>
+<p>After everything is copied over:
+Change /etc/fstab to look as follows:
+[bash]tmpfs /tmp tmpfs nodev,nosuid 0 0
+LABEL=root / ext4 defaults,noatime 0 1
+LABEL=home /home ext4 defaults,noatime 0 2
+LABEL=boot /boot ext2 defaults,noatime 0 2[/bash]</p>
+<p>Reinstall Grub on the hard drive:
+[bash]grub-install --force --target=i386-pc --recheck --debug /dev/sda[/bash]</p>
+<p>Why the --force?
+I encountered the following error: will not proceed with blocklists archlinux so after reading the wiki it said I could fix this by using --force.</p>
+<p>Regenerate grub config:
+[bash]grub-mkconfig -o /boot/grub/grub.cfg[/bash]</p>
+<p>Regenerate initial ramdisk:
+[bash]mkinitcpio -p linux[/bash]</p>
+<p>Reboot the system</p>
+<p>I also had to update my modules.d/xxx to not load some specific AMD modules for laptop-mode tools as the new laptop has an intel processor.
+Also has to remove the ati driver and change to intel open source
+driver:
+[bash]
+yaourt -Rs xf86-video-ati
+yaourt -S xf86-video-nouveau
+[/bash]</p>
+<p>The reason I'm switching: My current HP 625 laptop has served it's
+purpose for nearly 2 years. The CPU seems to be nearly burnt out, when I
+opened the laptop few days ago, the CPU was totally black, but still
+working lol. And the CPU often get's too hot, hence I'm switching to my
+gf's laptop which specs are better.</p>
+<p>References I used:
+Archlinux wiki: Migrate installation to new
+hardware https://wiki.archlinux.org/index.php/Migrate_installation_to_new_hardware
+Forum post which basically does the same
+thing https://bbs.archlinux.org/viewtopic.php?id=145025</p>
+    </div><!-- /.entry-content -->
+    <div class="comments">
+      <h2>Comments !</h2>
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+        var disqus_shortname = 'samosit';
+        var disqus_identifier = 'full-migration-of-archlinux-installation-to-a-new-system.html';
+        var disqus_url = 'http://samos-it.com/full-migration-of-archlinux-installation-to-a-new-system.html';
+        (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//samosit.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+      <noscript>Please enable JavaScript to view the comments.</noscript>
+    </div>
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>blogroll</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="http://samos-it.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+<script type="text/javascript">
+    var disqus_shortname = 'samosit';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+</body>
+</html>
