@@ -12,6 +12,9 @@ GITHUB_URL = 'http://github.com/samos123/'
 OUTPUT_PATH = os.path.abspath(__file__)
 PATH = "content"
 
+ARTICLE_URL = 'posts/{slug}.html'
+ARTICLE_SAVE_AS = 'posts/{slug}.html'
+
 TIMEZONE = 'Europe/Paris'
 
 DEFAULT_LANG = 'en'
