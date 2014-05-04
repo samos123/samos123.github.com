@@ -17,6 +17,7 @@
         <header id="banner" class="body">
                 <h1><a href="http://samos123.github.io/">Sam Stoelinga (Samos IT) - Blog </a></h1>
                 <nav><ul>
+                    <li><a href="http://samos123.github.io/category/algorithms.html">Algorithms</a></li>
                     <li><a href="http://samos123.github.io/category/china.html">China</a></li>
                     <li><a href="http://samos123.github.io/category/linux.html">Linux</a></li>
                 </ul></nav>
@@ -24,7 +25,125 @@
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="http://samos123.github.io/posts/full-migration-of-archlinux-installation-to-a-new-system.html">Full migration/clone of linux installation to a new system(Without reinstalling)</a></h1>
+                    <h1 class="entry-title"><a href="http://samos123.github.io/posts/recursive-karatsuba-multiplication-python.html">Recursive karatsuba multiplication in Python</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2014-05-04T00:00:00">
+                Published: Sun 04 May 2014
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="http://samos123.github.io/author/sam-stoelinga.html">Sam Stoelinga</a>
+        </address>
+<p>In <a href="http://samos123.github.io/category/algorithms.html">Algorithms</a>. </p>
+<p>tags: <a href="http://samos123.github.io/tag/coding.html">coding</a> <a href="http://samos123.github.io/tag/programming.html">programming</a> <a href="http://samos123.github.io/tag/python.html">python</a> <a href="http://samos123.github.io/tag/algorithms.html">algorithms</a> </p>
+</footer><!-- /.post-info --><p>I'm currently taking the class Algorithm: Design and Analysis of Stanford via Coursera and
+in the class the Karatsuba algorithm got mentioned. I went ahead and implemented it based
+on the lecture slides.</p>
+<p>The Karatsuba algorithm is a fast multiplication algorithm. It's special because
+it was the first multiplication algorithm to be faster than the quadratic "grade school"
+algorithm. <a href="https://en.wikipedia.org/wiki/Karatsuba_algorithm">Karatsuba algorithm - Wikipedia</a>
+It also has a funny history, see the history at the Wikipedia article.</p>
+<p>My Python implementation using a Divide and Conquer approach:</p>
+<div class="highlight"><pre><span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">ceil</span>
+
+<span class="n">memory</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span>
+          <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="p">],</span>
+          <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="mi">14</span><span class="p">,</span><span class="mi">16</span><span class="p">,</span><span class="mi">18</span><span class="p">],</span>
+          <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="mi">15</span><span class="p">,</span><span class="mi">18</span><span class="p">,</span><span class="mi">21</span><span class="p">,</span><span class="mi">24</span><span class="p">,</span><span class="mi">27</span><span class="p">],</span>
+          <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="mi">16</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">24</span><span class="p">,</span><span class="mi">28</span><span class="p">,</span><span class="mi">32</span><span class="p">,</span><span class="mi">36</span><span class="p">],</span>
+          <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">15</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">25</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span><span class="mi">35</span><span class="p">,</span><span class="mi">40</span><span class="p">,</span><span class="mi">45</span><span class="p">],</span>
+          <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="mi">18</span><span class="p">,</span><span class="mi">24</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span><span class="mi">36</span><span class="p">,</span><span class="mi">42</span><span class="p">,</span><span class="mi">48</span><span class="p">,</span><span class="mi">54</span><span class="p">],</span>
+          <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">14</span><span class="p">,</span><span class="mi">21</span><span class="p">,</span><span class="mi">28</span><span class="p">,</span><span class="mi">35</span><span class="p">,</span><span class="mi">42</span><span class="p">,</span><span class="mi">49</span><span class="p">,</span><span class="mi">56</span><span class="p">,</span><span class="mi">63</span><span class="p">],</span>
+          <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">16</span><span class="p">,</span><span class="mi">24</span><span class="p">,</span><span class="mi">32</span><span class="p">,</span><span class="mi">40</span><span class="p">,</span><span class="mi">48</span><span class="p">,</span><span class="mi">56</span><span class="p">,</span><span class="mi">64</span><span class="p">,</span><span class="mi">72</span><span class="p">],</span>
+          <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">18</span><span class="p">,</span><span class="mi">27</span><span class="p">,</span><span class="mi">36</span><span class="p">,</span><span class="mi">45</span><span class="p">,</span><span class="mi">54</span><span class="p">,</span><span class="mi">63</span><span class="p">,</span><span class="mi">72</span><span class="p">,</span><span class="mi">81</span><span class="p">],</span>
+          <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span><span class="mi">40</span><span class="p">,</span><span class="mi">50</span><span class="p">,</span><span class="mi">60</span><span class="p">,</span><span class="mi">70</span><span class="p">,</span><span class="mi">80</span><span class="p">,</span><span class="mi">90</span><span class="p">]]</span>
+
+<span class="k">def</span> <span class="nf">karatsuba</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Recursive multiplication using karatsuba</span>
+<span class="sd">    x = 10^n/2 * a + b</span>
+<span class="sd">    y = 10^n/2 * c + d</span>
+<span class="sd">    x * y = 10^n * ac + 10^(n/2) (ad+bc) + bd</span>
+<span class="sd">    where (ad+bc) = (a+b)(c+d) - ac - bd</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">str_x</span><span class="p">,</span> <span class="n">str_y</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">str_x</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">str_y</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="c"># Just for fun to not use any multiplications haha</span>
+        <span class="k">return</span> <span class="n">memory</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">]</span>
+
+    <span class="n">str_x</span> <span class="o">=</span> <span class="n">prepend_zeros</span><span class="p">(</span><span class="n">str_x</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+    <span class="n">str_y</span> <span class="o">=</span> <span class="n">prepend_zeros</span><span class="p">(</span><span class="n">str_y</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+    <span class="n">n_2</span> <span class="o">=</span> <span class="n">n</span> <span class="o">/</span> <span class="mi">2</span>
+
+    <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">str_x</span><span class="p">[:</span><span class="n">n_2</span><span class="p">]</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">str_x</span><span class="p">[</span><span class="n">n_2</span><span class="p">:]</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">c</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">str_y</span><span class="p">[:</span><span class="n">n_2</span><span class="p">]</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">str_y</span><span class="p">[</span><span class="n">n_2</span><span class="p">:]</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">)</span>
+
+    <span class="n">ac</span> <span class="o">=</span> <span class="n">karatsuba</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
+    <span class="n">bd</span> <span class="o">=</span> <span class="n">karatsuba</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+    <span class="n">ad_bc</span> <span class="o">=</span> <span class="n">karatsuba</span><span class="p">((</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">),</span> <span class="p">(</span><span class="n">c</span> <span class="o">+</span> <span class="n">d</span><span class="p">))</span> <span class="o">-</span> <span class="n">ac</span> <span class="o">-</span> <span class="n">bd</span>
+
+    <span class="c"># for supporting edge case where n is not a multiple of 2</span>
+    <span class="n">n_2</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">ceil</span><span class="p">(</span><span class="n">n</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">))</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">n</span> <span class="k">if</span> <span class="n">n</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">*</span> <span class="n">ac</span><span class="p">)</span>  <span class="o">+</span> <span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="n">n_2</span> <span class="o">*</span> <span class="n">ad_bc</span><span class="p">)</span> <span class="o">+</span> <span class="n">bd</span>
+</pre></div>
+
+
+<p>I also created a testcase to test whether my implementation is correct:</p>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">MultiplicationTestCase</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">test_small_numbers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">karatsuba</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="mi">25</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">test_different_size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">karatsuba</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">21</span><span class="p">),</span> <span class="mi">42</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">test_different_size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">karatsuba</span><span class="p">(</span><span class="mi">103</span><span class="p">,</span> <span class="mi">3097</span><span class="p">),</span> <span class="mi">318991</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">test_two_digits1</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">karatsuba</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">),</span> <span class="mi">2500</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">test_two_digits2</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">karatsuba</span><span class="p">(</span><span class="mi">19</span><span class="p">,</span> <span class="mi">21</span><span class="p">),</span> <span class="mi">399</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">test_three_digits1</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">karatsuba</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span> <span class="mi">500</span><span class="p">),</span> <span class="mi">250000</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">test_three_digits2</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">karatsuba</span><span class="p">(</span><span class="mi">223</span><span class="p">,</span> <span class="mi">321</span><span class="p">),</span> <span class="mi">71583</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">test_four_digits1</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">karatsuba</span><span class="p">(</span><span class="mi">1234</span><span class="p">,</span> <span class="mi">4321</span><span class="p">),</span> <span class="mi">5332114</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">test_seven_digits</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">karatsuba</span><span class="p">(</span><span class="mi">5000000</span><span class="p">,</span> <span class="mi">5000000</span><span class="p">),</span>
+                         <span class="mi">25000000000000</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">test_random_cases</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">):</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">100000</span><span class="p">)</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">100000</span><span class="p">)</span>
+            <span class="n">expected</span> <span class="o">=</span> <span class="n">x</span> <span class="o">*</span> <span class="n">y</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">karatsuba</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">karatsuba</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="n">expected</span><span class="p">,</span>
+                            <span class="p">(</span><span class="s">&quot;Failed with x: </span><span class="si">%s</span><span class="s"> and y: </span><span class="si">%s</span><span class="s">. &quot;</span>
+                             <span class="s">&quot;Expected: </span><span class="si">%s</span><span class="s"> but got </span><span class="si">%s</span><span class="s">&quot;</span><span class="p">)</span> <span class="o">%</span> 
+                             <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">expected</span><span class="p">,</span> <span class="n">result</span><span class="p">))</span>
+</pre></div><p>There are <a href="http://samos123.github.io/posts/recursive-karatsuba-multiplication-python.html#disqus_thread">comments</a>.</p>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="http://samos123.github.io/posts/full-migration-of-archlinux-installation-to-a-new-system.html" rel="bookmark"
+                           title="Permalink to Full migration/clone of linux installation to a new system(Without reinstalling)">Full migration/clone of linux installation to a new system(Without reinstalling)</a></h1>
+                </header>
+
+                <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2012-11-14T13:26:00">
                 Published: Wed 14 November 2012
@@ -35,116 +154,14 @@
         </address>
 <p>In <a href="http://samos123.github.io/category/linux.html">Linux</a>. </p>
 <p>tags: <a href="http://samos123.github.io/tag/archlinux.html">archlinux</a> <a href="http://samos123.github.io/tag/geek.html">geek</a> <a href="http://samos123.github.io/tag/linux.html">linux</a> <a href="http://samos123.github.io/tag/migration.html">migration</a> </p>
-</footer><!-- /.post-info --><p>I'm switching to a new laptop, but don't want to have to install
+</footer><!-- /.post-info -->                <p>I'm switching to a new laptop, but don't want to have to install
 Archlinux again. So instead of re-installing I will try to copy all
 files and hope the system will work. In this blogpost I will describe
 the steps and issues I encountered while doing so.</p>
-<p><strong>Status: Succeeded!!!!</strong></p>
-<p><strong>Summary of the plan</strong>: Boot from a live usb on the new system, create
-partitions with gparted, copy all the files over, change /etc/fstab to
-partition uuids, regenerate the mkinitcpio stuff (Still should read what
-this actually is).</p>
-<p>On the new laptop following steps should be done:</p>
-<ol>
-<li>Boot from a Ubuntu live cd and start gparted</li>
-<li>Create a / partition (ext4)</li>
-<li>Create a /home parition (ext4)</li>
-<li>Create a /boot partition (ext2)</li>
-<li>Mount the newly created partitions under /mnt/</li>
-<li>Copy all files of the old laptop / /home to new laptop /mnt/ /mnt/home using rsync</li>
-<li>Chroot into the copied files on the new laptop</li>
-<li>Change the /etc/fstab to point to the new partition UUIDs</li>
-<li>Install grub on new harddrive and reconfigure Grub</li>
-<li>Recreate the ramdisk</li>
-</ol>
-<h2>Environment:</h2>
-<p>Old Laptop:<br />
-Archlinux 64 bits, 8GB memory, AMD CPU and ATI card<br />
-IP: 192.168.1.108<br />
-Connected to router via internet cable, WIFI was way too slow to copy files</p>
-<p>New laptop:
-Intel CPU and nvidia video card<br />
-IP: 192.168.1.111</p>
-<h2>Detailed steps:</h2>
-<p>Boot from a live ubuntu USB on the new laptop and do the following:</p>
-<ol>
-<li>
-<p>Use gparted or fdisk to create the following partitions:
-   /dev/sda1 filesystem: ext2 size: 512mb label: boot (100mb is needed, but had enough space will become /boot)
-   /dev/sda2 filesystem: ext4 size: 30gb label: root(will become root /)
-   /dev/sda3 filesystem: ext4 size: 180gb label: home(will become home /home)</p>
-</li>
-<li>
-<p>After you have created the partitions successfully, mount all partitions to /mnt</p>
-<div class="highlight"><pre>mount /dev/sda2 /mnt
-mkdir /mnt/boot
-mount /dev/sda1 /mnt/boot
-mkdir /mnt/home
-mount /dev/sda3 /mnt/home
-</pre></div>
-
-
-</li>
-<li>
-<p>Now go back to the old Archlinux laptop and copy all files to the newly created partitions:</p>
-<div class="highlight"><pre>rsync -azv --progress --exclude<span class="o">=</span>/dev --exclude<span class="o">=</span>/sys / root@192.168.1.111:/mnt/
-</pre></div>
-
-
-<p>This may take a while..................</p>
-</li>
-<li>
-<p>After everything is copied over to the new laptop, we will have to
-change /etc/fstab to look as follows:</p>
-<div class="highlight"><pre>tmpfs /tmp tmpfs nodev,nosuid 0 0
-<span class="nv">LABEL</span><span class="o">=</span>root / ext4 defaults,noatime 0 1
-<span class="nv">LABEL</span><span class="o">=</span>home /home ext4 defaults,noatime 0 2
-<span class="nv">LABEL</span><span class="o">=</span>boot /boot ext2 defaults,noatime 0 2
-</pre></div>
-
-
-</li>
-<li>
-<p>Then reinstall Grub on the hard drive:<br />
-<code>grub-install --force --target=i386-pc --recheck --debug /dev/sda</code></p>
-<p>Why the --force?
-I encountered the following error: will not proceed with 
-blocklists archlinux so after reading the wiki it said I could fix this by using --force.</p>
-</li>
-<li>
-<p>Regenerate grub config:<br />
-<code>grub-mkconfig -o /boot/grub/grub.cfg</code></p>
-</li>
-<li>
-<p>Regenerate initial ramdisk:<br />
-<code>mkinitcpio -p linux</code></p>
-</li>
-<li>
-<p>Reboot the system</p>
-</li>
-</ol>
-<p>I also had to update my modules.d/xxx to not load some specific AMD modules for laptop-mode tools as the new laptop has an intel processor.
-Also has to remove the ati driver and change to intel open source
-driver:</p>
-<div class="highlight"><pre>yaourt -Rs xf86-video-ati
-yaourt -S xf86-video-nouveau
-</pre></div>
-
-
-<p>The reason I am switching: My current HP 625 laptop has served its
-purpose for nearly 2 years. The CPU seems to be nearly burnt out, when I
-opened the laptop few days ago, the CPU was totally black, but still
-working.</p>
-<p>References I used:
-Archlinux wiki: Migrate installation to new
-hardware https://wiki.archlinux.org/index.php/Migrate_installation_to_new_hardware
-Forum post which basically does the same
-thing https://bbs.archlinux.org/viewtopic.php?id=145025</p><p>There are <a href="http://samos123.github.io/posts/full-migration-of-archlinux-installation-to-a-new-system.html#disqus_thread">comments</a>.</p>                </article>
-            </aside><!-- /#featured -->
-                <section id="content" class="body">
-                    <h1>Other articles</h1>
-                    <hr />
-                    <ol id="posts-list" class="hfeed">
+<p><strong>Status ...</strong></p>
+                <a class="readmore" href="http://samos123.github.io/posts/full-migration-of-archlinux-installation-to-a-new-system.html">read more</a>
+<p>There are <a href="http://samos123.github.io/posts/full-migration-of-archlinux-installation-to-a-new-system.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
+            </article></li>
 
             <li><article class="hentry">
                 <header>
