@@ -6,7 +6,7 @@ import os
 AUTHOR = 'Sam Stoelinga'
 SITENAME = 'Sam Stoelinga (Samos IT) - Blog'
 SITEURL = 'http://localhost:8000'
-DISQUS_SITENAME = 'samosit'
+#DISQUS_SITENAME = 'samosit'
 GITHUB_URL = 'http://github.com/samos123/'
 
 OUTPUT_PATH = os.path.abspath(__file__)
