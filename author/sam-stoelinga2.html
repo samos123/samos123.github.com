@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
         <meta charset="utf-8" />
-        <title>Sam Stoelinga (Samos IT) - Blog - China</title>
+        <title>Sam Stoelinga (Samos IT) - Blog - Sam Stoelinga</title>
         <link rel="stylesheet" href="http://samos123.github.io/theme/css/main.css" />
 
         <!--[if IE]>
@@ -18,64 +18,102 @@
                 <h1><a href="http://samos123.github.io/">Sam Stoelinga (Samos IT) - Blog </a></h1>
                 <nav><ul>
                     <li><a href="http://samos123.github.io/category/algorithms.html">Algorithms</a></li>
-                    <li class="active"><a href="http://samos123.github.io/category/china.html">China</a></li>
+                    <li><a href="http://samos123.github.io/category/china.html">China</a></li>
                     <li><a href="http://samos123.github.io/category/linux.html">Linux</a></li>
                     <li><a href="http://samos123.github.io/category/python.html">Python</a></li>
                 </ul></nav>
         </header><!-- /#banner -->
 
-            <aside id="featured" class="body">
-                <article>
-                    <h1 class="entry-title"><a href="http://samos123.github.io/posts/chinese-new-year-2012.html">Chinese New Year 2012</a></h1>
+                <section id="content" class="body">
+                    <ol id="posts-list" class="hfeed" start="9">
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="http://samos123.github.io/posts/importing-a-sql-dump-in-postgres.html" rel="bookmark"
+                           title="Permalink to Importing a SQL dump in postgres">Importing a SQL dump in postgres</a></h1>
+                </header>
+
+                <div class="entry-content">
 <footer class="post-info">
-        <abbr class="published" title="2012-01-22T03:24:00">
-                Published: Sun 22 January 2012
+        <abbr class="published" title="2011-11-29T13:46:00">
+                Published: Tue 29 November 2011
         </abbr>
 
         <address class="vcard author">
                 By                         <a class="url fn" href="http://samos123.github.io/author/sam-stoelinga.html">Sam Stoelinga</a>
         </address>
-<p>In <a href="http://samos123.github.io/category/china.html">China</a>. </p>
+<p>In <a href="http://samos123.github.io/category/linux.html">Linux</a>. </p>
 
-</footer><!-- /.post-info --><p>The Chinese New Year aka Spring Festival is the most important festival
-in Chinese culture. All the people travel back to their hometown,
-because most of them are working/studying in cities far from their own
-hometown. That means all train tickets are sold the day they get
-available and plane tickets are super expensive. Luckily Marry was able
-to order train tickets via her university, so we didn't have to go
-through the hardship of having to buy the tickets ourself. But there was
-a little problem with this solution as the tickets will be on somebody's
-passport, because I she cant order them on my name because I'm not a
-student on her uni.</p>
-<p>So the 18th we took the train, I was really nervous as I also did not
-have my passport and the train ticket not being on my name. My passport
-is being hold for extending my visa, and they lately required everybody
-to show their passport, else you wouldn't be able to enter the train
-station. But everything went fine in the end, the first security check I
-just pretended I didn't understand and then they smiled and let me
-through. After that they only checked the tickets so it was ok.</p>
-<p>The train trip itself was pretty decent, could watch outside and there
-weren't as many people as I expected. I heard horror stories about not
-being able to move at all in the train. It was hard but not impossible, as
-people were standing / sitting on the ground because they didn't have a seat.
-We were sitting together with students from Marrys uni, so we talked
-with them the whole trip, was pretty fun. Time went quite fast and even
-managed to sleep for 5 hours.</p>
-<p>Here in Fuzhou I'm mostly still working so didn't have time to go to
-many places yet. Yesterday went to the country side to celebrate new
-years with hotpot, a big meal and visited some relatives. The country
-side was quite amazing they had small roads and all houses are different
-as most of them build the houses them self. Also went to walk around a
-little and found a nice castle and river. Will go there again in the
-evening.</p>
-<p>My overal impression of Fuzhou is pretty good, I like the atmosphere
-and the traffic is much better than Beijing. There are also palm trees and
-many tropical trees, which I like.</p><p>There are <a href="http://samos123.github.io/posts/chinese-new-year-2012.html#disqus_thread">comments</a>.</p>                </article>
-            </aside><!-- /#featured -->
-                <section id="content" class="body">
-                    <h1>Other articles</h1>
-                    <hr />
-                    <ol id="posts-list" class="hfeed">
+</footer><!-- /.post-info -->                <p>I always keep forgetting how to import a SQL dump into postgres and
+found it always hard to find the right documentation. So I thought lets
+share it:</p>
+<div class="highlight"><pre>psql -d dbname -U username -f dumpfile.sql
+</pre></div>
+
+
+<p>This should also work with files created by pgdump.</p>
+                <a class="readmore" href="http://samos123.github.io/posts/importing-a-sql-dump-in-postgres.html">read more</a>
+<p>There are <a href="http://samos123.github.io/posts/importing-a-sql-dump-in-postgres.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="http://samos123.github.io/posts/installing-fastboot-for-ubuntu-linux.html" rel="bookmark"
+                           title="Permalink to Installing fastboot for Ubuntu (Linux)">Installing fastboot for Ubuntu (Linux)</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2011-11-22T14:11:00">
+                Published: Tue 22 November 2011
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="http://samos123.github.io/author/sam-stoelinga.html">Sam Stoelinga</a>
+        </address>
+<p>In <a href="http://samos123.github.io/category/linux.html">Linux</a>. </p>
+
+</footer><!-- /.post-info -->                <div class="highlight"><pre>mkdir ~/fastboot  
+<span class="nb">cd</span> ~/fastboot  
+wget http://xt720.ru/Tools/fastboot  
+chmod +x fastboot  
+sudo ./fastboot --help
+</pre></div>
+
+
+<p>Reference: <a href="http://forum.xda-developers.com/showthread.php?t=1121420">http://forum.xda-developers.com/showthread.php?t=1121420</a></p>
+<p>I tested the above with Ubuntu 11.10, but it should work on any ubuntu
+version I think.</p>
+                <a class="readmore" href="http://samos123.github.io/posts/installing-fastboot-for-ubuntu-linux.html">read more</a>
+<p>There are <a href="http://samos123.github.io/posts/installing-fastboot-for-ubuntu-linux.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="http://samos123.github.io/posts/ubuntu-11-10-error-while-loading-shared-libraries-libssl-so-0-9-8-cannot-open-shared-object-file-no-such-file-or-directory.html" rel="bookmark"
+                           title="Permalink to Ubuntu 11.10 error while loading shared libraries: libssl.so.0.9.8: cannot open shared object file: No such file or directory">Ubuntu 11.10 error while loading shared libraries: libssl.so.0.9.8: cannot open shared object file: No such file or directory</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2011-10-29T06:15:00">
+                Published: Sat 29 October 2011
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="http://samos123.github.io/author/sam-stoelinga.html">Sam Stoelinga</a>
+        </address>
+<p>In <a href="http://samos123.github.io/category/linux.html">Linux</a>. </p>
+
+</footer><!-- /.post-info -->                <p>A quick solution is to install the libssl 0.9.8 package with the
+<strong>Following command</strong>:<br />
+<code>sudo apt-get install libssl0.9.8</code></p>
+<p>Thanks to Rob who commented below and provided an answer on
+<a href="http://stackoverflow.com/questions/7937225/django-runserver-error-while-loading-shared-libraries-libssl-so-0-9-8-cannot-o">Stackoverflow</a></p>
+<p>I just upgraded from ubuntu 11.04 to 11.10 with a fresh install, by
+keeping ...</p>
+                <a class="readmore" href="http://samos123.github.io/posts/ubuntu-11-10-error-while-loading-shared-libraries-libssl-so-0-9-8-cannot-open-shared-object-file-no-such-file-or-directory.html">read more</a>
+<p>There are <a href="http://samos123.github.io/posts/ubuntu-11-10-error-while-loading-shared-libraries-libssl-so-0-9-8-cannot-open-shared-object-file-no-such-file-or-directory.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
+            </article></li>
 
             <li><article class="hentry">
                 <header>
@@ -129,6 +167,32 @@ and dangerous, but actually I found the driver today was driving quite peacefull
 
             <li><article class="hentry">
                 <header>
+                    <h1><a href="http://samos123.github.io/posts/how-to-install-setuptools-to-a-specific-python-version.html" rel="bookmark"
+                           title="Permalink to How to install Setuptools to a specific python version">How to install Setuptools to a specific python version</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2011-07-18T19:34:00">
+                Published: Mon 18 July 2011
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="http://samos123.github.io/author/sam-stoelinga.html">Sam Stoelinga</a>
+        </address>
+<p>In <a href="http://samos123.github.io/category/python.html">Python</a>. </p>
+<p>tags: <a href="http://samos123.github.io/tag/python.html">python</a> <a href="http://samos123.github.io/tag/ubuntu.html">ubuntu</a> <a href="http://samos123.github.io/tag/linux.html">linux</a> </p>
+</footer><!-- /.post-info -->                <p>To install easy_install for a specific python version. I just installed
+from source and used the python version you want to install setuptools
+too. I used the following steps in Ubuntu 11.04 with Python 2.5 and
+Python 2.7 installed. The following commands will install setuptools to
+python ...</p>
+                <a class="readmore" href="http://samos123.github.io/posts/how-to-install-setuptools-to-a-specific-python-version.html">read more</a>
+<p>There are <a href="http://samos123.github.io/posts/how-to-install-setuptools-to-a-specific-python-version.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
                     <h1><a href="http://samos123.github.io/posts/sam-the-terrorist-arrived-in-china.html" rel="bookmark"
                            title="Permalink to Sam the terrorist arrived in China">Sam the terrorist arrived in China</a></h1>
                 </header>
@@ -153,7 +217,8 @@ London, wait in London for 5 hours ...</p>
             </article></li>
                 </ol><!-- /#posts-list -->
 <p class="paginator">
-    Page 1 / 1
+        <a href="http://samos123.github.io/author/sam-stoelinga.html">&laquo;</a>
+    Page 2 / 2
 </p>
                 </section><!-- /#content -->
         <section id="extras" class="body">

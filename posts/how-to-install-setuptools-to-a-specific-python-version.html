@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
         <meta charset="utf-8" />
-        <title>Sam Stoelinga (Samos IT) - Blog - Authors</title>
+        <title>How to install Setuptools to a specific python version</title>
         <link rel="stylesheet" href="http://samos123.github.io/theme/css/main.css" />
 
         <!--[if IE]>
@@ -20,17 +20,63 @@
                     <li><a href="http://samos123.github.io/category/algorithms.html">Algorithms</a></li>
                     <li><a href="http://samos123.github.io/category/china.html">China</a></li>
                     <li><a href="http://samos123.github.io/category/linux.html">Linux</a></li>
-                    <li><a href="http://samos123.github.io/category/python.html">Python</a></li>
+                    <li class="active"><a href="http://samos123.github.io/category/python.html">Python</a></li>
                 </ul></nav>
         </header><!-- /#banner -->
-
 <section id="content" class="body">
-    <h1>Authors on Sam Stoelinga (Samos IT) - Blog</h1>
-    <ul>
-        <li><a href="http://samos123.github.io/author/sam-stoelinga.html">Sam Stoelinga</a> (17)</li>
-    </ul>
-</section>
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="http://samos123.github.io/posts/how-to-install-setuptools-to-a-specific-python-version.html" rel="bookmark"
+           title="Permalink to How to install Setuptools to a specific python version">How to install Setuptools to a specific python version</a></h1>
+    </header>
 
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2011-07-18T19:34:00">
+                Published: Mon 18 July 2011
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="http://samos123.github.io/author/sam-stoelinga.html">Sam Stoelinga</a>
+        </address>
+<p>In <a href="http://samos123.github.io/category/python.html">Python</a>. </p>
+<p>tags: <a href="http://samos123.github.io/tag/python.html">python</a> <a href="http://samos123.github.io/tag/ubuntu.html">ubuntu</a> <a href="http://samos123.github.io/tag/linux.html">linux</a> </p>
+</footer><!-- /.post-info -->      <p>To install easy_install for a specific python version. I just installed
+from source and used the python version you want to install setuptools
+too. I used the following steps in Ubuntu 11.04 with Python 2.5 and
+Python 2.7 installed. The following commands will install setuptools to
+python 2.5  </p>
+<div class="highlight"><pre>wget
+http://pypi.python.org/packages/source/s/setuptools/setuptools-0.6c11.tar.gz#md5<span class="o">=</span>7df2a529a074f613b509fb44feefe74e  
+tar -zxvf setuptools-0.6c11.tar.gz <span class="nb">cd </span>setuptools-0.6c11/  
+sudo python2.5 setup.py install
+</pre></div>
+
+
+<p>The following command installs the pil module to 2.5: <br />
+<code>sudo easy_install-2.5 pil</code></p>
+<p>This command installs the pil module to 2.7: <br />
+<code>sudo easy\_install-2.7 pil</code></p>
+    </div><!-- /.entry-content -->
+    <div class="comments">
+      <h2>Comments !</h2>
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+        var disqus_shortname = 'samosit';
+        var disqus_identifier = 'posts/how-to-install-setuptools-to-a-specific-python-version.html';
+        var disqus_url = 'http://samos123.github.io/posts/how-to-install-setuptools-to-a-specific-python-version.html';
+        (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//samosit.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+      <noscript>Please enable JavaScript to view the comments.</noscript>
+    </div>
+
+  </article>
+</section>
         <section id="extras" class="body">
                 <div class="blogroll">
                         <h2>blogroll</h2>

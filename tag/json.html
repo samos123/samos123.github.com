@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
         <meta charset="utf-8" />
-        <title>Bart and his lost Bike</title>
+        <title>Sam Stoelinga (Samos IT) - Blog - json</title>
         <link rel="stylesheet" href="http://samos123.github.io/theme/css/main.css" />
 
         <!--[if IE]>
@@ -18,65 +18,49 @@
                 <h1><a href="http://samos123.github.io/">Sam Stoelinga (Samos IT) - Blog </a></h1>
                 <nav><ul>
                     <li><a href="http://samos123.github.io/category/algorithms.html">Algorithms</a></li>
-                    <li class="active"><a href="http://samos123.github.io/category/china.html">China</a></li>
+                    <li><a href="http://samos123.github.io/category/china.html">China</a></li>
                     <li><a href="http://samos123.github.io/category/linux.html">Linux</a></li>
                     <li><a href="http://samos123.github.io/category/python.html">Python</a></li>
                 </ul></nav>
         </header><!-- /#banner -->
-<section id="content" class="body">
-  <article>
-    <header>
-      <h1 class="entry-title">
-        <a href="http://samos123.github.io/posts/bart-and-his-lost-bike.html" rel="bookmark"
-           title="Permalink to Bart and his lost Bike">Bart and his lost Bike</a></h1>
-    </header>
 
-    <div class="entry-content">
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="http://samos123.github.io/posts/simple-function-to-return-json-in-django.html">Simple function to return json in Django</a></h1>
 <footer class="post-info">
-        <abbr class="published" title="2011-08-11T15:00:00">
-                Published: Thu 11 August 2011
+        <abbr class="published" title="2012-02-22T15:53:00">
+                Published: Wed 22 February 2012
         </abbr>
 
         <address class="vcard author">
                 By                         <a class="url fn" href="http://samos123.github.io/author/sam-stoelinga.html">Sam Stoelinga</a>
         </address>
-<p>In <a href="http://samos123.github.io/category/china.html">China</a>. </p>
+<p>In <a href="http://samos123.github.io/category/python.html">Python</a>. </p>
+<p>tags: <a href="http://samos123.github.io/tag/python.html">python</a> <a href="http://samos123.github.io/tag/django.html">django</a> <a href="http://samos123.github.io/tag/json.html">json</a> </p>
+</footer><!-- /.post-info --><p>Just a small code snippet I use when I need to return json, comments are
+welcomed.</p>
+<div class="highlight"><pre><span class="kn">from</span> <span class="nn">django.http</span> <span class="kn">import</span> <span class="n">HttpResponse</span>  
+<span class="kn">from</span> <span class="nn">django.utils</span> <span class="kn">import</span> <span class="n">simplejson</span> <span class="k">as</span> <span class="n">json</span>
 
-</footer><!-- /.post-info -->      <p>Yesterday Bart went on a trip to Tianmen Square, but after coming back I got
-a call that his bike got lost. So my first thought was must be stolen,
-but then he said he put it in front of the police post. So I gave it
-another thought and maybe thought it can still be found if we have look.
-So Lindan and me went to Wudaokou to check, where we found there are no
-bikes so maybe the bike shouldn't be put there.</p>
-<p>A few moments later Lindan found a sign saying in Chinese characters
-"You can't put your bike here, you should be responsible for your own
-acting(禁止停放自行车，后果自负。" Which Bart couldn't understand of
-course. So Lindan first asked some cleaner or traffic guy, where they
-would put the bikes, but he didn't know. Then we asked at the police
-station and they said the put it at a nearby bike parking place. At the
-bike parking place it was just a matter of finding the bike and paying 2
-eurocent, which is the normal price for 1 day parking. So it all ended well.
-I will also study reading and writing Chinese
-characters more, seems it's quite useful here.</p>
-    </div><!-- /.entry-content -->
-    <div class="comments">
-      <h2>Comments !</h2>
-      <div id="disqus_thread"></div>
-      <script type="text/javascript">
-        var disqus_shortname = 'samosit';
-        var disqus_identifier = 'posts/bart-and-his-lost-bike.html';
-        var disqus_url = 'http://samos123.github.io/posts/bart-and-his-lost-bike.html';
-        (function() {
-        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-        dsq.src = '//samosit.disqus.com/embed.js';
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-        })();
-      </script>
-      <noscript>Please enable JavaScript to view the comments.</noscript>
-    </div>
+<span class="k">def</span> <span class="nf">json_response</span><span class="p">(</span><span class="n">dict_to_convert_to_json</span><span class="p">):</span>  
+    <span class="k">return</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">dict_to_convert_to_json</span><span class="p">),</span>
+                        <span class="n">mimetype</span><span class="o">=</span><span class="s">&quot;application/json&quot;</span><span class="p">)</span>
+</pre></div>
 
-  </article>
-</section>
+
+<p>To use it in your view you just do it this way:  </p>
+<div class="highlight"><pre><span class="k">def</span> <span class="nf">login</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>  
+    <span class="k">return</span> <span class="n">json_response</span><span class="p">({</span><span class="s">&#39;success&#39;</span> <span class="p">:</span> <span class="bp">True</span><span class="p">,</span> <span class="s">&#39;user&#39;</span> <span class="p">:</span> <span class="p">{</span><span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="s">&#39;Sam&#39;</span><span class="p">,</span>
+                                                      <span class="s">&#39;speciality&#39;</span><span class="p">:</span> <span class="s">&#39;Django/Python&#39;</span><span class="p">}})</span>
+</pre></div>
+
+
+<p>You could also create a decorator to do this but I think using a simple function
+is more straight forward.</p><p>There are <a href="http://samos123.github.io/posts/simple-function-to-return-json-in-django.html#disqus_thread">comments</a>.</p>                </article>
+<p class="paginator">
+    Page 1 / 1
+</p>
+            </aside><!-- /#featured -->
         <section id="extras" class="body">
                 <div class="blogroll">
                         <h2>blogroll</h2>

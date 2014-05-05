@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
         <meta charset="utf-8" />
-        <title>Sam Stoelinga (Samos IT) - Blog - Authors</title>
+        <title>Importing a SQL dump in postgres</title>
         <link rel="stylesheet" href="http://samos123.github.io/theme/css/main.css" />
 
         <!--[if IE]>
@@ -19,18 +19,56 @@
                 <nav><ul>
                     <li><a href="http://samos123.github.io/category/algorithms.html">Algorithms</a></li>
                     <li><a href="http://samos123.github.io/category/china.html">China</a></li>
-                    <li><a href="http://samos123.github.io/category/linux.html">Linux</a></li>
+                    <li class="active"><a href="http://samos123.github.io/category/linux.html">Linux</a></li>
                     <li><a href="http://samos123.github.io/category/python.html">Python</a></li>
                 </ul></nav>
         </header><!-- /#banner -->
-
 <section id="content" class="body">
-    <h1>Authors on Sam Stoelinga (Samos IT) - Blog</h1>
-    <ul>
-        <li><a href="http://samos123.github.io/author/sam-stoelinga.html">Sam Stoelinga</a> (17)</li>
-    </ul>
-</section>
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="http://samos123.github.io/posts/importing-a-sql-dump-in-postgres.html" rel="bookmark"
+           title="Permalink to Importing a SQL dump in postgres">Importing a SQL dump in postgres</a></h1>
+    </header>
 
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2011-11-29T13:46:00">
+                Published: Tue 29 November 2011
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="http://samos123.github.io/author/sam-stoelinga.html">Sam Stoelinga</a>
+        </address>
+<p>In <a href="http://samos123.github.io/category/linux.html">Linux</a>. </p>
+
+</footer><!-- /.post-info -->      <p>I always keep forgetting how to import a SQL dump into postgres and
+found it always hard to find the right documentation. So I thought lets
+share it:</p>
+<div class="highlight"><pre>psql -d dbname -U username -f dumpfile.sql
+</pre></div>
+
+
+<p>This should also work with files created by pgdump.</p>
+    </div><!-- /.entry-content -->
+    <div class="comments">
+      <h2>Comments !</h2>
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+        var disqus_shortname = 'samosit';
+        var disqus_identifier = 'posts/importing-a-sql-dump-in-postgres.html';
+        var disqus_url = 'http://samos123.github.io/posts/importing-a-sql-dump-in-postgres.html';
+        (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//samosit.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+      <noscript>Please enable JavaScript to view the comments.</noscript>
+    </div>
+
+  </article>
+</section>
         <section id="extras" class="body">
                 <div class="blogroll">
                         <h2>blogroll</h2>

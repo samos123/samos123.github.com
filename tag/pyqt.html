@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
         <meta charset="utf-8" />
-        <title>Bart and his lost Bike</title>
+        <title>Sam Stoelinga (Samos IT) - Blog - pyqt</title>
         <link rel="stylesheet" href="http://samos123.github.io/theme/css/main.css" />
 
         <!--[if IE]>
@@ -18,65 +18,72 @@
                 <h1><a href="http://samos123.github.io/">Sam Stoelinga (Samos IT) - Blog </a></h1>
                 <nav><ul>
                     <li><a href="http://samos123.github.io/category/algorithms.html">Algorithms</a></li>
-                    <li class="active"><a href="http://samos123.github.io/category/china.html">China</a></li>
+                    <li><a href="http://samos123.github.io/category/china.html">China</a></li>
                     <li><a href="http://samos123.github.io/category/linux.html">Linux</a></li>
                     <li><a href="http://samos123.github.io/category/python.html">Python</a></li>
                 </ul></nav>
         </header><!-- /#banner -->
-<section id="content" class="body">
-  <article>
-    <header>
-      <h1 class="entry-title">
-        <a href="http://samos123.github.io/posts/bart-and-his-lost-bike.html" rel="bookmark"
-           title="Permalink to Bart and his lost Bike">Bart and his lost Bike</a></h1>
-    </header>
 
-    <div class="entry-content">
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="http://samos123.github.io/posts/install-pyqt-in-a-virtualenv-with-pip.html">Install PyQt in a virtualenv with Pip</a></h1>
 <footer class="post-info">
-        <abbr class="published" title="2011-08-11T15:00:00">
-                Published: Thu 11 August 2011
+        <abbr class="published" title="2013-05-30T15:48:00">
+                Published: Thu 30 May 2013
         </abbr>
 
         <address class="vcard author">
                 By                         <a class="url fn" href="http://samos123.github.io/author/sam-stoelinga.html">Sam Stoelinga</a>
         </address>
-<p>In <a href="http://samos123.github.io/category/china.html">China</a>. </p>
+<p>In <a href="http://samos123.github.io/category/python.html">Python</a>. </p>
+<p>tags: <a href="http://samos123.github.io/tag/python.html">python</a> <a href="http://samos123.github.io/tag/pyqt.html">pyqt</a> <a href="http://samos123.github.io/tag/pip.html">pip</a> </p>
+</footer><!-- /.post-info --><p>Noticed that pip install pyqt isn't working? At least at the time of
+writing this blog it isn't..</p>
+<p>This is the error that I got:<br />
+IOError: [Errno 2] No such file or directory: setup.py</p>
+<p>It seems they didn't package it well and it's using configure.py to
+install. So here is the solution to install it by using pip to download
+the files and configure and install manually.</p>
+<p><strong>Solution</strong> copied from: <a href="http://stackoverflow.com/a/13967084/376445">http://stackoverflow.com/a/13967084/376445</a></p>
+<div class="highlight"><pre>workon myProject  
+pip install --no-install SIP  
+pip install --no-install PyQt  
+<span class="nb">cd</span> ~/.virtualenvs/myProject/build/SIP  
+python configure.py  
+make  
+make install  
+<span class="nb">cd</span> ~/.virtualenvs/myProject/build/PyQt  
+python configure.py  
+make  
+make install  
+<span class="nb">cd</span> <span class="o">&amp;&amp;</span> rm -rf ~/.virtualenvs/myProject/build <span class="c"># Optional.</span>
+</pre></div>
 
-</footer><!-- /.post-info -->      <p>Yesterday Bart went on a trip to Tianmen Square, but after coming back I got
-a call that his bike got lost. So my first thought was must be stolen,
-but then he said he put it in front of the police post. So I gave it
-another thought and maybe thought it can still be found if we have look.
-So Lindan and me went to Wudaokou to check, where we found there are no
-bikes so maybe the bike shouldn't be put there.</p>
-<p>A few moments later Lindan found a sign saying in Chinese characters
-"You can't put your bike here, you should be responsible for your own
-acting(禁止停放自行车，后果自负。" Which Bart couldn't understand of
-course. So Lindan first asked some cleaner or traffic guy, where they
-would put the bikes, but he didn't know. Then we asked at the police
-station and they said the put it at a nearby bike parking place. At the
-bike parking place it was just a matter of finding the bike and paying 2
-eurocent, which is the normal price for 1 day parking. So it all ended well.
-I will also study reading and writing Chinese
-characters more, seems it's quite useful here.</p>
-    </div><!-- /.entry-content -->
-    <div class="comments">
-      <h2>Comments !</h2>
-      <div id="disqus_thread"></div>
-      <script type="text/javascript">
-        var disqus_shortname = 'samosit';
-        var disqus_identifier = 'posts/bart-and-his-lost-bike.html';
-        var disqus_url = 'http://samos123.github.io/posts/bart-and-his-lost-bike.html';
-        (function() {
-        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-        dsq.src = '//samosit.disqus.com/embed.js';
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-        })();
-      </script>
-      <noscript>Please enable JavaScript to view the comments.</noscript>
-    </div>
 
-  </article>
-</section>
+<p><strong>Issues I encountered</strong>:</p>
+<ul>
+<li>Missing development headers for qt: <div class="highlight"><pre>~/.virtualenvs/scrapy/build/PyQt# python configure.py --verbose  
+Determining the layout of your Qt installation...  
+/usr/bin/qmake -o qtdirs.mk qtdirs.pro  
+make -f qtdirs.mk 
+g++ -c -m64 -pipe -O2 -Wall -W -D_REENTRANT -DQT_NO_DEBUG
+-DQT_CORE_LIB -I/usr/share/qt4/mkspecs/linux-g++-64 -I.
+-I/usr/includ e/qt4/QtCore -I/usr/include/qt4 -I. -o qtdirs.o qtdirs.cpp  
+qtdirs.cpp:1:28: fatal error: QCoreApplication: No such file or directory compilation terminated.  
+make: *** <span class="o">[</span>qtdirs.o<span class="o">]</span> Error 1  
+Error: Failed to determine the layout of your Qt installation. Try again using  the --verbose flag to see more detail about the problem.
+</pre></div>
+
+
+</li>
+</ul>
+<p><strong>Soltution:</strong> Install the development headers (Ubuntu 12.04)</p>
+<div class="highlight"><pre>sudo apt-get install libqt4-dev
+</pre></div><p>There are <a href="http://samos123.github.io/posts/install-pyqt-in-a-virtualenv-with-pip.html#disqus_thread">comments</a>.</p>                </article>
+<p class="paginator">
+    Page 1 / 1
+</p>
+            </aside><!-- /#featured -->
         <section id="extras" class="body">
                 <div class="blogroll">
                         <h2>blogroll</h2>

@@ -20,6 +20,7 @@
                     <li><a href="http://samos123.github.io/category/algorithms.html">Algorithms</a></li>
                     <li><a href="http://samos123.github.io/category/china.html">China</a></li>
                     <li><a href="http://samos123.github.io/category/linux.html">Linux</a></li>
+                    <li><a href="http://samos123.github.io/category/python.html">Python</a></li>
                 </ul></nav>
         </header><!-- /#banner -->
 
@@ -139,6 +140,120 @@ It also has a funny history, see the history at the Wikipedia article.</p>
 
             <li><article class="hentry">
                 <header>
+                    <h1><a href="http://samos123.github.io/posts/removedetach-a-pci-device-linux-kvm-vga-passthrgough-nvidia-quadro-2000.html" rel="bookmark"
+                           title="Permalink to Remove/detach a PCI device linux (kvm VGA passthrgough Nvidia Quadro 2000)">Remove/detach a PCI device linux (kvm VGA passthrgough Nvidia Quadro 2000)</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2013-06-09T08:55:00">
+                Published: Sun 09 June 2013
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="http://samos123.github.io/author/sam-stoelinga.html">Sam Stoelinga</a>
+        </address>
+<p>In <a href="http://samos123.github.io/category/linux.html">Linux</a>. </p>
+
+</footer><!-- /.post-info -->                <p><strong>Answer:</strong>  </p>
+<div class="highlight"><pre><span class="nb">echo</span> -n <span class="s2">&quot;1&quot;</span> &gt; /sys/bus/pci/devices/0000:02:00.0/remove
+</pre></div>
+
+
+<p>Where 0000:02:00.0 is related to your pci device address which can
+be obtained from the command <code>lspci</code></p>
+<p><strong>Related story:</strong><br />
+Was working on KVM vga passthrough and encountered problems with the
+graphics card nvidia Quadro ...</p>
+                <a class="readmore" href="http://samos123.github.io/posts/removedetach-a-pci-device-linux-kvm-vga-passthrgough-nvidia-quadro-2000.html">read more</a>
+<p>There are <a href="http://samos123.github.io/posts/removedetach-a-pci-device-linux-kvm-vga-passthrgough-nvidia-quadro-2000.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="http://samos123.github.io/posts/install-pyqt-in-a-virtualenv-with-pip.html" rel="bookmark"
+                           title="Permalink to Install PyQt in a virtualenv with Pip">Install PyQt in a virtualenv with Pip</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2013-05-30T15:48:00">
+                Published: Thu 30 May 2013
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="http://samos123.github.io/author/sam-stoelinga.html">Sam Stoelinga</a>
+        </address>
+<p>In <a href="http://samos123.github.io/category/python.html">Python</a>. </p>
+<p>tags: <a href="http://samos123.github.io/tag/python.html">python</a> <a href="http://samos123.github.io/tag/pyqt.html">pyqt</a> <a href="http://samos123.github.io/tag/pip.html">pip</a> </p>
+</footer><!-- /.post-info -->                <p>Noticed that pip install pyqt isn't working? At least at the time of
+writing this blog it isn't..</p>
+<p>This is the error that I got:<br />
+IOError: [Errno 2] No such file or directory: setup.py</p>
+<p>It seems they didn't package it well and it's using configure ...</p>
+                <a class="readmore" href="http://samos123.github.io/posts/install-pyqt-in-a-virtualenv-with-pip.html">read more</a>
+<p>There are <a href="http://samos123.github.io/posts/install-pyqt-in-a-virtualenv-with-pip.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="http://samos123.github.io/posts/ignoring-every-channels-joinpartquit-messages-in-irssi.html" rel="bookmark"
+                           title="Permalink to Ignoring every channels join/part/quit messages in IRSSI">Ignoring every channels join/part/quit messages in IRSSI</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2013-05-11T02:00:00">
+                Published: Sat 11 May 2013
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="http://samos123.github.io/author/sam-stoelinga.html">Sam Stoelinga</a>
+        </address>
+<p>In <a href="http://samos123.github.io/category/linux.html">Linux</a>. </p>
+<p>tags: <a href="http://samos123.github.io/tag/irssi.html">irssi</a> <a href="http://samos123.github.io/tag/linux.html">linux</a> </p>
+</footer><!-- /.post-info -->                <p>Tired of all those join part messages?</p>
+<div class="highlight"><pre>/ignore <span class="se">\*</span> joins  
+/ignore <span class="se">\*</span> parts  
+/ignore <span class="se">\*</span> quits  
+/save
+</pre></div>
+
+
+<p>Read more about ignore <code>/help ignore</code></p>
+<p>Taken from Archwiki:
+<a href="https://wiki.archlinux.org/index.php/Irssi">https://wiki.archlinux.org/index.php/Irssi</a></p>
+                <a class="readmore" href="http://samos123.github.io/posts/ignoring-every-channels-joinpartquit-messages-in-irssi.html">read more</a>
+<p>There are <a href="http://samos123.github.io/posts/ignoring-every-channels-joinpartquit-messages-in-irssi.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="http://samos123.github.io/posts/create-tar-archive-of-changedadded-files-in-a-git-commit.html" rel="bookmark"
+                           title="Permalink to Create tar archive of changed/added files in a git commit">Create tar archive of changed/added files in a git commit</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2013-05-02T02:12:00">
+                Published: Thu 02 May 2013
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="http://samos123.github.io/author/sam-stoelinga.html">Sam Stoelinga</a>
+        </address>
+<p>In <a href="http://samos123.github.io/category/linux.html">Linux</a>. </p>
+<p>tags: <a href="http://samos123.github.io/tag/git.html">git</a> <a href="http://samos123.github.io/tag/linux.html">linux</a> <a href="http://samos123.github.io/tag/shell.html">shell</a> <a href="http://samos123.github.io/tag/bash.html">bash</a> </p>
+</footer><!-- /.post-info -->                <p>The following command first gets the changed and added files of a git
+commit and then creates a tar archive of those changed files.</p>
+<div class="highlight"><pre>git show <span class="o">{{</span>COMMIT_ID<span class="o">}}</span> --name-status | grep -Ew <span class="s1">&#39;^M|A&#39;</span> | awk <span class="s1">&#39;{ print $2 }&#39;</span> | xargs tar czf usb-passthrough.tar.gz
+</pre></div>
+                <a class="readmore" href="http://samos123.github.io/posts/create-tar-archive-of-changedadded-files-in-a-git-commit.html">read more</a>
+<p>There are <a href="http://samos123.github.io/posts/create-tar-archive-of-changedadded-files-in-a-git-commit.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
                     <h1><a href="http://samos123.github.io/posts/full-migration-of-archlinux-installation-to-a-new-system.html" rel="bookmark"
                            title="Permalink to Full migration/clone of linux installation to a new system(Without reinstalling)">Full migration/clone of linux installation to a new system(Without reinstalling)</a></h1>
                 </header>
@@ -161,6 +276,92 @@ the steps and issues I encountered while doing so.</p>
 <p><strong>Status ...</strong></p>
                 <a class="readmore" href="http://samos123.github.io/posts/full-migration-of-archlinux-installation-to-a-new-system.html">read more</a>
 <p>There are <a href="http://samos123.github.io/posts/full-migration-of-archlinux-installation-to-a-new-system.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="http://samos123.github.io/posts/only-use-worker-when-required-on-heroku-with-djangopython.html" rel="bookmark"
+                           title="Permalink to Only use worker when required on heroku with Django/Python">Only use worker when required on heroku with Django/Python</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2012-04-13T09:42:00">
+                Published: Fri 13 April 2012
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="http://samos123.github.io/author/sam-stoelinga.html">Sam Stoelinga</a>
+        </address>
+<p>In <a href="http://samos123.github.io/category/python.html">Python</a>. </p>
+<p>tags: <a href="http://samos123.github.io/tag/coding.html">coding</a> <a href="http://samos123.github.io/tag/python.html">python</a> <a href="http://samos123.github.io/tag/django.html">django</a> <a href="http://samos123.github.io/tag/heroku.html">heroku</a> </p>
+</footer><!-- /.post-info -->                <p>For a mobile project I required a background worker which sents an email
+with 300 generated QR codes zipped together as attachment. This costs
+quite some time so we need a background worker to execute this task.</p>
+<p>I wanted to achieve the following result:</p>
+<ul>
+<li>When the user wants to generate ...</li></ul>
+                <a class="readmore" href="http://samos123.github.io/posts/only-use-worker-when-required-on-heroku-with-djangopython.html">read more</a>
+<p>There are <a href="http://samos123.github.io/posts/only-use-worker-when-required-on-heroku-with-djangopython.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="http://samos123.github.io/posts/django-custom-view-decorator-with-arguments.html" rel="bookmark"
+                           title="Permalink to Django Custom View Decorator with Arguments">Django Custom View Decorator with Arguments</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2012-02-23T17:52:00">
+                Published: Thu 23 February 2012
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="http://samos123.github.io/author/sam-stoelinga.html">Sam Stoelinga</a>
+        </address>
+<p>In <a href="http://samos123.github.io/category/python.html">Python</a>. </p>
+<p>tags: <a href="http://samos123.github.io/tag/django.html">django</a> <a href="http://samos123.github.io/tag/python.html">python</a> <a href="http://samos123.github.io/tag/coding.html">coding</a> <a href="http://samos123.github.io/tag/decorators.html">decorators</a> </p>
+</footer><!-- /.post-info -->                <p>To make my life easier I made a simple decorator which checks if the
+parameters are present in the request.POST or request.GET and returns a
+response if they are not.</p>
+<p>It accepts a list of parameters in string format and will loop through
+each parameter to check if ...</p>
+                <a class="readmore" href="http://samos123.github.io/posts/django-custom-view-decorator-with-arguments.html">read more</a>
+<p>There are <a href="http://samos123.github.io/posts/django-custom-view-decorator-with-arguments.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="http://samos123.github.io/posts/simple-function-to-return-json-in-django.html" rel="bookmark"
+                           title="Permalink to Simple function to return json in Django">Simple function to return json in Django</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2012-02-22T15:53:00">
+                Published: Wed 22 February 2012
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="http://samos123.github.io/author/sam-stoelinga.html">Sam Stoelinga</a>
+        </address>
+<p>In <a href="http://samos123.github.io/category/python.html">Python</a>. </p>
+<p>tags: <a href="http://samos123.github.io/tag/python.html">python</a> <a href="http://samos123.github.io/tag/django.html">django</a> <a href="http://samos123.github.io/tag/json.html">json</a> </p>
+</footer><!-- /.post-info -->                <p>Just a small code snippet I use when I need to return json, comments are
+welcomed.</p>
+<div class="highlight"><pre><span class="kn">from</span> <span class="nn">django.http</span> <span class="kn">import</span> <span class="n">HttpResponse</span>  
+<span class="kn">from</span> <span class="nn">django.utils</span> <span class="kn">import</span> <span class="n">simplejson</span> <span class="k">as</span> <span class="n">json</span>
+
+<span class="k">def</span> <span class="nf">json_response</span><span class="p">(</span><span class="n">dict_to_convert_to_json</span><span class="p">):</span>  
+    <span class="k">return</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">dict_to_convert_to_json</span><span class="p">),</span>
+                        <span class="n">mimetype</span><span class="o">=</span><span class="s">&quot;application/json&quot;</span><span class="p">)</span>
+</pre></div>
+
+
+<p>To use it in your view you just do it this ...</p>
+                <a class="readmore" href="http://samos123.github.io/posts/simple-function-to-return-json-in-django.html">read more</a>
+<p>There are <a href="http://samos123.github.io/posts/simple-function-to-return-json-in-django.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
             </article></li>
 
             <li><article class="hentry">
@@ -188,59 +389,10 @@ available and ...</p>
                 <a class="readmore" href="http://samos123.github.io/posts/chinese-new-year-2012.html">read more</a>
 <p>There are <a href="http://samos123.github.io/posts/chinese-new-year-2012.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
             </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="http://samos123.github.io/posts/bart-and-his-lost-bike.html" rel="bookmark"
-                           title="Permalink to Bart and his lost Bike">Bart and his lost Bike</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2011-08-11T15:00:00">
-                Published: Thu 11 August 2011
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="http://samos123.github.io/author/sam-stoelinga.html">Sam Stoelinga</a>
-        </address>
-<p>In <a href="http://samos123.github.io/category/china.html">China</a>. </p>
-
-</footer><!-- /.post-info -->                <p>Yesterday Bart went on a trip to Tianmen Square, but after coming back I got
-a call that his bike got lost. So my first thought was must be stolen,
-but then he said he put it in front of the police post. So I gave it
-another thought and ...</p>
-                <a class="readmore" href="http://samos123.github.io/posts/bart-and-his-lost-bike.html">read more</a>
-<p>There are <a href="http://samos123.github.io/posts/bart-and-his-lost-bike.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="http://samos123.github.io/posts/a-new-start-in-beijing.html" rel="bookmark"
-                           title="Permalink to A New Start in Beijing">A New Start in Beijing</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2011-08-11T07:07:00">
-                Published: Thu 11 August 2011
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="http://samos123.github.io/author/sam-stoelinga.html">Sam Stoelinga</a>
-        </address>
-<p>In <a href="http://samos123.github.io/category/china.html">China</a>. </p>
-
-</footer><!-- /.post-info -->                <p>Pics: <a href="https://picasaweb.google.com/118136053313378320646/Beijing2011WithBart">https://picasaweb.google.com/118136053313378320646/Beijing2011WithBart</a></p>
-<p>After a tough trip, waiting in moscow for 8,5 hours we finally arrived
-in Beijing. On the way to the hotel Bart found the traffic here a little rough
-and dangerous, but actually I found the driver today was driving quite peacefully ...</p>
-                <a class="readmore" href="http://samos123.github.io/posts/a-new-start-in-beijing.html">read more</a>
-<p>There are <a href="http://samos123.github.io/posts/a-new-start-in-beijing.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
-            </article></li>
                 </ol><!-- /#posts-list -->
 <p class="paginator">
-    Page 1 / 1
+    Page 1 / 2
+        <a href="http://samos123.github.io/index2.html">&raquo;</a>
 </p>
                 </section><!-- /#content -->
         <section id="extras" class="body">

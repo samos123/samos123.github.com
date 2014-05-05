@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Sam Stoelinga (Samos IT) - Blog - Coding, Django, Python</title>
+        <link rel="stylesheet" href="http://localhost:8000/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+<a href="http://github.com/samos123/">
+<img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub" />
+</a>
+        <header id="banner" class="body">
+                <h1><a href="http://localhost:8000/">Sam Stoelinga (Samos IT) - Blog </a></h1>
+                <nav><ul>
+                    <li><a href="http://localhost:8000/category/algorithms.html">Algorithms</a></li>
+                    <li><a href="http://localhost:8000/category/china.html">China</a></li>
+                    <li class="active"><a href="http://localhost:8000/category/coding-django-python.html">Coding, Django, Python</a></li>
+                    <li><a href="http://localhost:8000/category/linux.html">Linux</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="http://localhost:8000/posts/django-custom-view-decorator-with-arguments.html">Django Custom View Decorator with Arguments</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2012-02-23T17:52:00">
+                Published: Thu 23 February 2012
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="http://localhost:8000/author/sam-stoelinga.html">Sam Stoelinga</a>
+        </address>
+<p>In <a href="http://localhost:8000/category/coding-django-python.html">Coding, Django, Python</a>. </p>
+
+</footer><!-- /.post-info --><p>To make my life easier I made a simple decorator which checks if the
+parameters are present in the request.POST or request.GET and returns a
+response if they are not.</p>
+<p>It accepts a list of parameters in string format and will loop through
+each parameter to check if they are present in the request.POST.</p>
+<p>I noticed there weren't a lot of guides about how to write a decorator
+for Django which takes arguments. I based my code on this tutorial, it's
+a really great guide which helps you understand Python decorators at a
+new level: <a href="http://www.elfsternberg.com/2009/11/20/python-decorators-with-arguments-with-bonus-django-goodness/" title="Amazing insight about Python decorators">Amazing insight about Python
+decorators</a></p>
+<p>Here is the code I wrote for the decorator:  </p>
+<div class="highlight"><pre><span class="k">def</span> <span class="nf">required_parameters</span><span class="p">(</span><span class="n">parameters</span><span class="o">=</span><span class="p">(</span><span class="s">&#39;email&#39;</span><span class="p">,</span> <span class="s">&#39;api_key&#39;</span><span class="p">),</span> <span class="n">http_method</span><span class="o">=</span><span class="s">&#39;POST&#39;</span><span class="p">):</span>  
+    <span class="sd">&quot;&quot;&quot;  </span>
+<span class="sd">    Check if the required parameters are present in the request  </span>
+<span class="sd">    @param parameters: The names of the parameters that should be supplied  </span>
+<span class="sd">    &quot;&quot;&quot;</span>  
+    <span class="k">def</span> <span class="nf">inner_decorator</span><span class="p">(</span><span class="n">fn</span><span class="p">):</span>  
+        <span class="k">def</span> <span class="nf">wrapped</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>  
+            <span class="c"># check if the user api_key matches  </span>
+            <span class="k">for</span> <span class="n">parameter</span> <span class="ow">in</span> <span class="n">parameters</span><span class="p">:</span>  
+            <span class="k">if</span> <span class="n">parameter</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">http_method</span><span class="p">):</span>  
+                <span class="k">return</span> <span class="n">json_response</span><span class="p">({</span><span class="s">&#39;success&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span> <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="s">&#39;Please use the Web API correctly and supply the parameter: &#39;</span><span class="o">+</span><span class="n">parameter</span><span class="p">})</span>  
+            <span class="c"># Proceed like normally with the request  </span>
+            <span class="k">return</span> <span class="n">fn</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>  
+        <span class="k">return</span> <span class="n">wraps</span><span class="p">(</span><span class="n">fn</span><span class="p">)(</span><span class="n">wrapped</span><span class="p">)</span>  
+    <span class="k">return</span> <span class="n">inner_decorator</span>  
+    <span class="p">[</span><span class="o">/</span><span class="n">python</span><span class="p">]</span>
+</pre></div>
+
+
+<p>An example of using it in your view:  </p>
+<div class="highlight"><pre><span class="nd">@required_parameters</span><span class="p">(</span><span class="n">parameters</span><span class="o">=</span><span class="p">(</span><span class="s">&#39;email&#39;</span><span class="p">,</span> <span class="s">&#39;username&#39;</span><span class="p">,</span> <span class="s">&#39;password&#39;</span><span class="p">))</span>  
+<span class="k">def</span> <span class="nf">view_which_requires_email_username_and_password</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>  
+    <span class="n">bla</span> <span class="o">=</span> <span class="s">&#39;bla&#39;</span>  
+    <span class="k">return</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="n">bla</span><span class="p">)</span>
+</pre></div><p>There are <a href="http://localhost:8000/posts/django-custom-view-decorator-with-arguments.html#disqus_thread">comments</a>.</p>                </article>
+<p class="paginator">
+    Page 1 / 1
+</p>
+            </aside><!-- /#featured -->
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>blogroll</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+<script type="text/javascript">
+    var disqus_shortname = 'samosit';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+</body>
+</html>

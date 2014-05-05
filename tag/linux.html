@@ -20,12 +20,72 @@
                     <li><a href="http://samos123.github.io/category/algorithms.html">Algorithms</a></li>
                     <li><a href="http://samos123.github.io/category/china.html">China</a></li>
                     <li><a href="http://samos123.github.io/category/linux.html">Linux</a></li>
+                    <li><a href="http://samos123.github.io/category/python.html">Python</a></li>
                 </ul></nav>
         </header><!-- /#banner -->
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="http://samos123.github.io/posts/full-migration-of-archlinux-installation-to-a-new-system.html">Full migration/clone of linux installation to a new system(Without reinstalling)</a></h1>
+                    <h1 class="entry-title"><a href="http://samos123.github.io/posts/ignoring-every-channels-joinpartquit-messages-in-irssi.html">Ignoring every channels join/part/quit messages in IRSSI</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2013-05-11T02:00:00">
+                Published: Sat 11 May 2013
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="http://samos123.github.io/author/sam-stoelinga.html">Sam Stoelinga</a>
+        </address>
+<p>In <a href="http://samos123.github.io/category/linux.html">Linux</a>. </p>
+<p>tags: <a href="http://samos123.github.io/tag/irssi.html">irssi</a> <a href="http://samos123.github.io/tag/linux.html">linux</a> </p>
+</footer><!-- /.post-info --><p>Tired of all those join part messages?</p>
+<div class="highlight"><pre>/ignore <span class="se">\*</span> joins  
+/ignore <span class="se">\*</span> parts  
+/ignore <span class="se">\*</span> quits  
+/save
+</pre></div>
+
+
+<p>Read more about ignore <code>/help ignore</code></p>
+<p>Taken from Archwiki:
+<a href="https://wiki.archlinux.org/index.php/Irssi">https://wiki.archlinux.org/index.php/Irssi</a></p><p>There are <a href="http://samos123.github.io/posts/ignoring-every-channels-joinpartquit-messages-in-irssi.html#disqus_thread">comments</a>.</p>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="http://samos123.github.io/posts/create-tar-archive-of-changedadded-files-in-a-git-commit.html" rel="bookmark"
+                           title="Permalink to Create tar archive of changed/added files in a git commit">Create tar archive of changed/added files in a git commit</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2013-05-02T02:12:00">
+                Published: Thu 02 May 2013
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="http://samos123.github.io/author/sam-stoelinga.html">Sam Stoelinga</a>
+        </address>
+<p>In <a href="http://samos123.github.io/category/linux.html">Linux</a>. </p>
+<p>tags: <a href="http://samos123.github.io/tag/git.html">git</a> <a href="http://samos123.github.io/tag/linux.html">linux</a> <a href="http://samos123.github.io/tag/shell.html">shell</a> <a href="http://samos123.github.io/tag/bash.html">bash</a> </p>
+</footer><!-- /.post-info -->                <p>The following command first gets the changed and added files of a git
+commit and then creates a tar archive of those changed files.</p>
+<div class="highlight"><pre>git show <span class="o">{{</span>COMMIT_ID<span class="o">}}</span> --name-status | grep -Ew <span class="s1">&#39;^M|A&#39;</span> | awk <span class="s1">&#39;{ print $2 }&#39;</span> | xargs tar czf usb-passthrough.tar.gz
+</pre></div>
+                <a class="readmore" href="http://samos123.github.io/posts/create-tar-archive-of-changedadded-files-in-a-git-commit.html">read more</a>
+<p>There are <a href="http://samos123.github.io/posts/create-tar-archive-of-changedadded-files-in-a-git-commit.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="http://samos123.github.io/posts/full-migration-of-archlinux-installation-to-a-new-system.html" rel="bookmark"
+                           title="Permalink to Full migration/clone of linux installation to a new system(Without reinstalling)">Full migration/clone of linux installation to a new system(Without reinstalling)</a></h1>
+                </header>
+
+                <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2012-11-14T13:26:00">
                 Published: Wed 14 November 2012
@@ -36,115 +96,45 @@
         </address>
 <p>In <a href="http://samos123.github.io/category/linux.html">Linux</a>. </p>
 <p>tags: <a href="http://samos123.github.io/tag/archlinux.html">archlinux</a> <a href="http://samos123.github.io/tag/geek.html">geek</a> <a href="http://samos123.github.io/tag/linux.html">linux</a> <a href="http://samos123.github.io/tag/migration.html">migration</a> </p>
-</footer><!-- /.post-info --><p>I'm switching to a new laptop, but don't want to have to install
+</footer><!-- /.post-info -->                <p>I'm switching to a new laptop, but don't want to have to install
 Archlinux again. So instead of re-installing I will try to copy all
 files and hope the system will work. In this blogpost I will describe
 the steps and issues I encountered while doing so.</p>
-<p><strong>Status: Succeeded!!!!</strong></p>
-<p><strong>Summary of the plan</strong>: Boot from a live usb on the new system, create
-partitions with gparted, copy all the files over, change /etc/fstab to
-partition uuids, regenerate the mkinitcpio stuff (Still should read what
-this actually is).</p>
-<p>On the new laptop following steps should be done:</p>
-<ol>
-<li>Boot from a Ubuntu live cd and start gparted</li>
-<li>Create a / partition (ext4)</li>
-<li>Create a /home parition (ext4)</li>
-<li>Create a /boot partition (ext2)</li>
-<li>Mount the newly created partitions under /mnt/</li>
-<li>Copy all files of the old laptop / /home to new laptop /mnt/ /mnt/home using rsync</li>
-<li>Chroot into the copied files on the new laptop</li>
-<li>Change the /etc/fstab to point to the new partition UUIDs</li>
-<li>Install grub on new harddrive and reconfigure Grub</li>
-<li>Recreate the ramdisk</li>
-</ol>
-<h2>Environment:</h2>
-<p>Old Laptop:<br />
-Archlinux 64 bits, 8GB memory, AMD CPU and ATI card<br />
-IP: 192.168.1.108<br />
-Connected to router via internet cable, WIFI was way too slow to copy files</p>
-<p>New laptop:
-Intel CPU and nvidia video card<br />
-IP: 192.168.1.111</p>
-<h2>Detailed steps:</h2>
-<p>Boot from a live ubuntu USB on the new laptop and do the following:</p>
-<ol>
-<li>
-<p>Use gparted or fdisk to create the following partitions:
-   /dev/sda1 filesystem: ext2 size: 512mb label: boot (100mb is needed, but had enough space will become /boot)
-   /dev/sda2 filesystem: ext4 size: 30gb label: root(will become root /)
-   /dev/sda3 filesystem: ext4 size: 180gb label: home(will become home /home)</p>
-</li>
-<li>
-<p>After you have created the partitions successfully, mount all partitions to /mnt</p>
-<div class="highlight"><pre>mount /dev/sda2 /mnt
-mkdir /mnt/boot
-mount /dev/sda1 /mnt/boot
-mkdir /mnt/home
-mount /dev/sda3 /mnt/home
-</pre></div>
+<p><strong>Status ...</strong></p>
+                <a class="readmore" href="http://samos123.github.io/posts/full-migration-of-archlinux-installation-to-a-new-system.html">read more</a>
+<p>There are <a href="http://samos123.github.io/posts/full-migration-of-archlinux-installation-to-a-new-system.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
+            </article></li>
 
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="http://samos123.github.io/posts/how-to-install-setuptools-to-a-specific-python-version.html" rel="bookmark"
+                           title="Permalink to How to install Setuptools to a specific python version">How to install Setuptools to a specific python version</a></h1>
+                </header>
 
-</li>
-<li>
-<p>Now go back to the old Archlinux laptop and copy all files to the newly created partitions:</p>
-<div class="highlight"><pre>rsync -azv --progress --exclude<span class="o">=</span>/dev --exclude<span class="o">=</span>/sys / root@192.168.1.111:/mnt/
-</pre></div>
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2011-07-18T19:34:00">
+                Published: Mon 18 July 2011
+        </abbr>
 
-
-<p>This may take a while..................</p>
-</li>
-<li>
-<p>After everything is copied over to the new laptop, we will have to
-change /etc/fstab to look as follows:</p>
-<div class="highlight"><pre>tmpfs /tmp tmpfs nodev,nosuid 0 0
-<span class="nv">LABEL</span><span class="o">=</span>root / ext4 defaults,noatime 0 1
-<span class="nv">LABEL</span><span class="o">=</span>home /home ext4 defaults,noatime 0 2
-<span class="nv">LABEL</span><span class="o">=</span>boot /boot ext2 defaults,noatime 0 2
-</pre></div>
-
-
-</li>
-<li>
-<p>Then reinstall Grub on the hard drive:<br />
-<code>grub-install --force --target=i386-pc --recheck --debug /dev/sda</code></p>
-<p>Why the --force?
-I encountered the following error: will not proceed with 
-blocklists archlinux so after reading the wiki it said I could fix this by using --force.</p>
-</li>
-<li>
-<p>Regenerate grub config:<br />
-<code>grub-mkconfig -o /boot/grub/grub.cfg</code></p>
-</li>
-<li>
-<p>Regenerate initial ramdisk:<br />
-<code>mkinitcpio -p linux</code></p>
-</li>
-<li>
-<p>Reboot the system</p>
-</li>
-</ol>
-<p>I also had to update my modules.d/xxx to not load some specific AMD modules for laptop-mode tools as the new laptop has an intel processor.
-Also has to remove the ati driver and change to intel open source
-driver:</p>
-<div class="highlight"><pre>yaourt -Rs xf86-video-ati
-yaourt -S xf86-video-nouveau
-</pre></div>
-
-
-<p>The reason I am switching: My current HP 625 laptop has served its
-purpose for nearly 2 years. The CPU seems to be nearly burnt out, when I
-opened the laptop few days ago, the CPU was totally black, but still
-working.</p>
-<p>References I used:
-Archlinux wiki: Migrate installation to new
-hardware https://wiki.archlinux.org/index.php/Migrate_installation_to_new_hardware
-Forum post which basically does the same
-thing https://bbs.archlinux.org/viewtopic.php?id=145025</p><p>There are <a href="http://samos123.github.io/posts/full-migration-of-archlinux-installation-to-a-new-system.html#disqus_thread">comments</a>.</p>                </article>
+        <address class="vcard author">
+                By                         <a class="url fn" href="http://samos123.github.io/author/sam-stoelinga.html">Sam Stoelinga</a>
+        </address>
+<p>In <a href="http://samos123.github.io/category/python.html">Python</a>. </p>
+<p>tags: <a href="http://samos123.github.io/tag/python.html">python</a> <a href="http://samos123.github.io/tag/ubuntu.html">ubuntu</a> <a href="http://samos123.github.io/tag/linux.html">linux</a> </p>
+</footer><!-- /.post-info -->                <p>To install easy_install for a specific python version. I just installed
+from source and used the python version you want to install setuptools
+too. I used the following steps in Ubuntu 11.04 with Python 2.5 and
+Python 2.7 installed. The following commands will install setuptools to
+python ...</p>
+                <a class="readmore" href="http://samos123.github.io/posts/how-to-install-setuptools-to-a-specific-python-version.html">read more</a>
+<p>There are <a href="http://samos123.github.io/posts/how-to-install-setuptools-to-a-specific-python-version.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
+            </article></li>
+                </ol><!-- /#posts-list -->
 <p class="paginator">
     Page 1 / 1
 </p>
-            </aside><!-- /#featured -->
+                </section><!-- /#content -->
         <section id="extras" class="body">
                 <div class="blogroll">
                         <h2>blogroll</h2>

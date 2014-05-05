@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
         <meta charset="utf-8" />
-        <title>Sam Stoelinga (Samos IT) - Blog - Authors</title>
+        <title>Sam Stoelinga (Samos IT) - Blog - git</title>
         <link rel="stylesheet" href="http://samos123.github.io/theme/css/main.css" />
 
         <!--[if IE]>
@@ -24,13 +24,27 @@
                 </ul></nav>
         </header><!-- /#banner -->
 
-<section id="content" class="body">
-    <h1>Authors on Sam Stoelinga (Samos IT) - Blog</h1>
-    <ul>
-        <li><a href="http://samos123.github.io/author/sam-stoelinga.html">Sam Stoelinga</a> (17)</li>
-    </ul>
-</section>
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="http://samos123.github.io/posts/create-tar-archive-of-changedadded-files-in-a-git-commit.html">Create tar archive of changed/added files in a git commit</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2013-05-02T02:12:00">
+                Published: Thu 02 May 2013
+        </abbr>
 
+        <address class="vcard author">
+                By                         <a class="url fn" href="http://samos123.github.io/author/sam-stoelinga.html">Sam Stoelinga</a>
+        </address>
+<p>In <a href="http://samos123.github.io/category/linux.html">Linux</a>. </p>
+<p>tags: <a href="http://samos123.github.io/tag/git.html">git</a> <a href="http://samos123.github.io/tag/linux.html">linux</a> <a href="http://samos123.github.io/tag/shell.html">shell</a> <a href="http://samos123.github.io/tag/bash.html">bash</a> </p>
+</footer><!-- /.post-info --><p>The following command first gets the changed and added files of a git
+commit and then creates a tar archive of those changed files.</p>
+<div class="highlight"><pre>git show <span class="o">{{</span>COMMIT_ID<span class="o">}}</span> --name-status | grep -Ew <span class="s1">&#39;^M|A&#39;</span> | awk <span class="s1">&#39;{ print $2 }&#39;</span> | xargs tar czf usb-passthrough.tar.gz
+</pre></div><p>There are <a href="http://samos123.github.io/posts/create-tar-archive-of-changedadded-files-in-a-git-commit.html#disqus_thread">comments</a>.</p>                </article>
+<p class="paginator">
+    Page 1 / 1
+</p>
+            </aside><!-- /#featured -->
         <section id="extras" class="body">
                 <div class="blogroll">
                         <h2>blogroll</h2>
