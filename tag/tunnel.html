@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
         <meta charset="utf-8" />
-        <title>Sam Stoelinga (Samos IT) - Blog - Authors</title>
+        <title>Sam Stoelinga (Samos IT) - Blog - tunnel</title>
         <link rel="stylesheet" href="http://samos123.github.io/theme/css/main.css" />
 
         <!--[if IE]>
@@ -24,13 +24,43 @@
                 </ul></nav>
         </header><!-- /#banner -->
 
-<section id="content" class="body">
-    <h1>Authors on Sam Stoelinga (Samos IT) - Blog</h1>
-    <ul>
-        <li><a href="http://samos123.github.io/author/sam-stoelinga.html">Sam Stoelinga</a> (18)</li>
-    </ul>
-</section>
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="http://samos123.github.io/posts/ssh-to-server-behind-firewall-via-ssh-tunnel.html">SSH to server behind a firewall via an SSH tunnel</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2014-05-10T00:00:00">
+                Published: Sat 10 May 2014
+        </abbr>
 
+        <address class="vcard author">
+                By                         <a class="url fn" href="http://samos123.github.io/author/sam-stoelinga.html">Sam Stoelinga</a>
+        </address>
+<p>In <a href="http://samos123.github.io/category/linux.html">Linux</a>. </p>
+<p>tags: <a href="http://samos123.github.io/tag/linux.html">linux</a> <a href="http://samos123.github.io/tag/ssh.html">ssh</a> <a href="http://samos123.github.io/tag/firewall.html">firewall</a> <a href="http://samos123.github.io/tag/tunnel.html">tunnel</a> </p>
+</footer><!-- /.post-info --><p>A server behind a firewall was unaccesible from my home,
+but another server which is on the same local network had
+public SSH access from my home. So we can create an SSH tunnel
+via this public server to the server behind a firewall.</p>
+<p>For example the public ssh server is 8.8.8.8 and the
+server on the private network that we want to access is 192.168.1.5. Then we
+can create an SSH tunnel from my laptop at home in the
+following way:</p>
+<div class="highlight"><pre>ssh root@8.8.8.8 -L 2020:192.168.1.5:22
+</pre></div>
+
+
+<p>The above command creates an SSH tunnel, where the
+local port 2020 on my laptop will be forwarded to port
+22 of the private server behind the firewall.</p>
+<p>After the tunnel is created  you can use the following command
+to directly SSH from your home laptop to the private server
+with ip 192.168.1.5:</p>
+<div class="highlight"><pre>ssh ubuntu@localhost -p 2020
+</pre></div><p>There are <a href="http://samos123.github.io/posts/ssh-to-server-behind-firewall-via-ssh-tunnel.html#disqus_thread">comments</a>.</p>                </article>
+<p class="paginator">
+    Page 1 / 1
+</p>
+            </aside><!-- /#featured -->
         <section id="extras" class="body">
                 <div class="blogroll">
                         <h2>blogroll</h2>
