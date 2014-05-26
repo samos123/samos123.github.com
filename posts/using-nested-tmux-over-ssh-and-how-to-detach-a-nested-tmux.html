@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
         <meta charset="utf-8" />
-        <title>Sam Stoelinga (Samos IT) - Blog - Tags</title>
+        <title>Using nested tmux over ssh and how to detach a nested tmux</title>
         <link rel="stylesheet" href="http://samos123.github.io/theme/css/main.css" />
 
         <!--[if IE]>
@@ -19,40 +19,62 @@
                 <nav><ul>
                     <li><a href="http://samos123.github.io/category/algorithms.html">Algorithms</a></li>
                     <li><a href="http://samos123.github.io/category/china.html">China</a></li>
-                    <li><a href="http://samos123.github.io/category/linux.html">Linux</a></li>
+                    <li class="active"><a href="http://samos123.github.io/category/linux.html">Linux</a></li>
                     <li><a href="http://samos123.github.io/category/python.html">Python</a></li>
                 </ul></nav>
         </header><!-- /#banner -->
-
 <section id="content" class="body">
-    <h1>Tags for Sam Stoelinga (Samos IT) - Blog</h1>
-    <ul>
-        <li><a href="http://samos123.github.io/tag/algorithms.html">algorithms</a> (1)</li>
-        <li><a href="http://samos123.github.io/tag/archlinux.html">archlinux</a> (1)</li>
-        <li><a href="http://samos123.github.io/tag/bash.html">bash</a> (1)</li>
-        <li><a href="http://samos123.github.io/tag/china.html">china</a> (1)</li>
-        <li><a href="http://samos123.github.io/tag/coding.html">coding</a> (3)</li>
-        <li><a href="http://samos123.github.io/tag/decorators.html">decorators</a> (1)</li>
-        <li><a href="http://samos123.github.io/tag/django.html">django</a> (3)</li>
-        <li><a href="http://samos123.github.io/tag/firewall.html">firewall</a> (1)</li>
-        <li><a href="http://samos123.github.io/tag/geek.html">geek</a> (1)</li>
-        <li><a href="http://samos123.github.io/tag/git.html">git</a> (1)</li>
-        <li><a href="http://samos123.github.io/tag/heroku.html">heroku</a> (1)</li>
-        <li><a href="http://samos123.github.io/tag/irssi.html">irssi</a> (1)</li>
-        <li><a href="http://samos123.github.io/tag/json.html">json</a> (1)</li>
-        <li><a href="http://samos123.github.io/tag/linux.html">linux</a> (6)</li>
-        <li><a href="http://samos123.github.io/tag/migration.html">migration</a> (1)</li>
-        <li><a href="http://samos123.github.io/tag/pip.html">pip</a> (1)</li>
-        <li><a href="http://samos123.github.io/tag/programming.html">programming</a> (1)</li>
-        <li><a href="http://samos123.github.io/tag/pyqt.html">pyqt</a> (1)</li>
-        <li><a href="http://samos123.github.io/tag/python.html">python</a> (7)</li>
-        <li><a href="http://samos123.github.io/tag/shell.html">shell</a> (1)</li>
-        <li><a href="http://samos123.github.io/tag/ssh.html">ssh</a> (1)</li>
-        <li><a href="http://samos123.github.io/tag/tunnel.html">tunnel</a> (1)</li>
-        <li><a href="http://samos123.github.io/tag/ubuntu.html">ubuntu</a> (2)</li>
-    </ul>
-</section>
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="http://samos123.github.io/posts/using-nested-tmux-over-ssh-and-how-to-detach-a-nested-tmux.html" rel="bookmark"
+           title="Permalink to Using nested tmux over ssh and how to detach a nested tmux">Using nested tmux over ssh and how to detach a nested tmux</a></h1>
+    </header>
 
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2013-08-15T02:08:00">
+                Published: Thu 15 August 2013
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="http://samos123.github.io/author/sam-stoelinga.html">Sam Stoelinga</a>
+        </address>
+<p>In <a href="http://samos123.github.io/category/linux.html">Linux</a>. </p>
+
+</footer><!-- /.post-info -->      <p>Today I logged in to my laptop at home from work which was already
+running a tmux session, so thought yea just attach cool can continue
+with what I was looking at at home. I forgot that the keys would be the
+same ofcourse, and was unable to use the tmux session at my laptop at
+home. Whenever I would type Ctrl + B + n etc it would do that on my work
+desktop which was also running tmux. I was lolling oh damn how to get
+out of that laptops tmux session.</p>
+<p>Google to the rescue. Here is the solution:</p>
+<p>If you want to access the tmux session inside the ssh session so in my
+example on my laptop, you have to just use Ctrl + b + Ctrl + b</p>
+<p>So if you want to detach the nested tmux session you have to execute the
+following: (Ctrl + b) + (Ctrl + b) + d.</p>
+<p>(Resource: <a href="http://fizbancyr.wordpress.com/2012/05/31/tmux-tips/">Tmux
+Tips</a>)</p>
+    </div><!-- /.entry-content -->
+    <div class="comments">
+      <h2>Comments !</h2>
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+        var disqus_shortname = 'samosit';
+        var disqus_identifier = 'posts/using-nested-tmux-over-ssh-and-how-to-detach-a-nested-tmux.html';
+        var disqus_url = 'http://samos123.github.io/posts/using-nested-tmux-over-ssh-and-how-to-detach-a-nested-tmux.html';
+        (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//samosit.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+      <noscript>Please enable JavaScript to view the comments.</noscript>
+    </div>
+
+  </article>
+</section>
         <section id="extras" class="body">
                 <div class="blogroll">
                         <h2>blogroll</h2>

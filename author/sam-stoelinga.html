@@ -91,6 +91,31 @@ it was the first ...</p>
 
             <li><article class="hentry">
                 <header>
+                    <h1><a href="http://samos123.github.io/posts/using-nested-tmux-over-ssh-and-how-to-detach-a-nested-tmux.html" rel="bookmark"
+                           title="Permalink to Using nested tmux over ssh and how to detach a nested tmux">Using nested tmux over ssh and how to detach a nested tmux</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2013-08-15T02:08:00">
+                Published: Thu 15 August 2013
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="http://samos123.github.io/author/sam-stoelinga.html">Sam Stoelinga</a>
+        </address>
+<p>In <a href="http://samos123.github.io/category/linux.html">Linux</a>. </p>
+
+</footer><!-- /.post-info -->                <p>Today I logged in to my laptop at home from work which was already
+running a tmux session, so thought yea just attach cool can continue
+with what I was looking at at home. I forgot that the keys would be the
+same ofcourse, and was unable to use the ...</p>
+                <a class="readmore" href="http://samos123.github.io/posts/using-nested-tmux-over-ssh-and-how-to-detach-a-nested-tmux.html">read more</a>
+<p>There are <a href="http://samos123.github.io/posts/using-nested-tmux-over-ssh-and-how-to-detach-a-nested-tmux.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
                     <h1><a href="http://samos123.github.io/posts/removedetach-a-pci-device-linux-kvm-vga-passthrgough-nvidia-quadro-2000.html" rel="bookmark"
                            title="Permalink to Remove/detach a PCI device linux (kvm VGA passthrgough Nvidia Quadro 2000)">Remove/detach a PCI device linux (kvm VGA passthrgough Nvidia Quadro 2000)</a></h1>
                 </header>
@@ -258,65 +283,37 @@ quite some time so we need a background worker to execute this task.</p>
 
             <li><article class="hentry">
                 <header>
-                    <h1><a href="http://samos123.github.io/posts/django-custom-view-decorator-with-arguments.html" rel="bookmark"
-                           title="Permalink to Django Custom View Decorator with Arguments">Django Custom View Decorator with Arguments</a></h1>
+                    <h1><a href="http://samos123.github.io/posts/using-sendgrid-with-django-on-heroku-how-to-find-your-sendgrid-password-on-heroku.html" rel="bookmark"
+                           title="Permalink to Using Sendgrid with Django on Heroku (How to find your Sendgrid password on Heroku)">Using Sendgrid with Django on Heroku (How to find your Sendgrid password on Heroku)</a></h1>
                 </header>
 
                 <div class="entry-content">
 <footer class="post-info">
-        <abbr class="published" title="2012-02-23T17:52:00">
-                Published: Thu 23 February 2012
+        <abbr class="published" title="2012-04-11T09:43:00">
+                Published: Wed 11 April 2012
         </abbr>
 
         <address class="vcard author">
                 By                         <a class="url fn" href="http://samos123.github.io/author/sam-stoelinga.html">Sam Stoelinga</a>
         </address>
 <p>In <a href="http://samos123.github.io/category/python.html">Python</a>. </p>
-<p>tags: <a href="http://samos123.github.io/tag/django.html">django</a> <a href="http://samos123.github.io/tag/python.html">python</a> <a href="http://samos123.github.io/tag/coding.html">coding</a> <a href="http://samos123.github.io/tag/decorators.html">decorators</a> </p>
-</footer><!-- /.post-info -->                <p>To make my life easier I made a simple decorator which checks if the
-parameters are present in the request.POST or request.GET and returns a
-response if they are not.</p>
-<p>It accepts a list of parameters in string format and will loop through
-each parameter to check if ...</p>
-                <a class="readmore" href="http://samos123.github.io/posts/django-custom-view-decorator-with-arguments.html">read more</a>
-<p>There are <a href="http://samos123.github.io/posts/django-custom-view-decorator-with-arguments.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
-            </article></li>
 
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="http://samos123.github.io/posts/simple-function-to-return-json-in-django.html" rel="bookmark"
-                           title="Permalink to Simple function to return json in Django">Simple function to return json in Django</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2012-02-22T15:53:00">
-                Published: Wed 22 February 2012
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="http://samos123.github.io/author/sam-stoelinga.html">Sam Stoelinga</a>
-        </address>
-<p>In <a href="http://samos123.github.io/category/python.html">Python</a>. </p>
-<p>tags: <a href="http://samos123.github.io/tag/python.html">python</a> <a href="http://samos123.github.io/tag/django.html">django</a> <a href="http://samos123.github.io/tag/json.html">json</a> </p>
-</footer><!-- /.post-info -->                <p>Just a small code snippet I use when I need to return json, comments are
-welcomed.</p>
-<div class="highlight"><pre><span class="kn">from</span> <span class="nn">django.http</span> <span class="kn">import</span> <span class="n">HttpResponse</span>  
-<span class="kn">from</span> <span class="nn">django.utils</span> <span class="kn">import</span> <span class="n">simplejson</span> <span class="k">as</span> <span class="n">json</span>
-
-<span class="k">def</span> <span class="nf">json_response</span><span class="p">(</span><span class="n">dict_to_convert_to_json</span><span class="p">):</span>  
-    <span class="k">return</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">dict_to_convert_to_json</span><span class="p">),</span>
-                        <span class="n">mimetype</span><span class="o">=</span><span class="s">&quot;application/json&quot;</span><span class="p">)</span>
+</footer><!-- /.post-info -->                <p>While setting up sentgrid I was searching for my password of sendgrid,
+but coudn't find it. You can get it in the following way:</p>
+<div class="highlight"><pre>heroku config --long
 </pre></div>
 
 
-<p>To use it in your view you just do it this ...</p>
-                <a class="readmore" href="http://samos123.github.io/posts/simple-function-to-return-json-in-django.html">read more</a>
-<p>There are <a href="http://samos123.github.io/posts/simple-function-to-return-json-in-django.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
+<p>Which will show the parameters:<br />
+SENDGRID_PASSWORD, SENDGRID_USERNAME</p>
+<p>After you get your username don't forget to add it to django settings:  </p>
+<div class="highlight"><pre><span class="n">EMAIL ...</span></pre></div>
+                <a class="readmore" href="http://samos123.github.io/posts/using-sendgrid-with-django-on-heroku-how-to-find-your-sendgrid-password-on-heroku.html">read more</a>
+<p>There are <a href="http://samos123.github.io/posts/using-sendgrid-with-django-on-heroku-how-to-find-your-sendgrid-password-on-heroku.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
             </article></li>
                 </ol><!-- /#posts-list -->
 <p class="paginator">
-    Page 1 / 2
+    Page 1 / 3
         <a href="http://samos123.github.io/author/sam-stoelinga2.html">&raquo;</a>
 </p>
                 </section><!-- /#content -->

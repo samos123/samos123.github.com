@@ -115,6 +115,37 @@ quite some time so we need a background worker to execute this task.</p>
 
             <li><article class="hentry">
                 <header>
+                    <h1><a href="http://samos123.github.io/posts/using-sendgrid-with-django-on-heroku-how-to-find-your-sendgrid-password-on-heroku.html" rel="bookmark"
+                           title="Permalink to Using Sendgrid with Django on Heroku (How to find your Sendgrid password on Heroku)">Using Sendgrid with Django on Heroku (How to find your Sendgrid password on Heroku)</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2012-04-11T09:43:00">
+                Published: Wed 11 April 2012
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="http://samos123.github.io/author/sam-stoelinga.html">Sam Stoelinga</a>
+        </address>
+<p>In <a href="http://samos123.github.io/category/python.html">Python</a>. </p>
+
+</footer><!-- /.post-info -->                <p>While setting up sentgrid I was searching for my password of sendgrid,
+but coudn't find it. You can get it in the following way:</p>
+<div class="highlight"><pre>heroku config --long
+</pre></div>
+
+
+<p>Which will show the parameters:<br />
+SENDGRID_PASSWORD, SENDGRID_USERNAME</p>
+<p>After you get your username don't forget to add it to django settings:  </p>
+<div class="highlight"><pre><span class="n">EMAIL ...</span></pre></div>
+                <a class="readmore" href="http://samos123.github.io/posts/using-sendgrid-with-django-on-heroku-how-to-find-your-sendgrid-password-on-heroku.html">read more</a>
+<p>There are <a href="http://samos123.github.io/posts/using-sendgrid-with-django-on-heroku-how-to-find-your-sendgrid-password-on-heroku.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
                     <h1><a href="http://samos123.github.io/posts/django-custom-view-decorator-with-arguments.html" rel="bookmark"
                            title="Permalink to Django Custom View Decorator with Arguments">Django Custom View Decorator with Arguments</a></h1>
                 </header>
@@ -170,6 +201,33 @@ welcomed.</p>
 <p>To use it in your view you just do it this ...</p>
                 <a class="readmore" href="http://samos123.github.io/posts/simple-function-to-return-json-in-django.html">read more</a>
 <p>There are <a href="http://samos123.github.io/posts/simple-function-to-return-json-in-django.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="http://samos123.github.io/posts/trying-to-install-scrapy-with-pip-lxml-error-command-gcc-failed-with-exit-status-1.html" rel="bookmark"
+                           title="Permalink to Trying to install scrapy with pip lxml error: command 'gcc' failed with exit status 1">Trying to install scrapy with pip lxml error: command 'gcc' failed with exit status 1</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2011-11-01T14:31:00">
+                Published: Tue 01 November 2011
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="http://samos123.github.io/author/sam-stoelinga.html">Sam Stoelinga</a>
+        </address>
+<p>In <a href="http://samos123.github.io/category/python.html">Python</a>. </p>
+<p>tags: <a href="http://samos123.github.io/tag/python.html">python</a> <a href="http://samos123.github.io/tag/linux.html">linux</a> <a href="http://samos123.github.io/tag/ubuntu.html">ubuntu</a> </p>
+</footer><!-- /.post-info -->                <p>Just tried to install scrapy with pip / easy_install, but when it comes
+to installing lxml it will give the following error:</p>
+<p>gcc -pthread -fno-strict-aliasing -DNDEBUG -g -fwrapv -O2
+-Wall -Wstrict-prototypes -fPIC -I/usr/include/python2.7 -c
+src/lxml/lxml.etree.c -o
+build/temp.linux-x86_64-2.7/src/lxml/lxml ...</p>
+                <a class="readmore" href="http://samos123.github.io/posts/trying-to-install-scrapy-with-pip-lxml-error-command-gcc-failed-with-exit-status-1.html">read more</a>
+<p>There are <a href="http://samos123.github.io/posts/trying-to-install-scrapy-with-pip-lxml-error-command-gcc-failed-with-exit-status-1.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
             </article></li>
 
             <li><article class="hentry">
