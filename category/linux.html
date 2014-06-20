@@ -26,7 +26,40 @@
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="http://samos123.github.io/posts/ssh-to-server-behind-firewall-via-ssh-tunnel.html">SSH to server behind a firewall via an SSH tunnel</a></h1>
+                    <h1 class="entry-title"><a href="http://samos123.github.io/posts/move-first-word-to-end-of-line-linux-awk.html">Move first word to end of line (Linux/awk)</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2014-06-08T20:29:00">
+                Published: Sun 08 June 2014
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="http://samos123.github.io/author/sam-stoelinga.html">Sam Stoelinga</a>
+        </address>
+<p>In <a href="http://samos123.github.io/category/linux.html">Linux</a>. </p>
+
+</footer><!-- /.post-info --><p>Move the first word of a line to the end of line on Linux using AWK.
+We first store the first column(first word) in the variable t. Then
+we set the first column to be empty. At last we add a new column
+after the last column of the line which is stored in $NF.</p>
+<div class="highlight"><pre><span class="nv">$ </span><span class="nb">echo</span> <span class="s2">&quot; move_to_end  should stay at the same place&quot;</span> | awk <span class="err">&#39;</span><span class="o">{</span><span class="nv">t</span><span class="o">=</span><span class="nv">$1</span>; <span class="nv">$1</span><span class="o">=</span><span class="s2">&quot;&quot;</span>; <span class="k">$(</span>NF+1<span class="k">)</span><span class="o">=</span>t<span class="o">}</span>1
+should stay at the same place move_to_end
+</pre></div>
+
+
+<p>The idea was from a stackoverflow question which I can't find anymore.</p><p>There are <a href="http://samos123.github.io/posts/move-first-word-to-end-of-line-linux-awk.html#disqus_thread">comments</a>.</p>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="http://samos123.github.io/posts/ssh-to-server-behind-firewall-via-ssh-tunnel.html" rel="bookmark"
+                           title="Permalink to SSH to server behind a firewall via an SSH tunnel">SSH to server behind a firewall via an SSH tunnel</a></h1>
+                </header>
+
+                <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2014-05-10T00:00:00">
                 Published: Sat 10 May 2014
@@ -37,31 +70,14 @@
         </address>
 <p>In <a href="http://samos123.github.io/category/linux.html">Linux</a>. </p>
 <p>tags: <a href="http://samos123.github.io/tag/linux.html">linux</a> <a href="http://samos123.github.io/tag/ssh.html">ssh</a> <a href="http://samos123.github.io/tag/firewall.html">firewall</a> <a href="http://samos123.github.io/tag/tunnel.html">tunnel</a> </p>
-</footer><!-- /.post-info --><p>A server behind a firewall was unaccesible from my home,
+</footer><!-- /.post-info -->                <p>A server behind a firewall was unaccesible from my home,
 but another server which is on the same local network had
 public SSH access from my home. So we can create an SSH tunnel
 via this public server to the server behind a firewall.</p>
-<p>For example the public ssh server is 8.8.8.8 and the
-server on the private network that we want to access is 192.168.1.5. Then we
-can create an SSH tunnel from my laptop at home in the
-following way:</p>
-<div class="highlight"><pre>ssh root@8.8.8.8 -L 2020:192.168.1.5:22
-</pre></div>
-
-
-<p>The above command creates an SSH tunnel, where the
-local port 2020 on my laptop will be forwarded to port
-22 of the private server behind the firewall.</p>
-<p>After the tunnel is created  you can use the following command
-to directly SSH from your home laptop to the private server
-with ip 192.168.1.5:</p>
-<div class="highlight"><pre>ssh ubuntu@localhost -p 2020
-</pre></div><p>There are <a href="http://samos123.github.io/posts/ssh-to-server-behind-firewall-via-ssh-tunnel.html#disqus_thread">comments</a>.</p>                </article>
-            </aside><!-- /#featured -->
-                <section id="content" class="body">
-                    <h1>Other articles</h1>
-                    <hr />
-                    <ol id="posts-list" class="hfeed">
+<p>For example the public ssh server ...</p>
+                <a class="readmore" href="http://samos123.github.io/posts/ssh-to-server-behind-firewall-via-ssh-tunnel.html">read more</a>
+<p>There are <a href="http://samos123.github.io/posts/ssh-to-server-behind-firewall-via-ssh-tunnel.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
+            </article></li>
 
             <li><article class="hentry">
                 <header>

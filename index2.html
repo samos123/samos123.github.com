@@ -28,6 +28,37 @@
                     <ol id="posts-list" class="hfeed" start="9">
             <li><article class="hentry">
                 <header>
+                    <h1><a href="http://samos123.github.io/posts/using-sendgrid-with-django-on-heroku-how-to-find-your-sendgrid-password-on-heroku.html" rel="bookmark"
+                           title="Permalink to Using Sendgrid with Django on Heroku (How to find your Sendgrid password on Heroku)">Using Sendgrid with Django on Heroku (How to find your Sendgrid password on Heroku)</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2012-04-11T09:43:00">
+                Published: Wed 11 April 2012
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="http://samos123.github.io/author/sam-stoelinga.html">Sam Stoelinga</a>
+        </address>
+<p>In <a href="http://samos123.github.io/category/python.html">Python</a>. </p>
+
+</footer><!-- /.post-info -->                <p>While setting up sentgrid I was searching for my password of sendgrid,
+but coudn't find it. You can get it in the following way:</p>
+<div class="highlight"><pre>heroku config --long
+</pre></div>
+
+
+<p>Which will show the parameters:<br />
+SENDGRID_PASSWORD, SENDGRID_USERNAME</p>
+<p>After you get your username don't forget to add it to django settings:  </p>
+<div class="highlight"><pre><span class="n">EMAIL ...</span></pre></div>
+                <a class="readmore" href="http://samos123.github.io/posts/using-sendgrid-with-django-on-heroku-how-to-find-your-sendgrid-password-on-heroku.html">read more</a>
+<p>There are <a href="http://samos123.github.io/posts/using-sendgrid-with-django-on-heroku-how-to-find-your-sendgrid-password-on-heroku.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
                     <h1><a href="http://samos123.github.io/posts/django-custom-view-decorator-with-arguments.html" rel="bookmark"
                            title="Permalink to Django Custom View Decorator with Arguments">Django Custom View Decorator with Arguments</a></h1>
                 </header>
@@ -278,31 +309,6 @@ closed already :( We biked the following path I created the route on
 Google ...</p>
                 <a class="readmore" href="http://samos123.github.io/posts/the-beijing-bike-tour-and-china-belly-problems.html">read more</a>
 <p>There are <a href="http://samos123.github.io/posts/the-beijing-bike-tour-and-china-belly-problems.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
-            </article></li>
-
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="http://samos123.github.io/posts/the-watercube-and-its-big-waterpark.html" rel="bookmark"
-                           title="Permalink to The Watercube and it's big waterpark">The Watercube and it's big waterpark</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2011-08-18T04:53:00">
-                Published: Thu 18 August 2011
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="http://samos123.github.io/author/sam-stoelinga.html">Sam Stoelinga</a>
-        </address>
-<p>In <a href="http://samos123.github.io/category/china.html">China</a>. </p>
-
-</footer><!-- /.post-info -->                <p>The day before yesterday we went to a big waterpark inside the Watercube
-in the Olympic Park. We watched some pictures and thought it was really
-big, but when we came there we noticed it wasn't as big as we thought :P
-Pictures not only lie with girls, but ...</p>
-                <a class="readmore" href="http://samos123.github.io/posts/the-watercube-and-its-big-waterpark.html">read more</a>
-<p>There are <a href="http://samos123.github.io/posts/the-watercube-and-its-big-waterpark.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
             </article></li>
                 </ol><!-- /#posts-list -->
 <p class="paginator">

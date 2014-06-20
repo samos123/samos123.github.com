@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
         <meta charset="utf-8" />
-        <title>Sam Stoelinga (Samos IT) - Blog - Authors</title>
+        <title>Move first word to end of line (Linux/awk)</title>
         <link rel="stylesheet" href="http://samos123.github.io/theme/css/main.css" />
 
         <!--[if IE]>
@@ -19,18 +19,58 @@
                 <nav><ul>
                     <li><a href="http://samos123.github.io/category/algorithms.html">Algorithms</a></li>
                     <li><a href="http://samos123.github.io/category/china.html">China</a></li>
-                    <li><a href="http://samos123.github.io/category/linux.html">Linux</a></li>
+                    <li class="active"><a href="http://samos123.github.io/category/linux.html">Linux</a></li>
                     <li><a href="http://samos123.github.io/category/python.html">Python</a></li>
                 </ul></nav>
         </header><!-- /#banner -->
-
 <section id="content" class="body">
-    <h1>Authors on Sam Stoelinga (Samos IT) - Blog</h1>
-    <ul>
-        <li><a href="http://samos123.github.io/author/sam-stoelinga.html">Sam Stoelinga</a> (25)</li>
-    </ul>
-</section>
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="http://samos123.github.io/posts/move-first-word-to-end-of-line-linux-awk.html" rel="bookmark"
+           title="Permalink to Move first word to end of line (Linux/awk)">Move first word to end of line (Linux/awk)</a></h1>
+    </header>
 
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2014-06-08T20:29:00">
+                Published: Sun 08 June 2014
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="http://samos123.github.io/author/sam-stoelinga.html">Sam Stoelinga</a>
+        </address>
+<p>In <a href="http://samos123.github.io/category/linux.html">Linux</a>. </p>
+
+</footer><!-- /.post-info -->      <p>Move the first word of a line to the end of line on Linux using AWK.
+We first store the first column(first word) in the variable t. Then
+we set the first column to be empty. At last we add a new column
+after the last column of the line which is stored in $NF.</p>
+<div class="highlight"><pre><span class="nv">$ </span><span class="nb">echo</span> <span class="s2">&quot; move_to_end  should stay at the same place&quot;</span> | awk <span class="err">&#39;</span><span class="o">{</span><span class="nv">t</span><span class="o">=</span><span class="nv">$1</span>; <span class="nv">$1</span><span class="o">=</span><span class="s2">&quot;&quot;</span>; <span class="k">$(</span>NF+1<span class="k">)</span><span class="o">=</span>t<span class="o">}</span>1
+should stay at the same place move_to_end
+</pre></div>
+
+
+<p>The idea was from a stackoverflow question which I can't find anymore.</p>
+    </div><!-- /.entry-content -->
+    <div class="comments">
+      <h2>Comments !</h2>
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+        var disqus_shortname = 'samosit';
+        var disqus_identifier = 'posts/move-first-word-to-end-of-line-linux-awk.html';
+        var disqus_url = 'http://samos123.github.io/posts/move-first-word-to-end-of-line-linux-awk.html';
+        (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//samosit.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+      <noscript>Please enable JavaScript to view the comments.</noscript>
+    </div>
+
+  </article>
+</section>
         <section id="extras" class="body">
                 <div class="blogroll">
                         <h2>blogroll</h2>
