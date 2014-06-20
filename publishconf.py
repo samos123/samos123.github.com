@@ -10,7 +10,7 @@ import sys
 sys.path.append(os.curdir)
 from pelicanconf import *
 
-SITEURL = 'http://samos123.github.io'
+SITEURL = 'http://samos-it.com'
 RELATIVE_URLS = False
 
 
@@ -19,4 +19,4 @@ DELETE_OUTPUT_DIRECTORY = False
 # Following items are often useful when publishing
 
 DISQUS_SITENAME = "samosit"
-#GOOGLE_ANALYTICS = "UA-20975967-1"
+GOOGLE_ANALYTICS = "UA-20975967-1"
