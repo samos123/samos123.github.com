@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Docker Multiple websites/domains on single ip/host tutorial using a HAproxy as reverse proxy</title>
+        <link rel="stylesheet" href="http://samos-it.com/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+<a href="http://github.com/samos123/">
+<img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub" />
+</a>
+        <header id="banner" class="body">
+                <h1><a href="http://samos-it.com/">Sam Stoelinga (Samos IT) - Blog </a></h1>
+                <nav><ul>
+                    <li><a href="http://samos-it.com/category/algorithms.html">Algorithms</a></li>
+                    <li><a href="http://samos-it.com/category/china.html">China</a></li>
+                    <li class="active"><a href="http://samos-it.com/category/linux.html">Linux</a></li>
+                    <li><a href="http://samos-it.com/category/python.html">Python</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="http://samos-it.com/posts/docker-multi-website-single-ip-host-haproxy.html" rel="bookmark"
+           title="Permalink to Docker Multiple websites/domains on single ip/host tutorial using a HAproxy as reverse proxy">Docker Multiple websites/domains on single ip/host tutorial using a HAproxy as reverse proxy</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2014-07-07T10:15:00">
+                Published: Mon 07 July 2014
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="http://samos-it.com/author/sam-stoelinga.html">Sam Stoelinga</a>
+        </address>
+<p>In <a href="http://samos-it.com/category/linux.html">Linux</a>. </p>
+<p>tags: <a href="http://samos-it.com/tag/linux.html">linux</a> <a href="http://samos-it.com/tag/docker.html">docker</a> <a href="http://samos-it.com/tag/container.html">container</a> </p>
+</footer><!-- /.post-info -->      <p>This post will describe how to expose multiple docker containers
+running websites on port 80 using HAproxy as a reverse proxy.
+This makes it possible to run multiple websites on different domains
+on a single public ip of the host.</p>
+<p>The basic setup is to create 1 container for haproxy which is exposed to
+the host on port 80. This HAproxy container will forward the incoming
+HTTP request to the correct container based on the domain name.</p>
+<p><img alt="Reverse haproxy docker diagram" src="/images/haproxy_reverse_proxy_docker.png" /><br/>
+Picture drawn with <a href="http://draw.io" target="_blank">draw.io</a>.</p>
+<p>First launch the containers which run different websites. In our example
+we will use a
+<a href="https://registry.hub.docker.com/u/tutum/hello-world/"
+   target="_blank">hello-world php demo container</a>
+and a 
+<a href="https://registry.hub.docker.com/u/tutum/wordpress/"
+   target="_blank">wordpress site container</a>.</p>
+<div class="highlight"><pre><span class="gp">$</span> <span class="c"># Run hello world php demo container (test1.domain.com)</span>
+<span class="gp">$</span> docker run -d tutum/hello-world
+<span class="go">01ec10276761</span>
+<span class="gp">$</span> docker inspect -f <span class="s2">&quot;{{.NetworkSettings.IPAddress}}&quot;</span> 01ec10276761
+<span class="go">172.17.0.26</span>
+
+<span class="gp">$</span> <span class="c"># Run wordpress container (test2.domain.com)</span>
+<span class="gp">$</span> docker run -d tutum/wordpress
+<span class="go">4d23f10f6b35</span>
+<span class="gp">$</span> docker inspect -f <span class="s2">&quot;{{.NetworkSettings.IPAddress}}&quot;</span> 4d23f10f6b35
+<span class="go">172.17.0.25</span>
+</pre></div>
+
+
+<p>Now we need to create our haproxy configuration to configure HAproxy as
+reverse proxy for our docker containers. Because HAProxy is also running
+inside a container we need to be able to access the hello-world and
+wordpress container by their private ip accessible from all containers.
+We got this IP using the command: <code>docker inspect -f "{{.NetworkSettings.IPAddress}}" $CONTAINERID</code>.
+Make sure to note down these IPs as they will be used in the haproxy.cfg file.</p>
+<div class="highlight"><pre><span class="gp">$</span> <span class="c"># On the host(not container) create directory containing our haproxy config file</span>
+<span class="gp">$</span> mkdir ~/haproxy-config
+
+<span class="gp">$</span> <span class="c"># Create ~/haproxy-config/haproxy.cfg</span>
+<span class="gp">$</span> vim ~/haproxy-config/haproxy.cfg
+<span class="go">global</span>
+<span class="go">        log 127.0.0.1   local0</span>
+<span class="go">        log 127.0.0.1   local1 notice</span>
+<span class="go">        user haproxy</span>
+<span class="go">        group haproxy</span>
+<span class="go">        # daemon</span>
+
+<span class="go">defaults</span>
+<span class="go">        log     global</span>
+<span class="go">        mode    http</span>
+<span class="go">        option  httplog</span>
+<span class="go">        option  dontlognull</span>
+<span class="go">        option forwardfor</span>
+<span class="go">        option http-server-close</span>
+<span class="go">        contimeout 5000</span>
+<span class="go">        clitimeout 50000</span>
+<span class="go">        srvtimeout 50000</span>
+<span class="go">        errorfile 400 /etc/haproxy/errors/400.http</span>
+<span class="go">        errorfile 403 /etc/haproxy/errors/403.http</span>
+<span class="go">        errorfile 408 /etc/haproxy/errors/408.http</span>
+<span class="go">        errorfile 500 /etc/haproxy/errors/500.http</span>
+<span class="go">        errorfile 502 /etc/haproxy/errors/502.http</span>
+<span class="go">        errorfile 503 /etc/haproxy/errors/503.http</span>
+<span class="go">        errorfile 504 /etc/haproxy/errors/504.http</span>
+<span class="go">        stats enable</span>
+<span class="go">        stats auth username:password</span>
+<span class="go">        stats uri /haproxyStats</span>
+
+<span class="go">frontend http-in</span>
+<span class="go">        bind *:80</span>
+
+<span class="go">        # Define hosts based on domain names</span>
+<span class="go">        acl host_test1 hdr(host) -i test1.domain.com</span>
+<span class="go">        acl host_test2 hdr(host) -i test2.domain.com</span>
+
+<span class="go">        ## figure out backend to use based on domainname</span>
+<span class="go">        use_backend test1 if host_test1</span>
+<span class="go">        use_backend test2 if host_test2</span>
+
+
+<span class="go">backend test1 # test1.domain.com container</span>
+<span class="go">    balance roundrobin</span>
+<span class="go">    option httpclose</span>
+<span class="go">    option forwardfor</span>
+<span class="go">    server s2 172.17.0.26:80 # This ip should be the ip of hello-world container</span>
+
+<span class="go">backend test2 # test2.domain.com container</span>
+<span class="go">    balance roundrobin</span>
+<span class="go">    option httpclose</span>
+<span class="go">    option forwardfor</span>
+<span class="go">    server s1 172.17.0.26:80 # This ip should be ip of wordpress container</span>
+
+<span class="gp">$</span> <span class="c"># Run haproxy and map the host directory ~/haproxy-config to /haproxy-override of the container</span>
+<span class="gp">$</span> <span class="c"># See the image README and Dockerfile for info about this override behaviour.</span>
+<span class="gp">$</span> <span class="c"># HAProxy is exposed on port 80 because all requests to the public ip should</span>
+<span class="gp">$</span> <span class="c"># go to the HAProxy container.</span>
+<span class="gp">$</span> docker run -d -p 80:80 -v ~/haproxy-config:/haproxy-override dockerfile/haproxy
+</pre></div>
+
+
+<p>The HAProxy configuration could be automated possibly with the use of etcd to store
+information about services or use a similar method to
+<a href="http://jasonwilder.com/blog/2014/03/25/automated-nginx-reverse-proxy-for-docker/"
+   target="_blank">Automated nginx reverse proxy for docker</a>. The automated nginx reverse
+proxy didn't work for me though.</p>
+<p>Thanks to
+<a href="http://oskarhane.com/haproxy-as-a-static-reverse-proxy-for-docker-containers/"
+   target="_blank">HAProxy as static reverse proxy for docker containers</a> for the
+haproxy config file. Although I think it's better to run HAproxy in a container.</p>
+    </div><!-- /.entry-content -->
+    <div class="comments">
+      <h2>Comments !</h2>
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+        var disqus_shortname = 'samosit';
+        var disqus_identifier = 'posts/docker-multi-website-single-ip-host-haproxy.html';
+        var disqus_url = 'http://samos-it.com/posts/docker-multi-website-single-ip-host-haproxy.html';
+        (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//samosit.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+      <noscript>Please enable JavaScript to view the comments.</noscript>
+    </div>
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>blogroll</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-20975967-1']);
+    _gaq.push(['_trackPageview']);
+    (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+    </script>
+<script type="text/javascript">
+    var disqus_shortname = 'samosit';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+</body>
+</html>

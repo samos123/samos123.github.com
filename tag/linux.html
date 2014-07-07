@@ -26,7 +26,140 @@
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="http://samos-it.com/posts/ssh-to-server-behind-firewall-via-ssh-tunnel.html">SSH to server behind a firewall via an SSH tunnel</a></h1>
+                    <h1 class="entry-title"><a href="http://samos-it.com/posts/docker-multi-website-single-ip-host-haproxy.html">Docker Multiple websites/domains on single ip/host tutorial using a HAproxy as reverse proxy</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2014-07-07T10:15:00">
+                Published: Mon 07 July 2014
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="http://samos-it.com/author/sam-stoelinga.html">Sam Stoelinga</a>
+        </address>
+<p>In <a href="http://samos-it.com/category/linux.html">Linux</a>. </p>
+<p>tags: <a href="http://samos-it.com/tag/linux.html">linux</a> <a href="http://samos-it.com/tag/docker.html">docker</a> <a href="http://samos-it.com/tag/container.html">container</a> </p>
+</footer><!-- /.post-info --><p>This post will describe how to expose multiple docker containers
+running websites on port 80 using HAproxy as a reverse proxy.
+This makes it possible to run multiple websites on different domains
+on a single public ip of the host.</p>
+<p>The basic setup is to create 1 container for haproxy which is exposed to
+the host on port 80. This HAproxy container will forward the incoming
+HTTP request to the correct container based on the domain name.</p>
+<p><img alt="Reverse haproxy docker diagram" src="/images/haproxy_reverse_proxy_docker.png" /><br/>
+Picture drawn with <a href="http://draw.io" target="_blank">draw.io</a>.</p>
+<p>First launch the containers which run different websites. In our example
+we will use a
+<a href="https://registry.hub.docker.com/u/tutum/hello-world/"
+   target="_blank">hello-world php demo container</a>
+and a 
+<a href="https://registry.hub.docker.com/u/tutum/wordpress/"
+   target="_blank">wordpress site container</a>.</p>
+<div class="highlight"><pre><span class="gp">$</span> <span class="c"># Run hello world php demo container (test1.domain.com)</span>
+<span class="gp">$</span> docker run -d tutum/hello-world
+<span class="go">01ec10276761</span>
+<span class="gp">$</span> docker inspect -f <span class="s2">&quot;{{.NetworkSettings.IPAddress}}&quot;</span> 01ec10276761
+<span class="go">172.17.0.26</span>
+
+<span class="gp">$</span> <span class="c"># Run wordpress container (test2.domain.com)</span>
+<span class="gp">$</span> docker run -d tutum/wordpress
+<span class="go">4d23f10f6b35</span>
+<span class="gp">$</span> docker inspect -f <span class="s2">&quot;{{.NetworkSettings.IPAddress}}&quot;</span> 4d23f10f6b35
+<span class="go">172.17.0.25</span>
+</pre></div>
+
+
+<p>Now we need to create our haproxy configuration to configure HAproxy as
+reverse proxy for our docker containers. Because HAProxy is also running
+inside a container we need to be able to access the hello-world and
+wordpress container by their private ip accessible from all containers.
+We got this IP using the command: <code>docker inspect -f "{{.NetworkSettings.IPAddress}}" $CONTAINERID</code>.
+Make sure to note down these IPs as they will be used in the haproxy.cfg file.</p>
+<div class="highlight"><pre><span class="gp">$</span> <span class="c"># On the host(not container) create directory containing our haproxy config file</span>
+<span class="gp">$</span> mkdir ~/haproxy-config
+
+<span class="gp">$</span> <span class="c"># Create ~/haproxy-config/haproxy.cfg</span>
+<span class="gp">$</span> vim ~/haproxy-config/haproxy.cfg
+<span class="go">global</span>
+<span class="go">        log 127.0.0.1   local0</span>
+<span class="go">        log 127.0.0.1   local1 notice</span>
+<span class="go">        user haproxy</span>
+<span class="go">        group haproxy</span>
+<span class="go">        # daemon</span>
+
+<span class="go">defaults</span>
+<span class="go">        log     global</span>
+<span class="go">        mode    http</span>
+<span class="go">        option  httplog</span>
+<span class="go">        option  dontlognull</span>
+<span class="go">        option forwardfor</span>
+<span class="go">        option http-server-close</span>
+<span class="go">        contimeout 5000</span>
+<span class="go">        clitimeout 50000</span>
+<span class="go">        srvtimeout 50000</span>
+<span class="go">        errorfile 400 /etc/haproxy/errors/400.http</span>
+<span class="go">        errorfile 403 /etc/haproxy/errors/403.http</span>
+<span class="go">        errorfile 408 /etc/haproxy/errors/408.http</span>
+<span class="go">        errorfile 500 /etc/haproxy/errors/500.http</span>
+<span class="go">        errorfile 502 /etc/haproxy/errors/502.http</span>
+<span class="go">        errorfile 503 /etc/haproxy/errors/503.http</span>
+<span class="go">        errorfile 504 /etc/haproxy/errors/504.http</span>
+<span class="go">        stats enable</span>
+<span class="go">        stats auth username:password</span>
+<span class="go">        stats uri /haproxyStats</span>
+
+<span class="go">frontend http-in</span>
+<span class="go">        bind *:80</span>
+
+<span class="go">        # Define hosts based on domain names</span>
+<span class="go">        acl host_test1 hdr(host) -i test1.domain.com</span>
+<span class="go">        acl host_test2 hdr(host) -i test2.domain.com</span>
+
+<span class="go">        ## figure out backend to use based on domainname</span>
+<span class="go">        use_backend test1 if host_test1</span>
+<span class="go">        use_backend test2 if host_test2</span>
+
+
+<span class="go">backend test1 # test1.domain.com container</span>
+<span class="go">    balance roundrobin</span>
+<span class="go">    option httpclose</span>
+<span class="go">    option forwardfor</span>
+<span class="go">    server s2 172.17.0.26:80 # This ip should be the ip of hello-world container</span>
+
+<span class="go">backend test2 # test2.domain.com container</span>
+<span class="go">    balance roundrobin</span>
+<span class="go">    option httpclose</span>
+<span class="go">    option forwardfor</span>
+<span class="go">    server s1 172.17.0.26:80 # This ip should be ip of wordpress container</span>
+
+<span class="gp">$</span> <span class="c"># Run haproxy and map the host directory ~/haproxy-config to /haproxy-override of the container</span>
+<span class="gp">$</span> <span class="c"># See the image README and Dockerfile for info about this override behaviour.</span>
+<span class="gp">$</span> <span class="c"># HAProxy is exposed on port 80 because all requests to the public ip should</span>
+<span class="gp">$</span> <span class="c"># go to the HAProxy container.</span>
+<span class="gp">$</span> docker run -d -p 80:80 -v ~/haproxy-config:/haproxy-override dockerfile/haproxy
+</pre></div>
+
+
+<p>The HAProxy configuration could be automated possibly with the use of etcd to store
+information about services or use a similar method to
+<a href="http://jasonwilder.com/blog/2014/03/25/automated-nginx-reverse-proxy-for-docker/"
+   target="_blank">Automated nginx reverse proxy for docker</a>. The automated nginx reverse
+proxy didn't work for me though.</p>
+<p>Thanks to
+<a href="http://oskarhane.com/haproxy-as-a-static-reverse-proxy-for-docker-containers/"
+   target="_blank">HAProxy as static reverse proxy for docker containers</a> for the
+haproxy config file. Although I think it's better to run HAproxy in a container.</p><p>There are <a href="http://samos-it.com/posts/docker-multi-website-single-ip-host-haproxy.html#disqus_thread">comments</a>.</p>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="http://samos-it.com/posts/ssh-to-server-behind-firewall-via-ssh-tunnel.html" rel="bookmark"
+                           title="Permalink to SSH to server behind a firewall via an SSH tunnel">SSH to server behind a firewall via an SSH tunnel</a></h1>
+                </header>
+
+                <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2014-05-10T00:00:00">
                 Published: Sat 10 May 2014
@@ -37,31 +170,14 @@
         </address>
 <p>In <a href="http://samos-it.com/category/linux.html">Linux</a>. </p>
 <p>tags: <a href="http://samos-it.com/tag/linux.html">linux</a> <a href="http://samos-it.com/tag/ssh.html">ssh</a> <a href="http://samos-it.com/tag/firewall.html">firewall</a> <a href="http://samos-it.com/tag/tunnel.html">tunnel</a> </p>
-</footer><!-- /.post-info --><p>A server behind a firewall was unaccesible from my home,
+</footer><!-- /.post-info -->                <p>A server behind a firewall was unaccesible from my home,
 but another server which is on the same local network had
 public SSH access from my home. So we can create an SSH tunnel
 via this public server to the server behind a firewall.</p>
-<p>For example the public ssh server is 8.8.8.8 and the
-server on the private network that we want to access is 192.168.1.5. Then we
-can create an SSH tunnel from my laptop at home in the
-following way:</p>
-<div class="highlight"><pre>ssh root@8.8.8.8 -L 2020:192.168.1.5:22
-</pre></div>
-
-
-<p>The above command creates an SSH tunnel, where the
-local port 2020 on my laptop will be forwarded to port
-22 of the private server behind the firewall.</p>
-<p>After the tunnel is created  you can use the following command
-to directly SSH from your home laptop to the private server
-with ip 192.168.1.5:</p>
-<div class="highlight"><pre>ssh ubuntu@localhost -p 2020
-</pre></div><p>There are <a href="http://samos-it.com/posts/ssh-to-server-behind-firewall-via-ssh-tunnel.html#disqus_thread">comments</a>.</p>                </article>
-            </aside><!-- /#featured -->
-                <section id="content" class="body">
-                    <h1>Other articles</h1>
-                    <hr />
-                    <ol id="posts-list" class="hfeed">
+<p>For example the public ssh server ...</p>
+                <a class="readmore" href="http://samos-it.com/posts/ssh-to-server-behind-firewall-via-ssh-tunnel.html">read more</a>
+<p>There are <a href="http://samos-it.com/posts/ssh-to-server-behind-firewall-via-ssh-tunnel.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
+            </article></li>
 
             <li><article class="hentry">
                 <header>
