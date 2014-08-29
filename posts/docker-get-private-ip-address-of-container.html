@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
         <meta charset="utf-8" />
-        <title>Sam Stoelinga (Samos IT) - Blog - container</title>
+        <title>Docker Multiple websites/domains on single ip/host tutorial using a HAproxy as reverse proxy</title>
         <link rel="stylesheet" href="http://samos-it.com/theme/css/main.css" />
 
         <!--[if IE]>
@@ -19,14 +19,19 @@
                 <nav><ul>
                     <li><a href="http://samos-it.com/category/algorithms.html">Algorithms</a></li>
                     <li><a href="http://samos-it.com/category/china.html">China</a></li>
-                    <li><a href="http://samos-it.com/category/linux.html">Linux</a></li>
+                    <li class="active"><a href="http://samos-it.com/category/linux.html">Linux</a></li>
                     <li><a href="http://samos-it.com/category/python.html">Python</a></li>
                 </ul></nav>
         </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="http://samos-it.com/posts/docker-get-private-ip-address-of-container.html" rel="bookmark"
+           title="Permalink to Docker Multiple websites/domains on single ip/host tutorial using a HAproxy as reverse proxy">Docker Multiple websites/domains on single ip/host tutorial using a HAproxy as reverse proxy</a></h1>
+    </header>
 
-            <aside id="featured" class="body">
-                <article>
-                    <h1 class="entry-title"><a href="http://samos-it.com/posts/docker-get-private-ip-address-of-container.html">Docker Multiple websites/domains on single ip/host tutorial using a HAproxy as reverse proxy</a></h1>
+    <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2014-07-08T14:25:00">
                 Published: Tue 08 July 2014
@@ -37,48 +42,31 @@
         </address>
 <p>In <a href="http://samos-it.com/category/linux.html">Linux</a>. </p>
 <p>tags: <a href="http://samos-it.com/tag/linux.html">linux</a> <a href="http://samos-it.com/tag/docker.html">docker</a> <a href="http://samos-it.com/tag/container.html">container</a> </p>
-</footer><!-- /.post-info --><p>In order to access other containers from a container it's needed
+</footer><!-- /.post-info -->      <p>In order to access other containers from a container it's needed
 to get the private IP address of the other containers. The following
 command is able to get the private ip address of the container.</p>
 <div class="highlight"><pre><span class="gp">$</span> docker inspect --format<span class="o">=</span><span class="s2">&quot;{{.NetworkSettings.IPAddress}}&quot;</span> <span class="nv">$CONTAINER_ID_OR_NAME</span>
 <span class="go">172.17.0.15</span>
-</pre></div><p>There are <a href="http://samos-it.com/posts/docker-get-private-ip-address-of-container.html#disqus_thread">comments</a>.</p>                </article>
-            </aside><!-- /#featured -->
-                <section id="content" class="body">
-                    <h1>Other articles</h1>
-                    <hr />
-                    <ol id="posts-list" class="hfeed">
+</pre></div>
+    </div><!-- /.entry-content -->
+    <div class="comments">
+      <h2>Comments !</h2>
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+        var disqus_shortname = 'samosit';
+        var disqus_identifier = 'posts/docker-get-private-ip-address-of-container.html';
+        var disqus_url = 'http://samos-it.com/posts/docker-get-private-ip-address-of-container.html';
+        (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//samosit.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+      <noscript>Please enable JavaScript to view the comments.</noscript>
+    </div>
 
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="http://samos-it.com/posts/docker-multi-website-single-ip-host-haproxy.html" rel="bookmark"
-                           title="Permalink to Docker Multiple websites/domains on single ip/host tutorial using a HAproxy as reverse proxy">Docker Multiple websites/domains on single ip/host tutorial using a HAproxy as reverse proxy</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2014-07-07T10:15:00">
-                Published: Mon 07 July 2014
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="http://samos-it.com/author/sam-stoelinga.html">Sam Stoelinga</a>
-        </address>
-<p>In <a href="http://samos-it.com/category/linux.html">Linux</a>. </p>
-<p>tags: <a href="http://samos-it.com/tag/linux.html">linux</a> <a href="http://samos-it.com/tag/docker.html">docker</a> <a href="http://samos-it.com/tag/container.html">container</a> </p>
-</footer><!-- /.post-info -->                <p>This post will describe how to expose multiple docker containers
-running websites on port 80 using HAproxy as a reverse proxy.
-This makes it possible to run multiple websites on different domains
-on a single public ip of the host.</p>
-<p>The basic setup is to create 1 container for haproxy ...</p>
-                <a class="readmore" href="http://samos-it.com/posts/docker-multi-website-single-ip-host-haproxy.html">read more</a>
-<p>There are <a href="http://samos-it.com/posts/docker-multi-website-single-ip-host-haproxy.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
-            </article></li>
-                </ol><!-- /#posts-list -->
-<p class="paginator">
-    Page 1 / 1
-</p>
-                </section><!-- /#content -->
+  </article>
+</section>
         <section id="extras" class="body">
                 <div class="blogroll">
                         <h2>blogroll</h2>
