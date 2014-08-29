@@ -1,4 +1,4 @@
-Title: Docker Multiple websites/domains on single ip/host tutorial using a HAproxy as reverse proxy
+Title: Docker get private ip address of container
 Date: 2014-07-08 14:25
 Author: Sam Stoelinga
 Category: Linux
