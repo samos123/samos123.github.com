@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
         <meta charset="utf-8" />
-        <title>Sam Stoelinga (Samos IT) - Blog - Openstack</title>
+        <title>Neutron Multiple allocation pools single subnet (Solve Fragmented floating ips problem)</title>
         <link rel="stylesheet" href="http://samos-it.com/theme/css/main.css" />
 
         <!--[if IE]>
@@ -24,10 +24,15 @@
                     <li><a href="http://samos-it.com/category/python.html">Python</a></li>
                 </ul></nav>
         </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="http://samos-it.com/posts/neutron-multiple-allocation-pools-single-subnet.html" rel="bookmark"
+           title="Permalink to Neutron Multiple allocation pools single subnet (Solve Fragmented floating ips problem)">Neutron Multiple allocation pools single subnet (Solve Fragmented floating ips problem)</a></h1>
+    </header>
 
-            <aside id="featured" class="body">
-                <article>
-                    <h1 class="entry-title"><a href="http://samos-it.com/posts/neutron-multiple-allocation-pools-single-subnet.html">Neutron Multiple allocation pools single subnet (Solve Fragmented floating ips problem)</a></h1>
+    <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2014-09-12T13:43:00">
                 Published: Fri 12 September 2014
@@ -38,7 +43,7 @@
         </address>
 <p>In <a href="http://samos-it.com/category/openstack.html">Openstack</a>. </p>
 <p>tags: <a href="http://samos-it.com/tag/openstack.html">openstack</a> <a href="http://samos-it.com/tag/networking.html">networking</a> <a href="http://samos-it.com/tag/neutron.html">neutron</a> </p>
-</footer><!-- /.post-info --><p>In a lab environment in the university I only had access to a list of fragmented
+</footer><!-- /.post-info -->      <p>In a lab environment in the university I only had access to a list of fragmented
 public routable IP addresses in a single subnet. For example I got access to the following ips
 50.15.15.10, 55.15.15.12-15, 55.15.15.17. But I am not allowed
 to use 55.15.15.11 and 55.15.15.16. </p>
@@ -99,44 +104,26 @@ code I noticed that the data model in fact supports multiple allocation pools fo
                                         <span class="n">backref</span><span class="o">=</span><span class="s">&#39;subnet&#39;</span><span class="p">,</span>
                                         <span class="n">lazy</span><span class="o">=</span><span class="s">&quot;joined&quot;</span><span class="p">,</span>
                                         <span class="n">cascade</span><span class="o">=</span><span class="s">&#39;delete&#39;</span><span class="p">)</span>
-</pre></div><p>There are <a href="http://samos-it.com/posts/neutron-multiple-allocation-pools-single-subnet.html#disqus_thread">comments</a>.</p>                </article>
-            </aside><!-- /#featured -->
-                <section id="content" class="body">
-                    <h1>Other articles</h1>
-                    <hr />
-                    <ol id="posts-list" class="hfeed">
+</pre></div>
+    </div><!-- /.entry-content -->
+    <div class="comments">
+      <h2>Comments !</h2>
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+        var disqus_shortname = 'samosit';
+        var disqus_identifier = 'posts/neutron-multiple-allocation-pools-single-subnet.html';
+        var disqus_url = 'http://samos-it.com/posts/neutron-multiple-allocation-pools-single-subnet.html';
+        (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//samosit.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+      <noscript>Please enable JavaScript to view the comments.</noscript>
+    </div>
 
-            <li><article class="hentry">
-                <header>
-                    <h1><a href="http://samos-it.com/posts/openstack-networking-study-notes.html" rel="bookmark"
-                           title="Permalink to Openstack Networking Study Notes">Openstack Networking Study Notes</a></h1>
-                </header>
-
-                <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2014-08-29T13:42:00">
-                Published: Fri 29 August 2014
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="http://samos-it.com/author/sam-stoelinga.html">Sam Stoelinga</a>
-        </address>
-<p>In <a href="http://samos-it.com/category/openstack.html">Openstack</a>. </p>
-<p>tags: <a href="http://samos-it.com/tag/openstack.html">openstack</a> <a href="http://samos-it.com/tag/networking.html">networking</a> <a href="http://samos-it.com/tag/neutron.html">neutron</a> <a href="http://samos-it.com/tag/study.html">study</a> </p>
-</footer><!-- /.post-info -->                <p>I recommend these links in the following order:</p>
-<ul>
-<li><a href="http://blog.scottlowe.org/2013/05/07/using-gre-tunnels-with-open-vswitch/">ScottLowe blog: Using GRE tunnels with OpenvSwitch</a></li>
-<li><a href="http://blog.scottlowe.org/2013/05/15/examining-open-vswitch-traffic-patterns/">ScottLowe blog: Examining OpenvSwitch traffic patterns</a></li>
-<li><a href="http://www.hastexo.com/system/files/neutron_packet_flows-notes-handout.pdf">Hastexto: Neutron Packet Flows (PDF/Presentation)</a></li>
-</ul>
-                <a class="readmore" href="http://samos-it.com/posts/openstack-networking-study-notes.html">read more</a>
-<p>There are <a href="http://samos-it.com/posts/openstack-networking-study-notes.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
-            </article></li>
-                </ol><!-- /#posts-list -->
-<p class="paginator">
-    Page 1 / 1
-</p>
-                </section><!-- /#content -->
+  </article>
+</section>
         <section id="extras" class="body">
                 <div class="blogroll">
                         <h2>blogroll</h2>

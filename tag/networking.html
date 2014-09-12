@@ -27,7 +27,92 @@
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="http://samos-it.com/posts/openstack-networking-study-notes.html">Openstack Networking Study Notes</a></h1>
+                    <h1 class="entry-title"><a href="http://samos-it.com/posts/neutron-multiple-allocation-pools-single-subnet.html">Neutron Multiple allocation pools single subnet (Solve Fragmented floating ips problem)</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2014-09-12T13:43:00">
+                Published: Fri 12 September 2014
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="http://samos-it.com/author/sam-stoelinga.html">Sam Stoelinga</a>
+        </address>
+<p>In <a href="http://samos-it.com/category/openstack.html">Openstack</a>. </p>
+<p>tags: <a href="http://samos-it.com/tag/openstack.html">openstack</a> <a href="http://samos-it.com/tag/networking.html">networking</a> <a href="http://samos-it.com/tag/neutron.html">neutron</a> </p>
+</footer><!-- /.post-info --><p>In a lab environment in the university I only had access to a list of fragmented
+public routable IP addresses in a single subnet. For example I got access to the following ips
+50.15.15.10, 55.15.15.12-15, 55.15.15.17. But I am not allowed
+to use 55.15.15.11 and 55.15.15.16. </p>
+<p>It seems that currently the only way to solve this is to manually change the database
+bypassing the API. I used the following SQL insert statements to solve my problem.
+This is assuming that 55.15.15.10 is already part of the pool.</p>
+<div class="highlight"><pre><span class="n">use</span> <span class="n">neutron</span><span class="p">;</span>
+<span class="k">select</span> <span class="o">*</span> <span class="k">from</span> <span class="n">ipallocationpools</span><span class="p">;</span>
+<span class="o">+</span><span class="c1">--------------------------------------+--------------------------------------+----------------+-----------------+</span>
+<span class="o">|</span> <span class="n">id</span>                                   <span class="o">|</span> <span class="n">subnet_id</span>                            <span class="o">|</span> <span class="n">first_ip</span>       <span class="o">|</span> <span class="n">last_ip</span>         <span class="o">|</span>
+<span class="o">+</span><span class="c1">--------------------------------------+--------------------------------------+----------------+-----------------+</span>
+<span class="o">|</span> <span class="mi">78857059</span><span class="o">-</span><span class="mi">658</span><span class="n">b</span><span class="o">-</span><span class="mi">4027</span><span class="o">-</span><span class="mi">909</span><span class="n">d</span><span class="o">-</span><span class="mi">7</span><span class="n">b8c6d62e52f</span> <span class="o">|</span> <span class="n">c58d4e69</span><span class="o">-</span><span class="n">d614</span><span class="o">-</span><span class="mi">4</span><span class="n">d05</span><span class="o">-</span><span class="mi">91</span><span class="n">e5</span><span class="o">-</span><span class="mi">95</span><span class="n">b5cc48b670</span> <span class="o">|</span> <span class="mi">55</span><span class="p">.</span><span class="mi">15</span><span class="p">.</span><span class="mi">15</span><span class="p">.</span><span class="mi">10</span>    <span class="o">|</span> <span class="mi">55</span><span class="p">.</span><span class="mi">15</span><span class="p">.</span><span class="mi">15</span><span class="p">.</span><span class="mi">10</span>     <span class="o">|</span>
+<span class="o">|</span> <span class="n">c2931835</span><span class="o">-</span><span class="mi">050</span><span class="n">b</span><span class="o">-</span><span class="mi">40</span><span class="n">a0</span><span class="o">-</span><span class="n">bfc6</span><span class="o">-</span><span class="mi">6</span><span class="n">dcb833517f6</span> <span class="o">|</span> <span class="n">eda970d4</span><span class="o">-</span><span class="mi">21</span><span class="n">c0</span><span class="o">-</span><span class="mi">4488</span><span class="o">-</span><span class="mi">85</span><span class="n">b2</span><span class="o">-</span><span class="mi">0</span><span class="n">d3d0000ebb9</span> <span class="o">|</span> <span class="mi">192</span><span class="p">.</span><span class="mi">168</span><span class="p">.</span><span class="mi">111</span><span class="p">.</span><span class="mi">2</span>  <span class="o">|</span> <span class="mi">192</span><span class="p">.</span><span class="mi">168</span><span class="p">.</span><span class="mi">111</span><span class="p">.</span><span class="mi">254</span> <span class="o">|</span>
+<span class="o">+</span><span class="c1">--------------------------------------+--------------------------------------+----------------+-----------------+</span>
+
+<span class="k">insert</span> <span class="k">into</span> <span class="n">ipallocationpools</span> <span class="k">VALUES</span> <span class="p">(</span><span class="n">UUID</span><span class="p">(),</span> <span class="ss">&quot;c58d4e69-d614-4d05-91e5-95b5cc48b670&quot;</span><span class="p">,</span> 
+                                      <span class="ss">&quot;55.15.15.12&quot;</span><span class="p">,</span> <span class="ss">&quot;55.15.15.15&quot;</span><span class="p">);</span> 
+<span class="k">insert</span> <span class="k">into</span> <span class="n">ipallocationpools</span> <span class="k">VALUES</span> <span class="p">(</span><span class="n">UUID</span><span class="p">(),</span> <span class="ss">&quot;c58d4e69-d614-4d05-91e5-95b5cc48b670&quot;</span><span class="p">,</span> 
+                                      <span class="ss">&quot;55.15.15.17&quot;</span><span class="p">,</span> <span class="ss">&quot;55.15.15.17&quot;</span><span class="p">);</span>
+</pre></div>
+
+
+<p>After inserting the ips, the floating ips can be allocated automatically using horizon and be successfuly assigned to
+instances. But please note that this is not officially supported and hacky! I haven't seen any
+problems as of now, but there probably are some problems with this approach. I just used it
+for testing.</p>
+<h3>Side note</h3>
+<p>Previously in nova-network you could easily add single floating ips or smaller ranges within
+a subnet. But with neutron the CLI and API's seems to not support this. So after looking at the
+code I noticed that the data model in fact supports multiple allocation pools for a single subnet:</p>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">IPAllocationPool</span><span class="p">(</span><span class="n">model_base</span><span class="o">.</span><span class="n">BASEV2</span><span class="p">,</span> <span class="n">HasId</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Representation of an allocation pool in a Neutron subnet.&quot;&quot;&quot;</span>
+
+    <span class="n">subnet_id</span> <span class="o">=</span> <span class="n">sa</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">sa</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="mi">36</span><span class="p">),</span> <span class="n">sa</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="s">&#39;subnets.id&#39;</span><span class="p">,</span>
+                                                       <span class="n">ondelete</span><span class="o">=</span><span class="s">&quot;CASCADE&quot;</span><span class="p">),</span>
+                          <span class="n">nullable</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">first_ip</span> <span class="o">=</span> <span class="n">sa</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">sa</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="mi">64</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="n">last_ip</span> <span class="o">=</span> <span class="n">sa</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">sa</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="mi">64</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="n">available_ranges</span> <span class="o">=</span> <span class="n">orm</span><span class="o">.</span><span class="n">relationship</span><span class="p">(</span><span class="n">IPAvailabilityRange</span><span class="p">,</span>
+                                        <span class="n">backref</span><span class="o">=</span><span class="s">&#39;ipallocationpool&#39;</span><span class="p">,</span>
+                                        <span class="n">lazy</span><span class="o">=</span><span class="s">&quot;joined&quot;</span><span class="p">,</span>
+                                        <span class="n">cascade</span><span class="o">=</span><span class="s">&#39;all, delete-orphan&#39;</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">Subnet</span><span class="p">(</span><span class="n">model_base</span><span class="o">.</span><span class="n">BASEV2</span><span class="p">,</span> <span class="n">HasId</span><span class="p">,</span> <span class="n">HasTenant</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Represents a neutron subnet.</span>
+
+<span class="sd">    When a subnet is created the first and last entries will be created. These</span>
+<span class="sd">    are used for the IP allocation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">name</span> <span class="o">=</span> <span class="n">sa</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">sa</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="mi">255</span><span class="p">))</span>
+    <span class="n">network_id</span> <span class="o">=</span> <span class="n">sa</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">sa</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="mi">36</span><span class="p">),</span> <span class="n">sa</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="s">&#39;networks.id&#39;</span><span class="p">))</span>
+    <span class="n">ip_version</span> <span class="o">=</span> <span class="n">sa</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">sa</span><span class="o">.</span><span class="n">Integer</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="n">cidr</span> <span class="o">=</span> <span class="n">sa</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">sa</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="mi">64</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="n">gateway_ip</span> <span class="o">=</span> <span class="n">sa</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">sa</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="mi">64</span><span class="p">))</span>
+    <span class="n">allocation_pools</span> <span class="o">=</span> <span class="n">orm</span><span class="o">.</span><span class="n">relationship</span><span class="p">(</span><span class="n">IPAllocationPool</span><span class="p">,</span>
+                                        <span class="n">backref</span><span class="o">=</span><span class="s">&#39;subnet&#39;</span><span class="p">,</span>
+                                        <span class="n">lazy</span><span class="o">=</span><span class="s">&quot;joined&quot;</span><span class="p">,</span>
+                                        <span class="n">cascade</span><span class="o">=</span><span class="s">&#39;delete&#39;</span><span class="p">)</span>
+</pre></div><p>There are <a href="http://samos-it.com/posts/neutron-multiple-allocation-pools-single-subnet.html#disqus_thread">comments</a>.</p>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="http://samos-it.com/posts/openstack-networking-study-notes.html" rel="bookmark"
+                           title="Permalink to Openstack Networking Study Notes">Openstack Networking Study Notes</a></h1>
+                </header>
+
+                <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2014-08-29T13:42:00">
                 Published: Fri 29 August 2014
@@ -38,16 +123,20 @@
         </address>
 <p>In <a href="http://samos-it.com/category/openstack.html">Openstack</a>. </p>
 <p>tags: <a href="http://samos-it.com/tag/openstack.html">openstack</a> <a href="http://samos-it.com/tag/networking.html">networking</a> <a href="http://samos-it.com/tag/neutron.html">neutron</a> <a href="http://samos-it.com/tag/study.html">study</a> </p>
-</footer><!-- /.post-info --><p>I recommend these links in the following order:</p>
+</footer><!-- /.post-info -->                <p>I recommend these links in the following order:</p>
 <ul>
 <li><a href="http://blog.scottlowe.org/2013/05/07/using-gre-tunnels-with-open-vswitch/">ScottLowe blog: Using GRE tunnels with OpenvSwitch</a></li>
 <li><a href="http://blog.scottlowe.org/2013/05/15/examining-open-vswitch-traffic-patterns/">ScottLowe blog: Examining OpenvSwitch traffic patterns</a></li>
 <li><a href="http://www.hastexo.com/system/files/neutron_packet_flows-notes-handout.pdf">Hastexto: Neutron Packet Flows (PDF/Presentation)</a></li>
-</ul><p>There are <a href="http://samos-it.com/posts/openstack-networking-study-notes.html#disqus_thread">comments</a>.</p>                </article>
+</ul>
+                <a class="readmore" href="http://samos-it.com/posts/openstack-networking-study-notes.html">read more</a>
+<p>There are <a href="http://samos-it.com/posts/openstack-networking-study-notes.html#disqus_thread">comments</a>.</p>                </div><!-- /.entry-content -->
+            </article></li>
+                </ol><!-- /#posts-list -->
 <p class="paginator">
     Page 1 / 1
 </p>
-            </aside><!-- /#featured -->
+                </section><!-- /#content -->
         <section id="extras" class="body">
                 <div class="blogroll">
                         <h2>blogroll</h2>
