@@ -34,7 +34,7 @@
 
     <div class="entry-content">
 <footer class="post-info">
-        <abbr class="published" title="2014-06-08T20:29:00">
+        <abbr class="published" title="2014-06-08T20:29:00+02:00">
                 Published: Sun 08 June 2014
         </abbr>
 
@@ -47,7 +47,7 @@
 We first store the first column(first word) in the variable t. Then
 we set the first column to be empty. At last we add a new column
 after the last column of the line which is stored in $NF.</p>
-<div class="highlight"><pre><span class="nv">$ </span><span class="nb">echo</span> <span class="s2">&quot; move_to_end  should stay at the same place&quot;</span> | awk <span class="err">&#39;</span><span class="o">{</span><span class="nv">t</span><span class="o">=</span><span class="nv">$1</span>; <span class="nv">$1</span><span class="o">=</span><span class="s2">&quot;&quot;</span>; <span class="k">$(</span>NF+1<span class="k">)</span><span class="o">=</span>t<span class="o">}</span>1
+<div class="highlight"><pre><span class="nv">$ </span><span class="nb">echo</span> <span class="s2">&quot; move_to_end  should stay at the same place&quot;</span> <span class="p">|</span> awk <span class="err">&#39;</span><span class="o">{</span><span class="nv">t</span><span class="o">=</span><span class="nv">$1</span><span class="p">;</span> <span class="nv">$1</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">;</span> <span class="k">$(</span>NF+1<span class="k">)</span><span class="o">=</span>t<span class="o">}</span>1
 should stay at the same place move_to_end
 </pre></div>
 

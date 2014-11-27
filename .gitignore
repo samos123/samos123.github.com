@@ -1,5 +1,7 @@
 #Custom
 pelicanconf_local.py
+.venv
+cache
 
 #Python
 *.py[cod]

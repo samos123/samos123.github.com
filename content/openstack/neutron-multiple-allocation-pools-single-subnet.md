@@ -1,5 +1,5 @@
 Title: Neutron Multiple allocation pools single subnet (Solve Fragmented floating ips problem)
-Date: 2014-09-12 13:43
+Date: 2014-11-24 12:01
 Author: Sam Stoelinga
 Category: Openstack
 Tags: openstack, networking, neutron
@@ -10,6 +10,27 @@ public routable IP addresses in a single subnet. For example I got access to the
 50.15.15.10, 55.15.15.12-15, 55.15.15.17. But I am not allowed
 to use 55.15.15.11 and 55.15.15.16. 
 
+**Update**: The Openstack neutron API supports fragmented floating ips but not through the CLI.
+You have to use the Python API like below:
+
+    :::python
+    import logging
+    from neutronclient.neutron import client
+
+    auth_url = "http://192.168.33.11:5000/v2.0"
+
+    logging.basicConfig(level=logging.DEBUG)
+    neutron = client.Client('2.0', username="admin", password="password", tenant_name="demo", auth_url=auth_url)
+
+    print "".join(neutron.list_subnets())
+
+    req = {"subnet": {"allocation_pools": [{"start": "10.0.2.3", "end": "10.0.2.15"}, {"start": "10.0.2.17", "end": "10.0.2.17"}, {"start": "10.0.2.19", "end": "10.0.2.254"}]}}
+
+    neutron.update_subnet("d5d48930-7bfb-4f0c-8968-13f8af785868", req)
+
+
+
+## Old hacky way:
 It seems that currently the only way to solve this is to manually change the database
 bypassing the API. I used the following SQL insert statements to solve my problem.
 This is assuming that 55.15.15.10 is already part of the pool.

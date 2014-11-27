@@ -34,7 +34,7 @@
 
     <div class="entry-content">
 <footer class="post-info">
-        <abbr class="published" title="2013-06-09T08:55:00">
+        <abbr class="published" title="2013-06-09T08:55:00+02:00">
                 Published: Sun 09 June 2013
         </abbr>
 
@@ -66,11 +66,11 @@ came up with. I have no idea if it will break your system or what it
 does exactly, but after removing the sound compatbile controller I was
 able to pass the nvidia Quadro 2000 card to my virtual machine :)</p>
 <p>Here is the code to remove the pci device using a simple linux command:  </p>
-<div class="highlight"><pre><span class="n">lspci</span> <span class="o">-</span><span class="n">k</span> <span class="o">|</span> <span class="n">grep</span> <span class="n">NVID</span> <span class="o">-</span><span class="n">C3</span>  
-<span class="mo">00</span><span class="o">:</span><span class="mf">83.0</span> <span class="n">VGA</span> <span class="n">compatible</span> <span class="n">controller</span><span class="o">:</span> <span class="n">Nvidia</span> <span class="n">Quadro</span> <span class="mf">2000.</span><span class="p">...</span> <span class="p">(</span><span class="n">Dont</span> <span class="n">have</span>
-<span class="n">the</span> <span class="n">card</span> <span class="n">anymore</span><span class="p">)</span>  
-<span class="mo">00</span><span class="o">:</span><span class="mf">83.1</span> <span class="n">Sound</span> <span class="n">device</span><span class="o">:</span> <span class="n">Nvidia</span> <span class="n">Quadro</span> <span class="n">Audo</span> <span class="n">captabiel</span> <span class="n">balbalbal</span><span class="p">.</span> <span class="mi">2000</span> <span class="n">GP</span>  
-<span class="n">echo</span> <span class="o">-</span><span class="n">n</span> <span class="s">&quot;1&quot;</span> <span class="o">&gt;</span> <span class="o">/</span><span class="n">sys</span><span class="o">/</span><span class="n">bus</span><span class="o">/</span><span class="n">pci</span><span class="o">/</span><span class="n">devices</span><span class="o">/</span><span class="mo">0000</span><span class="o">:</span><span class="mo">02</span><span class="o">:</span><span class="mf">00.1</span><span class="o">/</span><span class="n">remove</span>
+<div class="highlight"><pre>lspci -k | grep NVID -C3  
+00:83.0 VGA compatible controller: Nvidia Quadro 2000.... (Dont have
+the card anymore)  
+00:83.1 Sound device: Nvidia Quadro Audo captabiel balbalbal. 2000 GP  
+echo -n &quot;1&quot; &gt; /sys/bus/pci/devices/0000:02:00.1/remove
 </pre></div>
     </div><!-- /.entry-content -->
     <div class="comments">
