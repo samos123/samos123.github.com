@@ -1,198 +1,217 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"
+>
 <head>
-        <meta charset="utf-8" />
-        <title>Sam Stoelinga (Samos IT) - Blog - geek</title>
-        <link rel="stylesheet" href="http://samos-it.com/theme/css/main.css" />
+    <title>geek - Sam Stoelinga (Samos IT) - Blog</title>
+    <!-- Using the latest rendering mode for IE -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <!--[if IE]>
-            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-        <![endif]-->
+
+
+
+    <meta name="author" content="Sam Stoelinga" />
+    <meta name="keywords" content="geek" />
+
+    <!-- Open Graph tags -->
+        <meta property="og:site_name" content="Sam Stoelinga (Samos IT) - Blog" />
+        <meta property="og:type" content="website"/>
+        <meta property="og:title" content="Sam Stoelinga (Samos IT) - Blog"/>
+        <meta property="og:url" content="http://samos-it.com"/>
+        <meta property="og:description" content="Sam Stoelinga (Samos IT) - Blog"/>
+
+
+    <!-- Bootstrap -->
+        <link rel="stylesheet" href="http://samos-it.com/theme/css/bootstrap.min.css" type="text/css"/>
+    <link href="http://samos-it.com/theme/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="http://samos-it.com/theme/css/pygments/native.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://samos-it.com/theme/css/style.css" type="text/css"/>
+
+
 </head>
+<body>
 
-<body id="index" class="home">
-<a href="http://github.com/samos123/">
-<img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub" />
-</a>
-        <header id="banner" class="body">
-                <h1><a href="http://samos-it.com/">Sam Stoelinga (Samos IT) - Blog </a></h1>
-                <nav><ul>
-                    <li><a href="http://samos-it.com/category/algorithms.html">Algorithms</a></li>
-                    <li><a href="http://samos-it.com/category/china.html">China</a></li>
-                    <li><a href="http://samos-it.com/category/linux.html">Linux</a></li>
-                    <li><a href="http://samos-it.com/category/openstack.html">Openstack</a></li>
-                    <li><a href="http://samos-it.com/category/python.html">Python</a></li>
-                </ul></nav>
-        </header><!-- /#banner -->
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="http://samos-it.com/" class="navbar-brand">
+Sam Stoelinga (Samos IT) - Blog            </a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                        <li >
+                            <a href="http://samos-it.com/category/algorithms.html">Algorithms</a>
+                        </li>
+                        <li >
+                            <a href="http://samos-it.com/category/china.html">China</a>
+                        </li>
+                        <li >
+                            <a href="http://samos-it.com/category/linux.html">Linux</a>
+                        </li>
+                        <li >
+                            <a href="http://samos-it.com/category/openstack.html">Openstack</a>
+                        </li>
+                        <li >
+                            <a href="http://samos-it.com/category/python.html">Python</a>
+                        </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="http://samos-it.com/archives.html"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+</div> <!-- /.navbar -->
+<!-- Banner -->
+<!-- End Banner -->
+<div class="container">
+    <div class="row">
+        <div class="col-sm-9">
 
-            <aside id="featured" class="body">
-                <article>
-                    <h1 class="entry-title"><a href="http://samos-it.com/posts/full-migration-of-archlinux-installation-to-a-new-system.html">Full migration/clone of linux installation to a new system(Without reinstalling)</a></h1>
-<footer class="post-info">
-        <abbr class="published" title="2012-11-14T13:26:00+01:00">
-                Published: Wed 14 November 2012
-        </abbr>
-
-        <address class="vcard author">
-                By                         <a class="url fn" href="http://samos-it.com/author/sam-stoelinga.html">Sam Stoelinga</a>
-        </address>
-<p>In <a href="http://samos-it.com/category/linux.html">Linux</a>. </p>
-<p>tags: <a href="http://samos-it.com/tag/archlinux.html">archlinux</a> <a href="http://samos-it.com/tag/geek.html">geek</a> <a href="http://samos-it.com/tag/linux.html">linux</a> <a href="http://samos-it.com/tag/migration.html">migration</a> </p>
-</footer><!-- /.post-info --><p>I'm switching to a new laptop, but don't want to have to install
+            <article>
+                <h2><a href="http://samos-it.com/posts/full-migration-of-archlinux-installation-to-a-new-system.html">Full migration/clone of linux installation to a new system(Without reinstalling)</a></h2>
+                <div class="summary"><p>I'm switching to a new laptop, but don't want to have to install
 Archlinux again. So instead of re-installing I will try to copy all
 files and hope the system will work. In this blogpost I will describe
 the steps and issues I encountered while doing so.</p>
-<p><strong>Status: Succeeded!!!!</strong></p>
-<p><strong>Summary of the plan</strong>: Boot from a live usb on the new system, create
-partitions with gparted, copy all the files over, change /etc/fstab to
-partition uuids, regenerate the mkinitcpio stuff (Still should read what
-this actually is).</p>
-<p>On the new laptop following steps should be done:</p>
-<ol>
-<li>Boot from a Ubuntu live cd and start gparted</li>
-<li>Create a / partition (ext4)</li>
-<li>Create a /home parition (ext4)</li>
-<li>Create a /boot partition (ext2)</li>
-<li>Mount the newly created partitions under /mnt/</li>
-<li>Copy all files of the old laptop / /home to new laptop /mnt/ /mnt/home using rsync</li>
-<li>Chroot into the copied files on the new laptop</li>
-<li>Change the /etc/fstab to point to the new partition UUIDs</li>
-<li>Install grub on new harddrive and reconfigure Grub</li>
-<li>Recreate the ramdisk</li>
-</ol>
-<h2>Environment:</h2>
-<p>Old Laptop:<br />
-Archlinux 64 bits, 8GB memory, AMD CPU and ATI card<br />
-IP: 192.168.1.108<br />
-Connected to router via internet cable, WIFI was way too slow to copy files</p>
-<p>New laptop:
-Intel CPU and nvidia video card<br />
-IP: 192.168.1.111</p>
-<h2>Detailed steps:</h2>
-<p>Boot from a live ubuntu USB on the new laptop and do the following:</p>
-<ol>
-<li>
-<p>Use gparted or fdisk to create the following partitions:
-   /dev/sda1 filesystem: ext2 size: 512mb label: boot (100mb is needed, but had enough space will become /boot)
-   /dev/sda2 filesystem: ext4 size: 30gb label: root(will become root /)
-   /dev/sda3 filesystem: ext4 size: 180gb label: home(will become home /home)</p>
-</li>
-<li>
-<p>After you have created the partitions successfully, mount all partitions to /mnt</p>
-<div class="highlight"><pre>mount /dev/sda2 /mnt
-mkdir /mnt/boot
-mount /dev/sda1 /mnt/boot
-mkdir /mnt/home
-mount /dev/sda3 /mnt/home
-</pre></div>
+<p><strong>Status ...</strong></p>
+                    <a class="btn btn-default btn-xs" href="http://samos-it.com/posts/full-migration-of-archlinux-installation-to-a-new-system.html">more ...</a>
+                </div>
+            </article>
+            <hr/>
+
+        </div>
+        <div class="col-sm-3" id="sidebar">
+            <aside>
+
+<section class="well well-sm">
+    <ul class="list-group list-group-flush">
+            <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Social</span></h4>
+              <ul class="list-group" id="social">
+                <li class="list-group-item"><a href="http://www.linkedin.com/in/sam.stoelinga"><i class="fa fa-linkedin-square fa-lg"></i> linkedin</a></li>
+                <li class="list-group-item"><a href="http://cn.linkedin.com/in/samstoelinga/"><i class="fa fa-github-square fa-lg"></i> github</a></li>
+              </ul>
+            </li>
 
 
-</li>
-<li>
-<p>Now go back to the old Archlinux laptop and copy all files to the newly created partitions:</p>
-<div class="highlight"><pre>rsync -azv --progress --exclude<span class="o">=</span>/dev --exclude<span class="o">=</span>/sys / root@192.168.1.111:/mnt/
-</pre></div>
 
 
-<p>This may take a while..................</p>
-</li>
-<li>
-<p>After everything is copied over to the new laptop, we will have to
-change /etc/fstab to look as follows:</p>
-<div class="highlight"><pre>tmpfs /tmp tmpfs nodev,nosuid <span class="m">0</span> 0
-<span class="nv">LABEL</span><span class="o">=</span>root / ext4 defaults,noatime <span class="m">0</span> 1
-<span class="nv">LABEL</span><span class="o">=</span>home /home ext4 defaults,noatime <span class="m">0</span> 2
-<span class="nv">LABEL</span><span class="o">=</span>boot /boot ext2 defaults,noatime <span class="m">0</span> 2
-</pre></div>
+    <li class="list-group-item"><h4><i class="fa fa-github fa-lg"></i><span class="icon-label">GitHub Repos</span></h4>
+        <div id="gh_repos">
+            <p class="list-group-item">Status updating...</p>
+        </div>
+    </li>
+    <li class="list-group-item"><h4><i class="fa fa-external-link-square fa-lg"></i><span class="icon-label">Links</span></h4>
+      <ul class="list-group" id="links">
+        <li class="list-group-item">
+            <a href="http://getpelican.com/" target="_blank">
+                Pelican
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://python.org/" target="_blank">
+                Python.org
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://jinja.pocoo.org/" target="_blank">
+                Jinja2
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="#" target="_blank">
+                You can modify those links in your config file
+            </a>
+        </li>
+      </ul>
+    </li>
+    </ul>
+</section>
+            </aside>
+        </div>
+    </div>
+</div>
+<footer>
+   <div class="container">
+      <hr>
+      <div class="row">
+         <div class="col-xs-10">&copy; 2012 Sam Stoelinga
+            &middot; Powered by <a href="https://github.com/DandyDev/pelican-bootstrap3" target="_blank">pelican-bootstrap3</a>,
+            <a href="http://docs.getpelican.com/" target="_blank">Pelican</a>,
+            <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>         </div>
+         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
+      </div>
+   </div>
+</footer>
+<script src="http://samos-it.com/theme/js/jquery.min.js"></script>
 
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="http://samos-it.com/theme/js/bootstrap.min.js"></script>
 
-</li>
-<li>
-<p>Then reinstall Grub on the hard drive:<br />
-<code>grub-install --force --target=i386-pc --recheck --debug /dev/sda</code></p>
-<p>Why the --force?
-I encountered the following error: will not proceed with 
-blocklists archlinux so after reading the wiki it said I could fix this by using --force.</p>
-</li>
-<li>
-<p>Regenerate grub config:<br />
-<code>grub-mkconfig -o /boot/grub/grub.cfg</code></p>
-</li>
-<li>
-<p>Regenerate initial ramdisk:<br />
-<code>mkinitcpio -p linux</code></p>
-</li>
-<li>
-<p>Reboot the system</p>
-</li>
-</ol>
-<p>I also had to update my modules.d/xxx to not load some specific AMD modules for laptop-mode tools as the new laptop has an intel processor.
-Also has to remove the ati driver and change to intel open source
-driver:</p>
-<div class="highlight"><pre>yaourt -Rs xf86-video-ati
-yaourt -S xf86-video-nouveau
-</pre></div>
+<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+<script src="http://samos-it.com/theme/js/respond.min.js"></script>
 
-
-<p>The reason I am switching: My current HP 625 laptop has served its
-purpose for nearly 2 years. The CPU seems to be nearly burnt out, when I
-opened the laptop few days ago, the CPU was totally black, but still
-working.</p>
-<p>References I used:
-Archlinux wiki: Migrate installation to new
-hardware https://wiki.archlinux.org/index.php/Migrate_installation_to_new_hardware
-Forum post which basically does the same
-thing https://bbs.archlinux.org/viewtopic.php?id=145025</p><p>There are <a href="http://samos-it.com/posts/full-migration-of-archlinux-installation-to-a-new-system.html#disqus_thread">comments</a>.</p>                </article>
-<p class="paginator">
-    Page 1 / 1
-</p>
-            </aside><!-- /#featured -->
-        <section id="extras" class="body">
-                <div class="blogroll">
-                        <h2>blogroll</h2>
-                        <ul>
-                            <li><a href="http://getpelican.com/">Pelican</a></li>
-                            <li><a href="http://python.org/">Python.org</a></li>
-                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
-                            <li><a href="#">You can modify those links in your config file</a></li>
-                        </ul>
-                </div><!-- /.blogroll -->
-                <div class="social">
-                        <h2>social</h2>
-                        <ul>
-
-                            <li><a href="#">You can add links in your config file</a></li>
-                            <li><a href="#">Another social link</a></li>
-                        </ul>
-                </div><!-- /.social -->
-        </section><!-- /#extras -->
-
-        <footer id="contentinfo" class="body">
-                <address id="about" class="vcard body">
-                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
-                </address><!-- /#about -->
-
-                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
-        </footer><!-- /#contentinfo -->
-
+    <!-- GitHub JS -->
     <script type="text/javascript">
-    var _gaq = _gaq || [];
-    _gaq.push(['_setAccount', 'UA-20975967-1']);
-    _gaq.push(['_trackPageview']);
-    (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-    })();
+        $(document).ready(function () {
+            if (!window.jXHR) {
+                var jxhr = document.createElement('script');
+                jxhr.type = 'text/javascript';
+                jxhr.src = 'http://samos-it.com/theme/js/jXHR.js';
+                var s = document.getElementsByTagName('script')[0];
+                s.parentNode.insertBefore(jxhr, s);
+            }
+
+            github.showRepos({
+                user: 'samos123',
+                count: 5,
+                skip_forks: false,
+                target: '#gh_repos'
+            });
+        });
     </script>
-<script type="text/javascript">
-    var disqus_shortname = 'samosit';
-    (function () {
-        var s = document.createElement('script'); s.async = true;
-        s.type = 'text/javascript';
-        s.src = '//' + disqus_shortname + '.disqus.com/count.js';
-        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
-    }());
-</script>
+    <script src="http://samos-it.com/theme/js/github.js" type="text/javascript"></script>
+    <!-- End GitHub JS Code -->
+    <!-- Disqus -->
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'samosit'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function () {
+            var s = document.createElement('script');
+            s.async = true;
+            s.type = 'text/javascript';
+            s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+            (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+        }());
+    </script>
+    <!-- End Disqus Code -->
+    <!-- Google Analytics -->
+    <script type="text/javascript">
+
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-20975967-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function () {
+            var ga = document.createElement('script');
+            ga.type = 'text/javascript';
+            ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
+    <!-- End Google Analytics Code -->
+
 </body>
 </html>

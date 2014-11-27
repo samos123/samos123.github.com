@@ -7,13 +7,14 @@ AUTHOR = 'Sam Stoelinga'
 SITENAME = 'Sam Stoelinga (Samos IT) - Blog'
 SITEURL = 'http://localhost:8000'
 #DISQUS_SITENAME = 'samosit'
-GITHUB_URL = 'http://github.com/samos123/'
 
 OUTPUT_PATH = os.path.abspath(__file__)
 PATH = "content"
 
 ARTICLE_URL = 'posts/{slug}.html'
 ARTICLE_SAVE_AS = 'posts/{slug}.html'
+
+THEME = "themes/pelican-bootstrap3"
 
 TIMEZONE = 'Europe/Paris'
 
@@ -30,9 +31,16 @@ LINKS = (('Pelican', 'http://getpelican.com/'),
          ('Jinja2', 'http://jinja.pocoo.org/'),
          ('You can modify those links in your config file', '#'),)
 
-# Social widget
-SOCIAL = (('You can add links in your config file', '#'),
-          ('Another social link', '#'),)
+## pelican-bootcamp3 settings
+GITHUB_URL = 'http://github.com/samos123/'
+GITHUB_USER = "samos123"
+SOCIAL = (('linkedin', 'http://www.linkedin.com/in/sam.stoelinga'),
+          ('github', 'http://cn.linkedin.com/in/samstoelinga/'),)
+DISPLAY_TAGS_ON_SIDEBAR=False
+
+
+
+
 
 DEFAULT_PAGINATION = 10
 
