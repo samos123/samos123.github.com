@@ -155,8 +155,8 @@ First create our cloudconfig file used by openstack hadoopmaster-cloudconfig:
         permissions: "0755"
       - content: |
             mine_functions:
-                network.interfaces: [eth0]
-                network.ip_addrs: [eth0]
+                network.interfaces: []
+                network.ip_addrs: []
                 grains.items: []
         path: /etc/salt/minion.d/mine_functions.conf
 
@@ -191,8 +191,8 @@ Create a hadoopslave-cloudconfig:
         permissions: "0755"
       - content: |
             mine_functions:
-                network.interfaces: [eth0]
-                network.ip_addrs: [eth0]
+                network.interfaces: []
+                network.ip_addrs: []
                 grains.items: []
         path: /etc/salt/minion.d/mine_functions.conf
 
