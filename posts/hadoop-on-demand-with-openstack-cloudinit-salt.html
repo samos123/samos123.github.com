@@ -194,7 +194,7 @@ cat <span class="s">&lt;&lt; EOF &gt; /etc/salt/master.d/file_roots.conf</span>
 <span class="s">    - /srv/salt</span>
 <span class="s">    - /srv/salt/formulas/hadoop-formula</span>
 <span class="s">    - /srv/salt/formulas/hostsfile-formula</span>
-<span class="s">    - /srv/salt/formulas/sun-java-formul</span>
+<span class="s">    - /srv/salt/formulas/sun-java-formula</span>
 <span class="s">EOF</span>
 
 cat <span class="s">&lt;&lt; EOF &gt; /etc/salt/master.d/pillar_roots.conf</span>
@@ -231,7 +231,7 @@ You can check all available parameters that are change-able here:
 </pre></div>
 
 
-<p>and the following hadoop specific pillar file:</p>
+<p>and the following hadoop specific pillar file /srv/pillar/hadoop.sls:</p>
 <div class="highlight"><pre><span class="l-Scalar-Plain">hadoop</span><span class="p-Indicator">:</span>
   <span class="l-Scalar-Plain">version</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">hdp-2.2.0</span> <span class="c1"># [&#39;apache-1.2.1&#39;, &#39;apache-2.2.0&#39;, &#39;hdp-1.3.0&#39;, &#39;hdp-2.2.0&#39;, &#39;cdh-4.5.0&#39;, &#39;cdh-4.5.0-mr1&#39;]</span>
   <span class="l-Scalar-Plain">users</span><span class="p-Indicator">:</span>

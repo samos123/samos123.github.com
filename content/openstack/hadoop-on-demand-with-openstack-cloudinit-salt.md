@@ -75,7 +75,7 @@ the sun-java-formula lets you automatically install java from oracle.
         - /srv/salt
         - /srv/salt/formulas/hadoop-formula
         - /srv/salt/formulas/hostsfile-formula
-        - /srv/salt/formulas/sun-java-formul
+        - /srv/salt/formulas/sun-java-formula
     EOF
 
     cat << EOF > /etc/salt/master.d/pillar_roots.conf
@@ -112,7 +112,7 @@ Create the following top.sls pillar file /srv/pillar/top.sls:
       'G@roles:hadoop_slave or G@roles:hadoop_master':
          - hadoop
 
-and the following hadoop specific pillar file:
+and the following hadoop specific pillar file /srv/pillar/hadoop.sls:
 
     :::yaml
     hadoop:
