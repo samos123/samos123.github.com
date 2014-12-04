@@ -223,8 +223,9 @@ After hadoop has been successfully deployed you can go to http://{hadoop\_master
 Now you can login to any of the nodes and save files to hdfs like this:
 
     :::bash
-    sudo -u hdfs "hadoop fs -mkdir -p /user/hdfs"
-    sudo -u hdfs "hadoop fs -put /tmp/bootstrap-minion.sh /user/hdfs/test.sh"
+    sudo -u hdfs -i
+    hadoop fs -mkdir -p /user/hdfs"
+    hadoop fs -put /tmp/bootstrap-minion.sh /user/hdfs/test.sh
 
 
 Hope this tutorial was useful! 

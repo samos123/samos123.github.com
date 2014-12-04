@@ -331,8 +331,9 @@ it should show your 11 nodes.</p>
 <p>After hadoop has been successfully deployed you can go to http://{hadoop_masterip}:50070 and check that
 10 live nodes are active.</p>
 <p>Now you can login to any of the nodes and save files to hdfs like this:</p>
-<div class="highlight"><pre>sudo -u hdfs <span class="s2">&quot;hadoop fs -mkdir -p /user/hdfs&quot;</span>
-sudo -u hdfs <span class="s2">&quot;hadoop fs -put /tmp/bootstrap-minion.sh /user/hdfs/test.sh&quot;</span>
+<div class="highlight"><pre>sudo -u hdfs -i
+hadoop fs -mkdir -p /user/hdfs<span class="s2">&quot;</span>
+<span class="s2">hadoop fs -put /tmp/bootstrap-minion.sh /user/hdfs/test.sh</span>
 </pre></div>
 
 
