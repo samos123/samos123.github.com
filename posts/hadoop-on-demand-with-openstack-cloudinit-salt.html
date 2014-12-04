@@ -207,6 +207,11 @@ sudo service salt-master restart
 </pre></div>
 
 
+<h3>Creating SSH keypairs for hadoop-formula</h3>
+<div class="highlight"><pre><span class="nb">cd</span> /srv/salt/formulas/hadoop-formula/hadoop/files <span class="o">&amp;&amp;</span> ./generate-keypairs.sh
+</pre></div>
+
+
 <h3>Configuring the top.sls state file to include hadoop and deps</h3>
 <p>On the salt-master create the following file /srv/salt/top.sls:</p>
 <div class="highlight"><pre><span class="l-Scalar-Plain">base</span><span class="p-Indicator">:</span>

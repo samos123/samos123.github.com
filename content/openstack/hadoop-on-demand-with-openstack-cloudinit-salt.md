@@ -86,6 +86,13 @@ the sun-java-formula lets you automatically install java from oracle.
 
     sudo service salt-master restart
 
+
+### Creating SSH keypairs for hadoop-formula
+
+    :::bash
+    cd /srv/salt/formulas/hadoop-formula/hadoop/files && ./generate-keypairs.sh
+
+
 ### Configuring the top.sls state file to include hadoop and deps
 
 On the salt-master create the following file /srv/salt/top.sls:
