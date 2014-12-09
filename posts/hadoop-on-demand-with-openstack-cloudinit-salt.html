@@ -167,7 +167,7 @@ that this is a security risk.</p>
 </pre></div>
 
 
-<p>Now launch openstack instance with: <code>nova boot --name salt-master --image ubuntu_14.04 --user-data master-cloudconfig --flavor m1.medium --key-name sam</code>.
+<p>Now launch openstack instance with: <code>nova boot --image ubuntu_14.04 --user-data master-cloudconfig --flavor m1.medium --key-name sam salt_master</code>.
 The salt-master that we launched in our case has as ip 192.168.111.66. You can ssh to this machine via ssh ubuntu@192.168.111.66</p>
 <h2>Configuring the salt master to deploy a hadoop cluster</h2>
 <p>In order to be able to deploy hadoop on the salt-master we are going to
@@ -283,7 +283,7 @@ or as hadoop-slave(datanode).</p>
 
 
 <p>Then create a new instance using openstack:
-<code>nova boot --name hadoop-master-1 --image ubuntu_14.04 --user-data hadoopmaster-cloudconfig --flavor m1.medium --key-name sam</code></p>
+<code>nova boot --image ubuntu_14.04 --user-data hadoopmaster-cloudconfig --flavor m1.medium --key-name sam hadoop-master-1</code></p>
 <h3>Deploying hadoop-slave(datanode) nodes</h3>
 <p>Create a hadoopslave-cloudconfig:</p>
 <div class="highlight"><pre><span class="c1">#cloud-config</span>
@@ -318,7 +318,7 @@ or as hadoop-slave(datanode).</p>
 
 
 <p>Now launch 10 hadoop-slave nodes
-<code>nova boot --name hadoop-slave --num-instances 10 --image ubuntu_14.04 --user-data hadoopslave-cloudconfig --flavor m1.medium --key-name sam</code></p>
+<code>nova boot --num-instances 10 --image ubuntu_14.04 --user-data hadoopslave-cloudconfig --flavor m1.medium --key-name sam hadoop-slave</code></p>
 <h3>Let saltstack deploy hadoop</h3>
 <p>First make sure that the salt-master detected all our hadoop-master and hadoop-slave nodes. Execute the following comand: <code>salt '*' managed.up</code>
 it should show your 11 nodes.</p>

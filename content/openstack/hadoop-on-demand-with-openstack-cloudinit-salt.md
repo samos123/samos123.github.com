@@ -43,7 +43,7 @@ Create the following master-cloudconfig file:
        permissions: "0755"
 
 
-Now launch openstack instance with: `nova boot --name salt-master --image ubuntu_14.04 --user-data master-cloudconfig --flavor m1.medium --key-name sam`.
+Now launch openstack instance with: `nova boot --image ubuntu_14.04 --user-data master-cloudconfig --flavor m1.medium --key-name sam salt_master`.
 The salt-master that we launched in our case has as ip 192.168.111.66. You can ssh to this machine via ssh ubuntu@192.168.111.66
 
 
@@ -168,7 +168,7 @@ First create our cloudconfig file used by openstack hadoopmaster-cloudconfig:
         path: /etc/salt/minion.d/mine_functions.conf
 
 Then create a new instance using openstack:
-`nova boot --name hadoop-master-1 --image ubuntu_14.04 --user-data hadoopmaster-cloudconfig --flavor m1.medium --key-name sam`
+`nova boot --image ubuntu_14.04 --user-data hadoopmaster-cloudconfig --flavor m1.medium --key-name sam hadoop-master-1`
 
 ### Deploying hadoop-slave(datanode) nodes
 Create a hadoopslave-cloudconfig:
@@ -204,7 +204,7 @@ Create a hadoopslave-cloudconfig:
         path: /etc/salt/minion.d/mine_functions.conf
 
 Now launch 10 hadoop-slave nodes
-`nova boot --name hadoop-slave --num-instances 10 --image ubuntu_14.04 --user-data hadoopslave-cloudconfig --flavor m1.medium --key-name sam`
+`nova boot --num-instances 10 --image ubuntu_14.04 --user-data hadoopslave-cloudconfig --flavor m1.medium --key-name sam hadoop-slave`
 
 ### Let saltstack deploy hadoop
 First make sure that the salt-master detected all our hadoop-master and hadoop-slave nodes. Execute the following comand: `salt '*' managed.up`
