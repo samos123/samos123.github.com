@@ -34,7 +34,7 @@ Create the following master-cloudconfig file:
     runcmd:
      - bash /tmp/bootstrap-master.sh
 
-    write_files
+    write_files:
      - content: |
             #!/bin/bash
             sed -i 's/^#auto_accept.*$/auto_accept: True/g' /etc/salt/master

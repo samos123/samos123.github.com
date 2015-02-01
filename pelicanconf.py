@@ -35,7 +35,7 @@ LINKS = (('Pelican', 'http://getpelican.com/'),
 GITHUB_URL = 'http://github.com/samos123/'
 GITHUB_USER = "samos123"
 SOCIAL = (('linkedin', 'http://www.linkedin.com/in/sam.stoelinga'),
-          ('github', 'http://cn.linkedin.com/in/samstoelinga/'),)
+          ('github', 'http://github.com/samos123/'),)
 DISPLAY_TAGS_ON_SIDEBAR=False
 
 
