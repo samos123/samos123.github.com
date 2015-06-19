@@ -76,6 +76,22 @@ Sam Stoelinga (Samos IT) - Blog            </a>
         <div class="col-sm-9">
 
             <article>
+                <h2><a href="http://samos-it.com/posts/removedetach-a-pci-device-linux-kvm-vga-passthrgough-nvidia-quadro-2000.html">Remove/detach a PCI device linux (kvm VGA passthrgough Nvidia Quadro 2000)</a></h2>
+                <div class="summary"><p><strong>Answer:</strong>  </p>
+<div class="highlight"><pre><span class="nb">echo</span> -n <span class="s2">&quot;1&quot;</span> &gt; /sys/bus/pci/devices/0000:02:00.0/remove
+</pre></div>
+
+
+<p>Where 0000:02:00.0 is related to your pci device address which can
+be obtained from the command <code>lspci</code></p>
+<p><strong>Related story:</strong><br />
+Was working on KVM vga passthrough and encountered problems with the
+graphics card nvidia Quadro ...</p>
+                    <a class="btn btn-default btn-xs" href="http://samos-it.com/posts/removedetach-a-pci-device-linux-kvm-vga-passthrgough-nvidia-quadro-2000.html">more ...</a>
+                </div>
+            </article>
+            <hr/>
+            <article>
                 <h2><a href="http://samos-it.com/posts/install-pyqt-in-a-virtualenv-with-pip.html">Install PyQt in a virtualenv with Pip</a></h2>
                 <div class="summary"><p>Noticed that pip install pyqt isn't working? At least at the time of
 writing this blog it isn't..</p>
@@ -192,20 +208,6 @@ available and ...</p>
                 </div>
             </article>
             <hr/>
-            <article>
-                <h2><a href="http://samos-it.com/posts/importing-a-sql-dump-in-postgres.html">Importing a SQL dump in postgres</a></h2>
-                <div class="summary"><p>I always keep forgetting how to import a SQL dump into postgres and
-found it always hard to find the right documentation. So I thought lets
-share it:</p>
-<div class="highlight"><pre>psql -d dbname -U username -f dumpfile.sql
-</pre></div>
-
-
-<p>This should also work with files created by pgdump.</p>
-                    <a class="btn btn-default btn-xs" href="http://samos-it.com/posts/importing-a-sql-dump-in-postgres.html">more ...</a>
-                </div>
-            </article>
-            <hr/>
 
         <ul class="pagination">
                 <li class="prev"><a href="http://samos-it.com/author/sam-stoelinga.html">&laquo;</a>
@@ -216,6 +218,8 @@ share it:</p>
                             href="http://samos-it.com/author/sam-stoelinga2.html">2</a></li>
                     <li class=""><a
                             href="http://samos-it.com/author/sam-stoelinga3.html">3</a></li>
+                    <li class=""><a
+                            href="http://samos-it.com/author/sam-stoelinga4.html">4</a></li>
                 <li class="next"><a
                         href="http://samos-it.com/author/sam-stoelinga3.html">&raquo;</a></li>
         </ul>
@@ -274,7 +278,7 @@ share it:</p>
    <div class="container">
       <hr>
       <div class="row">
-         <div class="col-xs-10">&copy; 2014 Sam Stoelinga
+         <div class="col-xs-10">&copy; 2015 Sam Stoelinga
             &middot; Powered by <a href="https://github.com/DandyDev/pelican-bootstrap3" target="_blank">pelican-bootstrap3</a>,
             <a href="http://docs.getpelican.com/" target="_blank">Pelican</a>,
             <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>         </div>

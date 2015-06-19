@@ -2,7 +2,7 @@
 <html lang="en"
 >
 <head>
-    <title>Articles by Sam Stoelinga - Sam Stoelinga (Samos IT) - Blog</title>
+    <title>bridge - Sam Stoelinga (Samos IT) - Blog</title>
     <!-- Using the latest rendering mode for IE -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta charset="utf-8">
@@ -11,7 +11,8 @@
 
 
 
-        <meta name="author" content="Sam Stoelinga" />
+    <meta name="author" content="Sam Stoelinga" />
+    <meta name="keywords" content="bridge" />
 
     <!-- Open Graph tags -->
         <meta property="og:site_name" content="Sam Stoelinga (Samos IT) - Blog" />
@@ -84,117 +85,7 @@ Now you want to add eth1 to a linux bridge so you can hookin VMs on a vlan trunk
                 </div>
             </article>
             <hr/>
-            <article>
-                <h2><a href="http://samos-it.com/posts/hadoop-on-demand-with-openstack-cloudinit-salt.html">Hadoop on demand with Openstack, Cloudinit and Salt</a></h2>
-                <div class="summary"><p>This post will describe the whole process of providing hadoop on demand
-through Openstack, Cloudinit and Saltstack. We will use Openstack
-to provision servers on demand, cloudconfig to install salt-master and
-salt-minion and saltstack to deploy hadoop namenode and datanodes, all fully
-automated. This makes us able to deploy a ...</p>
-                    <a class="btn btn-default btn-xs" href="http://samos-it.com/posts/hadoop-on-demand-with-openstack-cloudinit-salt.html">more ...</a>
-                </div>
-            </article>
-            <hr/>
-            <article>
-                <h2><a href="http://samos-it.com/posts/neutron-multiple-allocation-pools-single-subnet.html">Neutron Multiple allocation pools single subnet (Solve Fragmented floating ips problem)</a></h2>
-                <div class="summary"><p>In a lab environment in the university I only had access to a list of fragmented
-public routable IP addresses in a single subnet. For example I got access to the following ips
-50.15.15.10, 55.15.15.12-15, 55.15.15.17. But I am not allowed ...</p>
-                    <a class="btn btn-default btn-xs" href="http://samos-it.com/posts/neutron-multiple-allocation-pools-single-subnet.html">more ...</a>
-                </div>
-            </article>
-            <hr/>
-            <article>
-                <h2><a href="http://samos-it.com/posts/openstack-networking-study-notes.html">Openstack Networking Study Notes</a></h2>
-                <div class="summary"><p>I recommend these links in the following order:</p>
-<ul>
-<li><a href="http://blog.scottlowe.org/2013/05/07/using-gre-tunnels-with-open-vswitch/">ScottLowe blog: Using GRE tunnels with OpenvSwitch</a></li>
-<li><a href="http://blog.scottlowe.org/2013/05/15/examining-open-vswitch-traffic-patterns/">ScottLowe blog: Examining OpenvSwitch traffic patterns</a></li>
-<li><a href="http://www.hastexo.com/system/files/neutron_packet_flows-notes-handout.pdf">Hastexto: Neutron Packet Flows (PDF/Presentation)</a></li>
-</ul>
-                    <a class="btn btn-default btn-xs" href="http://samos-it.com/posts/openstack-networking-study-notes.html">more ...</a>
-                </div>
-            </article>
-            <hr/>
-            <article>
-                <h2><a href="http://samos-it.com/posts/docker-get-private-ip-address-of-container.html">Docker get private ip address of container</a></h2>
-                <div class="summary"><p>In order to access other containers from a container it's needed
-to get the private IP address of the other containers. The following
-command is able to get the private ip address of the container.</p>
-<div class="highlight"><pre><span class="gp">$</span> docker inspect --format<span class="o">=</span><span class="s2">&quot;{{.NetworkSettings.IPAddress}}&quot;</span> <span class="nv">$CONTAINER_ID_OR_NAME</span>
-<span class="go">172.17.0.15</span>
-</pre></div>
-                    <a class="btn btn-default btn-xs" href="http://samos-it.com/posts/docker-get-private-ip-address-of-container.html">more ...</a>
-                </div>
-            </article>
-            <hr/>
-            <article>
-                <h2><a href="http://samos-it.com/posts/docker-multi-website-single-ip-host-haproxy.html">Docker Multiple websites/domains on single ip/host tutorial using a HAproxy as reverse proxy</a></h2>
-                <div class="summary"><p>This post will describe how to expose multiple docker containers
-running websites on port 80 using HAproxy as a reverse proxy.
-This makes it possible to run multiple websites on different domains
-on a single public ip of the host.</p>
-<p>The basic setup is to create 1 container for haproxy ...</p>
-                    <a class="btn btn-default btn-xs" href="http://samos-it.com/posts/docker-multi-website-single-ip-host-haproxy.html">more ...</a>
-                </div>
-            </article>
-            <hr/>
-            <article>
-                <h2><a href="http://samos-it.com/posts/move-first-word-to-end-of-line-linux-awk.html">Move first word to end of line (Linux/awk)</a></h2>
-                <div class="summary"><p>Move the first word of a line to the end of line on Linux using AWK.
-We first store the first column(first word) in the variable t. Then
-we set the first column to be empty. At last we add a new column
-after the last column of the ...</p>
-                    <a class="btn btn-default btn-xs" href="http://samos-it.com/posts/move-first-word-to-end-of-line-linux-awk.html">more ...</a>
-                </div>
-            </article>
-            <hr/>
-            <article>
-                <h2><a href="http://samos-it.com/posts/ssh-to-server-behind-firewall-via-ssh-tunnel.html">SSH to server behind a firewall via an SSH tunnel</a></h2>
-                <div class="summary"><p>A server behind a firewall was unaccesible from my home,
-but another server which is on the same local network had
-public SSH access from my home. So we can create an SSH tunnel
-via this public server to the server behind a firewall.</p>
-<p>For example the public ssh server ...</p>
-                    <a class="btn btn-default btn-xs" href="http://samos-it.com/posts/ssh-to-server-behind-firewall-via-ssh-tunnel.html">more ...</a>
-                </div>
-            </article>
-            <hr/>
-            <article>
-                <h2><a href="http://samos-it.com/posts/recursive-karatsuba-multiplication-python.html">Recursive karatsuba multiplication in Python</a></h2>
-                <div class="summary"><p>I'm currently taking the class Algorithm: Design and Analysis of Stanford via Coursera and
-in the class the Karatsuba algorithm got mentioned. I went ahead and implemented it based
-on the lecture slides.</p>
-<p>The Karatsuba algorithm is a fast multiplication algorithm. It's special because
-it was the first ...</p>
-                    <a class="btn btn-default btn-xs" href="http://samos-it.com/posts/recursive-karatsuba-multiplication-python.html">more ...</a>
-                </div>
-            </article>
-            <hr/>
-            <article>
-                <h2><a href="http://samos-it.com/posts/using-nested-tmux-over-ssh-and-how-to-detach-a-nested-tmux.html">Using nested tmux over ssh and how to detach a nested tmux</a></h2>
-                <div class="summary"><p>Today I logged in to my laptop at home from work which was already
-running a tmux session, so thought yea just attach cool can continue
-with what I was looking at at home. I forgot that the keys would be the
-same ofcourse, and was unable to use the ...</p>
-                    <a class="btn btn-default btn-xs" href="http://samos-it.com/posts/using-nested-tmux-over-ssh-and-how-to-detach-a-nested-tmux.html">more ...</a>
-                </div>
-            </article>
-            <hr/>
 
-        <ul class="pagination">
-                <li class="prev disabled"><a href="#">&laquo;</a></li>
-                    <li class="active"><a
-                            href="http://samos-it.com/author/sam-stoelinga.html">1</a></li>
-                    <li class=""><a
-                            href="http://samos-it.com/author/sam-stoelinga2.html">2</a></li>
-                    <li class=""><a
-                            href="http://samos-it.com/author/sam-stoelinga3.html">3</a></li>
-                    <li class=""><a
-                            href="http://samos-it.com/author/sam-stoelinga4.html">4</a></li>
-                <li class="next"><a
-                        href="http://samos-it.com/author/sam-stoelinga2.html">&raquo;</a></li>
-        </ul>
         </div>
         <div class="col-sm-3" id="sidebar">
             <aside>
