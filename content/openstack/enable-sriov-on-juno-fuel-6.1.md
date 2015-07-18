@@ -160,3 +160,7 @@ Create the VM specifying that as 1st nic we want to use the previously created s
 
     :::bash
     nova boot --flavor m1.large --image ubuntu_14.04 --nic port-id=$port_id --key-name sam test-sriov
+
+References which deserve credit:
+* [Red Hat Documentation on using SRIOV](https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/6/html/Virtualization_Host_Configuration_and_Guest_Installation_Guide/sect-Virtualization_Host_Configuration_and_Guest_Installation_Guide-SR_IOV-How_SR_IOV_Libvirt_Works.html)
+* [OpenStack Wiki: SR-IOV-Passthrough-For-Networking](https://wiki.openstack.org/wiki/SR-IOV-Passthrough-For-Networking)
