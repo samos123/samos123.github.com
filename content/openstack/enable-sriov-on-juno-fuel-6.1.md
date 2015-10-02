@@ -5,6 +5,12 @@ Category: Openstack
 Tags: openstack, networking, sriov, sr-iov, fuel, mirantis openstack
 Slug: sriov-openstack-juno-fuel-6-1
 
+Update: Please take a look at the official
+<a href="http://docs.openstack.org/networking-guide/adv_config_sriov.html" target="_blank">
+Networking Guide: Using SRIOV functionality</a>. This is the
+<a target="_blank" href="https://review.openstack.org/#/c/213985/">changeset</a> by me that
+adds the SRIOV documentation.
+
 <table class="table table-bordered table-hover">
 <caption>Terms used</caption>
 <thead>

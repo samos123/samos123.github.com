@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Sam Stoelinga (Samos IT) - Blog</title><link>http://samos-it.com/</link><description></description><atom:link href="http://samos-it.com/feeds/sam-stoelinga.rss.xml" rel="self"></atom:link><lastBuildDate>Wed, 15 Jul 2015 16:31:00 +0200</lastBuildDate><item><title>Enable SRIOV on OpenStack Juno</title><link>http://samos-it.com/posts/sriov-openstack-juno-fuel-6-1.html</link><description>&lt;table class="table table-bordered table-hover"&gt;
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Sam Stoelinga (Samos IT) - Blog</title><link>http://samos-it.com/</link><description></description><atom:link href="http://samos-it.com/feeds/sam-stoelinga.rss.xml" rel="self"></atom:link><lastBuildDate>Wed, 15 Jul 2015 16:31:00 +0200</lastBuildDate><item><title>Enable SRIOV on OpenStack Juno</title><link>http://samos-it.com/posts/sriov-openstack-juno-fuel-6-1.html</link><description>&lt;p&gt;Update: Please take a look at the official
+&lt;a href="http://docs.openstack.org/networking-guide/adv_config_sriov.html" target="_blank"&gt;
+Networking Guide: Using SRIOV functionality&lt;/a&gt;. This is the
+&lt;a target="_blank" href="https://review.openstack.org/#/c/213985/"&gt;changeset&lt;/a&gt; by me that
+adds the SRIOV documentation.&lt;/p&gt;
+&lt;table class="table table-bordered table-hover"&gt;
 &lt;caption&gt;Terms used&lt;/caption&gt;
 &lt;thead&gt;
 &lt;tr&gt;

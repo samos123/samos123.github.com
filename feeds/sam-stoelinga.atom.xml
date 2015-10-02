@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Sam Stoelinga (Samos IT) - Blog</title><link href="http://samos-it.com/" rel="alternate"></link><link href="http://samos-it.com/feeds/sam-stoelinga.atom.xml" rel="self"></link><id>http://samos-it.com/</id><updated>2015-07-15T16:31:00+02:00</updated><entry><title>Enable SRIOV on OpenStack Juno</title><link href="http://samos-it.com/posts/sriov-openstack-juno-fuel-6-1.html" rel="alternate"></link><updated>2015-07-15T16:31:00+02:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2015-07-15:posts/sriov-openstack-juno-fuel-6-1.html</id><summary type="html">&lt;table class="table table-bordered table-hover"&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Sam Stoelinga (Samos IT) - Blog</title><link href="http://samos-it.com/" rel="alternate"></link><link href="http://samos-it.com/feeds/sam-stoelinga.atom.xml" rel="self"></link><id>http://samos-it.com/</id><updated>2015-07-15T16:31:00+02:00</updated><entry><title>Enable SRIOV on OpenStack Juno</title><link href="http://samos-it.com/posts/sriov-openstack-juno-fuel-6-1.html" rel="alternate"></link><updated>2015-07-15T16:31:00+02:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2015-07-15:posts/sriov-openstack-juno-fuel-6-1.html</id><summary type="html">&lt;p&gt;Update: Please take a look at the official
+&lt;a href="http://docs.openstack.org/networking-guide/adv_config_sriov.html" target="_blank"&gt;
+Networking Guide: Using SRIOV functionality&lt;/a&gt;. This is the
+&lt;a target="_blank" href="https://review.openstack.org/#/c/213985/"&gt;changeset&lt;/a&gt; by me that
+adds the SRIOV documentation.&lt;/p&gt;
+&lt;table class="table table-bordered table-hover"&gt;
 &lt;caption&gt;Terms used&lt;/caption&gt;
 &lt;thead&gt;
 &lt;tr&gt;
