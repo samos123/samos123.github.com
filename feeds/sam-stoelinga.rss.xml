@@ -1,5 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Sam Stoelinga (Samos IT) - Blog</title><link>http://samos-it.com/</link><description></description><atom:link href="http://samos-it.com/feeds/sam-stoelinga.rss.xml" rel="self"></atom:link><lastBuildDate>Wed, 15 Jul 2015 16:31:00 +0200</lastBuildDate><item><title>Enable SRIOV on OpenStack Juno</title><link>http://samos-it.com/posts/sriov-openstack-juno-fuel-6-1.html</link><description>&lt;p&gt;Update: Please take a look at the official
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Sam Stoelinga (Samos IT) - Blog</title><link>http://samos-it.com/</link><description></description><atom:link href="http://samos-it.com/feeds/sam-stoelinga.rss.xml" rel="self"></atom:link><lastBuildDate>Thu, 08 Oct 2015 12:42:00 +0200</lastBuildDate><item><title>Setup IPv6 in Tsinghua on Linux(ArchLinux))</title><link>http://samos-it.com/posts/ipv6-tsinghua-linux-isatapd.html</link><description>&lt;p&gt;Tsinghua university uses &lt;a href="https://en.wikipedia.org/wiki/ISATAP"&gt;ISATAP&lt;/a&gt; to provide IPv6 connectivity to students.
+In Linux you can use the &lt;a href="http://www.saschahlusiak.de/linux/isatap.htm"&gt;isatapd&lt;/a&gt; program to create an ISATAP tunnel based on an IPv4 device.&lt;/p&gt;
+&lt;p&gt;You can use the isatapd command as follows to establish an ISATAPD tunnel:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;isatapd --router isatap.tsinghua.edu.cn
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;After connecting check that you have received an global IPv6 address with:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;ip -6 a
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;As a last check you need to check your default ipv6 routes. In some cases 2 default routes may get added:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;ip -6 route
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;If there are 2 default routes make sure to delete the route which starts with fe80. In my case I had to delete
+one of the default routes as follows:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;ip -6 route del default via fe80::5efe:a66f:1501
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;Archlinux&lt;/h2&gt;
+&lt;p&gt;Archlinux provides an isatapd package, which you can install via &lt;code&gt;pacman -S isatapd&lt;/code&gt;.
+The package comes with a systemd service at &lt;code&gt;/usr/lib/systemd/system/isatapd@.service&lt;/code&gt;. You
+can start the service with: &lt;code&gt;systemctl start isatapd@isatap.tsinghua.edu.cn&lt;/code&gt;&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Sam Stoelinga</dc:creator><pubDate>Thu, 08 Oct 2015 12:42:00 +0200</pubDate><guid>tag:samos-it.com,2015-10-08:posts/ipv6-tsinghua-linux-isatapd.html</guid><category>archlinux</category><category>ipv6</category><category>linux</category><category>isatap</category><category>isatapd</category></item><item><title>Enable SRIOV on OpenStack Juno</title><link>http://samos-it.com/posts/sriov-openstack-juno-fuel-6-1.html</link><description>&lt;p&gt;Update: Please take a look at the official
 &lt;a href="http://docs.openstack.org/networking-guide/adv_config_sriov.html" target="_blank"&gt;
 Networking Guide: Using SRIOV functionality&lt;/a&gt;. This is the
 &lt;a target="_blank" href="https://review.openstack.org/#/c/213985/"&gt;changeset&lt;/a&gt; by me that

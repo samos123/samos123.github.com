@@ -77,6 +77,20 @@ Sam Stoelinga (Samos IT) - Blog            </a>
         <div class="col-sm-9">
 
             <article>
+                <h2><a href="http://samos-it.com/posts/ipv6-tsinghua-linux-isatapd.html">Setup IPv6 in Tsinghua on Linux(ArchLinux))</a></h2>
+                <div class="summary"><p>Tsinghua university uses <a href="https://en.wikipedia.org/wiki/ISATAP">ISATAP</a> to provide IPv6 connectivity to students.
+In Linux you can use the <a href="http://www.saschahlusiak.de/linux/isatap.htm">isatapd</a> program to create an ISATAP tunnel based on an IPv4 device.</p>
+<p>You can use the isatapd command as follows to establish an ISATAPD tunnel:</p>
+<div class="highlight"><pre>isatapd --router isatap.tsinghua.edu.cn
+</pre></div>
+
+
+<p>After connecting check ...</p>
+                    <a class="btn btn-default btn-xs" href="http://samos-it.com/posts/ipv6-tsinghua-linux-isatapd.html">more ...</a>
+                </div>
+            </article>
+            <hr/>
+            <article>
                 <h2><a href="http://samos-it.com/posts/create-linux-bridge-without-losing-connection.html">Create Linux bridge without losing existing connection</a></h2>
                 <div class="summary"><p>The dillemma: You're accessing your server via SSH through interface eth1.102 with the ip 10.20.0.2/24 and gateway 10.20.0.1.
 Now you want to add eth1 to a linux bridge so you can hookin VMs on a vlan trunk.</p>
@@ -179,17 +193,6 @@ commit and then creates a tar archive of those changed files.</p>
 <div class="highlight"><pre>git show <span class="o">{{</span>COMMIT_ID<span class="o">}}</span> --name-status <span class="p">|</span> grep -Ew <span class="s1">&#39;^M|A&#39;</span> <span class="p">|</span> awk <span class="s1">&#39;{ print $2 }&#39;</span> <span class="p">|</span> xargs tar czf usb-passthrough.tar.gz
 </pre></div>
                     <a class="btn btn-default btn-xs" href="http://samos-it.com/posts/create-tar-archive-of-changedadded-files-in-a-git-commit.html">more ...</a>
-                </div>
-            </article>
-            <hr/>
-            <article>
-                <h2><a href="http://samos-it.com/posts/full-migration-of-archlinux-installation-to-a-new-system.html">Full migration/clone of linux installation to a new system(Without reinstalling)</a></h2>
-                <div class="summary"><p>I'm switching to a new laptop, but don't want to have to install
-Archlinux again. So instead of re-installing I will try to copy all
-files and hope the system will work. In this blogpost I will describe
-the steps and issues I encountered while doing so.</p>
-<p><strong>Status ...</strong></p>
-                    <a class="btn btn-default btn-xs" href="http://samos-it.com/posts/full-migration-of-archlinux-installation-to-a-new-system.html">more ...</a>
                 </div>
             </article>
             <hr/>
