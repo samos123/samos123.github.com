@@ -23,7 +23,7 @@ As a last check you need to check your default ipv6 routes. In some cases 2 defa
     :::bash
     ip -6 route
 
-If there are 2 default routes make sure to delete the route which starts with fe80. In my case I had to delete
+If there are 2 default routes make sure to delete the route which goes out via your physical device e.g(eth0 or enp2u5). In my case I had to delete
 one of the default routes as follows:
 
     :::bash

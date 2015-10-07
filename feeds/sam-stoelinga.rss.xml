@@ -16,7 +16,7 @@ In Linux you can use the &lt;a href="http://www.saschahlusiak.de/linux/isatap.ht
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;If there are 2 default routes make sure to delete the route which starts with fe80. In my case I had to delete
+&lt;p&gt;If there are 2 default routes make sure to delete the route which goes out via your physical device e.g(eth0 or enp2u5). In my case I had to delete
 one of the default routes as follows:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;ip -6 route del default via fe80::5efe:a66f:1501
 &lt;/pre&gt;&lt;/div&gt;
