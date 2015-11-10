@@ -1,5 +1,204 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Sam Stoelinga (Samos IT) - Blog</title><link href="http://samos-it.com/" rel="alternate"></link><link href="http://samos-it.com/feeds/sam-stoelinga.atom.xml" rel="self"></link><id>http://samos-it.com/</id><updated>2015-10-08T12:42:00+02:00</updated><entry><title>Setup IPv6 in Tsinghua on Linux(ArchLinux))</title><link href="http://samos-it.com/posts/ipv6-tsinghua-linux-isatapd.html" rel="alternate"></link><updated>2015-10-08T12:42:00+02:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2015-10-08:posts/ipv6-tsinghua-linux-isatapd.html</id><summary type="html">&lt;p&gt;Tsinghua university uses &lt;a href="https://en.wikipedia.org/wiki/ISATAP"&gt;ISATAP&lt;/a&gt; to provide IPv6 connectivity to students.
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Sam Stoelinga (Samos IT) - Blog</title><link href="http://samos-it.com/" rel="alternate"></link><link href="http://samos-it.com/feeds/sam-stoelinga.atom.xml" rel="self"></link><id>http://samos-it.com/</id><updated>2015-11-09T16:31:00+01:00</updated><entry><title>Elastic Data Processing on OpenStack with Spark, Tachyon and Swift</title><link href="http://samos-it.com/posts/spark-tachyon-swift-openstack-mesos-elastic-data-processing.html" rel="alternate"></link><updated>2015-11-09T16:31:00+01:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2015-11-09:posts/spark-tachyon-swift-openstack-mesos-elastic-data-processing.html</id><summary type="html">&lt;p&gt;This post will describe how to configure, build and deploy
+Spark with Tachyon and Swift as storage. This architecture
+is meant to be more suitable for running Big Data workloads
+on top of the cloud such as OpenStack.&lt;/p&gt;
+&lt;p&gt;Using Swift as storage layer for Spark gives us the ability
+to utilize the cloud paradigm with Big Data. We can now
+on demand spin up n-amount of VMs, run a spark job with input
+data from Swift, then when finished store the result back in Swift and
+finally when the job is finished, destroy the VMs. This kind of elastic
+data processing, using Tachyon for fast localized in-memory storage gives you high
+performance and also elasticity of the cloud.&lt;/p&gt;
+&lt;p&gt;Assumptions:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;You have a working Mesos cluster that can run Spark
+  jobs&lt;/li&gt;
+&lt;li&gt;We have two nodes: mesos-master-1 (192.168.111.54) and
+  mesos-slave-1 (192.168.111.57). We will run tachyon master
+  on the mesos-master-1 node and tachyon worker on mesos-slave-1&lt;/li&gt;
+&lt;li&gt;OpenStack Keystone and Swift are available at 10.10.10.10&lt;/li&gt;
+&lt;li&gt;Tachyon 0.8.0 is deployed and configured to use Swift as
+  underfs&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The general workflow of this post is:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Installation of Tachyon 0.8.0 with Swift as underFS on the mesos-slaves&lt;/li&gt;
+&lt;li&gt;Building Spark 1.6.0-SNAPSHOT from latest master branch with Tachyon 0.8.0
+   and tachyon-underfs-swift as dependencies.&lt;/li&gt;
+&lt;li&gt;Running an example Spark job which uses Tachyon for input
+   and output.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;Tachyon 0.8.0 installation with Swift as underFS&lt;/h2&gt;
+&lt;p&gt;Download and extract Tachyon to the mesos-master and mesos-slave&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;wget http://tachyon-project.org/downloads/files/0.8.0/tachyon-0.8.0-hadoop2.6-bin.tar.gz
+scp tachyon-0.8.0-hadoop2.6-bin.tar.gz mesos-master-1:/srv/
+scp tachyon-0.8.0-hadoop2.6-bin.tar.gz mesos-slave-1:/srv/
+ssh mesos-master-1 &lt;span class="s2"&gt;&amp;quot;cd /srv/ &amp;amp;&amp;amp; tar xzf tachyon-0.8.0-hadoop2.6-bin.tar.gz&amp;quot;&lt;/span&gt;
+ssh mesos-slave-1 &lt;span class="s2"&gt;&amp;quot;cd /srv/ &amp;amp;&amp;amp; tar xzf tachyon-0.8.0-hadoop2.6-bin.tar.gz&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;On both mesos-master-1 and mesos-slave-1, copy /srv/tachyon-0.8.0/conf/tachyon-env.sh.swift
+to /srv/tachyon-0.8.0/conf/tachyon-env.sh&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;mv /srv/tachyon-0.8.0/conf/tachyon-env.sh&lt;span class="o"&gt;{&lt;/span&gt;.swift,&lt;span class="o"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Make minor modifications to /srv/tachyon-0.8.0/conf/tachyon-env.sh on both mesos-master-1 and
+mesos-slave-1:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nb"&gt;export &lt;/span&gt;&lt;span class="nv"&gt;TACHYON_MASTER_ADDRESS&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;192.168.111.54
+&lt;span class="nb"&gt;export &lt;/span&gt;&lt;span class="nv"&gt;TACHYON_UNDERFS_ADDRESS&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;swift://spark.swift1
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;The TACHYON_MASTER_ADDRESS is set to the use the external IP
+of the mesos-master node. The variable TACHYON_UNDERFS_ADDRESS
+is set to swift://spark.swift1 where spark is the name of the
+Swift container and swift1 is an arbitary name to specify
+an Swift connection object defined in tachyon/conf/core-site.xml.&lt;/p&gt;
+&lt;p&gt;Now in core-site.xml we need to define how to connect to Swift.
+This is done by changing settings for swift1 provider in
+core-site.xml. I'm using Keystone
+to authenticate with Swift and also to retreive the
+correct endpoint.&lt;/p&gt;
+&lt;p&gt;I've changed core-site.xml according to my Swift environment and
+copied it to tachyon/conf/core-site.xml. The following changes were made:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&amp;lt;property&amp;gt;
+ &amp;lt;name&amp;gt;fs.swift.service.swift1.location-aware&amp;lt;/name&amp;gt;
+ &amp;lt;value&amp;gt;false&amp;lt;/value&amp;gt;
+&amp;lt;/property&amp;gt;
+&amp;lt;property&amp;gt;
+  &amp;lt;name&amp;gt;fs.swift.service.swift1.auth.url&amp;lt;/name&amp;gt;
+  &amp;lt;value&amp;gt;http://10.10.10.10:5000/v2.0/tokens&amp;lt;/value&amp;gt;
+&amp;lt;/property&amp;gt;
+&amp;lt;property&amp;gt;
+  &amp;lt;name&amp;gt;fs.swift.service.swift1.http.port&amp;lt;/name&amp;gt;
+  &amp;lt;value&amp;gt;8080&amp;lt;/value&amp;gt;
+&amp;lt;/property&amp;gt;
+&amp;lt;property&amp;gt;
+  &amp;lt;name&amp;gt;fs.swift.service.swift1.region&amp;lt;/name&amp;gt;
+  &amp;lt;value&amp;gt;RegionOne&amp;lt;/value&amp;gt;
+&amp;lt;/property&amp;gt;
+&amp;lt;property&amp;gt;
+  &amp;lt;name&amp;gt;fs.swift.service.swift1.public&amp;lt;/name&amp;gt;
+  &amp;lt;value&amp;gt;true&amp;lt;/value&amp;gt;
+&amp;lt;/property&amp;gt;
+&amp;lt;property&amp;gt;
+  &amp;lt;name&amp;gt;fs.swift.service.swift1.auth.endpoint.prefix&amp;lt;/name&amp;gt;
+  &amp;lt;value&amp;gt;endpoints&amp;lt;/value&amp;gt;
+&amp;lt;/property&amp;gt;
+&amp;lt;property&amp;gt;
+  &amp;lt;name&amp;gt;fs.swift.service.swift1.tenant&amp;lt;/name&amp;gt;
+  &amp;lt;value&amp;gt;spark&amp;lt;/value&amp;gt;
+&amp;lt;/property&amp;gt;
+&amp;lt;property&amp;gt;
+  &amp;lt;name&amp;gt;fs.swift.service.swift1.password&amp;lt;/name&amp;gt;
+  &amp;lt;value&amp;gt;test123&amp;lt;/value&amp;gt;
+&amp;lt;/property&amp;gt;
+&amp;lt;property&amp;gt;
+  &amp;lt;name&amp;gt;fs.swift.service.swift1.username&amp;lt;/name&amp;gt;
+  &amp;lt;value&amp;gt;spark&amp;lt;/value&amp;gt;
+&amp;lt;/property&amp;gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;After all config changes are done we can start launching
+the Tachyon master process on the mesos-master-1 node.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;/srv/tachyon-0.8.0/bin/tachyon-start.sh master -f
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;After successful start of the tachyon master, also start the tachyon worker
+on mesos-slave-1:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;/srv/tachyon-0.8.0/bin/tachyon-start.sh worker SudoMount
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;You should now have Tachyon running and you can access it via
+http://192.168.111.54:19999&lt;/p&gt;
+&lt;h2&gt;Building Spark with Tachyon 0.8.0 and Swift&lt;/h2&gt;
+&lt;p&gt;Checkout latest master branch of spark:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;git clone https://github.com/apache/spark.git
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Apply the following patches to core/pom.xml and make_distribution.sh
+to use tachyon 0.8.0 and to include hdfs as underfs dependency.
+Make sure to exclude mockito-all else the build will fail with&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="gh"&gt;diff --git a/core/pom.xml b/core/pom.xml&lt;/span&gt;
+&lt;span class="gh"&gt;index 570a25c..98285a0 100644&lt;/span&gt;
+&lt;span class="gd"&gt;--- a/core/pom.xml&lt;/span&gt;
+&lt;span class="gi"&gt;+++ b/core/pom.xml&lt;/span&gt;
+&lt;span class="gu"&gt;@@ -262,7 +262,7 @@&lt;/span&gt;
+     &amp;lt;dependency&amp;gt;
+       &amp;lt;groupId&amp;gt;org.tachyonproject&amp;lt;/groupId&amp;gt;
+       &amp;lt;artifactId&amp;gt;tachyon-client&amp;lt;/artifactId&amp;gt;
+&lt;span class="gd"&gt;-      &amp;lt;version&amp;gt;0.8.1&amp;lt;/version&amp;gt;&lt;/span&gt;
+&lt;span class="gi"&gt;+      &amp;lt;version&amp;gt;0.8.0&amp;lt;/version&amp;gt;&lt;/span&gt;
+       &amp;lt;exclusions&amp;gt;
+         &amp;lt;exclusion&amp;gt;
+           &amp;lt;groupId&amp;gt;org.apache.hadoop&amp;lt;/groupId&amp;gt;
+&lt;span class="gu"&gt;@@ -287,6 +287,17 @@&lt;/span&gt;
+       &amp;lt;/exclusions&amp;gt;
+     &amp;lt;/dependency&amp;gt;
+     &amp;lt;dependency&amp;gt;
+&lt;span class="gi"&gt;+      &amp;lt;groupId&amp;gt;org.tachyonproject&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+&lt;span class="gi"&gt;+      &amp;lt;artifactId&amp;gt;tachyon-underfs-swift&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+&lt;span class="gi"&gt;+      &amp;lt;version&amp;gt;0.8.0&amp;lt;/version&amp;gt;&lt;/span&gt;
+&lt;span class="gi"&gt;+      &amp;lt;exclusions&amp;gt;&lt;/span&gt;
+&lt;span class="gi"&gt;+        &amp;lt;exclusion&amp;gt;&lt;/span&gt;
+&lt;span class="gi"&gt;+          &amp;lt;groupId&amp;gt;org.mockito&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+&lt;span class="gi"&gt;+          &amp;lt;artifactId&amp;gt;mockito-all&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+&lt;span class="gi"&gt;+        &amp;lt;/exclusion&amp;gt;&lt;/span&gt;
+&lt;span class="gi"&gt;+      &amp;lt;/exclusions&amp;gt;&lt;/span&gt;
+&lt;span class="gi"&gt;+    &amp;lt;/dependency&amp;gt;&lt;/span&gt;
+&lt;span class="gi"&gt;+    &amp;lt;dependency&amp;gt;&lt;/span&gt;
+       &amp;lt;groupId&amp;gt;org.seleniumhq.selenium&amp;lt;/groupId&amp;gt;
+       &amp;lt;artifactId&amp;gt;selenium-java&amp;lt;/artifactId&amp;gt;
+       &amp;lt;exclusions&amp;gt;
+
+&lt;span class="gh"&gt;diff --git a/make-distribution.sh b/make-distribution.sh&lt;/span&gt;
+&lt;span class="gh"&gt;index e1c2afd..f676678 100755&lt;/span&gt;
+&lt;span class="gd"&gt;--- a/make-distribution.sh&lt;/span&gt;
+&lt;span class="gi"&gt;+++ b/make-distribution.sh&lt;/span&gt;
+&lt;span class="gu"&gt;@@ -33,7 +33,7 @@ SPARK_HOME=&amp;quot;$(cd &amp;quot;`dirname &amp;quot;$0&amp;quot;`&amp;quot;; pwd)&amp;quot;&lt;/span&gt;
+ DISTDIR=&amp;quot;$SPARK_HOME/dist&amp;quot;
+
+ SPARK_TACHYON=false
+&lt;span class="gd"&gt;-TACHYON_VERSION=&amp;quot;0.8.1&amp;quot;&lt;/span&gt;
+&lt;span class="gi"&gt;+TACHYON_VERSION=&amp;quot;0.8.0&amp;quot;&lt;/span&gt;
+ TACHYON_TGZ=&amp;quot;tachyon-${TACHYON_VERSION}-bin.tar.gz&amp;quot;
+ TACHYON_URL=&amp;quot;http://tachyon-project.org/downloads/files/${TACHYON_VERSION}/${TACHYON_TGZ}&amp;quot;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Build Spark with Tachyon and Swift as underfs:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;./make-distribution.sh --name spark-master-tachyon-0.8.0 --tgz --with-tachyon -Pyarn -Phadoop-2.6 -Dhadoop.version&lt;span class="o"&gt;=&lt;/span&gt;2.6.0 -DskipTests
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Add core-site.xml which we used in Tachyon to the Spark tarball. &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;tar xzf spark-1.6.0-SNAPSHOT-bin-spark-master-tachyon-0.8.0.tgz
+cp /srv/tachyon-0.8.0/conf/core-site.xml spark-1.6.0*/conf/core-site.xml
+tar czf spark-1.6.0.tar.gz spark-1.6.0-SNAPSHOT-bin-spark-master-tachyon-0.8.0
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;For some reason Spark also needs core-site.xml with the Swift connection settings
+even though we already configured this in Tachyon.&lt;/p&gt;
+&lt;h2&gt;Running a Spark job with Tachyon as input backed by Swift&lt;/h2&gt;
+&lt;p&gt;Assuming that in our Swift container we have an object called
+output.log we can now create a Spark shell session and use&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;spark-shell
+val &lt;span class="nv"&gt;textFile&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; sc.textFile&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;tachyon://mesos-master-1:19998/output.log&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+textFile.count&lt;span class="o"&gt;()&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;I've also verified that I could successfuly use sequenceFiles and Spark pickleFiles on
+Tachyon with Swift by running the Python spark jobs of my other project: 
+&lt;a href="https://github.com/samos123/computer-vision-cloud-platform"&gt;Spark Computer vision&lt;/a&gt;&lt;/p&gt;</summary><category term="spark"></category><category term="tachyon"></category><category term="swift"></category><category term="hadoop"></category><category term="openstack"></category><category term="big data"></category></entry><entry><title>Setup IPv6 in Tsinghua on Linux(ArchLinux))</title><link href="http://samos-it.com/posts/ipv6-tsinghua-linux-isatapd.html" rel="alternate"></link><updated>2015-10-08T12:42:00+02:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2015-10-08:posts/ipv6-tsinghua-linux-isatapd.html</id><summary type="html">&lt;p&gt;Tsinghua university uses &lt;a href="https://en.wikipedia.org/wiki/ISATAP"&gt;ISATAP&lt;/a&gt; to provide IPv6 connectivity to students.
 In Linux you can use the &lt;a href="http://www.saschahlusiak.de/linux/isatap.htm"&gt;isatapd&lt;/a&gt; program to create an ISATAP tunnel based on an IPv4 device.&lt;/p&gt;
 &lt;p&gt;You can use the isatapd command as follows to establish an ISATAPD tunnel:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;isatapd --router isatap.tsinghua.edu.cn
