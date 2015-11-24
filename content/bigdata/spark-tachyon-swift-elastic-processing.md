@@ -18,6 +18,9 @@ finally when the job is finished, destroy the VMs. This kind of elastic
 data processing, using Tachyon for fast localized in-memory storage gives you high
 performance and also elasticity of the cloud.
 
+The general architecture looks like this:
+![Big Data Cloud Architecture](/images/big-data-cloud-architecture.png)
+
 Assumptions:
 
 - You have a working Mesos cluster that can run Spark

@@ -10,6 +10,8 @@ data from Swift, then when finished store the result back in Swift and
 finally when the job is finished, destroy the VMs. This kind of elastic
 data processing, using Tachyon for fast localized in-memory storage gives you high
 performance and also elasticity of the cloud.&lt;/p&gt;
+&lt;p&gt;The general architecture looks like this:
+&lt;img alt="Big Data Cloud Architecture" src="/images/big-data-cloud-architecture.png" /&gt;&lt;/p&gt;
 &lt;p&gt;Assumptions:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;You have a working Mesos cluster that can run Spark
