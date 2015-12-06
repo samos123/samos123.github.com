@@ -79,6 +79,22 @@ Sam Stoelinga (Samos IT) - Blog            </a>
         <div class="col-sm-9">
 
             <article>
+                <h2><a href="http://samos-it.com/posts/using-sendgrid-with-django-on-heroku-how-to-find-your-sendgrid-password-on-heroku.html">Using Sendgrid with Django on Heroku (How to find your Sendgrid password on Heroku)</a></h2>
+                <div class="summary"><p>While setting up sentgrid I was searching for my password of sendgrid,
+but coudn't find it. You can get it in the following way:</p>
+<div class="highlight"><pre>heroku config --long
+</pre></div>
+
+
+<p>Which will show the parameters:<br />
+SENDGRID_PASSWORD, SENDGRID_USERNAME</p>
+<p>After you get your username don't forget to add it to django settings:  </p>
+<div class="highlight"><pre>EMAIL ...</pre></div>
+                    <a class="btn btn-default btn-xs" href="http://samos-it.com/posts/using-sendgrid-with-django-on-heroku-how-to-find-your-sendgrid-password-on-heroku.html">more ...</a>
+                </div>
+            </article>
+            <hr/>
+            <article>
                 <h2><a href="http://samos-it.com/posts/django-custom-view-decorator-with-arguments.html">Django Custom View Decorator with Arguments</a></h2>
                 <div class="summary"><p>To make my life easier I made a simple decorator which checks if the
 parameters are present in the request.POST or request.GET and returns a
@@ -197,16 +213,6 @@ Google ...</p>
                 </div>
             </article>
             <hr/>
-            <article>
-                <h2><a href="http://samos-it.com/posts/the-watercube-and-its-big-waterpark.html">The Watercube and it's big waterpark</a></h2>
-                <div class="summary"><p>The day before yesterday we went to a big waterpark inside the Watercube
-in the Olympic Park. We watched some pictures and thought it was really
-big, but when we came there we noticed it wasn't as big as we thought :P
-Pictures not only lie with girls, but ...</p>
-                    <a class="btn btn-default btn-xs" href="http://samos-it.com/posts/the-watercube-and-its-big-waterpark.html">more ...</a>
-                </div>
-            </article>
-            <hr/>
 
         <ul class="pagination">
                 <li class="prev"><a href="http://samos-it.com/index2.html">&laquo;</a>
@@ -277,7 +283,7 @@ Pictures not only lie with girls, but ...</p>
    <div class="container">
       <hr>
       <div class="row">
-         <div class="col-xs-10">&copy; 2015 Sam Stoelinga
+         <div class="col-xs-10">&copy; 2016 Sam Stoelinga
             &middot; Powered by <a href="https://github.com/DandyDev/pelican-bootstrap3" target="_blank">pelican-bootstrap3</a>,
             <a href="http://docs.getpelican.com/" target="_blank">Pelican</a>,
             <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>         </div>
