@@ -234,7 +234,7 @@ to extract SURF or SIFT features from an image.</p>
 <p>Using the above Spark application we can start to extract features from our image dataset in Swift.
 As input we provide the sequencefile containing <code>&lt;fileName: String, image: Bytes&gt;</code>. The extracted
 features we write out as parquet file. The following command extracts the sift features from our dataset:</p>
-<div class="highlight"><pre>spark-submit --executor-memory 8g feature_extraction.py sift swift://spark.swift1/200-images.hseq swift://spark.swift1/200-images-sift1.parquet 100
+<div class="highlight"><pre>spark-submit --executor-memory 8g feature_extraction.py sift swift://spark.swift1/caltech-256.hseq swift://spark.swift1/caltech-256-sift1.parquet 100
 </pre></div>
 
 

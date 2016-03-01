@@ -108,7 +108,7 @@ As input we provide the sequencefile containing `<fileName: String, image: Bytes
 features we write out as parquet file. The following command extracts the sift features from our dataset:
 
     :::bash
-    spark-submit --executor-memory 8g feature_extraction.py sift swift://spark.swift1/200-images.hseq swift://spark.swift1/200-images-sift1.parquet 100
+    spark-submit --executor-memory 8g feature_extraction.py sift swift://spark.swift1/caltech-256.hseq swift://spark.swift1/caltech-256-sift1.parquet 100
 
 ### K-Means Dictionary generation on SIFT features
 We can now generate our dictionary of features through Spark's MLLib KMeans algorithm.
