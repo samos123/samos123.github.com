@@ -79,17 +79,29 @@ Sam Stoelinga (Samos IT) - Blog            </a>
         <div class="col-sm-9">
 
             <article>
+                <h2><a href="http://samos-it.com/posts/only-use-worker-when-required-on-heroku-with-djangopython.html">Only use worker when required on heroku with Django/Python</a></h2>
+                <div class="summary"><p>For a mobile project I required a background worker which sents an email
+with 300 generated QR codes zipped together as attachment. This costs
+quite some time so we need a background worker to execute this task.</p>
+<p>I wanted to achieve the following result:</p>
+<ul>
+<li>When the user wants to generate ...</li></ul>
+                    <a class="btn btn-default btn-xs" href="http://samos-it.com/posts/only-use-worker-when-required-on-heroku-with-djangopython.html">more ...</a>
+                </div>
+            </article>
+            <hr/>
+            <article>
                 <h2><a href="http://samos-it.com/posts/using-sendgrid-with-django-on-heroku-how-to-find-your-sendgrid-password-on-heroku.html">Using Sendgrid with Django on Heroku (How to find your Sendgrid password on Heroku)</a></h2>
                 <div class="summary"><p>While setting up sentgrid I was searching for my password of sendgrid,
 but coudn't find it. You can get it in the following way:</p>
-<div class="highlight"><pre>heroku config --long
+<div class="highlight"><pre><span></span>heroku config --long
 </pre></div>
 
 
 <p>Which will show the parameters:<br />
 SENDGRID_PASSWORD, SENDGRID_USERNAME</p>
 <p>After you get your username don't forget to add it to django settings:  </p>
-<div class="highlight"><pre>EMAIL ...</pre></div>
+<div class="highlight"><pre><span></span>EMAIL ...</pre></div>
                     <a class="btn btn-default btn-xs" href="http://samos-it.com/posts/using-sendgrid-with-django-on-heroku-how-to-find-your-sendgrid-password-on-heroku.html">more ...</a>
                 </div>
             </article>
@@ -109,12 +121,12 @@ each parameter to check if ...</p>
                 <h2><a href="http://samos-it.com/posts/simple-function-to-return-json-in-django.html">Simple function to return json in Django</a></h2>
                 <div class="summary"><p>Just a small code snippet I use when I need to return json, comments are
 welcomed.</p>
-<div class="highlight"><pre><span class="kn">from</span> <span class="nn">django.http</span> <span class="kn">import</span> <span class="n">HttpResponse</span>  
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django.http</span> <span class="kn">import</span> <span class="n">HttpResponse</span>  
 <span class="kn">from</span> <span class="nn">django.utils</span> <span class="kn">import</span> <span class="n">simplejson</span> <span class="k">as</span> <span class="n">json</span>
 
 <span class="k">def</span> <span class="nf">json_response</span><span class="p">(</span><span class="n">dict_to_convert_to_json</span><span class="p">):</span>  
     <span class="k">return</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">dict_to_convert_to_json</span><span class="p">),</span>
-                        <span class="n">mimetype</span><span class="o">=</span><span class="s">&quot;application/json&quot;</span><span class="p">)</span>
+                        <span class="n">mimetype</span><span class="o">=</span><span class="s2">&quot;application/json&quot;</span><span class="p">)</span>
 </pre></div>
 
 
@@ -139,7 +151,7 @@ available and ...</p>
                 <div class="summary"><p>I always keep forgetting how to import a SQL dump into postgres and
 found it always hard to find the right documentation. So I thought lets
 share it:</p>
-<div class="highlight"><pre>psql -d dbname -U username -f dumpfile.sql
+<div class="highlight"><pre><span></span>psql -d dbname -U username -f dumpfile.sql
 </pre></div>
 
 
@@ -150,7 +162,7 @@ share it:</p>
             <hr/>
             <article>
                 <h2><a href="http://samos-it.com/posts/installing-fastboot-for-ubuntu-linux.html">Installing fastboot for Ubuntu (Linux)</a></h2>
-                <div class="summary"><div class="highlight"><pre>mkdir ~/fastboot  
+                <div class="summary"><div class="highlight"><pre><span></span>mkdir ~/fastboot  
 <span class="nb">cd</span> ~/fastboot  
 wget http://xt720.ru/Tools/fastboot  
 chmod +x fastboot  
@@ -197,19 +209,6 @@ think? Just for fun and experience. I often buy food on the streets here
 myself, stuff like sushi, pancakes, noodles etc and I really like it.
 It's quick fun and tasty. So I also wanted to do ...</p>
                     <a class="btn btn-default btn-xs" href="http://samos-it.com/posts/samwich-sams-tasty-sandwiches.html">more ...</a>
-                </div>
-            </article>
-            <hr/>
-            <article>
-                <h2><a href="http://samos-it.com/posts/the-beijing-bike-tour-and-china-belly-problems.html">The Beijing Bike Tour and China Belly Problems</a></h2>
-                <div class="summary"><p>New
-pics are added to the same
-album: <a href="https://picasaweb.google.com/118136053313378320646/Beijing2011WithBart#">https://picasaweb.google.com/118136053313378320646/Beijing2011WithBart#</a></p>
-<p>The day before yesterday went on bike tour to some famous lakes in
-Beijing (Beihai, Houhai, Qianhai, Xihai) and some temple which was
-closed already :( We biked the following path I created the route on
-Google ...</p>
-                    <a class="btn btn-default btn-xs" href="http://samos-it.com/posts/the-beijing-bike-tour-and-china-belly-problems.html">more ...</a>
                 </div>
             </article>
             <hr/>

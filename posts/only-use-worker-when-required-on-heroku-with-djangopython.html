@@ -152,16 +152,16 @@ tutorial</a>.</p>
 <a href="https://github.com/heroku/heroku.py">Heroku.py</a>. This API let's us
 scale and stop / start proccesses with Python. The official
 documentation tells to do it this way:</p>
-<div class="highlight"><pre><span class="kn">import</span> <span class="nn">heroku</span>  
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">heroku</span>  
 <span class="n">cloud</span> <span class="o">=</span> <span class="n">heroku</span><span class="o">.</span><span class="n">from_key</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">HEROKU_APIKEY</span><span class="p">)</span>  
-<span class="n">app</span><span class="o">.</span><span class="n">processes</span><span class="p">[</span><span class="s">&#39;celeryd&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>  
-<span class="c"># now execute our celerytask  </span>
+<span class="n">app</span><span class="o">.</span><span class="n">processes</span><span class="p">[</span><span class="s1">&#39;celeryd&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>  
+<span class="c1"># now execute our celerytask  </span>
 <span class="n">generate_qr_codes</span><span class="o">.</span><span class="n">delay</span><span class="p">(</span><span class="n">product_id</span><span class="o">=</span><span class="n">product</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
 </pre></div>
 
 
 <p>The only problem is that this line actually does not work:</p>
-<div class="highlight"><pre><span class="n">app</span><span class="o">.</span><span class="n">processes</span><span class="p">[</span><span class="s">&#39;celeryd&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><span class="n">app</span><span class="o">.</span><span class="n">processes</span><span class="p">[</span><span class="s1">&#39;celeryd&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 
 
@@ -172,34 +172,34 @@ place...</p>
 Python library I decided to use their internal API as they have an easy way of
 calling Heroku HTTP resources. It's a quick work around to do what I
 wanted:  </p>
-<div class="highlight"><pre><span class="n">cloud</span><span class="o">.</span><span class="n">_http_resource</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;POST&#39;</span><span class="p">,</span>
-                    <span class="n">resource</span><span class="o">=</span><span class="p">(</span><span class="s">&#39;apps&#39;</span><span class="p">,</span> <span class="s">&#39;heroku_processname&#39;</span><span class="p">,</span> <span class="s">&#39;ps&#39;</span><span class="p">,</span> <span class="s">&#39;scale&#39;</span><span class="p">),</span>  
-<span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="s">&#39;celeryd&#39;</span><span class="p">,</span> <span class="s">&#39;qty&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">})</span>
-<span class="c"># qty 0 is scale to 0 processes, if you want 1 process running change to qty 1</span>
+<div class="highlight"><pre><span></span><span class="n">cloud</span><span class="o">.</span><span class="n">_http_resource</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span>
+                    <span class="n">resource</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;apps&#39;</span><span class="p">,</span> <span class="s1">&#39;heroku_processname&#39;</span><span class="p">,</span> <span class="s1">&#39;ps&#39;</span><span class="p">,</span> <span class="s1">&#39;scale&#39;</span><span class="p">),</span>  
+<span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;celeryd&#39;</span><span class="p">,</span> <span class="s1">&#39;qty&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">})</span>
+<span class="c1"># qty 0 is scale to 0 processes, if you want 1 process running change to qty 1</span>
 </pre></div>
 
 
 <p>I have created an issue in the github repo about not being able to scale
 a non running process: <a href="https://github.com/heroku/heroku.py/issues/10">https://github.com/heroku/heroku.py/issues/10</a></p>
 <p>This is how our celery task looks like:  </p>
-<div class="highlight"><pre><span class="kn">import</span> <span class="nn">logging</span>  
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">logging</span>  
 <span class="kn">from</span> <span class="nn">celery.decorators</span> <span class="kn">import</span> <span class="n">task</span>
 
 <span class="nd">@task</span><span class="p">()</span>  
 <span class="k">def</span> <span class="nf">generate_qrs</span><span class="p">(</span><span class="n">product_id</span><span class="p">):</span>  
     <span class="k">try</span><span class="p">:</span>  
         <span class="n">y</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">product_id</span>  
-        <span class="c"># this is where your code will be that gets executed in the background  </span>
+        <span class="c1"># this is where your code will be that gets executed in the background  </span>
     <span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span>  
-        <span class="n">logging</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s">&#39;Exception occured in the celery task to generate QR codes&#39;</span><span class="p">)</span>  
+        <span class="n">logging</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s1">&#39;Exception occured in the celery task to generate QR codes&#39;</span><span class="p">)</span>  
     <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">DEBUG</span> <span class="o">==</span> <span class="bp">False</span><span class="p">:</span>
         <span class="kn">import</span> <span class="nn">heroku</span>
         <span class="n">cloud</span> <span class="o">=</span> <span class="n">heroku</span><span class="o">.</span><span class="n">from_key</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">HEROKU_APIKEY</span><span class="p">)</span>  
-        <span class="n">app</span> <span class="o">=</span> <span class="n">cloud</span><span class="o">.</span><span class="n">apps</span><span class="p">[</span><span class="s">&#39;appname&#39;</span><span class="p">]</span>  
-        <span class="n">cloud</span><span class="o">.</span><span class="n">_http_resource</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;POST&#39;</span><span class="p">,</span> <span class="n">resource</span><span class="o">=</span><span class="p">(</span><span class="s">&#39;apps&#39;</span><span class="p">,</span> <span class="s">&#39;heroku_processname&#39;</span><span class="p">,</span> <span class="s">&#39;ps&#39;</span><span class="p">,</span> <span class="s">&#39;scale&#39;</span><span class="p">),</span>
-                             <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="s">&#39;celeryd&#39;</span><span class="p">,</span> <span class="s">&#39;qty&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">})</span>
-        <span class="c"># the above line will stop the celeryd worker, so we dont have to pay</span>
-        <span class="c"># for the woker only when it&#39;s actually executing tasks</span>
+        <span class="n">app</span> <span class="o">=</span> <span class="n">cloud</span><span class="o">.</span><span class="n">apps</span><span class="p">[</span><span class="s1">&#39;appname&#39;</span><span class="p">]</span>  
+        <span class="n">cloud</span><span class="o">.</span><span class="n">_http_resource</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="n">resource</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;apps&#39;</span><span class="p">,</span> <span class="s1">&#39;heroku_processname&#39;</span><span class="p">,</span> <span class="s1">&#39;ps&#39;</span><span class="p">,</span> <span class="s1">&#39;scale&#39;</span><span class="p">),</span>
+                             <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;celeryd&#39;</span><span class="p">,</span> <span class="s1">&#39;qty&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">})</span>
+        <span class="c1"># the above line will stop the celeryd worker, so we dont have to pay</span>
+        <span class="c1"># for the woker only when it&#39;s actually executing tasks</span>
 </pre></div>
             </div>
             <!-- /.entry-content -->

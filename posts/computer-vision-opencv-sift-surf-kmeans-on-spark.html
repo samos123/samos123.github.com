@@ -157,14 +157,14 @@ files to be stored as a SequenceFile with key=filename and value=raw_bytes. The 
 tested with HDFS and OpenStack Swift.</p>
 <p>The following commands show how to download Caltech-256 dataset consisting of JPG images.
 Then upload the downloaded images to OpenStack Swift in sequence file format:</p>
-<div class="highlight"><pre><span class="c"># Download and compile the hadoop sequencefile upload tool</span>
+<div class="highlight"><pre><span></span><span class="c1"># Download and compile the hadoop sequencefile upload tool</span>
 git clone https://github.com/samos123/hadoop-sequence-file-upload
-<span class="nb">cd </span>hadoop-sequence-file-upload
+<span class="nb">cd</span> hadoop-sequence-file-upload
 mvn clean compile assembly:single
-<span class="c">#  Download / extract calltech-256 dataset</span>
+<span class="c1">#  Download / extract calltech-256 dataset</span>
 axel http://www.vision.caltech.edu/Image_Datasets/Caltech256/256_ObjectCategories.tar
 tar xf 256_ObjectCategories.tar
-<span class="c"># Upload to Swift, this assumes /etc/hadoop/conf/core-site.xml is used to store Swift details</span>
+<span class="c1"># Upload to Swift, this assumes /etc/hadoop/conf/core-site.xml is used to store Swift details</span>
 ./upload-to-sequence-file.sh 256_ObjectCategories/ swift://spark.swift1/caltech-256.hseq
 </pre></div>
 
@@ -173,7 +173,7 @@ tar xf 256_ObjectCategories.tar
 <h3>Extract SIFT/SURF features using OpenCV on Spark</h3>
 <p>I've created a simple Spark application that uses OpenCV
 to extract SURF or SIFT features from an image.</p>
-<div class="highlight"><pre><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">io</span>
 <span class="kn">import</span> <span class="nn">sys</span>
@@ -192,9 +192,9 @@ to extract SURF or SIFT features from an image.</p>
             <span class="n">imgfilename</span><span class="p">,</span> <span class="n">imgbytes</span> <span class="o">=</span> <span class="n">imgfile_imgbytes</span>
             <span class="n">nparr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="kp">fromstring</span><span class="p">(</span><span class="nb">buffer</span><span class="p">(</span><span class="n">imgbytes</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
             <span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imdecode</span><span class="p">(</span><span class="n">nparr</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">feature_name</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&quot;surf&quot;</span><span class="p">,</span> <span class="s">&quot;SURF&quot;</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">feature_name</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;surf&quot;</span><span class="p">,</span> <span class="s2">&quot;SURF&quot;</span><span class="p">]:</span>
                 <span class="n">extractor</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">SURF</span><span class="p">()</span>
-            <span class="k">elif</span> <span class="n">feature_name</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&quot;sift&quot;</span><span class="p">,</span> <span class="s">&quot;SIFT&quot;</span><span class="p">]:</span>
+            <span class="k">elif</span> <span class="n">feature_name</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;sift&quot;</span><span class="p">,</span> <span class="s2">&quot;SIFT&quot;</span><span class="p">]:</span>
                 <span class="n">extractor</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">SIFT</span><span class="p">()</span>
 
             <span class="n">kp</span><span class="p">,</span> <span class="n">descriptors</span> <span class="o">=</span> <span class="n">extractor</span><span class="o">.</span><span class="n">detectAndCompute</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
@@ -207,8 +207,8 @@ to extract SURF or SIFT features from an image.</p>
     <span class="k">return</span> <span class="n">extract_opencv_features_nested</span>
 
 
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
-    <span class="n">sc</span> <span class="o">=</span> <span class="n">SparkContext</span><span class="p">(</span><span class="n">appName</span><span class="o">=</span><span class="s">&quot;feature_extractor&quot;</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">sc</span> <span class="o">=</span> <span class="n">SparkContext</span><span class="p">(</span><span class="n">appName</span><span class="o">=</span><span class="s2">&quot;feature_extractor&quot;</span><span class="p">)</span>
     <span class="n">sqlContext</span> <span class="o">=</span> <span class="n">SQLContext</span><span class="p">(</span><span class="n">sc</span><span class="p">)</span>
 
     <span class="k">try</span><span class="p">:</span>
@@ -217,8 +217,8 @@ to extract SURF or SIFT features from an image.</p>
         <span class="n">feature_parquet_path</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
         <span class="n">partitions</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span>
     <span class="k">except</span><span class="p">:</span>
-        <span class="k">print</span><span class="p">(</span><span class="s">&quot;Usage: spark-submit feature_extraction.py &lt;feature_name(sift or surf)&gt; &quot;</span>
-              <span class="s">&quot;&lt;image_sequencefile_input_path&gt; &lt;feature_sequencefile_output_path&gt; &lt;partitions&gt;&quot;</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Usage: spark-submit feature_extraction.py &lt;feature_name(sift or surf)&gt; &quot;</span>
+              <span class="s2">&quot;&lt;image_sequencefile_input_path&gt; &lt;feature_sequencefile_output_path&gt; &lt;partitions&gt;&quot;</span><span class="p">)</span>
 
     <span class="n">images</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">sequenceFile</span><span class="p">(</span><span class="n">image_seqfile_path</span><span class="p">,</span> <span class="n">minSplits</span><span class="o">=</span><span class="n">partitions</span><span class="p">)</span>
 
@@ -226,7 +226,7 @@ to extract SURF or SIFT features from an image.</p>
     <span class="n">features</span> <span class="o">=</span> <span class="n">features</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">)</span>
     <span class="n">features</span> <span class="o">=</span> <span class="n">features</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">(</span><span class="n">Row</span><span class="p">(</span><span class="n">fileName</span><span class="o">=</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">features</span><span class="o">=</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="kp">tolist</span><span class="p">())))</span>
     <span class="n">featuresSchema</span> <span class="o">=</span> <span class="n">sqlContext</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
-    <span class="n">featuresSchema</span><span class="o">.</span><span class="n">registerTempTable</span><span class="p">(</span><span class="s">&quot;images&quot;</span><span class="p">)</span>
+    <span class="n">featuresSchema</span><span class="o">.</span><span class="n">registerTempTable</span><span class="p">(</span><span class="s2">&quot;images&quot;</span><span class="p">)</span>
     <span class="n">featuresSchema</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">parquet</span><span class="p">(</span><span class="n">feature_parquet_path</span><span class="p">)</span>
 </pre></div>
 
@@ -234,7 +234,7 @@ to extract SURF or SIFT features from an image.</p>
 <p>Using the above Spark application we can start to extract features from our image dataset in Swift.
 As input we provide the sequencefile containing <code>&lt;fileName: String, image: Bytes&gt;</code>. The extracted
 features we write out as parquet file. The following command extracts the sift features from our dataset:</p>
-<div class="highlight"><pre>spark-submit --executor-memory 8g feature_extraction.py sift swift://spark.swift1/caltech-256.hseq swift://spark.swift1/caltech-256-sift1.parquet 100
+<div class="highlight"><pre><span></span>spark-submit --executor-memory 8g feature_extraction.py sift swift://spark.swift1/caltech-256.hseq swift://spark.swift1/caltech-256-sift1.parquet 100
 </pre></div>
 
 
@@ -242,7 +242,7 @@ features we write out as parquet file. The following command extracts the sift f
 <p>We can now generate our dictionary of features through Spark's MLLib KMeans algorithm.
 The below application is used to train our KMeans model using the features generated in the
 previous step as input dataset.</p>
-<div class="highlight"><pre><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
 <span class="kn">import</span> <span class="nn">io</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">os</span>
@@ -253,8 +253,8 @@ previous step as input dataset.</p>
 <span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">SQLContext</span><span class="p">,</span> <span class="n">Row</span>
 
 
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
-    <span class="n">sc</span> <span class="o">=</span> <span class="n">SparkContext</span><span class="p">(</span><span class="n">appName</span><span class="o">=</span><span class="s">&quot;kmeans_dictionary_creation&quot;</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">sc</span> <span class="o">=</span> <span class="n">SparkContext</span><span class="p">(</span><span class="n">appName</span><span class="o">=</span><span class="s2">&quot;kmeans_dictionary_creation&quot;</span><span class="p">)</span>
     <span class="n">sqlContext</span> <span class="o">=</span> <span class="n">SQLContext</span><span class="p">(</span><span class="n">sc</span><span class="p">)</span>
 
     <span class="k">try</span><span class="p">:</span>
@@ -262,27 +262,27 @@ previous step as input dataset.</p>
         <span class="n">feature_parquet_path</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
         <span class="n">kmeans_model_path</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
     <span class="k">except</span><span class="p">:</span>
-        <span class="k">print</span><span class="p">(</span><span class="s">&quot;Usage: spark-submit kmeans.py &lt;k:clusters&gt; &quot;</span>
-              <span class="s">&quot;&lt;feature_sequencefile_input_path&gt; &lt;kmeans_model_output&gt;&quot;</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Usage: spark-submit kmeans.py &lt;k:clusters&gt; &quot;</span>
+              <span class="s2">&quot;&lt;feature_sequencefile_input_path&gt; &lt;kmeans_model_output&gt;&quot;</span><span class="p">)</span>
 
     <span class="n">features</span> <span class="o">=</span> <span class="n">sqlContext</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">parquet</span><span class="p">(</span><span class="n">feature_parquet_path</span><span class="p">)</span>
 
-    <span class="c"># Create same size vectors of the feature descriptors</span>
-    <span class="c"># flatMap returns every list item as a new row for the RDD</span>
-    <span class="c"># hence transforming x, 128 to x rows of 1, 128 in the RDD.</span>
-    <span class="c"># This is needed for KMeans.</span>
-    <span class="n">features</span> <span class="o">=</span> <span class="n">features</span><span class="o">.</span><span class="n">flatMap</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="s">&#39;features&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">cache</span><span class="p">()</span>
-    <span class="n">model</span> <span class="o">=</span> <span class="n">KMeans</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">maxIterations</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">initializationMode</span><span class="o">=</span><span class="s">&quot;random&quot;</span><span class="p">)</span>
+    <span class="c1"># Create same size vectors of the feature descriptors</span>
+    <span class="c1"># flatMap returns every list item as a new row for the RDD</span>
+    <span class="c1"># hence transforming x, 128 to x rows of 1, 128 in the RDD.</span>
+    <span class="c1"># This is needed for KMeans.</span>
+    <span class="n">features</span> <span class="o">=</span> <span class="n">features</span><span class="o">.</span><span class="n">flatMap</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="s1">&#39;features&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">cache</span><span class="p">()</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">KMeans</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">maxIterations</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">initializationMode</span><span class="o">=</span><span class="s2">&quot;random&quot;</span><span class="p">)</span>
 
     <span class="n">model</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">kmeans_model_path</span><span class="p">)</span>
-    <span class="k">print</span><span class="p">(</span><span class="s">&quot;Clusters have been saved as text file to </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">kmeans_model_path</span><span class="p">)</span>
-    <span class="k">print</span><span class="p">(</span><span class="s">&quot;Final centers: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">clusterCenters</span><span class="p">))</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Clusters have been saved as text file to </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">kmeans_model_path</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Final centers: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">clusterCenters</span><span class="p">))</span>
     <span class="n">sc</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
 </pre></div>
 
 
 <p>Start the spark job with:</p>
-<div class="highlight"><pre>spark-submit --executor-memory 8g kmeans.py <span class="m">1000</span> swift://spark.swift1/caltech-256-sift1.parquet swift://spark.swift1/caltech-256-dictionary
+<div class="highlight"><pre><span></span>spark-submit --executor-memory 8g kmeans.py <span class="m">1000</span> swift://spark.swift1/caltech-256-sift1.parquet swift://spark.swift1/caltech-256-dictionary
 </pre></div>
 
 
@@ -293,7 +293,7 @@ This is done by assigning every row of our x * 128 matrix to a single cluster
 of the KMeans dictionary. The result is a 1 * k representation for each image
 utilizing coding and pooling. For pooling we've implemented a simple max and sum pooling method.</p>
 <p>The following Spark application implements feature coding and pooling:</p>
-<div class="highlight"><pre><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
 <span class="kn">import</span> <span class="nn">functools</span>
 <span class="kn">import</span> <span class="nn">io</span>
 <span class="kn">import</span> <span class="nn">sys</span>
@@ -305,11 +305,11 @@ utilizing coding and pooling. For pooling we've implemented a simple max and sum
 <span class="kn">from</span> <span class="nn">pyspark</span> <span class="kn">import</span> <span class="n">SparkContext</span>
 <span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">SQLContext</span><span class="p">,</span> <span class="n">Row</span>
 
-<span class="n">SUPPORTED_POOLING</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;max&quot;</span><span class="p">,</span> <span class="s">&quot;sum&quot;</span><span class="p">]</span>
+<span class="n">SUPPORTED_POOLING</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;max&quot;</span><span class="p">,</span> <span class="s2">&quot;sum&quot;</span><span class="p">]</span>
 
 <span class="k">def</span> <span class="nf">assign_pooling</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">clusterCenters</span><span class="p">,</span> <span class="n">pooling</span><span class="p">):</span>
-    <span class="n">image_name</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s">&#39;fileName&#39;</span><span class="p">]</span>
-    <span class="n">feature_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="kp">array</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s">&#39;features&#39;</span><span class="p">])</span>
+    <span class="n">image_name</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;fileName&#39;</span><span class="p">]</span>
+    <span class="n">feature_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="kp">array</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;features&#39;</span><span class="p">])</span>
     <span class="n">clusterCenters</span> <span class="o">=</span> <span class="n">clusterCenters</span><span class="o">.</span><span class="n">value</span>
     <span class="n">model</span> <span class="o">=</span> <span class="n">KMeansModel</span><span class="p">(</span><span class="n">clusterCenters</span><span class="p">)</span>
     <span class="n">bow</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="kp">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">clusterCenters</span><span class="p">))</span>
@@ -317,16 +317,16 @@ utilizing coding and pooling. For pooling we've implemented a simple max and sum
     <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">feature_matrix</span><span class="p">:</span>
         <span class="n">k</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
         <span class="n">dist</span> <span class="o">=</span> <span class="n">distance</span><span class="o">.</span><span class="n">euclidean</span><span class="p">(</span><span class="n">clusterCenters</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">x</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">pooling</span> <span class="o">==</span> <span class="s">&quot;max&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">pooling</span> <span class="o">==</span> <span class="s2">&quot;max&quot;</span><span class="p">:</span>
             <span class="n">bow</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">bow</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">dist</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">pooling</span> <span class="o">==</span> <span class="s">&quot;sum&quot;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">pooling</span> <span class="o">==</span> <span class="s2">&quot;sum&quot;</span><span class="p">:</span>
             <span class="n">bow</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">bow</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">+</span> <span class="n">dist</span>
 
     <span class="k">return</span> <span class="n">Row</span><span class="p">(</span><span class="n">fileName</span><span class="o">=</span><span class="n">image_name</span><span class="p">,</span> <span class="n">bow</span><span class="o">=</span><span class="n">bow</span><span class="o">.</span><span class="kp">tolist</span><span class="p">())</span>
 
 
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
-    <span class="n">sc</span> <span class="o">=</span> <span class="n">SparkContext</span><span class="p">(</span><span class="n">appName</span><span class="o">=</span><span class="s">&quot;kmeans_assign&quot;</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">sc</span> <span class="o">=</span> <span class="n">SparkContext</span><span class="p">(</span><span class="n">appName</span><span class="o">=</span><span class="s2">&quot;kmeans_assign&quot;</span><span class="p">)</span>
     <span class="n">sqlContext</span> <span class="o">=</span> <span class="n">SQLContext</span><span class="p">(</span><span class="n">sc</span><span class="p">)</span>
 
     <span class="k">try</span><span class="p">:</span>
@@ -336,12 +336,12 @@ utilizing coding and pooling. For pooling we've implemented a simple max and sum
         <span class="n">pooling</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
 
     <span class="k">except</span><span class="p">:</span>
-        <span class="k">print</span><span class="p">(</span><span class="s">&quot;Usage: spark-submit feature_coding_pooling.py &quot;</span>
-              <span class="s">&quot;&lt;feature_sequencefile_path&gt; &lt;kmeans_model&gt; &quot;</span>
-              <span class="s">&quot;&lt;bow_sequencefile_path&gt; &lt;pooling_method:max&gt;&quot;</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Usage: spark-submit feature_coding_pooling.py &quot;</span>
+              <span class="s2">&quot;&lt;feature_sequencefile_path&gt; &lt;kmeans_model&gt; &quot;</span>
+              <span class="s2">&quot;&lt;bow_sequencefile_path&gt; &lt;pooling_method:max&gt;&quot;</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">pooling</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">SUPPORTED_POOLING</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Pooling method </span><span class="si">%s</span><span class="s"> is not supported. Supported poolings methods: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">pooling</span><span class="p">,</span> <span class="n">SUPPORTED_POOLING</span><span class="p">))</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Pooling method </span><span class="si">%s</span><span class="s2"> is not supported. Supported poolings methods: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">pooling</span><span class="p">,</span> <span class="n">SUPPORTED_POOLING</span><span class="p">))</span>
 
     <span class="n">features</span> <span class="o">=</span> <span class="n">sqlContext</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">parquet</span><span class="p">(</span><span class="n">feature_parquet_path</span><span class="p">)</span>
     <span class="n">model</span> <span class="o">=</span> <span class="n">KMeansModel</span><span class="o">.</span><span class="kp">load</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">kmeans_model_path</span><span class="p">)</span>
@@ -351,14 +351,14 @@ utilizing coding and pooling. For pooling we've implemented a simple max and sum
     <span class="n">features_bow</span> <span class="o">=</span> <span class="n">features</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">assign_pooling</span><span class="p">,</span>
         <span class="n">clusterCenters</span><span class="o">=</span><span class="n">clusterCenters</span><span class="p">,</span> <span class="n">pooling</span><span class="o">=</span><span class="n">pooling</span><span class="p">))</span>
     <span class="n">featuresSchema</span> <span class="o">=</span> <span class="n">sqlContext</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span><span class="n">features_bow</span><span class="p">)</span>
-    <span class="n">featuresSchema</span><span class="o">.</span><span class="n">registerTempTable</span><span class="p">(</span><span class="s">&quot;images&quot;</span><span class="p">)</span>
+    <span class="n">featuresSchema</span><span class="o">.</span><span class="n">registerTempTable</span><span class="p">(</span><span class="s2">&quot;images&quot;</span><span class="p">)</span>
     <span class="n">featuresSchema</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">parquet</span><span class="p">(</span><span class="n">bow_parquet_path</span><span class="p">)</span>
     <span class="n">sc</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
 </pre></div>
 
 
 <p>Execute the spark applicaiton with:</p>
-<div class="highlight"><pre>spark-submit --executor-memory 8g feature_coding_pooling.py swift://spark.swift1/caltech-256-sift1.parquet swift://spark.swift1/caltech-256-dictionary swift://spark.swift1/caltech-256-bow.parquet sum
+<div class="highlight"><pre><span></span>spark-submit --executor-memory 8g feature_coding_pooling.py swift://spark.swift1/caltech-256-sift1.parquet swift://spark.swift1/caltech-256-dictionary swift://spark.swift1/caltech-256-bow.parquet sum
 </pre></div>
             </div>
             <!-- /.entry-content -->

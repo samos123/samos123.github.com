@@ -79,6 +79,17 @@ Sam Stoelinga (Samos IT) - Blog            </a>
         <div class="col-sm-9">
 
             <article>
+                <h2><a href="http://samos-it.com/posts/creating-vm-on-fuel-8.0-master.html">Creating a KVM VM for StackLight on Fuel 8.0 master node</a></h2>
+                <div class="summary"><p>Creating a KVM VM on the Fuel master node is a nice way
+to better utilize server resources for small environments.
+We can run Controller, Monitoring or MongoDB as VM on the Fuel
+node. This blog post explains in detail how to create a KVM VM
+on the Fuel master ...</p>
+                    <a class="btn btn-default btn-xs" href="http://samos-it.com/posts/creating-vm-on-fuel-8.0-master.html">more ...</a>
+                </div>
+            </article>
+            <hr/>
+            <article>
                 <h2><a href="http://samos-it.com/posts/computer-vision-opencv-sift-surf-kmeans-on-spark.html">Running Computer Vision algos on Spark with OpenCV</a></h2>
                 <div class="summary"><p>This post shows several computer vision steps implemented on top of Spark.
 OpenCV is used to extract features on top of OpenStack and Spark MLLib KMeans
@@ -106,7 +117,7 @@ to ...</p>
                 <div class="summary"><p>Tsinghua university uses <a href="https://en.wikipedia.org/wiki/ISATAP">ISATAP</a> to provide IPv6 connectivity to students.
 In Linux you can use the <a href="http://www.saschahlusiak.de/linux/isatap.htm">isatapd</a> program to create an ISATAP tunnel based on an IPv4 device.</p>
 <p>You can use the isatapd command as follows to establish an ISATAPD tunnel:</p>
-<div class="highlight"><pre>isatapd --router isatap.tsinghua.edu.cn
+<div class="highlight"><pre><span></span>isatapd --router isatap.tsinghua.edu.cn
 </pre></div>
 
 
@@ -117,11 +128,10 @@ In Linux you can use the <a href="http://www.saschahlusiak.de/linux/isatap.htm">
             <hr/>
             <article>
                 <h2><a href="http://samos-it.com/posts/sriov-openstack-juno-fuel-6-1.html">Enable SRIOV on OpenStack Juno</a></h2>
-                <div class="summary"><p>Update: Please take a look at the official
-<a href="http://docs.openstack.org/networking-guide/adv_config_sriov.html" target="_blank">
-Networking Guide: Using SRIOV functionality</a>. This is the
-<a target="_blank" href="https://review.openstack.org/#/c/213985/">changeset</a> by me that
-adds the SRIOV documentation.</p>
+                <div class="summary"><p>Update: This blog post is deprecated by the official documentation. Please take a look at the official
+<a href="http://docs.openstack.org/liberty/networking-guide/adv_config_sriov.html" target="_blank">
+Networking Guide: Using SRIOV functionality</a>. Patch set that added the official documentation:
+<a target="_blank" href="https://review.openstack.org/#/c/213985/">changeset</a>. </p>
 <table class="table table-bordered table-hover">
 <caption>Terms used</caption>
 <thead>
@@ -132,8 +142,7 @@ adds the SRIOV documentation.</p>
 <tbody>
 <tr>
 <th scope="row">SRIOV</th>
-<td>Single Root IO Virtualization. SRIOV allows a PCIe device to appear to be multiple separate physical PCIe devices.
-<a target="_blank" href="http://blog.scottlowe.org/2009/12/02/what-is-sr-iov/">What's SRIOV ...</a></td></tr></tbody></thead></table>
+<td>Single Root IO Virtualization. SRIOV allows a PCIe device to appear to be multiple separate ...</td></tr></tbody></thead></table>
                     <a class="btn btn-default btn-xs" href="http://samos-it.com/posts/sriov-openstack-juno-fuel-6-1.html">more ...</a>
                 </div>
             </article>
@@ -184,21 +193,10 @@ public routable IP addresses in a single subnet. For example I got access to the
                 <div class="summary"><p>In order to access other containers from a container it's needed
 to get the private IP address of the other containers. The following
 command is able to get the private ip address of the container.</p>
-<div class="highlight"><pre><span class="gp">$</span> docker inspect --format<span class="o">=</span><span class="s2">&quot;{{.NetworkSettings.IPAddress}}&quot;</span> <span class="nv">$CONTAINER_ID_OR_NAME</span>
+<div class="highlight"><pre><span></span><span class="gp">$</span> docker inspect --format<span class="o">=</span><span class="s2">&quot;{{.NetworkSettings.IPAddress}}&quot;</span> <span class="nv">$CONTAINER_ID_OR_NAME</span>
 <span class="go">172.17.0.15</span>
 </pre></div>
                     <a class="btn btn-default btn-xs" href="http://samos-it.com/posts/docker-get-private-ip-address-of-container.html">more ...</a>
-                </div>
-            </article>
-            <hr/>
-            <article>
-                <h2><a href="http://samos-it.com/posts/docker-multi-website-single-ip-host-haproxy.html">Docker Multiple websites/domains on single ip/host tutorial using a HAproxy as reverse proxy</a></h2>
-                <div class="summary"><p>This post will describe how to expose multiple docker containers
-running websites on port 80 using HAproxy as a reverse proxy.
-This makes it possible to run multiple websites on different domains
-on a single public ip of the host.</p>
-<p>The basic setup is to create 1 container for haproxy ...</p>
-                    <a class="btn btn-default btn-xs" href="http://samos-it.com/posts/docker-multi-website-single-ip-host-haproxy.html">more ...</a>
                 </div>
             </article>
             <hr/>

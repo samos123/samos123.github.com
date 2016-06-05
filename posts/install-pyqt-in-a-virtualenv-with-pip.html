@@ -134,7 +134,7 @@ IOError: [Errno 2] No such file or directory: setup.py</p>
 install. So here is the solution to install it by using pip to download
 the files and configure and install manually.</p>
 <p><strong>Solution</strong> copied from: <a href="http://stackoverflow.com/a/13967084/376445">http://stackoverflow.com/a/13967084/376445</a></p>
-<div class="highlight"><pre>workon myProject  
+<div class="highlight"><pre><span></span>workon myProject  
 pip install --no-install SIP  
 pip install --no-install PyQt  
 <span class="nb">cd</span> ~/.virtualenvs/myProject/build/SIP  
@@ -145,13 +145,13 @@ make install
 python configure.py  
 make  
 make install  
-<span class="nb">cd</span> <span class="o">&amp;&amp;</span> rm -rf ~/.virtualenvs/myProject/build <span class="c"># Optional.</span>
+<span class="nb">cd</span> <span class="o">&amp;&amp;</span> rm -rf ~/.virtualenvs/myProject/build <span class="c1"># Optional.</span>
 </pre></div>
 
 
 <p><strong>Issues I encountered</strong>:</p>
 <ul>
-<li>Missing development headers for qt: <div class="highlight"><pre>~/.virtualenvs/scrapy/build/PyQt# python configure.py --verbose  
+<li>Missing development headers for qt: <div class="highlight"><pre><span></span>~/.virtualenvs/scrapy/build/PyQt# python configure.py --verbose  
 Determining the layout of your Qt installation...  
 /usr/bin/qmake -o qtdirs.mk qtdirs.pro  
 make -f qtdirs.mk 
@@ -167,7 +167,7 @@ Error: Failed to determine the layout of your Qt installation. Try again using  
 </li>
 </ul>
 <p><strong>Soltution:</strong> Install the development headers (Ubuntu 12.04)</p>
-<div class="highlight"><pre>sudo apt-get install libqt4-dev
+<div class="highlight"><pre><span></span>sudo apt-get install libqt4-dev
 </pre></div>
             </div>
             <!-- /.entry-content -->

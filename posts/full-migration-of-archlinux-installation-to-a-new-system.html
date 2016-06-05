@@ -170,7 +170,7 @@ IP: 192.168.1.111</p>
 </li>
 <li>
 <p>After you have created the partitions successfully, mount all partitions to /mnt</p>
-<div class="highlight"><pre>mount /dev/sda2 /mnt
+<div class="highlight"><pre><span></span>mount /dev/sda2 /mnt
 mkdir /mnt/boot
 mount /dev/sda1 /mnt/boot
 mkdir /mnt/home
@@ -181,7 +181,7 @@ mount /dev/sda3 /mnt/home
 </li>
 <li>
 <p>Now go back to the old Archlinux laptop and copy all files to the newly created partitions:</p>
-<div class="highlight"><pre>rsync -azv --progress --exclude<span class="o">=</span>/dev --exclude<span class="o">=</span>/sys / root@192.168.1.111:/mnt/
+<div class="highlight"><pre><span></span>rsync -azv --progress --exclude<span class="o">=</span>/dev --exclude<span class="o">=</span>/sys / root@192.168.1.111:/mnt/
 </pre></div>
 
 
@@ -190,7 +190,7 @@ mount /dev/sda3 /mnt/home
 <li>
 <p>After everything is copied over to the new laptop, we will have to
 change /etc/fstab to look as follows:</p>
-<div class="highlight"><pre>tmpfs /tmp tmpfs nodev,nosuid <span class="m">0</span> 0
+<div class="highlight"><pre><span></span>tmpfs /tmp tmpfs nodev,nosuid <span class="m">0</span> 0
 <span class="nv">LABEL</span><span class="o">=</span>root / ext4 defaults,noatime <span class="m">0</span> 1
 <span class="nv">LABEL</span><span class="o">=</span>home /home ext4 defaults,noatime <span class="m">0</span> 2
 <span class="nv">LABEL</span><span class="o">=</span>boot /boot ext2 defaults,noatime <span class="m">0</span> 2
@@ -220,7 +220,7 @@ blocklists archlinux so after reading the wiki it said I could fix this by using
 <p>I also had to update my modules.d/xxx to not load some specific AMD modules for laptop-mode tools as the new laptop has an intel processor.
 Also has to remove the ati driver and change to intel open source
 driver:</p>
-<div class="highlight"><pre>yaourt -Rs xf86-video-ati
+<div class="highlight"><pre><span></span>yaourt -Rs xf86-video-ati
 yaourt -S xf86-video-nouveau
 </pre></div>
 

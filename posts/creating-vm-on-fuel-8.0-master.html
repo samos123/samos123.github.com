@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en"
+>
+<head>
+    <title>Creating a KVM VM for StackLight on Fuel 8.0 master node - Sam Stoelinga (Samos IT) - Blog</title>
+    <!-- Using the latest rendering mode for IE -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+
+<link rel="canonical" href="http://samos-it.com/posts/creating-vm-on-fuel-8.0-master.html">
+
+        <meta name="author" content="Sam Stoelinga" />
+        <meta name="keywords" content="fuel,centos,openstack" />
+        <meta name="description" content="Creating a KVM VM on the Fuel master node is a nice way to better utilize server resources for small environments. We can run Controller, Monitoring or MongoDB as VM on the Fuel node. This blog post explains in detail how to create a KVM VM on the Fuel master ..." />
+
+        <meta property="og:site_name" content="Sam Stoelinga (Samos IT) - Blog" />
+        <meta property="og:type" content="article"/>
+        <meta property="og:title" content="Creating a KVM VM for StackLight on Fuel 8.0 master node"/>
+        <meta property="og:url" content="http://samos-it.com/posts/creating-vm-on-fuel-8.0-master.html"/>
+        <meta property="og:description" content="Creating a KVM VM on the Fuel master node is a nice way to better utilize server resources for small environments. We can run Controller, Monitoring or MongoDB as VM on the Fuel node. This blog post explains in detail how to create a KVM VM on the Fuel master ..."/>
+        <meta property="article:published_time" content="2016-06-01" />
+            <meta property="article:section" content="Openstack" />
+            <meta property="article:tag" content="fuel" />
+            <meta property="article:tag" content="centos" />
+            <meta property="article:tag" content="openstack" />
+            <meta property="article:author" content="Sam Stoelinga" />
+
+
+    <!-- Bootstrap -->
+        <link rel="stylesheet" href="http://samos-it.com/theme/css/bootstrap.min.css" type="text/css"/>
+    <link href="http://samos-it.com/theme/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="http://samos-it.com/theme/css/pygments/native.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://samos-it.com/theme/css/style.css" type="text/css"/>
+
+
+</head>
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="http://samos-it.com/" class="navbar-brand">
+Sam Stoelinga (Samos IT) - Blog            </a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                        <li >
+                            <a href="http://samos-it.com/category/algorithms.html">Algorithms</a>
+                        </li>
+                        <li >
+                            <a href="http://samos-it.com/category/big-data.html">Big data</a>
+                        </li>
+                        <li >
+                            <a href="http://samos-it.com/category/china.html">China</a>
+                        </li>
+                        <li >
+                            <a href="http://samos-it.com/category/linux.html">Linux</a>
+                        </li>
+                        <li class="active">
+                            <a href="http://samos-it.com/category/openstack.html">Openstack</a>
+                        </li>
+                        <li >
+                            <a href="http://samos-it.com/category/python.html">Python</a>
+                        </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="http://samos-it.com/archives.html"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+</div> <!-- /.navbar -->
+<!-- Banner -->
+<!-- End Banner -->
+<div class="container">
+    <div class="row">
+        <div class="col-sm-9">
+
+    <section id="content">
+        <article>
+            <header class="page-header">
+                <h1>
+                    <a href="http://samos-it.com/posts/creating-vm-on-fuel-8.0-master.html"
+                       rel="bookmark"
+                       title="Permalink to Creating a KVM VM for StackLight on Fuel 8.0 master node">
+                        Creating a KVM VM for StackLight on Fuel 8.0 master node
+                    </a>
+                </h1>
+            </header>
+            <div class="entry-content">
+                <div class="panel">
+                    <div class="panel-body">
+<footer class="post-info">
+    <span class="label label-default">Date</span>
+    <span class="published">
+        <i class="fa fa-calendar"></i><time datetime="2016-06-01T09:31:00+02:00"> Wed 01 June 2016</time>
+    </span>
+
+
+
+<span class="label label-default">Tags</span>
+	<a href="http://samos-it.com/tag/fuel.html">fuel</a>
+        /
+	<a href="http://samos-it.com/tag/centos.html">centos</a>
+        /
+	<a href="http://samos-it.com/tag/openstack.html">openstack</a>
+    
+</footer><!-- /.post-info -->                    </div>
+                </div>
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- samos-it below title -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-0961053069037121"
+     data-ad-slot="7240515610"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+                <p>Creating a KVM VM on the Fuel master node is a nice way
+to better utilize server resources for small environments.
+We can run Controller, Monitoring or MongoDB as VM on the Fuel
+node. This blog post explains in detail how to create a KVM VM
+on the Fuel master node, which can be used for any role defined by
+Fuel. In this example we assign the StackLight monitoring role
+to the VM created on the Fuel master node.</p>
+<p>The general steps are:
+1. Install KVM on Fuel master node (Enable CentOS repo, install kvm and libvirt packages)
+2. Create network bridges on the Fuel master node for Admin/PXE and Management network
+3. Create the KVM VM through libvirt using an XML template
+4. PXE boot the KVM VM such that it gets discovered by Fuel
+5. Assign your desired role to the VMs via Fuel and deploy</p>
+<h1>1. Install KVM and libvirt on the Fuel master node</h1>
+<p>The first step is install KVM and libvirt on the Fuel master node. SSH into Fuel Master node and
+execute the ollowing steps:</p>
+<ol>
+<li>
+<p>Create the file <code>/etc/yum.repos.d/CentOS-base.repo</code> with the following content:</p>
+<div class="highlight"><pre><span></span># CentOS-Base.repo
+[base]
+name=CentOS-$releasever - Base
+mirrorlist=http://mirrorlist.centos.org/?release=$releasever&amp;arch=$basearch&amp;repo=os&amp;infra=$infra
+#baseurl=http://mirror.centos.org/centos/$releasever/os/$basearch/
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
+
+#released updates
+[updates]
+name=CentOS-$releasever - Updates
+mirrorlist=http://mirrorlist.centos.org/?release=$releasever&amp;arch=$basearch&amp;repo=updates&amp;infra=$infra
+#baseurl=http://mirror.centos.org/centos/$releasever/updates/$basearch/
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
+
+#additional packages that may be useful
+[extras]
+name=CentOS-$releasever - Extras
+mirrorlist=http://mirrorlist.centos.org/?release=$releasever&amp;arch=$basearch&amp;repo=extras&amp;infra=$infra
+#baseurl=http://mirror.centos.org/centos/$releasever/extras/$basearch/
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
+
+#additional packages that extend functionality of existing packages
+[centosplus]
+name=CentOS-$releasever - Plus
+mirrorlist=http://mirrorlist.centos.org/?release=$releasever&amp;arch=$basearch&amp;repo=centosplus&amp;infra=$infra
+#baseurl=http://mirror.centos.org/centos/$releasever/centosplus/$basearch/
+gpgcheck=1
+enabled=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
+</pre></div>
+
+
+</li>
+<li>
+<p>Now install the required packages from CentOS repo</p>
+<div class="highlight"><pre><span></span>yum install libvirt qemu-kvm kvm
+</pre></div>
+
+
+</li>
+</ol>
+<h2>2. Create networking bridges for KVM VM</h2>
+<p>Here we create network bridges on the Fuel master node for Admin/PXE and Management network.</p>
+<ol>
+<li>
+<p>Prevent libvirt from starting dnsmasq. Execute the following command, delete the parts with dhcp
+   and change forwarding to none:</p>
+<div class="highlight"><pre><span></span>virsh net-edit default
+</pre></div>
+
+
+</li>
+<li>
+<p>Create the bridge for Admin/PXE network. This step is not using
+    the standard way to create the bridge, because I didn't want to change
+    the network device name to which the IP is bound. It seems that some
+    containers by default use eth0 and host networking. I don't recommend
+    doing it this way, but it "works".</p>
+<p>I created a script which doesn't change eth0, but instead renames
+eth0 to net0 and then creates a bridge named eth0 and assigns the original
+net0 ip address to eth0. I tried to use udev but couldn't get it to work,
+so here we go with a hacky script.</p>
+<p>Create a file <code>/usr/bin/create-eth0-bridge.sh</code> with the following content:</p>
+<div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
+
+<span class="nv">ETH0ADDR</span><span class="o">=</span>10.20.0.2/24
+
+<span class="c1"># Rename eth0 to net0</span>
+ip a flush dev eth0
+ip link <span class="nb">set</span> eth0 down
+ip link <span class="nb">set</span> eth0 name net0
+ip link <span class="nb">set</span> net0 up
+
+<span class="c1"># Create bridge eth0 with net0 as interface</span>
+brctl addbr eth0
+ip link <span class="nb">set</span> eth0 up
+brctl addif eth0 net0
+
+<span class="c1"># Add original eth0addr to bridge</span>
+ip a add <span class="nv">$ETH0ADDR</span> dev eth0
+</pre></div>
+
+
+</li>
+<li>
+<p>Create a systemd service to launch the script after network was done.
+   Create the file <code>/etc/systemd/system/create-eth0-bridge.service</code> with
+   the following content:</p>
+<div class="highlight"><pre><span></span><span class="o">[</span>Unit<span class="o">]</span>
+<span class="nv">Description</span><span class="o">=</span>Create eth0 network bridge <span class="k">for</span> Stacklight VM
+<span class="nv">Wants</span><span class="o">=</span>network-online.target
+<span class="nv">After</span><span class="o">=</span>network-online.target
+
+<span class="o">[</span>Service<span class="o">]</span>
+<span class="nv">ExecStart</span><span class="o">=</span>/usr/bin/create-eth0-bridge.sh
+
+<span class="o">[</span>Install<span class="o">]</span>
+<span class="nv">WantedBy</span><span class="o">=</span>multi-user.target
+</pre></div>
+
+
+<p>Now enable the service to be run on startup by executing the command:</p>
+<div class="highlight"><pre><span></span>systemctl <span class="nb">enable</span> create-eth0-bridge
+</pre></div>
+
+
+</li>
+<li>
+<p>Create the bridge which contains other possible networks. Please
+   note that if you used VLAN tagging then you should add the VLAN
+   trunk port to your bridge. In this example I have a vlan trunk
+   which contains the management network on eth2.</p>
+<p>Create the bridge named br-eth2 and add eth2 as port to the bridge
+with the following commands:</p>
+<div class="highlight"><pre><span></span>brctl addbr br-eth2
+brctl addif br-eth2 eth2
+</pre></div>
+
+
+<p>To make the changes persistent accross reboots create
+the file <code>/etc/sysconfig/network-scripts/ifcfg-br-eth2</code> with the following content:</p>
+<div class="highlight"><pre><span></span>DEVICE=br-eth2
+BOOTPROTO=none
+ONBOOT=yes
+TYPE=Bridge
+NM_CONTROLLED=no
+DELAY=0
+</pre></div>
+
+
+<p>and the file <code>/etc/sysconfig/network-scripts/ifcfg-eth2</code> with the following content:</p>
+<div class="highlight"><pre><span></span>TYPE=Ethernet
+BOOTPROTO=none
+NAME=eth2
+UUID=fe45432f-f08a-4537-9851-d53be572aa00
+DEVICE=eth2
+ONBOOT=yes
+NM_CONTROLLED=no
+BRIDGE=br-eth2
+</pre></div>
+
+
+</li>
+</ol>
+<h2>3. Create the KVM VM</h2>
+<p>In this part we create the KVM VM using libvirt XML to describe
+the VM. In the XML we specify to boot from network first, which
+enables us to use Fuel's PXE booting.</p>
+<ol>
+<li>
+<p>First create the disk for our KVM VM with the following command:</p>
+<div class="highlight"><pre><span></span>qemu-img create -f qcow2 -o <span class="nv">preallocation</span><span class="o">=</span>metadata /var/lib/libvirt/images/monitoring-1.img 300G
+</pre></div>
+
+
+</li>
+<li>
+<p>Create a file <code>monitoring1-vm.xml</code> with the following content:</p>
+<div class="highlight"><pre><span></span><span class="nt">&lt;domain</span> <span class="na">type=</span><span class="s">&#39;kvm&#39;</span> <span class="na">id=</span><span class="s">&#39;2&#39;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;name&gt;</span>monitoring-1<span class="nt">&lt;/name&gt;</span>
+  <span class="nt">&lt;memory</span> <span class="na">unit=</span><span class="s">&#39;KiB&#39;</span><span class="nt">&gt;</span>8388608<span class="nt">&lt;/memory&gt;</span>
+  <span class="nt">&lt;vcpu</span> <span class="na">placement=</span><span class="s">&#39;static&#39;</span> <span class="na">cpuset=</span><span class="s">&#39;0-7&#39;</span><span class="nt">&gt;</span>8<span class="nt">&lt;/vcpu&gt;</span>
+  <span class="nt">&lt;os&gt;</span>
+    <span class="nt">&lt;type</span> <span class="na">arch=</span><span class="s">&#39;x86_64&#39;</span><span class="nt">&gt;</span>hvm<span class="nt">&lt;/type&gt;</span>
+    <span class="nt">&lt;boot</span> <span class="na">dev=</span><span class="s">&#39;network&#39;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;boot</span> <span class="na">dev=</span><span class="s">&#39;hd&#39;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;boot</span> <span class="na">dev=</span><span class="s">&#39;cdrom&#39;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;bootmenu</span> <span class="na">enable=</span><span class="s">&#39;yes&#39;</span><span class="nt">/&gt;</span>
+  <span class="nt">&lt;/os&gt;</span>
+  <span class="nt">&lt;features&gt;</span>
+    <span class="nt">&lt;acpi/&gt;</span>
+    <span class="nt">&lt;apic/&gt;</span>
+    <span class="nt">&lt;pae/&gt;</span>
+  <span class="nt">&lt;/features&gt;</span>
+  <span class="nt">&lt;clock</span> <span class="na">offset=</span><span class="s">&#39;utc&#39;</span><span class="nt">/&gt;</span>
+  <span class="nt">&lt;devices&gt;</span>
+    <span class="nt">&lt;disk</span> <span class="na">type=</span><span class="s">&#39;file&#39;</span> <span class="na">device=</span><span class="s">&#39;disk&#39;</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;driver</span> <span class="na">name=</span><span class="s">&#39;qemu&#39;</span> <span class="na">type=</span><span class="s">&#39;qcow2&#39;</span><span class="nt">/&gt;</span>
+      <span class="nt">&lt;source</span> <span class="na">file=</span><span class="s">&#39;/var/lib/libvirt/images/monitoring-1.img&#39;</span><span class="nt">/&gt;</span>
+      <span class="nt">&lt;target</span> <span class="na">dev=</span><span class="s">&#39;sda&#39;</span> <span class="na">bus=</span><span class="s">&#39;scsi&#39;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/disk&gt;</span>
+    <span class="nt">&lt;interface</span> <span class="na">type=</span><span class="s">&#39;bridge&#39;</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;source</span> <span class="na">bridge=</span><span class="s">&#39;eth0&#39;</span><span class="nt">/&gt;</span>
+      <span class="nt">&lt;model</span> <span class="na">type=</span><span class="s">&#39;virtio&#39;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/interface&gt;</span>
+    <span class="nt">&lt;interface</span> <span class="na">type=</span><span class="s">&#39;bridge&#39;</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;source</span> <span class="na">bridge=</span><span class="s">&#39;br-eth2&#39;</span><span class="nt">/&gt;</span>
+      <span class="nt">&lt;model</span> <span class="na">type=</span><span class="s">&#39;virtio&#39;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/interface&gt;</span>
+    <span class="nt">&lt;graphics</span> <span class="na">type=</span><span class="s">&#39;vnc&#39;</span> <span class="na">port=</span><span class="s">&#39;-1&#39;</span> <span class="na">listen=</span><span class="s">&#39;127.0.0.1&#39;</span><span class="nt">/&gt;</span>
+  <span class="nt">&lt;/devices&gt;</span>
+<span class="nt">&lt;/domain&gt;</span>
+</pre></div>
+
+
+<p>Note you may need to tweak the parameters such as vcpus, memory
+and bridges according to your actual environment.</p>
+</li>
+<li>
+<p>Launch and create the VM from the xml file:</p>
+<div class="highlight"><pre><span></span>virsh define monitoring-1.xml
+virsh start monitoring-1
+</pre></div>
+
+
+</li>
+</ol>
+<h2>4. Fuel PXE booting and assigning roles</h2>
+<p>After you have done the previous steps correctly, you should see
+a new unallocated node pop up. You can now assign any role to this
+new node.</p>
+            </div>
+            <!-- /.entry-content -->
+    <hr/>
+    <section class="comments" id="comments">
+        <h2>Comments</h2>
+
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+            /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+            var disqus_shortname = 'samosit'; // required: replace example with your forum shortname
+
+                var disqus_url = 'http://samos-it.com/posts/creating-vm-on-fuel-8.0-master.html';
+
+            var disqus_config = function () {
+                this.language = "en";
+            };
+
+            /* * * DON'T EDIT BELOW THIS LINE * * */
+            (function () {
+                var dsq = document.createElement('script');
+                dsq.type = 'text/javascript';
+                dsq.async = true;
+                dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by
+            Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+    </section>
+        </article>
+    </section>
+
+        </div>
+        <div class="col-sm-3" id="sidebar">
+            <aside>
+
+<section class="well well-sm">
+    <ul class="list-group list-group-flush">
+            <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Social</span></h4>
+              <ul class="list-group" id="social">
+                <li class="list-group-item"><a href="http://www.linkedin.com/in/sam.stoelinga"><i class="fa fa-linkedin-square fa-lg"></i> linkedin</a></li>
+                <li class="list-group-item"><a href="http://github.com/samos123/"><i class="fa fa-github-square fa-lg"></i> github</a></li>
+              </ul>
+            </li>
+
+
+
+
+    <li class="list-group-item"><h4><i class="fa fa-github fa-lg"></i><span class="icon-label">GitHub Repos</span></h4>
+        <div id="gh_repos">
+            <p class="list-group-item">Status updating...</p>
+        </div>
+    </li>
+    <li class="list-group-item"><h4><i class="fa fa-external-link-square fa-lg"></i><span class="icon-label">Links</span></h4>
+      <ul class="list-group" id="links">
+        <li class="list-group-item">
+            <a href="http://getpelican.com/" target="_blank">
+                Pelican
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://python.org/" target="_blank">
+                Python.org
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://jinja.pocoo.org/" target="_blank">
+                Jinja2
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="#" target="_blank">
+                You can modify those links in your config file
+            </a>
+        </li>
+      </ul>
+    </li>
+    </ul>
+</section>
+            </aside>
+        </div>
+    </div>
+</div>
+<footer>
+   <div class="container">
+      <hr>
+      <div class="row">
+         <div class="col-xs-10">&copy; 2016 Sam Stoelinga
+            &middot; Powered by <a href="https://github.com/DandyDev/pelican-bootstrap3" target="_blank">pelican-bootstrap3</a>,
+            <a href="http://docs.getpelican.com/" target="_blank">Pelican</a>,
+            <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>         </div>
+         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
+      </div>
+   </div>
+</footer>
+<script src="http://samos-it.com/theme/js/jquery.min.js"></script>
+
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="http://samos-it.com/theme/js/bootstrap.min.js"></script>
+
+<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+<script src="http://samos-it.com/theme/js/respond.min.js"></script>
+
+    <!-- GitHub JS -->
+    <script type="text/javascript">
+        $(document).ready(function () {
+            if (!window.jXHR) {
+                var jxhr = document.createElement('script');
+                jxhr.type = 'text/javascript';
+                jxhr.src = 'http://samos-it.com/theme/js/jXHR.js';
+                var s = document.getElementsByTagName('script')[0];
+                s.parentNode.insertBefore(jxhr, s);
+            }
+
+            github.showRepos({
+                user: 'samos123',
+                count: 5,
+                skip_forks: false,
+                target: '#gh_repos'
+            });
+        });
+    </script>
+    <script src="http://samos-it.com/theme/js/github.js" type="text/javascript"></script>
+    <!-- End GitHub JS Code -->
+    <!-- Disqus -->
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'samosit'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function () {
+            var s = document.createElement('script');
+            s.async = true;
+            s.type = 'text/javascript';
+            s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+            (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+        }());
+    </script>
+    <!-- End Disqus Code -->
+    <!-- Google Analytics -->
+    <script type="text/javascript">
+
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-20975967-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function () {
+            var ga = document.createElement('script');
+            ga.type = 'text/javascript';
+            ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
+    <!-- End Google Analytics Code -->
+
+</body>
+</html>
