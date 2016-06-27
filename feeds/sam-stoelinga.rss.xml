@@ -1,11 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <rss version="2.0"><channel><title>Sam Stoelinga (Samos IT) - Blog</title><link>http://samos-it.com/</link><description></description><lastBuildDate>Wed, 01 Jun 2016 09:31:00 +0200</lastBuildDate><item><title>Creating a KVM VM for StackLight on Fuel 8.0 master node</title><link>http://samos-it.com/posts/creating-vm-on-fuel-8.0-master.html</link><description>&lt;p&gt;Creating a KVM VM on the Fuel master node is a nice way
-to better utilize server resources for small environments.
+to better utilize server resources for small environments
+that were deployed already without using Fuel compact install or
+running Fuel as VM itself.
 We can run Controller, Monitoring or MongoDB as VM on the Fuel
 node. This blog post explains in detail how to create a KVM VM
 on the Fuel master node, which can be used for any role defined by
 Fuel. In this example we assign the StackLight monitoring role
 to the VM created on the Fuel master node.&lt;/p&gt;
+&lt;p&gt;Please note that I do not recommend running VMs on Fuel master
+but instead recommend using the compact install functionality
+or running Fuel itself as a VM. This guide is meant for
+people who already deployed Fuel on a physical server
+which is mostly idle but now want to add StackLight LMA
+without adding new server resources.&lt;/p&gt;
 &lt;p&gt;The general steps are:&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;Install KVM on Fuel master node (Enable CentOS repo, install kvm and libvirt packages)&lt;/li&gt;
