@@ -14,13 +14,14 @@ Fuel. In this example we assign the StackLight monitoring role
 to the VM created on the Fuel master node.
 
 The general steps are:
+
 1. Install KVM on Fuel master node (Enable CentOS repo, install kvm and libvirt packages)
 2. Create network bridges on the Fuel master node for Admin/PXE and Management network
 3. Create the KVM VM through libvirt using an XML template
 4. PXE boot the KVM VM such that it gets discovered by Fuel
 5. Assign your desired role to the VMs via Fuel and deploy
 
-# 1. Install KVM and libvirt on the Fuel master node
+# 1. Install KVM and libvirt on the Fuel master
 The first step is install KVM and libvirt on the Fuel master node. SSH into Fuel Master node and
 execute the ollowing steps:
 
