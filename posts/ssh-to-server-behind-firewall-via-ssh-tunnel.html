@@ -137,7 +137,7 @@ via this public server to the server behind a firewall.</p>
 server on the private network that we want to access is 192.168.1.5. Then we
 can create an SSH tunnel from my laptop at home in the
 following way:</p>
-<div class="highlight"><pre><span></span>ssh root@8.8.8.8 -L 2020:192.168.1.5:22
+<div class="highlight"><pre>ssh root@8.8.8.8 -L 2020:192.168.1.5:22
 </pre></div>
 
 
@@ -147,7 +147,7 @@ local port 2020 on my laptop will be forwarded to port
 <p>After the tunnel is created  you can use the following command
 to directly SSH from your home laptop to the private server
 with ip 192.168.1.5:</p>
-<div class="highlight"><pre><span></span>ssh ubuntu@localhost -p 2020
+<div class="highlight"><pre>ssh ubuntu@localhost -p 2020
 </pre></div>
             </div>
             <!-- /.entry-content -->

@@ -84,7 +84,7 @@ Sam Stoelinga (Samos IT) - Blog            </a>
                 <div class="summary"><p>Tsinghua university uses <a href="https://en.wikipedia.org/wiki/ISATAP">ISATAP</a> to provide IPv6 connectivity to students.
 In Linux you can use the <a href="http://www.saschahlusiak.de/linux/isatap.htm">isatapd</a> program to create an ISATAP tunnel based on an IPv4 device.</p>
 <p>You can use the isatapd command as follows to establish an ISATAPD tunnel:</p>
-<div class="highlight"><pre><span></span>isatapd --router isatap.tsinghua.edu.cn
+<div class="highlight"><pre>isatapd --router isatap.tsinghua.edu.cn
 </pre></div>
 
 
@@ -107,7 +107,7 @@ Now you want to add eth1 to a linux bridge so you can hookin VMs on a vlan trunk
                 <div class="summary"><p>In order to access other containers from a container it's needed
 to get the private IP address of the other containers. The following
 command is able to get the private ip address of the container.</p>
-<div class="highlight"><pre><span></span><span class="gp">$</span> docker inspect --format<span class="o">=</span><span class="s2">&quot;{{.NetworkSettings.IPAddress}}&quot;</span> <span class="nv">$CONTAINER_ID_OR_NAME</span>
+<div class="highlight"><pre><span class="gp">$</span> docker inspect --format<span class="o">=</span><span class="s2">&quot;{{.NetworkSettings.IPAddress}}&quot;</span> <span class="nv">$CONTAINER_ID_OR_NAME</span>
 <span class="go">172.17.0.15</span>
 </pre></div>
                     <a class="btn btn-default btn-xs" href="http://samos-it.com/posts/docker-get-private-ip-address-of-container.html">more ...</a>
@@ -139,7 +139,7 @@ via this public server to the server behind a firewall.</p>
             <article>
                 <h2><a href="http://samos-it.com/posts/ignoring-every-channels-joinpartquit-messages-in-irssi.html">Ignoring every channels join/part/quit messages in IRSSI</a></h2>
                 <div class="summary"><p>Tired of all those join part messages?</p>
-<div class="highlight"><pre><span></span>/ignore <span class="se">\*</span> joins  
+<div class="highlight"><pre>/ignore <span class="se">\*</span> joins  
 /ignore <span class="se">\*</span> parts  
 /ignore <span class="se">\*</span> quits  
 /save
@@ -157,7 +157,7 @@ via this public server to the server behind a firewall.</p>
                 <h2><a href="http://samos-it.com/posts/create-tar-archive-of-changedadded-files-in-a-git-commit.html">Create tar archive of changed/added files in a git commit</a></h2>
                 <div class="summary"><p>The following command first gets the changed and added files of a git
 commit and then creates a tar archive of those changed files.</p>
-<div class="highlight"><pre><span></span>git show <span class="o">{{</span>COMMIT_ID<span class="o">}}</span> --name-status <span class="p">|</span> grep -Ew <span class="s1">&#39;^M|A&#39;</span> <span class="p">|</span> awk <span class="s1">&#39;{ print $2 }&#39;</span> <span class="p">|</span> xargs tar czf usb-passthrough.tar.gz
+<div class="highlight"><pre>git show <span class="o">{{</span>COMMIT_ID<span class="o">}}</span> --name-status <span class="p">|</span> grep -Ew <span class="s1">&#39;^M|A&#39;</span> <span class="p">|</span> awk <span class="s1">&#39;{ print $2 }&#39;</span> <span class="p">|</span> xargs tar czf usb-passthrough.tar.gz
 </pre></div>
                     <a class="btn btn-default btn-xs" href="http://samos-it.com/posts/create-tar-archive-of-changedadded-files-in-a-git-commit.html">more ...</a>
                 </div>

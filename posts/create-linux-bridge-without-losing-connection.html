@@ -130,22 +130,22 @@ Sam Stoelinga (Samos IT) - Blog            </a>
 Now you want to add eth1 to a linux bridge so you can hookin VMs on a vlan trunk.</p>
 <p>Solution: Create a script which does everything in 1 go and call this script from screen. Make sure the script is flawless else you still loose your connection.</p>
 <p>This is the script I create-bridge.sh used:</p>
-<div class="highlight"><pre><span></span><span class="c1"># First remove the old vlan device</span>
-ip link <span class="nb">set</span> dev eth1.102 down
+<div class="highlight"><pre><span class="c"># First remove the old vlan device</span>
+ip link <span class="nb">set </span>dev eth1.102 down
 ip link delete eth1.102
 
 
-<span class="c1"># Create the bridge </span>
+<span class="c"># Create the bridge </span>
 brctl addbr br-eth1
 brctl addif br-eth1 eth1
 
-ip link <span class="nb">set</span> eth1 up
-ip link <span class="nb">set</span> br-eth1 up
+ip link <span class="nb">set </span>eth1 up
+ip link <span class="nb">set </span>br-eth1 up
 
-<span class="c1"># Add the vlan tagging ontop of the bridge</span>
+<span class="c"># Add the vlan tagging ontop of the bridge</span>
 vconfig add br-eth1 102
 
-ip link <span class="nb">set</span> br-eth1.102 up
+ip link <span class="nb">set </span>br-eth1.102 up
 ip a add 166.111./24 dev br-eth1.102
 ip route add default via 166.111.80.10
 </pre></div>

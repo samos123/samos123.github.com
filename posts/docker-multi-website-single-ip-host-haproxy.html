@@ -142,13 +142,13 @@ we will use a
 and a 
 <a href="https://registry.hub.docker.com/u/tutum/wordpress/"
    target="_blank">wordpress site container</a>.</p>
-<div class="highlight"><pre><span></span><span class="gp">$</span> <span class="c1"># Run hello world php demo container (test1.domain.com)</span>
+<div class="highlight"><pre><span class="gp">$</span> <span class="c"># Run hello world php demo container (test1.domain.com)</span>
 <span class="gp">$</span> docker run -d tutum/hello-world
 <span class="go">01ec10276761</span>
 <span class="gp">$</span> docker inspect -f <span class="s2">&quot;{{.NetworkSettings.IPAddress}}&quot;</span> 01ec10276761
 <span class="go">172.17.0.26</span>
 
-<span class="gp">$</span> <span class="c1"># Run wordpress container (test2.domain.com)</span>
+<span class="gp">$</span> <span class="c"># Run wordpress container (test2.domain.com)</span>
 <span class="gp">$</span> docker run -d tutum/wordpress
 <span class="go">4d23f10f6b35</span>
 <span class="gp">$</span> docker inspect -f <span class="s2">&quot;{{.NetworkSettings.IPAddress}}&quot;</span> 4d23f10f6b35
@@ -162,17 +162,17 @@ inside a container we need to be able to access the hello-world and
 wordpress container by their private ip accessible from all containers.
 We got this IP using the command: <code>docker inspect -f "{{.NetworkSettings.IPAddress}}" $CONTAINERID</code>.
 Make sure to note down these IPs as they will be used in the haproxy.cfg file.</p>
-<div class="highlight"><pre><span></span><span class="gp">$</span> <span class="c1"># On the host(not container) create directory containing our haproxy config file</span>
+<div class="highlight"><pre><span class="gp">$</span> <span class="c"># On the host(not container) create directory containing our haproxy config file</span>
 <span class="gp">$</span> mkdir ~/haproxy-config
 
-<span class="gp">$</span> <span class="c1"># Create ~/haproxy-config/haproxy.cfg</span>
+<span class="gp">$</span> <span class="c"># Create ~/haproxy-config/haproxy.cfg</span>
 <span class="gp">$</span> vim ~/haproxy-config/haproxy.cfg
 <span class="go">global</span>
 <span class="go">        log 127.0.0.1   local0</span>
 <span class="go">        log 127.0.0.1   local1 notice</span>
 <span class="go">        user haproxy</span>
 <span class="go">        group haproxy</span>
-<span class="gp">        #</span> daemon
+<span class="go">        # daemon</span>
 
 <span class="go">defaults</span>
 <span class="go">        log     global</span>
@@ -198,11 +198,11 @@ Make sure to note down these IPs as they will be used in the haproxy.cfg file.</
 <span class="go">frontend http-in</span>
 <span class="go">        bind *:80</span>
 
-<span class="gp">        #</span> Define hosts based on domain names
+<span class="go">        # Define hosts based on domain names</span>
 <span class="go">        acl host_test1 hdr(host) -i test1.domain.com</span>
 <span class="go">        acl host_test2 hdr(host) -i test2.domain.com</span>
 
-<span class="gp">        #</span><span class="c1"># figure out backend to use based on domainname</span>
+<span class="go">        ## figure out backend to use based on domainname</span>
 <span class="go">        use_backend test1 if host_test1</span>
 <span class="go">        use_backend test2 if host_test2</span>
 
@@ -219,10 +219,10 @@ Make sure to note down these IPs as they will be used in the haproxy.cfg file.</
 <span class="go">    option forwardfor</span>
 <span class="go">    server s1 172.17.0.26:80 # This ip should be ip of wordpress container</span>
 
-<span class="gp">$</span> <span class="c1"># Run haproxy and map the host directory ~/haproxy-config to /haproxy-override of the container</span>
-<span class="gp">$</span> <span class="c1"># See the image README and Dockerfile for info about this override behaviour.</span>
-<span class="gp">$</span> <span class="c1"># HAProxy is exposed on port 80 because all requests to the public ip should</span>
-<span class="gp">$</span> <span class="c1"># go to the HAProxy container.</span>
+<span class="gp">$</span> <span class="c"># Run haproxy and map the host directory ~/haproxy-config to /haproxy-override of the container</span>
+<span class="gp">$</span> <span class="c"># See the image README and Dockerfile for info about this override behaviour.</span>
+<span class="gp">$</span> <span class="c"># HAProxy is exposed on port 80 because all requests to the public ip should</span>
+<span class="gp">$</span> <span class="c"># go to the HAProxy container.</span>
 <span class="gp">$</span> docker run -d -p 80:80 -v ~/haproxy-config:/haproxy-override dockerfile/haproxy
 </pre></div>
 

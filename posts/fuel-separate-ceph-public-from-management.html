@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en"
+>
+<head>
+    <title>Fuel: Separate Ceph Public from Management using Network Templates - Sam Stoelinga (Samos IT) - Blog</title>
+    <!-- Using the latest rendering mode for IE -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+
+<link rel="canonical" href="http://samos-it.com/posts/fuel-separate-ceph-public-from-management.html">
+
+        <meta name="author" content="Sam Stoelinga" />
+        <meta name="keywords" content="openstack,networking,fuel,ceph,mirantis" />
+        <meta name="description" content="This post will demonstrate using Network Templates in Fuel to separate Ceph Public Network from Management Network. By default Fuel combines the ceph public network with the management network. The Ceph Public network is used for communicating from the compute nodes to the Ceph nodes. So in high performant storage ..." />
+
+        <meta property="og:site_name" content="Sam Stoelinga (Samos IT) - Blog" />
+        <meta property="og:type" content="article"/>
+        <meta property="og:title" content="Fuel: Separate Ceph Public from Management using Network Templates"/>
+        <meta property="og:url" content="http://samos-it.com/posts/fuel-separate-ceph-public-from-management.html"/>
+        <meta property="og:description" content="This post will demonstrate using Network Templates in Fuel to separate Ceph Public Network from Management Network. By default Fuel combines the ceph public network with the management network. The Ceph Public network is used for communicating from the compute nodes to the Ceph nodes. So in high performant storage ..."/>
+        <meta property="article:published_time" content="2016-08-27" />
+            <meta property="article:section" content="Openstack" />
+            <meta property="article:tag" content="openstack" />
+            <meta property="article:tag" content="networking" />
+            <meta property="article:tag" content="fuel" />
+            <meta property="article:tag" content="ceph" />
+            <meta property="article:tag" content="mirantis" />
+            <meta property="article:author" content="Sam Stoelinga" />
+
+
+    <!-- Bootstrap -->
+        <link rel="stylesheet" href="http://samos-it.com/theme/css/bootstrap.min.css" type="text/css"/>
+    <link href="http://samos-it.com/theme/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="http://samos-it.com/theme/css/pygments/native.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://samos-it.com/theme/css/style.css" type="text/css"/>
+
+
+</head>
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="http://samos-it.com/" class="navbar-brand">
+Sam Stoelinga (Samos IT) - Blog            </a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                        <li >
+                            <a href="http://samos-it.com/category/algorithms.html">Algorithms</a>
+                        </li>
+                        <li >
+                            <a href="http://samos-it.com/category/big-data.html">Big data</a>
+                        </li>
+                        <li >
+                            <a href="http://samos-it.com/category/china.html">China</a>
+                        </li>
+                        <li >
+                            <a href="http://samos-it.com/category/linux.html">Linux</a>
+                        </li>
+                        <li class="active">
+                            <a href="http://samos-it.com/category/openstack.html">Openstack</a>
+                        </li>
+                        <li >
+                            <a href="http://samos-it.com/category/python.html">Python</a>
+                        </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="http://samos-it.com/archives.html"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+</div> <!-- /.navbar -->
+<!-- Banner -->
+<!-- End Banner -->
+<div class="container">
+    <div class="row">
+        <div class="col-sm-9">
+
+    <section id="content">
+        <article>
+            <header class="page-header">
+                <h1>
+                    <a href="http://samos-it.com/posts/fuel-separate-ceph-public-from-management.html"
+                       rel="bookmark"
+                       title="Permalink to Fuel: Separate Ceph Public from Management using Network Templates">
+                        Fuel: Separate Ceph Public from Management using Network Templates
+                    </a>
+                </h1>
+            </header>
+            <div class="entry-content">
+                <div class="panel">
+                    <div class="panel-body">
+<footer class="post-info">
+    <span class="label label-default">Date</span>
+    <span class="published">
+        <i class="fa fa-calendar"></i><time datetime="2016-08-27T14:01:00+02:00"> Sat 27 August 2016</time>
+    </span>
+
+
+
+<span class="label label-default">Tags</span>
+	<a href="http://samos-it.com/tag/openstack.html">openstack</a>
+        /
+	<a href="http://samos-it.com/tag/networking.html">networking</a>
+        /
+	<a href="http://samos-it.com/tag/fuel.html">fuel</a>
+        /
+	<a href="http://samos-it.com/tag/ceph.html">ceph</a>
+        /
+	<a href="http://samos-it.com/tag/mirantis.html">mirantis</a>
+    
+</footer><!-- /.post-info -->                    </div>
+                </div>
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- samos-it below title -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-0961053069037121"
+     data-ad-slot="7240515610"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+                <p>This post will demonstrate using Network Templates in Fuel to
+separate Ceph Public Network from Management Network. By default
+Fuel combines the ceph public network with the management network.
+The Ceph Public network is used for communicating from the compute nodes
+to the Ceph nodes. So in high performant storage networks we would like to be
+able to isolate this network from any other network such that we can
+guarantee performance.</p>
+<p>Fuel Network Templates allow us separate or combine networks. The general workflow
+for separating the Ceph Public network is as follows:</p>
+<ol>
+<li>Create a new Network Group for the new network</li>
+<li>Write and upload a network template that defines how the newly created network should be used</li>
+<li>Review and tune the actual Network settings via the CLI</li>
+</ol>
+<h2>Demo environment</h2>
+<p>This blog post is using the following example environment:</p>
+<ul>
+<li>5 x VirtualBox VMs</li>
+<li>1 x Fuel Master 9.0</li>
+<li>1 x Controller node</li>
+<li>1 x Compute node</li>
+<li>2 x Ceph-OSD</li>
+<li>Each VM has 3 NICs: enp0s3, enp0s8, enp0s9</li>
+<li>enp0s3 is used for Admin/PXE network</li>
+<li>enp0s8 is used for Public/Floating network</li>
+<li>enp0s9 is used for Management, Storage, Private and Ceph Public network</li>
+</ul>
+<h2>Create the new Ceph Public network group</h2>
+<p>First the newly defined Ceph Public network needs to be created. This is done
+by creating a new network group via Fuel. In the demo, the nic enp0s9 is
+used for ceph public and other networks via VLAN tagging. 
+Although in a production environment you could
+easily put the new Ceph Public network on a dedicated NIC.</p>
+<p>The following steps show to create the Ceph Public network with VLAN tag 13:</p>
+<div class="highlight"><pre><span class="c"># First list the network groups to see what node-group is being used</span>
+<span class="c"># group-id is usually the same as environment id</span>
+fuel network-group
+<span class="c"># Create the new ceph-public network</span>
+fuel network-group --create --node-group <span class="m">6</span> --name ceph-public --vlan <span class="m">13</span> --cidr 192.168.251.0/24
+</pre></div>
+
+
+<h2>Write and upload network template</h2>
+<p>After having created the new network we use Network Templates functionality
+to assign the ceph/public network role to our newly created network. Note
+that the order does not matter. You could also first create and upload
+template and then create new Ceph Public network group.</p>
+<p>The below template is based on the default template with a minor
+modification to split out the ceph/public network role from the
+management network.</p>
+<div class="highlight"><pre><span class="l-Scalar-Plain">adv_net_template</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">default</span><span class="p-Indicator">:</span> 
+    <span class="l-Scalar-Plain">nic_mapping</span><span class="p-Indicator">:</span>
+      <span class="l-Scalar-Plain">default</span><span class="p-Indicator">:</span>
+        <span class="l-Scalar-Plain">adm</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">enp0s3</span>
+        <span class="l-Scalar-Plain">pub</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">enp0s8</span>
+        <span class="l-Scalar-Plain">man</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">enp0s9.10</span>
+        <span class="l-Scalar-Plain">priv</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">enp0s9.11</span>
+        <span class="l-Scalar-Plain">stor</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">enp0s9.12</span>
+        <span class="l-Scalar-Plain">cephpub</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">enp0s9.13</span>
+    <span class="l-Scalar-Plain">templates_for_node_role</span><span class="p-Indicator">:</span>
+        <span class="l-Scalar-Plain">controller</span><span class="p-Indicator">:</span>
+          <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">public</span>
+          <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">private</span>
+          <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">storage</span>
+          <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">ceph-public</span>
+          <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">common</span>
+        <span class="l-Scalar-Plain">compute</span><span class="p-Indicator">:</span>
+          <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">common</span>
+          <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">ceph-public</span>
+          <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">private</span>
+        <span class="l-Scalar-Plain">cinder</span><span class="p-Indicator">:</span>
+          <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">common</span>
+          <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">storage</span>
+        <span class="l-Scalar-Plain">ceph-osd</span><span class="p-Indicator">:</span>
+          <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">common</span>
+          <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">ceph-public</span>
+          <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">storage</span>
+    <span class="l-Scalar-Plain">network_assignments</span><span class="p-Indicator">:</span> 
+        <span class="l-Scalar-Plain">storage</span><span class="p-Indicator">:</span>
+          <span class="l-Scalar-Plain">ep</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-storage</span>
+        <span class="l-Scalar-Plain">ceph-public</span><span class="p-Indicator">:</span>
+          <span class="l-Scalar-Plain">ep</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-ceph-public</span>
+        <span class="l-Scalar-Plain">private</span><span class="p-Indicator">:</span>
+          <span class="l-Scalar-Plain">ep</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-prv</span>
+        <span class="l-Scalar-Plain">public</span><span class="p-Indicator">:</span>
+          <span class="l-Scalar-Plain">ep</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-ex</span>
+        <span class="l-Scalar-Plain">management</span><span class="p-Indicator">:</span>
+          <span class="l-Scalar-Plain">ep</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-mgmt</span>
+        <span class="l-Scalar-Plain">fuelweb_admin</span><span class="p-Indicator">:</span>
+          <span class="l-Scalar-Plain">ep</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-fw-admin</span>
+    <span class="l-Scalar-Plain">network_scheme</span><span class="p-Indicator">:</span>
+      <span class="l-Scalar-Plain">storage</span><span class="p-Indicator">:</span>
+        <span class="l-Scalar-Plain">transformations</span><span class="p-Indicator">:</span>
+          <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">action</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">add-br</span>
+            <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-storage</span>
+          <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">action</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">add-port</span>
+            <span class="l-Scalar-Plain">bridge</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-storage</span>
+            <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">&lt;% stor %&gt;</span>
+        <span class="l-Scalar-Plain">endpoints</span><span class="p-Indicator">:</span>
+          <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">br-storage</span>
+        <span class="l-Scalar-Plain">roles</span><span class="p-Indicator">:</span>
+          <span class="l-Scalar-Plain">cinder/iscsi</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-storage</span>
+          <span class="l-Scalar-Plain">swift/replication</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-storage</span>
+          <span class="l-Scalar-Plain">ceph/replication</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-storage</span>
+          <span class="l-Scalar-Plain">storage</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-storage</span>
+      <span class="l-Scalar-Plain">ceph-public</span><span class="p-Indicator">:</span>
+        <span class="l-Scalar-Plain">transformations</span><span class="p-Indicator">:</span>
+          <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">action</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">add-br</span>
+            <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-ceph-public</span>
+          <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">action</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">add-port</span>
+            <span class="l-Scalar-Plain">bridge</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-ceph-public</span>
+            <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">&lt;% cephpub %&gt;</span>
+        <span class="l-Scalar-Plain">endpoints</span><span class="p-Indicator">:</span>
+          <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">br-ceph-public</span>
+        <span class="l-Scalar-Plain">roles</span><span class="p-Indicator">:</span>
+          <span class="l-Scalar-Plain">ceph/public</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-ceph-public</span>
+      <span class="l-Scalar-Plain">private</span><span class="p-Indicator">:</span>
+        <span class="l-Scalar-Plain">transformations</span><span class="p-Indicator">:</span>
+          <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">action</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">add-br</span>
+            <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-prv</span>
+            <span class="l-Scalar-Plain">provider</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">ovs</span>
+          <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">action</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">add-br</span>
+            <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-aux</span>
+          <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">action</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">add-patch</span>
+            <span class="l-Scalar-Plain">bridges</span><span class="p-Indicator">:</span>
+            <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">br-prv</span>
+            <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">br-aux</span>
+            <span class="l-Scalar-Plain">provider</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">ovs</span>
+            <span class="l-Scalar-Plain">mtu</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">65000</span>
+          <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">action</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">add-port</span>
+            <span class="l-Scalar-Plain">bridge</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-aux</span>
+            <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">&lt;% priv %&gt;</span>
+        <span class="l-Scalar-Plain">endpoints</span><span class="p-Indicator">:</span>
+          <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">br-prv</span>
+        <span class="l-Scalar-Plain">roles</span><span class="p-Indicator">:</span>
+          <span class="l-Scalar-Plain">neutron/private</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-prv</span>
+      <span class="l-Scalar-Plain">public</span><span class="p-Indicator">:</span>
+        <span class="l-Scalar-Plain">transformations</span><span class="p-Indicator">:</span>
+          <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">action</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">add-br</span>
+            <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-ex</span>
+          <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">action</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">add-br</span>
+            <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-floating</span>
+            <span class="l-Scalar-Plain">provider</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">ovs</span>
+          <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">action</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">add-patch</span>
+            <span class="l-Scalar-Plain">bridges</span><span class="p-Indicator">:</span>
+            <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">br-floating</span>
+            <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">br-ex</span>
+            <span class="l-Scalar-Plain">provider</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">ovs</span>
+            <span class="l-Scalar-Plain">mtu</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">65000</span>
+          <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">action</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">add-port</span>
+            <span class="l-Scalar-Plain">bridge</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-ex</span>
+            <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">&lt;% pub %&gt;</span>
+        <span class="l-Scalar-Plain">endpoints</span><span class="p-Indicator">:</span>
+          <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">br-ex</span>
+        <span class="l-Scalar-Plain">roles</span><span class="p-Indicator">:</span>
+          <span class="l-Scalar-Plain">public/vip</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-ex</span>
+          <span class="l-Scalar-Plain">neutron/floating</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-floating</span>
+          <span class="l-Scalar-Plain">ceph/radosgw</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-ex</span>
+          <span class="l-Scalar-Plain">ex</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-ex</span>
+      <span class="l-Scalar-Plain">common</span><span class="p-Indicator">:</span>
+<span class="c1"># In this example the common network is created for Management and Admin traffic.</span>
+        <span class="l-Scalar-Plain">transformations</span><span class="p-Indicator">:</span>
+          <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">action</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">add-br</span>
+            <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-fw-admin</span>
+          <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">action</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">add-port</span>
+            <span class="l-Scalar-Plain">bridge</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-fw-admin</span>
+            <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">&lt;% adm %&gt;</span>
+          <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">action</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">add-br</span>
+            <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-mgmt</span>
+          <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">action</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">add-port</span>
+            <span class="l-Scalar-Plain">bridge</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-mgmt</span>
+            <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">&lt;% man %&gt;</span>
+        <span class="l-Scalar-Plain">endpoints</span><span class="p-Indicator">:</span>
+          <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">br-fw-admin</span>
+          <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">br-mgmt</span>
+        <span class="l-Scalar-Plain">roles</span><span class="p-Indicator">:</span>
+          <span class="l-Scalar-Plain">admin/pxe</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-fw-admin</span>
+          <span class="l-Scalar-Plain">fw-admin</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-fw-admin</span>
+          <span class="l-Scalar-Plain">mongo/db</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-mgmt</span>
+          <span class="l-Scalar-Plain">management</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-mgmt</span>
+          <span class="l-Scalar-Plain">keystone/api</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-mgmt</span>
+          <span class="l-Scalar-Plain">neutron/api</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-mgmt</span>
+          <span class="l-Scalar-Plain">neutron/mesh</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-mgmt</span>
+          <span class="l-Scalar-Plain">swift/api</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-mgmt</span>
+          <span class="l-Scalar-Plain">sahara/api</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-mgmt</span>
+          <span class="l-Scalar-Plain">ceilometer/api</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-mgmt</span>
+          <span class="l-Scalar-Plain">cinder/api</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-mgmt</span>
+          <span class="l-Scalar-Plain">glance/api</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-mgmt</span>
+          <span class="l-Scalar-Plain">heat/api</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-mgmt</span>
+          <span class="l-Scalar-Plain">nova/api</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-mgmt</span>
+          <span class="l-Scalar-Plain">nova/migration</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-mgmt</span>
+          <span class="l-Scalar-Plain">murano/api</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-mgmt</span>
+          <span class="l-Scalar-Plain">horizon</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-mgmt</span>
+          <span class="l-Scalar-Plain">mgmt/api</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-mgmt</span>
+          <span class="l-Scalar-Plain">mgmt/memcache</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-mgmt</span>
+          <span class="l-Scalar-Plain">mgmt/database</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-mgmt</span>
+          <span class="l-Scalar-Plain">mgmt/messaging</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-mgmt</span>
+          <span class="l-Scalar-Plain">mgmt/corosync</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-mgmt</span>
+          <span class="l-Scalar-Plain">mgmt/vip</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-mgmt</span>
+          <span class="l-Scalar-Plain">mgmt/api</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-mgmt</span>
+</pre></div>
+
+
+<p>Save the above file with the name <code>network_template_6.yaml</code> on your Fuel node. Fuel network template requires that the file name is in the following
+format: <code>network_template_{{ env_id }}.yaml</code>. If your fuel doesn't match the format you won't be able to upload.</p>
+<p>Now upload the the file <code>network_template_6.yaml</code> to Fuel via:</p>
+<div class="highlight"><pre>fuel network-template --env <span class="m">6</span> --upload --dir .
+</pre></div>
+
+
+<h2>Review and tune final deployment settings</h2>
+<p>This last step is to make sure that the Network settings set by Network Templates
+and Network group match expectations. Download the final deployment settings
+for the environment using the below command:</p>
+<div class="highlight"><pre>fuel deployment --default --env <span class="m">6</span> --download
+</pre></div>
+
+
+<p>This will create a directory called <code>deployment_6</code> containing deployment settings
+for the actual deployment. Open for example <code>deployment_6/master.yaml</code> or <code>deployment_6/10.yaml</code>
+and verify that ceph/public network role is assigned to controllers and ceph-osd nodes. Next to
+that make sure that ceph/public is assigned a specific IP address on each node.</p>
+<p>Now we're ready to deploy and can trigger the deployment with:</p>
+<div class="highlight"><pre>fuel deploy-changes --env 6
+</pre></div>
+
+
+<p>If you're lucky enough to not have made mistakes and hit bugs, then you will be running in no time :)
+This isn't easy to use functionality, without the help of my colleague xarxes I wasn't able to get it
+working.</p>
+            </div>
+            <!-- /.entry-content -->
+    <hr/>
+    <section class="comments" id="comments">
+        <h2>Comments</h2>
+
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+            /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+            var disqus_shortname = 'samosit'; // required: replace example with your forum shortname
+
+                var disqus_url = 'http://samos-it.com/posts/fuel-separate-ceph-public-from-management.html';
+
+            var disqus_config = function () {
+                this.language = "en";
+            };
+
+            /* * * DON'T EDIT BELOW THIS LINE * * */
+            (function () {
+                var dsq = document.createElement('script');
+                dsq.type = 'text/javascript';
+                dsq.async = true;
+                dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by
+            Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+    </section>
+        </article>
+    </section>
+
+        </div>
+        <div class="col-sm-3" id="sidebar">
+            <aside>
+
+<section class="well well-sm">
+    <ul class="list-group list-group-flush">
+            <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Social</span></h4>
+              <ul class="list-group" id="social">
+                <li class="list-group-item"><a href="http://www.linkedin.com/in/sam.stoelinga"><i class="fa fa-linkedin-square fa-lg"></i> linkedin</a></li>
+                <li class="list-group-item"><a href="http://github.com/samos123/"><i class="fa fa-github-square fa-lg"></i> github</a></li>
+              </ul>
+            </li>
+
+
+
+
+    <li class="list-group-item"><h4><i class="fa fa-github fa-lg"></i><span class="icon-label">GitHub Repos</span></h4>
+        <div id="gh_repos">
+            <p class="list-group-item">Status updating...</p>
+        </div>
+    </li>
+    <li class="list-group-item"><h4><i class="fa fa-external-link-square fa-lg"></i><span class="icon-label">Links</span></h4>
+      <ul class="list-group" id="links">
+        <li class="list-group-item">
+            <a href="http://getpelican.com/" target="_blank">
+                Pelican
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://python.org/" target="_blank">
+                Python.org
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://jinja.pocoo.org/" target="_blank">
+                Jinja2
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="#" target="_blank">
+                You can modify those links in your config file
+            </a>
+        </li>
+      </ul>
+    </li>
+    </ul>
+</section>
+            </aside>
+        </div>
+    </div>
+</div>
+<footer>
+   <div class="container">
+      <hr>
+      <div class="row">
+         <div class="col-xs-10">&copy; 2016 Sam Stoelinga
+            &middot; Powered by <a href="https://github.com/DandyDev/pelican-bootstrap3" target="_blank">pelican-bootstrap3</a>,
+            <a href="http://docs.getpelican.com/" target="_blank">Pelican</a>,
+            <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>         </div>
+         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
+      </div>
+   </div>
+</footer>
+<script src="http://samos-it.com/theme/js/jquery.min.js"></script>
+
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="http://samos-it.com/theme/js/bootstrap.min.js"></script>
+
+<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+<script src="http://samos-it.com/theme/js/respond.min.js"></script>
+
+    <!-- GitHub JS -->
+    <script type="text/javascript">
+        $(document).ready(function () {
+            if (!window.jXHR) {
+                var jxhr = document.createElement('script');
+                jxhr.type = 'text/javascript';
+                jxhr.src = 'http://samos-it.com/theme/js/jXHR.js';
+                var s = document.getElementsByTagName('script')[0];
+                s.parentNode.insertBefore(jxhr, s);
+            }
+
+            github.showRepos({
+                user: 'samos123',
+                count: 5,
+                skip_forks: false,
+                target: '#gh_repos'
+            });
+        });
+    </script>
+    <script src="http://samos-it.com/theme/js/github.js" type="text/javascript"></script>
+    <!-- End GitHub JS Code -->
+    <!-- Disqus -->
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'samosit'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function () {
+            var s = document.createElement('script');
+            s.async = true;
+            s.type = 'text/javascript';
+            s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+            (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+        }());
+    </script>
+    <!-- End Disqus Code -->
+    <!-- Google Analytics -->
+    <script type="text/javascript">
+
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-20975967-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function () {
+            var ga = document.createElement('script');
+            ga.type = 'text/javascript';
+            ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
+    <!-- End Google Analytics Code -->
+
+</body>
+</html>

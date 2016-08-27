@@ -131,7 +131,7 @@ Sam Stoelinga (Samos IT) - Blog            </a>
 </script>
                 <p>The following command first gets the changed and added files of a git
 commit and then creates a tar archive of those changed files.</p>
-<div class="highlight"><pre><span></span>git show <span class="o">{{</span>COMMIT_ID<span class="o">}}</span> --name-status <span class="p">|</span> grep -Ew <span class="s1">&#39;^M|A&#39;</span> <span class="p">|</span> awk <span class="s1">&#39;{ print $2 }&#39;</span> <span class="p">|</span> xargs tar czf usb-passthrough.tar.gz
+<div class="highlight"><pre>git show <span class="o">{{</span>COMMIT_ID<span class="o">}}</span> --name-status <span class="p">|</span> grep -Ew <span class="s1">&#39;^M|A&#39;</span> <span class="p">|</span> awk <span class="s1">&#39;{ print $2 }&#39;</span> <span class="p">|</span> xargs tar czf usb-passthrough.tar.gz
 </pre></div>
             </div>
             <!-- /.entry-content -->

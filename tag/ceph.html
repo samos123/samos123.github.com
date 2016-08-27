@@ -2,7 +2,7 @@
 <html lang="en"
 >
 <head>
-    <title>ipv6 - Sam Stoelinga (Samos IT) - Blog</title>
+    <title>ceph - Sam Stoelinga (Samos IT) - Blog</title>
     <!-- Using the latest rendering mode for IE -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta charset="utf-8">
@@ -12,7 +12,7 @@
 
 
     <meta name="author" content="Sam Stoelinga" />
-    <meta name="keywords" content="ipv6" />
+    <meta name="keywords" content="ceph" />
 
     <!-- Open Graph tags -->
         <meta property="og:site_name" content="Sam Stoelinga (Samos IT) - Blog" />
@@ -80,16 +80,13 @@ Sam Stoelinga (Samos IT) - Blog            </a>
         <div class="col-sm-9">
 
             <article>
-                <h2><a href="http://samos-it.com/posts/ipv6-tsinghua-linux-isatapd.html">Setup IPv6 in Tsinghua on Linux(ArchLinux))</a></h2>
-                <div class="summary"><p>Tsinghua university uses <a href="https://en.wikipedia.org/wiki/ISATAP">ISATAP</a> to provide IPv6 connectivity to students.
-In Linux you can use the <a href="http://www.saschahlusiak.de/linux/isatap.htm">isatapd</a> program to create an ISATAP tunnel based on an IPv4 device.</p>
-<p>You can use the isatapd command as follows to establish an ISATAPD tunnel:</p>
-<div class="highlight"><pre>isatapd --router isatap.tsinghua.edu.cn
-</pre></div>
-
-
-<p>After connecting check ...</p>
-                    <a class="btn btn-default btn-xs" href="http://samos-it.com/posts/ipv6-tsinghua-linux-isatapd.html">more ...</a>
+                <h2><a href="http://samos-it.com/posts/fuel-separate-ceph-public-from-management.html">Fuel: Separate Ceph Public from Management using Network Templates</a></h2>
+                <div class="summary"><p>This post will demonstrate using Network Templates in Fuel to
+separate Ceph Public Network from Management Network. By default
+Fuel combines the ceph public network with the management network.
+The Ceph Public network is used for communicating from the compute nodes
+to the Ceph nodes. So in high performant storage ...</p>
+                    <a class="btn btn-default btn-xs" href="http://samos-it.com/posts/fuel-separate-ceph-public-from-management.html">more ...</a>
                 </div>
             </article>
             <hr/>
@@ -149,7 +146,7 @@ In Linux you can use the <a href="http://www.saschahlusiak.de/linux/isatap.htm">
    <div class="container">
       <hr>
       <div class="row">
-         <div class="col-xs-10">&copy; 2015 Sam Stoelinga
+         <div class="col-xs-10">&copy; 2016 Sam Stoelinga
             &middot; Powered by <a href="https://github.com/DandyDev/pelican-bootstrap3" target="_blank">pelican-bootstrap3</a>,
             <a href="http://docs.getpelican.com/" target="_blank">Pelican</a>,
             <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>         </div>
