@@ -8,8 +8,7 @@ import sys
 def publish(speed_results, date):
 
 
-    blog_post = """
-Title: RobotRouter: Bandwidth of Xfinity Internet on {date}
+    blog_post = """Title: RobotRouter: Bandwidth of Xfinity Internet on {date}
 Date: {date}
 Author: Robot Router
 Category: Bandwidth

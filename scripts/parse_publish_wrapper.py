@@ -13,9 +13,9 @@ def get_yesterday_log(dir="/var/log/", prefix="speed-check-"):
 
 if __name__ == "__main__":
     filename, date = get_yesterday_log()
-    if len(sys.argv) == 2:
+    if len(sys.argv) == 3:
         filename = sys.argv[1]
-        date = datetime.date.today()
+        date = datetime.datetime.strptime(sys.argv[2], "%Y-%m-%d").date()
 
     results = parse_speed.parse(filename)
     publish_bandwidth.publish(results, date)
