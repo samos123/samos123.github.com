@@ -50,6 +50,9 @@ Sam Stoelinga (Samos IT) - Blog            </a>
                             <a href="http://samos-it.com/category/algorithms.html">Algorithms</a>
                         </li>
                         <li >
+                            <a href="http://samos-it.com/category/bandwidth.html">Bandwidth</a>
+                        </li>
+                        <li >
                             <a href="http://samos-it.com/category/big-data.html">Big data</a>
                         </li>
                         <li >
@@ -78,6 +81,35 @@ Sam Stoelinga (Samos IT) - Blog            </a>
     <div class="row">
         <div class="col-sm-9">
 
+            <article>
+                <h2><a href="http://samos-it.com/posts/create-linux-bridge-without-losing-connection.html">Create Linux bridge without losing existing connection</a></h2>
+                <div class="summary"><p>The dillemma: You're accessing your server via SSH through interface eth1.102 with the ip 10.20.0.2/24 and gateway 10.20.0.1.
+Now you want to add eth1 to a linux bridge so you can hookin VMs on a vlan trunk.</p>
+<p>Solution: Create a script ...</p>
+                    <a class="btn btn-default btn-xs" href="http://samos-it.com/posts/create-linux-bridge-without-losing-connection.html">more ...</a>
+                </div>
+            </article>
+            <hr/>
+            <article>
+                <h2><a href="http://samos-it.com/posts/hadoop-on-demand-with-openstack-cloudinit-salt.html">Hadoop on demand with Openstack, Cloudinit and Salt</a></h2>
+                <div class="summary"><p>This post will describe the whole process of providing hadoop on demand
+through Openstack, Cloudinit and Saltstack. We will use Openstack
+to provision servers on demand, cloudconfig to install salt-master and
+salt-minion and saltstack to deploy hadoop namenode and datanodes, all fully
+automated. This makes us able to deploy a ...</p>
+                    <a class="btn btn-default btn-xs" href="http://samos-it.com/posts/hadoop-on-demand-with-openstack-cloudinit-salt.html">more ...</a>
+                </div>
+            </article>
+            <hr/>
+            <article>
+                <h2><a href="http://samos-it.com/posts/neutron-multiple-allocation-pools-single-subnet.html">Neutron Multiple allocation pools single subnet (Solve Fragmented floating ips problem)</a></h2>
+                <div class="summary"><p>In a lab environment in the university I only had access to a list of fragmented
+public routable IP addresses in a single subnet. For example I got access to the following ips
+50.15.15.10, 55.15.15.12-15, 55.15.15.17. But I am not allowed ...</p>
+                    <a class="btn btn-default btn-xs" href="http://samos-it.com/posts/neutron-multiple-allocation-pools-single-subnet.html">more ...</a>
+                </div>
+            </article>
+            <hr/>
             <article>
                 <h2><a href="http://samos-it.com/posts/openstack-networking-study-notes.html">Openstack Networking Study Notes</a></h2>
                 <div class="summary"><p>I recommend these links in the following order:</p>
@@ -155,50 +187,6 @@ same ofcourse, and was unable to use the ...</p>
                 </div>
             </article>
             <hr/>
-            <article>
-                <h2><a href="http://samos-it.com/posts/removedetach-a-pci-device-linux-kvm-vga-passthrgough-nvidia-quadro-2000.html">Remove/detach a PCI device linux (kvm VGA passthrgough Nvidia Quadro 2000)</a></h2>
-                <div class="summary"><p><strong>Answer:</strong>  </p>
-<div class="highlight"><pre><span></span><span class="nb">echo</span> -n <span class="s2">&quot;1&quot;</span> &gt; /sys/bus/pci/devices/0000:02:00.0/remove
-</pre></div>
-
-
-<p>Where 0000:02:00.0 is related to your pci device address which can
-be obtained from the command <code>lspci</code></p>
-<p><strong>Related story:</strong><br />
-Was working on KVM vga passthrough and encountered problems with the
-graphics card nvidia Quadro ...</p>
-                    <a class="btn btn-default btn-xs" href="http://samos-it.com/posts/removedetach-a-pci-device-linux-kvm-vga-passthrgough-nvidia-quadro-2000.html">more ...</a>
-                </div>
-            </article>
-            <hr/>
-            <article>
-                <h2><a href="http://samos-it.com/posts/install-pyqt-in-a-virtualenv-with-pip.html">Install PyQt in a virtualenv with Pip</a></h2>
-                <div class="summary"><p>Noticed that pip install pyqt isn't working? At least at the time of
-writing this blog it isn't..</p>
-<p>This is the error that I got:<br />
-IOError: [Errno 2] No such file or directory: setup.py</p>
-<p>It seems they didn't package it well and it's using configure ...</p>
-                    <a class="btn btn-default btn-xs" href="http://samos-it.com/posts/install-pyqt-in-a-virtualenv-with-pip.html">more ...</a>
-                </div>
-            </article>
-            <hr/>
-            <article>
-                <h2><a href="http://samos-it.com/posts/ignoring-every-channels-joinpartquit-messages-in-irssi.html">Ignoring every channels join/part/quit messages in IRSSI</a></h2>
-                <div class="summary"><p>Tired of all those join part messages?</p>
-<div class="highlight"><pre><span></span>/ignore <span class="se">\*</span> joins  
-/ignore <span class="se">\*</span> parts  
-/ignore <span class="se">\*</span> quits  
-/save
-</pre></div>
-
-
-<p>Read more about ignore <code>/help ignore</code></p>
-<p>Taken from Archwiki:
-<a href="https://wiki.archlinux.org/index.php/Irssi">https://wiki.archlinux.org/index.php/Irssi</a></p>
-                    <a class="btn btn-default btn-xs" href="http://samos-it.com/posts/ignoring-every-channels-joinpartquit-messages-in-irssi.html">more ...</a>
-                </div>
-            </article>
-            <hr/>
 
         <ul class="pagination">
                 <li class="prev"><a href="http://samos-it.com/index.html">&laquo;</a>
@@ -211,6 +199,8 @@ IOError: [Errno 2] No such file or directory: setup.py</p>
                             href="http://samos-it.com/index3.html">3</a></li>
                     <li class=""><a
                             href="http://samos-it.com/index4.html">4</a></li>
+                    <li class=""><a
+                            href="http://samos-it.com/index5.html">5</a></li>
                 <li class="next"><a
                         href="http://samos-it.com/index3.html">&raquo;</a></li>
         </ul>
