@@ -169,7 +169,7 @@ performance and also elasticity of the cloud.</p>
 </ol>
 <h2>Tachyon 0.8.0 installation with Swift as underFS</h2>
 <p>Download and extract Tachyon to the mesos-master and mesos-slave</p>
-<div class="highlight"><pre>wget http://tachyon-project.org/downloads/files/0.8.0/tachyon-0.8.0-hadoop2.6-bin.tar.gz
+<div class="highlight"><pre><span></span>wget http://tachyon-project.org/downloads/files/0.8.0/tachyon-0.8.0-hadoop2.6-bin.tar.gz
 scp tachyon-0.8.0-hadoop2.6-bin.tar.gz mesos-master-1:/srv/
 scp tachyon-0.8.0-hadoop2.6-bin.tar.gz mesos-slave-1:/srv/
 ssh mesos-master-1 <span class="s2">&quot;cd /srv/ &amp;&amp; tar xzf tachyon-0.8.0-hadoop2.6-bin.tar.gz&quot;</span>
@@ -179,14 +179,14 @@ ssh mesos-slave-1 <span class="s2">&quot;cd /srv/ &amp;&amp; tar xzf tachyon-0.8
 
 <p>On both mesos-master-1 and mesos-slave-1, copy /srv/tachyon-0.8.0/conf/tachyon-env.sh.swift
 to /srv/tachyon-0.8.0/conf/tachyon-env.sh</p>
-<div class="highlight"><pre>mv /srv/tachyon-0.8.0/conf/tachyon-env.sh<span class="o">{</span>.swift,<span class="o">}</span>
+<div class="highlight"><pre><span></span>mv /srv/tachyon-0.8.0/conf/tachyon-env.sh<span class="o">{</span>.swift,<span class="o">}</span>
 </pre></div>
 
 
 <p>Make minor modifications to /srv/tachyon-0.8.0/conf/tachyon-env.sh on both mesos-master-1 and
 mesos-slave-1:</p>
-<div class="highlight"><pre><span class="nb">export </span><span class="nv">TACHYON_MASTER_ADDRESS</span><span class="o">=</span>192.168.111.54
-<span class="nb">export </span><span class="nv">TACHYON_UNDERFS_ADDRESS</span><span class="o">=</span>swift://spark.swift1
+<div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">TACHYON_MASTER_ADDRESS</span><span class="o">=</span>192.168.111.54
+<span class="nb">export</span> <span class="nv">TACHYON_UNDERFS_ADDRESS</span><span class="o">=</span>swift://spark.swift1
 </pre></div>
 
 
@@ -202,7 +202,7 @@ to authenticate with Swift and also to retreive the
 correct endpoint.</p>
 <p>I've changed core-site.xml according to my Swift environment and
 copied it to tachyon/conf/core-site.xml. The following changes were made:</p>
-<div class="highlight"><pre>&lt;property&gt;
+<div class="highlight"><pre><span></span>&lt;property&gt;
  &lt;name&gt;fs.swift.service.swift1.location-aware&lt;/name&gt;
  &lt;value&gt;false&lt;/value&gt;
 &lt;/property&gt;
@@ -243,13 +243,13 @@ copied it to tachyon/conf/core-site.xml. The following changes were made:</p>
 
 <p>After all config changes are done we can start launching
 the Tachyon master process on the mesos-master-1 node.</p>
-<div class="highlight"><pre>/srv/tachyon-0.8.0/bin/tachyon-start.sh master -f
+<div class="highlight"><pre><span></span>/srv/tachyon-0.8.0/bin/tachyon-start.sh master -f
 </pre></div>
 
 
 <p>After successful start of the tachyon master, also start the tachyon worker
 on mesos-slave-1:</p>
-<div class="highlight"><pre>/srv/tachyon-0.8.0/bin/tachyon-start.sh worker SudoMount
+<div class="highlight"><pre><span></span>/srv/tachyon-0.8.0/bin/tachyon-start.sh worker SudoMount
 </pre></div>
 
 
@@ -257,14 +257,14 @@ on mesos-slave-1:</p>
 http://192.168.111.54:19999</p>
 <h2>Building Spark with Tachyon 0.8.0 and Swift</h2>
 <p>Checkout latest master branch of spark:</p>
-<div class="highlight"><pre>git clone https://github.com/apache/spark.git
+<div class="highlight"><pre><span></span>git clone https://github.com/apache/spark.git
 </pre></div>
 
 
 <p>Apply the following patches to core/pom.xml and make_distribution.sh
 to use tachyon 0.8.0 and to include hdfs as underfs dependency.
 Make sure to exclude mockito-all else the build will fail with</p>
-<div class="highlight"><pre><span class="gh">diff --git a/core/pom.xml b/core/pom.xml</span>
+<div class="highlight"><pre><span></span><span class="gh">diff --git a/core/pom.xml b/core/pom.xml</span>
 <span class="gh">index 570a25c..98285a0 100644</span>
 <span class="gd">--- a/core/pom.xml</span>
 <span class="gi">+++ b/core/pom.xml</span>
@@ -312,12 +312,12 @@ Make sure to exclude mockito-all else the build will fail with</p>
 
 
 <p>Build Spark with Tachyon and Swift as underfs:</p>
-<div class="highlight"><pre>./make-distribution.sh --name spark-master-tachyon-0.8.0 --tgz --with-tachyon -Pyarn -Phadoop-2.6 -Dhadoop.version<span class="o">=</span>2.6.0 -DskipTests
+<div class="highlight"><pre><span></span>./make-distribution.sh --name spark-master-tachyon-0.8.0 --tgz --with-tachyon -Pyarn -Phadoop-2.6 -Dhadoop.version<span class="o">=</span>2.6.0 -DskipTests
 </pre></div>
 
 
 <p>Add core-site.xml which we used in Tachyon to the Spark tarball. </p>
-<div class="highlight"><pre>tar xzf spark-1.6.0-SNAPSHOT-bin-spark-master-tachyon-0.8.0.tgz
+<div class="highlight"><pre><span></span>tar xzf spark-1.6.0-SNAPSHOT-bin-spark-master-tachyon-0.8.0.tgz
 cp /srv/tachyon-0.8.0/conf/core-site.xml spark-1.6.0*/conf/core-site.xml
 tar czf spark-1.6.0.tar.gz spark-1.6.0-SNAPSHOT-bin-spark-master-tachyon-0.8.0
 </pre></div>
@@ -328,7 +328,7 @@ even though we already configured this in Tachyon.</p>
 <h2>Running a Spark job with Tachyon as input backed by Swift</h2>
 <p>Assuming that in our Swift container we have an object called
 output.log we can now create a Spark shell session and use</p>
-<div class="highlight"><pre>spark-shell
+<div class="highlight"><pre><span></span>spark-shell
 val <span class="nv">textFile</span> <span class="o">=</span> sc.textFile<span class="o">(</span><span class="s2">&quot;tachyon://mesos-master-1:19998/output.log&quot;</span><span class="o">)</span>
 textFile.count<span class="o">()</span>
 </pre></div>

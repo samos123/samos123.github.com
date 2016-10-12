@@ -144,7 +144,7 @@ for separating the Ceph Public network is as follows:</p>
 <ol>
 <li>Create a new Network Group for the new network</li>
 <li>Write and upload a network template that defines how the newly created network should be used</li>
-<li>Review and tune the actual Network settings via the CLI</li>
+<li>Review and tune the actual deployment settings via the CLI</li>
 </ol>
 <h2>Demo environment</h2>
 <p>This blog post is using the following example environment:</p>
@@ -166,10 +166,10 @@ used for ceph public and other networks via VLAN tagging.
 Although in a production environment you could
 easily put the new Ceph Public network on a dedicated NIC.</p>
 <p>The following steps show to create the Ceph Public network with VLAN tag 13:</p>
-<div class="highlight"><pre><span class="c"># First list the network groups to see what node-group is being used</span>
-<span class="c"># group-id is usually the same as environment id</span>
+<div class="highlight"><pre><span></span><span class="c1"># First list the network groups to see what node-group is being used</span>
+<span class="c1"># group-id is usually the same as environment id</span>
 fuel network-group
-<span class="c"># Create the new ceph-public network</span>
+<span class="c1"># Create the new ceph-public network</span>
 fuel network-group --create --node-group <span class="m">6</span> --name ceph-public --vlan <span class="m">13</span> --cidr 192.168.251.0/24
 </pre></div>
 
@@ -182,164 +182,164 @@ template and then create new Ceph Public network group.</p>
 <p>The below template is based on the default template with a minor
 modification to split out the ceph/public network role from the
 management network.</p>
-<div class="highlight"><pre><span class="l-Scalar-Plain">adv_net_template</span><span class="p-Indicator">:</span>
-  <span class="l-Scalar-Plain">default</span><span class="p-Indicator">:</span> 
-    <span class="l-Scalar-Plain">nic_mapping</span><span class="p-Indicator">:</span>
-      <span class="l-Scalar-Plain">default</span><span class="p-Indicator">:</span>
-        <span class="l-Scalar-Plain">adm</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">enp0s3</span>
-        <span class="l-Scalar-Plain">pub</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">enp0s8</span>
-        <span class="l-Scalar-Plain">man</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">enp0s9.10</span>
-        <span class="l-Scalar-Plain">priv</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">enp0s9.11</span>
-        <span class="l-Scalar-Plain">stor</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">enp0s9.12</span>
-        <span class="l-Scalar-Plain">cephpub</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">enp0s9.13</span>
-    <span class="l-Scalar-Plain">templates_for_node_role</span><span class="p-Indicator">:</span>
-        <span class="l-Scalar-Plain">controller</span><span class="p-Indicator">:</span>
-          <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">public</span>
-          <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">private</span>
-          <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">storage</span>
-          <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">ceph-public</span>
-          <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">common</span>
-        <span class="l-Scalar-Plain">compute</span><span class="p-Indicator">:</span>
-          <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">common</span>
-          <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">ceph-public</span>
-          <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">private</span>
-        <span class="l-Scalar-Plain">cinder</span><span class="p-Indicator">:</span>
-          <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">common</span>
-          <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">storage</span>
-        <span class="l-Scalar-Plain">ceph-osd</span><span class="p-Indicator">:</span>
-          <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">common</span>
-          <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">ceph-public</span>
-          <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">storage</span>
-    <span class="l-Scalar-Plain">network_assignments</span><span class="p-Indicator">:</span> 
-        <span class="l-Scalar-Plain">storage</span><span class="p-Indicator">:</span>
-          <span class="l-Scalar-Plain">ep</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-storage</span>
-        <span class="l-Scalar-Plain">ceph-public</span><span class="p-Indicator">:</span>
-          <span class="l-Scalar-Plain">ep</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-ceph-public</span>
-        <span class="l-Scalar-Plain">private</span><span class="p-Indicator">:</span>
-          <span class="l-Scalar-Plain">ep</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-prv</span>
-        <span class="l-Scalar-Plain">public</span><span class="p-Indicator">:</span>
-          <span class="l-Scalar-Plain">ep</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-ex</span>
-        <span class="l-Scalar-Plain">management</span><span class="p-Indicator">:</span>
-          <span class="l-Scalar-Plain">ep</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-mgmt</span>
-        <span class="l-Scalar-Plain">fuelweb_admin</span><span class="p-Indicator">:</span>
-          <span class="l-Scalar-Plain">ep</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-fw-admin</span>
-    <span class="l-Scalar-Plain">network_scheme</span><span class="p-Indicator">:</span>
-      <span class="l-Scalar-Plain">storage</span><span class="p-Indicator">:</span>
-        <span class="l-Scalar-Plain">transformations</span><span class="p-Indicator">:</span>
-          <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">action</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">add-br</span>
-            <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-storage</span>
-          <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">action</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">add-port</span>
-            <span class="l-Scalar-Plain">bridge</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-storage</span>
-            <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">&lt;% stor %&gt;</span>
-        <span class="l-Scalar-Plain">endpoints</span><span class="p-Indicator">:</span>
-          <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">br-storage</span>
-        <span class="l-Scalar-Plain">roles</span><span class="p-Indicator">:</span>
-          <span class="l-Scalar-Plain">cinder/iscsi</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-storage</span>
-          <span class="l-Scalar-Plain">swift/replication</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-storage</span>
-          <span class="l-Scalar-Plain">ceph/replication</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-storage</span>
-          <span class="l-Scalar-Plain">storage</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-storage</span>
-      <span class="l-Scalar-Plain">ceph-public</span><span class="p-Indicator">:</span>
-        <span class="l-Scalar-Plain">transformations</span><span class="p-Indicator">:</span>
-          <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">action</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">add-br</span>
-            <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-ceph-public</span>
-          <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">action</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">add-port</span>
-            <span class="l-Scalar-Plain">bridge</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-ceph-public</span>
-            <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">&lt;% cephpub %&gt;</span>
-        <span class="l-Scalar-Plain">endpoints</span><span class="p-Indicator">:</span>
-          <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">br-ceph-public</span>
-        <span class="l-Scalar-Plain">roles</span><span class="p-Indicator">:</span>
-          <span class="l-Scalar-Plain">ceph/public</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-ceph-public</span>
-      <span class="l-Scalar-Plain">private</span><span class="p-Indicator">:</span>
-        <span class="l-Scalar-Plain">transformations</span><span class="p-Indicator">:</span>
-          <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">action</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">add-br</span>
-            <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-prv</span>
-            <span class="l-Scalar-Plain">provider</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">ovs</span>
-          <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">action</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">add-br</span>
-            <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-aux</span>
-          <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">action</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">add-patch</span>
-            <span class="l-Scalar-Plain">bridges</span><span class="p-Indicator">:</span>
-            <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">br-prv</span>
-            <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">br-aux</span>
-            <span class="l-Scalar-Plain">provider</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">ovs</span>
-            <span class="l-Scalar-Plain">mtu</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">65000</span>
-          <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">action</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">add-port</span>
-            <span class="l-Scalar-Plain">bridge</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-aux</span>
-            <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">&lt;% priv %&gt;</span>
-        <span class="l-Scalar-Plain">endpoints</span><span class="p-Indicator">:</span>
-          <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">br-prv</span>
-        <span class="l-Scalar-Plain">roles</span><span class="p-Indicator">:</span>
-          <span class="l-Scalar-Plain">neutron/private</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-prv</span>
-      <span class="l-Scalar-Plain">public</span><span class="p-Indicator">:</span>
-        <span class="l-Scalar-Plain">transformations</span><span class="p-Indicator">:</span>
-          <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">action</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">add-br</span>
-            <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-ex</span>
-          <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">action</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">add-br</span>
-            <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-floating</span>
-            <span class="l-Scalar-Plain">provider</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">ovs</span>
-          <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">action</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">add-patch</span>
-            <span class="l-Scalar-Plain">bridges</span><span class="p-Indicator">:</span>
-            <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">br-floating</span>
-            <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">br-ex</span>
-            <span class="l-Scalar-Plain">provider</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">ovs</span>
-            <span class="l-Scalar-Plain">mtu</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">65000</span>
-          <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">action</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">add-port</span>
-            <span class="l-Scalar-Plain">bridge</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-ex</span>
-            <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">&lt;% pub %&gt;</span>
-        <span class="l-Scalar-Plain">endpoints</span><span class="p-Indicator">:</span>
-          <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">br-ex</span>
-        <span class="l-Scalar-Plain">roles</span><span class="p-Indicator">:</span>
-          <span class="l-Scalar-Plain">public/vip</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-ex</span>
-          <span class="l-Scalar-Plain">neutron/floating</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-floating</span>
-          <span class="l-Scalar-Plain">ceph/radosgw</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-ex</span>
-          <span class="l-Scalar-Plain">ex</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-ex</span>
-      <span class="l-Scalar-Plain">common</span><span class="p-Indicator">:</span>
+<div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">adv_net_template</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">default</span><span class="p p-Indicator">:</span> 
+    <span class="l l-Scalar l-Scalar-Plain">nic_mapping</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">default</span><span class="p p-Indicator">:</span>
+        <span class="l l-Scalar l-Scalar-Plain">adm</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">enp0s3</span>
+        <span class="l l-Scalar l-Scalar-Plain">pub</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">enp0s8</span>
+        <span class="l l-Scalar l-Scalar-Plain">man</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">enp0s9.10</span>
+        <span class="l l-Scalar l-Scalar-Plain">priv</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">enp0s9.11</span>
+        <span class="l l-Scalar l-Scalar-Plain">stor</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">enp0s9.12</span>
+        <span class="l l-Scalar l-Scalar-Plain">cephpub</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">enp0s9.13</span>
+    <span class="l l-Scalar l-Scalar-Plain">templates_for_node_role</span><span class="p p-Indicator">:</span>
+        <span class="l l-Scalar l-Scalar-Plain">controller</span><span class="p p-Indicator">:</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">public</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">private</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">storage</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">ceph-public</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">common</span>
+        <span class="l l-Scalar l-Scalar-Plain">compute</span><span class="p p-Indicator">:</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">common</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">ceph-public</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">private</span>
+        <span class="l l-Scalar l-Scalar-Plain">cinder</span><span class="p p-Indicator">:</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">common</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">storage</span>
+        <span class="l l-Scalar l-Scalar-Plain">ceph-osd</span><span class="p p-Indicator">:</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">common</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">ceph-public</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">storage</span>
+    <span class="l l-Scalar l-Scalar-Plain">network_assignments</span><span class="p p-Indicator">:</span> 
+        <span class="l l-Scalar l-Scalar-Plain">storage</span><span class="p p-Indicator">:</span>
+          <span class="l l-Scalar l-Scalar-Plain">ep</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">br-storage</span>
+        <span class="l l-Scalar l-Scalar-Plain">ceph-public</span><span class="p p-Indicator">:</span>
+          <span class="l l-Scalar l-Scalar-Plain">ep</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">br-ceph-public</span>
+        <span class="l l-Scalar l-Scalar-Plain">private</span><span class="p p-Indicator">:</span>
+          <span class="l l-Scalar l-Scalar-Plain">ep</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">br-prv</span>
+        <span class="l l-Scalar l-Scalar-Plain">public</span><span class="p p-Indicator">:</span>
+          <span class="l l-Scalar l-Scalar-Plain">ep</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">br-ex</span>
+        <span class="l l-Scalar l-Scalar-Plain">management</span><span class="p p-Indicator">:</span>
+          <span class="l l-Scalar l-Scalar-Plain">ep</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">br-mgmt</span>
+        <span class="l l-Scalar l-Scalar-Plain">fuelweb_admin</span><span class="p p-Indicator">:</span>
+          <span class="l l-Scalar l-Scalar-Plain">ep</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">br-fw-admin</span>
+    <span class="l l-Scalar l-Scalar-Plain">network_scheme</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">storage</span><span class="p p-Indicator">:</span>
+        <span class="l l-Scalar l-Scalar-Plain">transformations</span><span class="p p-Indicator">:</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">action</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">add-br</span>
+            <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">br-storage</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">action</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">add-port</span>
+            <span class="l l-Scalar l-Scalar-Plain">bridge</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">br-storage</span>
+            <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;% stor %&gt;</span>
+        <span class="l l-Scalar l-Scalar-Plain">endpoints</span><span class="p p-Indicator">:</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">br-storage</span>
+        <span class="l l-Scalar l-Scalar-Plain">roles</span><span class="p p-Indicator">:</span>
+          <span class="l l-Scalar l-Scalar-Plain">cinder/iscsi</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">br-storage</span>
+          <span class="l l-Scalar l-Scalar-Plain">swift/replication</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">br-storage</span>
+          <span class="l l-Scalar l-Scalar-Plain">ceph/replication</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">br-storage</span>
+          <span class="l l-Scalar l-Scalar-Plain">storage</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">br-storage</span>
+      <span class="l l-Scalar l-Scalar-Plain">ceph-public</span><span class="p p-Indicator">:</span>
+        <span class="l l-Scalar l-Scalar-Plain">transformations</span><span class="p p-Indicator">:</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">action</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">add-br</span>
+            <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">br-ceph-public</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">action</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">add-port</span>
+            <span class="l l-Scalar l-Scalar-Plain">bridge</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">br-ceph-public</span>
+            <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;% cephpub %&gt;</span>
+        <span class="l l-Scalar l-Scalar-Plain">endpoints</span><span class="p p-Indicator">:</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">br-ceph-public</span>
+        <span class="l l-Scalar l-Scalar-Plain">roles</span><span class="p p-Indicator">:</span>
+          <span class="l l-Scalar l-Scalar-Plain">ceph/public</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">br-ceph-public</span>
+      <span class="l l-Scalar l-Scalar-Plain">private</span><span class="p p-Indicator">:</span>
+        <span class="l l-Scalar l-Scalar-Plain">transformations</span><span class="p p-Indicator">:</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">action</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">add-br</span>
+            <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">br-prv</span>
+            <span class="l l-Scalar l-Scalar-Plain">provider</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">ovs</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">action</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">add-br</span>
+            <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">br-aux</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">action</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">add-patch</span>
+            <span class="l l-Scalar l-Scalar-Plain">bridges</span><span class="p p-Indicator">:</span>
+            <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">br-prv</span>
+            <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">br-aux</span>
+            <span class="l l-Scalar l-Scalar-Plain">provider</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">ovs</span>
+            <span class="l l-Scalar l-Scalar-Plain">mtu</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">65000</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">action</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">add-port</span>
+            <span class="l l-Scalar l-Scalar-Plain">bridge</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">br-aux</span>
+            <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;% priv %&gt;</span>
+        <span class="l l-Scalar l-Scalar-Plain">endpoints</span><span class="p p-Indicator">:</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">br-prv</span>
+        <span class="l l-Scalar l-Scalar-Plain">roles</span><span class="p p-Indicator">:</span>
+          <span class="l l-Scalar l-Scalar-Plain">neutron/private</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">br-prv</span>
+      <span class="l l-Scalar l-Scalar-Plain">public</span><span class="p p-Indicator">:</span>
+        <span class="l l-Scalar l-Scalar-Plain">transformations</span><span class="p p-Indicator">:</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">action</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">add-br</span>
+            <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">br-ex</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">action</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">add-br</span>
+            <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">br-floating</span>
+            <span class="l l-Scalar l-Scalar-Plain">provider</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">ovs</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">action</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">add-patch</span>
+            <span class="l l-Scalar l-Scalar-Plain">bridges</span><span class="p p-Indicator">:</span>
+            <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">br-floating</span>
+            <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">br-ex</span>
+            <span class="l l-Scalar l-Scalar-Plain">provider</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">ovs</span>
+            <span class="l l-Scalar l-Scalar-Plain">mtu</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">65000</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">action</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">add-port</span>
+            <span class="l l-Scalar l-Scalar-Plain">bridge</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">br-ex</span>
+            <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;% pub %&gt;</span>
+        <span class="l l-Scalar l-Scalar-Plain">endpoints</span><span class="p p-Indicator">:</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">br-ex</span>
+        <span class="l l-Scalar l-Scalar-Plain">roles</span><span class="p p-Indicator">:</span>
+          <span class="l l-Scalar l-Scalar-Plain">public/vip</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">br-ex</span>
+          <span class="l l-Scalar l-Scalar-Plain">neutron/floating</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">br-floating</span>
+          <span class="l l-Scalar l-Scalar-Plain">ceph/radosgw</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">br-ex</span>
+          <span class="l l-Scalar l-Scalar-Plain">ex</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">br-ex</span>
+      <span class="l l-Scalar l-Scalar-Plain">common</span><span class="p p-Indicator">:</span>
 <span class="c1"># In this example the common network is created for Management and Admin traffic.</span>
-        <span class="l-Scalar-Plain">transformations</span><span class="p-Indicator">:</span>
-          <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">action</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">add-br</span>
-            <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-fw-admin</span>
-          <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">action</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">add-port</span>
-            <span class="l-Scalar-Plain">bridge</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-fw-admin</span>
-            <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">&lt;% adm %&gt;</span>
-          <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">action</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">add-br</span>
-            <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-mgmt</span>
-          <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">action</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">add-port</span>
-            <span class="l-Scalar-Plain">bridge</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-mgmt</span>
-            <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">&lt;% man %&gt;</span>
-        <span class="l-Scalar-Plain">endpoints</span><span class="p-Indicator">:</span>
-          <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">br-fw-admin</span>
-          <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">br-mgmt</span>
-        <span class="l-Scalar-Plain">roles</span><span class="p-Indicator">:</span>
-          <span class="l-Scalar-Plain">admin/pxe</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-fw-admin</span>
-          <span class="l-Scalar-Plain">fw-admin</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-fw-admin</span>
-          <span class="l-Scalar-Plain">mongo/db</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-mgmt</span>
-          <span class="l-Scalar-Plain">management</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-mgmt</span>
-          <span class="l-Scalar-Plain">keystone/api</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-mgmt</span>
-          <span class="l-Scalar-Plain">neutron/api</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-mgmt</span>
-          <span class="l-Scalar-Plain">neutron/mesh</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-mgmt</span>
-          <span class="l-Scalar-Plain">swift/api</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-mgmt</span>
-          <span class="l-Scalar-Plain">sahara/api</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-mgmt</span>
-          <span class="l-Scalar-Plain">ceilometer/api</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-mgmt</span>
-          <span class="l-Scalar-Plain">cinder/api</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-mgmt</span>
-          <span class="l-Scalar-Plain">glance/api</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-mgmt</span>
-          <span class="l-Scalar-Plain">heat/api</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-mgmt</span>
-          <span class="l-Scalar-Plain">nova/api</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-mgmt</span>
-          <span class="l-Scalar-Plain">nova/migration</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-mgmt</span>
-          <span class="l-Scalar-Plain">murano/api</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-mgmt</span>
-          <span class="l-Scalar-Plain">horizon</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-mgmt</span>
-          <span class="l-Scalar-Plain">mgmt/api</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-mgmt</span>
-          <span class="l-Scalar-Plain">mgmt/memcache</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-mgmt</span>
-          <span class="l-Scalar-Plain">mgmt/database</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-mgmt</span>
-          <span class="l-Scalar-Plain">mgmt/messaging</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-mgmt</span>
-          <span class="l-Scalar-Plain">mgmt/corosync</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-mgmt</span>
-          <span class="l-Scalar-Plain">mgmt/vip</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-mgmt</span>
-          <span class="l-Scalar-Plain">mgmt/api</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">br-mgmt</span>
+        <span class="l l-Scalar l-Scalar-Plain">transformations</span><span class="p p-Indicator">:</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">action</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">add-br</span>
+            <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">br-fw-admin</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">action</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">add-port</span>
+            <span class="l l-Scalar l-Scalar-Plain">bridge</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">br-fw-admin</span>
+            <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;% adm %&gt;</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">action</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">add-br</span>
+            <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">br-mgmt</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">action</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">add-port</span>
+            <span class="l l-Scalar l-Scalar-Plain">bridge</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">br-mgmt</span>
+            <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;% man %&gt;</span>
+        <span class="l l-Scalar l-Scalar-Plain">endpoints</span><span class="p p-Indicator">:</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">br-fw-admin</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">br-mgmt</span>
+        <span class="l l-Scalar l-Scalar-Plain">roles</span><span class="p p-Indicator">:</span>
+          <span class="l l-Scalar l-Scalar-Plain">admin/pxe</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">br-fw-admin</span>
+          <span class="l l-Scalar l-Scalar-Plain">fw-admin</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">br-fw-admin</span>
+          <span class="l l-Scalar l-Scalar-Plain">mongo/db</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">br-mgmt</span>
+          <span class="l l-Scalar l-Scalar-Plain">management</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">br-mgmt</span>
+          <span class="l l-Scalar l-Scalar-Plain">keystone/api</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">br-mgmt</span>
+          <span class="l l-Scalar l-Scalar-Plain">neutron/api</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">br-mgmt</span>
+          <span class="l l-Scalar l-Scalar-Plain">neutron/mesh</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">br-mgmt</span>
+          <span class="l l-Scalar l-Scalar-Plain">swift/api</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">br-mgmt</span>
+          <span class="l l-Scalar l-Scalar-Plain">sahara/api</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">br-mgmt</span>
+          <span class="l l-Scalar l-Scalar-Plain">ceilometer/api</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">br-mgmt</span>
+          <span class="l l-Scalar l-Scalar-Plain">cinder/api</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">br-mgmt</span>
+          <span class="l l-Scalar l-Scalar-Plain">glance/api</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">br-mgmt</span>
+          <span class="l l-Scalar l-Scalar-Plain">heat/api</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">br-mgmt</span>
+          <span class="l l-Scalar l-Scalar-Plain">nova/api</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">br-mgmt</span>
+          <span class="l l-Scalar l-Scalar-Plain">nova/migration</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">br-mgmt</span>
+          <span class="l l-Scalar l-Scalar-Plain">murano/api</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">br-mgmt</span>
+          <span class="l l-Scalar l-Scalar-Plain">horizon</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">br-mgmt</span>
+          <span class="l l-Scalar l-Scalar-Plain">mgmt/api</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">br-mgmt</span>
+          <span class="l l-Scalar l-Scalar-Plain">mgmt/memcache</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">br-mgmt</span>
+          <span class="l l-Scalar l-Scalar-Plain">mgmt/database</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">br-mgmt</span>
+          <span class="l l-Scalar l-Scalar-Plain">mgmt/messaging</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">br-mgmt</span>
+          <span class="l l-Scalar l-Scalar-Plain">mgmt/corosync</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">br-mgmt</span>
+          <span class="l l-Scalar l-Scalar-Plain">mgmt/vip</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">br-mgmt</span>
+          <span class="l l-Scalar l-Scalar-Plain">mgmt/api</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">br-mgmt</span>
 </pre></div>
 
 
 <p>Save the above file with the name <code>network_template_6.yaml</code> on your Fuel node. Fuel network template requires that the file name is in the following
 format: <code>network_template_{{ env_id }}.yaml</code>. If your fuel doesn't match the format you won't be able to upload.</p>
 <p>Now upload the the file <code>network_template_6.yaml</code> to Fuel via:</p>
-<div class="highlight"><pre>fuel network-template --env <span class="m">6</span> --upload --dir .
+<div class="highlight"><pre><span></span>fuel network-template --env <span class="m">6</span> --upload --dir .
 </pre></div>
 
 
@@ -347,7 +347,7 @@ format: <code>network_template_{{ env_id }}.yaml</code>. If your fuel doesn't ma
 <p>This last step is to make sure that the Network settings set by Network Templates
 and Network group match expectations. Download the final deployment settings
 for the environment using the below command:</p>
-<div class="highlight"><pre>fuel deployment --default --env <span class="m">6</span> --download
+<div class="highlight"><pre><span></span>fuel deployment --default --env 6
 </pre></div>
 
 
@@ -356,7 +356,7 @@ for the actual deployment. Open for example <code>deployment_6/master.yaml</code
 and verify that ceph/public network role is assigned to controllers and ceph-osd nodes. Next to
 that make sure that ceph/public is assigned a specific IP address on each node.</p>
 <p>Now we're ready to deploy and can trigger the deployment with:</p>
-<div class="highlight"><pre>fuel deploy-changes --env 6
+<div class="highlight"><pre><span></span>fuel deploy-changes --env 6
 </pre></div>
 
 

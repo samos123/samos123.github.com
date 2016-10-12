@@ -80,11 +80,24 @@ Sam Stoelinga (Samos IT) - Blog            </a>
         <div class="col-sm-9">
 
             <article>
+                <h2><a href="http://samos-it.com/posts/openwrt-speedtest-bandwidth.html">OpenWRT hourly speedtest maximum bandwidth delivered by ISP</a></h2>
+                <div class="summary"><p>Work in progress, place holder, these are the commands required to run
+the python code that I wrote</p>
+<p>opkg install python3-light
+opkg install python3-email</p>
+<p>opkg install python3-openssl
+opkg install python3-codecs</p>
+<p>opkg install ca-certificates</p>
+                    <a class="btn btn-default btn-xs" href="http://samos-it.com/posts/openwrt-speedtest-bandwidth.html">more ...</a>
+                </div>
+            </article>
+            <hr/>
+            <article>
                 <h2><a href="http://samos-it.com/posts/ipv6-tsinghua-linux-isatapd.html">Setup IPv6 in Tsinghua on Linux(ArchLinux))</a></h2>
                 <div class="summary"><p>Tsinghua university uses <a href="https://en.wikipedia.org/wiki/ISATAP">ISATAP</a> to provide IPv6 connectivity to students.
 In Linux you can use the <a href="http://www.saschahlusiak.de/linux/isatap.htm">isatapd</a> program to create an ISATAP tunnel based on an IPv4 device.</p>
 <p>You can use the isatapd command as follows to establish an ISATAPD tunnel:</p>
-<div class="highlight"><pre>isatapd --router isatap.tsinghua.edu.cn
+<div class="highlight"><pre><span></span>isatapd --router isatap.tsinghua.edu.cn
 </pre></div>
 
 
@@ -107,7 +120,7 @@ Now you want to add eth1 to a linux bridge so you can hookin VMs on a vlan trunk
                 <div class="summary"><p>In order to access other containers from a container it's needed
 to get the private IP address of the other containers. The following
 command is able to get the private ip address of the container.</p>
-<div class="highlight"><pre><span class="gp">$</span> docker inspect --format<span class="o">=</span><span class="s2">&quot;{{.NetworkSettings.IPAddress}}&quot;</span> <span class="nv">$CONTAINER_ID_OR_NAME</span>
+<div class="highlight"><pre><span></span><span class="gp">$</span> docker inspect --format<span class="o">=</span><span class="s2">&quot;{{.NetworkSettings.IPAddress}}&quot;</span> <span class="nv">$CONTAINER_ID_OR_NAME</span>
 <span class="go">172.17.0.15</span>
 </pre></div>
                     <a class="btn btn-default btn-xs" href="http://samos-it.com/posts/docker-get-private-ip-address-of-container.html">more ...</a>
@@ -159,7 +172,7 @@ same ofcourse, and was unable to use the ...</p>
             <article>
                 <h2><a href="http://samos-it.com/posts/removedetach-a-pci-device-linux-kvm-vga-passthrgough-nvidia-quadro-2000.html">Remove/detach a PCI device linux (kvm VGA passthrgough Nvidia Quadro 2000)</a></h2>
                 <div class="summary"><p><strong>Answer:</strong>  </p>
-<div class="highlight"><pre><span class="nb">echo</span> -n <span class="s2">&quot;1&quot;</span> &gt; /sys/bus/pci/devices/0000:02:00.0/remove
+<div class="highlight"><pre><span></span><span class="nb">echo</span> -n <span class="s2">&quot;1&quot;</span> &gt; /sys/bus/pci/devices/0000:02:00.0/remove
 </pre></div>
 
 
@@ -175,7 +188,7 @@ graphics card nvidia Quadro ...</p>
             <article>
                 <h2><a href="http://samos-it.com/posts/ignoring-every-channels-joinpartquit-messages-in-irssi.html">Ignoring every channels join/part/quit messages in IRSSI</a></h2>
                 <div class="summary"><p>Tired of all those join part messages?</p>
-<div class="highlight"><pre>/ignore <span class="se">\*</span> joins  
+<div class="highlight"><pre><span></span>/ignore <span class="se">\*</span> joins  
 /ignore <span class="se">\*</span> parts  
 /ignore <span class="se">\*</span> quits  
 /save
@@ -186,16 +199,6 @@ graphics card nvidia Quadro ...</p>
 <p>Taken from Archwiki:
 <a href="https://wiki.archlinux.org/index.php/Irssi">https://wiki.archlinux.org/index.php/Irssi</a></p>
                     <a class="btn btn-default btn-xs" href="http://samos-it.com/posts/ignoring-every-channels-joinpartquit-messages-in-irssi.html">more ...</a>
-                </div>
-            </article>
-            <hr/>
-            <article>
-                <h2><a href="http://samos-it.com/posts/create-tar-archive-of-changedadded-files-in-a-git-commit.html">Create tar archive of changed/added files in a git commit</a></h2>
-                <div class="summary"><p>The following command first gets the changed and added files of a git
-commit and then creates a tar archive of those changed files.</p>
-<div class="highlight"><pre>git show <span class="o">{{</span>COMMIT_ID<span class="o">}}</span> --name-status <span class="p">|</span> grep -Ew <span class="s1">&#39;^M|A&#39;</span> <span class="p">|</span> awk <span class="s1">&#39;{ print $2 }&#39;</span> <span class="p">|</span> xargs tar czf usb-passthrough.tar.gz
-</pre></div>
-                    <a class="btn btn-default btn-xs" href="http://samos-it.com/posts/create-tar-archive-of-changedadded-files-in-a-git-commit.html">more ...</a>
                 </div>
             </article>
             <hr/>
@@ -264,7 +267,7 @@ commit and then creates a tar archive of those changed files.</p>
    <div class="container">
       <hr>
       <div class="row">
-         <div class="col-xs-10">&copy; 2015 Sam Stoelinga
+         <div class="col-xs-10">&copy; 2016 Sam Stoelinga
             &middot; Powered by <a href="https://github.com/DandyDev/pelican-bootstrap3" target="_blank">pelican-bootstrap3</a>,
             <a href="http://docs.getpelican.com/" target="_blank">Pelican</a>,
             <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>         </div>
