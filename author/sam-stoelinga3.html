@@ -82,10 +82,27 @@ Sam Stoelinga (Samos IT) - Blog            </a>
         <div class="col-sm-9">
 
             <article>
+                <h2><a href="http://samos-it.com/posts/ignoring-every-channels-joinpartquit-messages-in-irssi.html">Ignoring every channels join/part/quit messages in IRSSI</a></h2>
+                <div class="summary"><p>Tired of all those join part messages?</p>
+<div class="highlight"><pre>/ignore <span class="se">\*</span> joins  
+/ignore <span class="se">\*</span> parts  
+/ignore <span class="se">\*</span> quits  
+/save
+</pre></div>
+
+
+<p>Read more about ignore <code>/help ignore</code></p>
+<p>Taken from Archwiki:
+<a href="https://wiki.archlinux.org/index.php/Irssi">https://wiki.archlinux.org/index.php/Irssi</a></p>
+                    <a class="btn btn-default btn-xs" href="http://samos-it.com/posts/ignoring-every-channels-joinpartquit-messages-in-irssi.html">more ...</a>
+                </div>
+            </article>
+            <hr/>
+            <article>
                 <h2><a href="http://samos-it.com/posts/create-tar-archive-of-changedadded-files-in-a-git-commit.html">Create tar archive of changed/added files in a git commit</a></h2>
                 <div class="summary"><p>The following command first gets the changed and added files of a git
 commit and then creates a tar archive of those changed files.</p>
-<div class="highlight"><pre><span></span>git show <span class="o">{{</span>COMMIT_ID<span class="o">}}</span> --name-status <span class="p">|</span> grep -Ew <span class="s1">&#39;^M|A&#39;</span> <span class="p">|</span> awk <span class="s1">&#39;{ print $2 }&#39;</span> <span class="p">|</span> xargs tar czf usb-passthrough.tar.gz
+<div class="highlight"><pre>git show <span class="o">{{</span>COMMIT_ID<span class="o">}}</span> --name-status <span class="p">|</span> grep -Ew <span class="s1">&#39;^M|A&#39;</span> <span class="p">|</span> awk <span class="s1">&#39;{ print $2 }&#39;</span> <span class="p">|</span> xargs tar czf usb-passthrough.tar.gz
 </pre></div>
                     <a class="btn btn-default btn-xs" href="http://samos-it.com/posts/create-tar-archive-of-changedadded-files-in-a-git-commit.html">more ...</a>
                 </div>
@@ -118,14 +135,14 @@ quite some time so we need a background worker to execute this task.</p>
                 <h2><a href="http://samos-it.com/posts/using-sendgrid-with-django-on-heroku-how-to-find-your-sendgrid-password-on-heroku.html">Using Sendgrid with Django on Heroku (How to find your Sendgrid password on Heroku)</a></h2>
                 <div class="summary"><p>While setting up sentgrid I was searching for my password of sendgrid,
 but coudn't find it. You can get it in the following way:</p>
-<div class="highlight"><pre><span></span>heroku config --long
+<div class="highlight"><pre>heroku config --long
 </pre></div>
 
 
 <p>Which will show the parameters:<br />
 SENDGRID_PASSWORD, SENDGRID_USERNAME</p>
 <p>After you get your username don't forget to add it to django settings:  </p>
-<div class="highlight"><pre><span></span>EMAIL ...</pre></div>
+<div class="highlight"><pre>EMAIL ...</pre></div>
                     <a class="btn btn-default btn-xs" href="http://samos-it.com/posts/using-sendgrid-with-django-on-heroku-how-to-find-your-sendgrid-password-on-heroku.html">more ...</a>
                 </div>
             </article>
@@ -145,12 +162,12 @@ each parameter to check if ...</p>
                 <h2><a href="http://samos-it.com/posts/simple-function-to-return-json-in-django.html">Simple function to return json in Django</a></h2>
                 <div class="summary"><p>Just a small code snippet I use when I need to return json, comments are
 welcomed.</p>
-<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django.http</span> <span class="kn">import</span> <span class="n">HttpResponse</span>  
+<div class="highlight"><pre><span class="kn">from</span> <span class="nn">django.http</span> <span class="kn">import</span> <span class="n">HttpResponse</span>  
 <span class="kn">from</span> <span class="nn">django.utils</span> <span class="kn">import</span> <span class="n">simplejson</span> <span class="k">as</span> <span class="n">json</span>
 
 <span class="k">def</span> <span class="nf">json_response</span><span class="p">(</span><span class="n">dict_to_convert_to_json</span><span class="p">):</span>  
     <span class="k">return</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">dict_to_convert_to_json</span><span class="p">),</span>
-                        <span class="n">mimetype</span><span class="o">=</span><span class="s2">&quot;application/json&quot;</span><span class="p">)</span>
+                        <span class="n">mimetype</span><span class="o">=</span><span class="s">&quot;application/json&quot;</span><span class="p">)</span>
 </pre></div>
 
 
@@ -175,7 +192,7 @@ available and ...</p>
                 <div class="summary"><p>I always keep forgetting how to import a SQL dump into postgres and
 found it always hard to find the right documentation. So I thought lets
 share it:</p>
-<div class="highlight"><pre><span></span>psql -d dbname -U username -f dumpfile.sql
+<div class="highlight"><pre>psql -d dbname -U username -f dumpfile.sql
 </pre></div>
 
 
@@ -186,7 +203,7 @@ share it:</p>
             <hr/>
             <article>
                 <h2><a href="http://samos-it.com/posts/installing-fastboot-for-ubuntu-linux.html">Installing fastboot for Ubuntu (Linux)</a></h2>
-                <div class="summary"><div class="highlight"><pre><span></span>mkdir ~/fastboot  
+                <div class="summary"><div class="highlight"><pre>mkdir ~/fastboot  
 <span class="nb">cd</span> ~/fastboot  
 wget http://xt720.ru/Tools/fastboot  
 chmod +x fastboot  
@@ -198,18 +215,6 @@ sudo ./fastboot --help
 <p>I tested the above with Ubuntu 11.10, but it should work on any ubuntu
 version I think.</p>
                     <a class="btn btn-default btn-xs" href="http://samos-it.com/posts/installing-fastboot-for-ubuntu-linux.html">more ...</a>
-                </div>
-            </article>
-            <hr/>
-            <article>
-                <h2><a href="http://samos-it.com/posts/trying-to-install-scrapy-with-pip-lxml-error-command-gcc-failed-with-exit-status-1.html">Trying to install scrapy with pip lxml error: command 'gcc' failed with exit status 1</a></h2>
-                <div class="summary"><p>Just tried to install scrapy with pip / easy_install, but when it comes
-to installing lxml it will give the following error:</p>
-<p>gcc -pthread -fno-strict-aliasing -DNDEBUG -g -fwrapv -O2
--Wall -Wstrict-prototypes -fPIC -I/usr/include/python2.7 -c
-src/lxml/lxml.etree.c -o
-build/temp.linux-x86_64-2.7/src/lxml/lxml ...</p>
-                    <a class="btn btn-default btn-xs" href="http://samos-it.com/posts/trying-to-install-scrapy-with-pip-lxml-error-command-gcc-failed-with-exit-status-1.html">more ...</a>
                 </div>
             </article>
             <hr/>

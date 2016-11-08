@@ -82,6 +82,27 @@ Sam Stoelinga (Samos IT) - Blog            </a>
         <div class="col-sm-9">
 
             <article>
+                <h2><a href="http://samos-it.com/posts/sriov-openstack-juno-fuel-6-1.html">Enable SRIOV on OpenStack Juno</a></h2>
+                <div class="summary"><p>Update: This blog post is deprecated by the official documentation. Please take a look at the official
+<a href="http://docs.openstack.org/liberty/networking-guide/adv_config_sriov.html" target="_blank">
+Networking Guide: Using SRIOV functionality</a>. Patch set that added the official documentation:
+<a target="_blank" href="https://review.openstack.org/#/c/213985/">changeset</a>. </p>
+<table class="table table-bordered table-hover">
+<caption>Terms used</caption>
+<thead>
+<tr>
+<th class="col-md-2">Term</th>
+<th>Definition</th>
+</tr>
+<tbody>
+<tr>
+<th scope="row">SRIOV</th>
+<td>Single Root IO Virtualization. SRIOV allows a PCIe device to appear to be multiple separate ...</td></tr></tbody></thead></table>
+                    <a class="btn btn-default btn-xs" href="http://samos-it.com/posts/sriov-openstack-juno-fuel-6-1.html">more ...</a>
+                </div>
+            </article>
+            <hr/>
+            <article>
                 <h2><a href="http://samos-it.com/posts/create-linux-bridge-without-losing-connection.html">Create Linux bridge without losing existing connection</a></h2>
                 <div class="summary"><p>The dillemma: You're accessing your server via SSH through interface eth1.102 with the ip 10.20.0.2/24 and gateway 10.20.0.1.
 Now you want to add eth1 to a linux bridge so you can hookin VMs on a vlan trunk.</p>
@@ -127,7 +148,7 @@ public routable IP addresses in a single subnet. For example I got access to the
                 <div class="summary"><p>In order to access other containers from a container it's needed
 to get the private IP address of the other containers. The following
 command is able to get the private ip address of the container.</p>
-<div class="highlight"><pre><span></span><span class="gp">$</span> docker inspect --format<span class="o">=</span><span class="s2">&quot;{{.NetworkSettings.IPAddress}}&quot;</span> <span class="nv">$CONTAINER_ID_OR_NAME</span>
+<div class="highlight"><pre><span class="gp">$</span> docker inspect --format<span class="o">=</span><span class="s2">&quot;{{.NetworkSettings.IPAddress}}&quot;</span> <span class="nv">$CONTAINER_ID_OR_NAME</span>
 <span class="go">172.17.0.15</span>
 </pre></div>
                     <a class="btn btn-default btn-xs" href="http://samos-it.com/posts/docker-get-private-ip-address-of-container.html">more ...</a>
@@ -174,16 +195,6 @@ on the lecture slides.</p>
 <p>The Karatsuba algorithm is a fast multiplication algorithm. It's special because
 it was the first ...</p>
                     <a class="btn btn-default btn-xs" href="http://samos-it.com/posts/recursive-karatsuba-multiplication-python.html">more ...</a>
-                </div>
-            </article>
-            <hr/>
-            <article>
-                <h2><a href="http://samos-it.com/posts/using-nested-tmux-over-ssh-and-how-to-detach-a-nested-tmux.html">Using nested tmux over ssh and how to detach a nested tmux</a></h2>
-                <div class="summary"><p>Today I logged in to my laptop at home from work which was already
-running a tmux session, so thought yea just attach cool can continue
-with what I was looking at at home. I forgot that the keys would be the
-same ofcourse, and was unable to use the ...</p>
-                    <a class="btn btn-default btn-xs" href="http://samos-it.com/posts/using-nested-tmux-over-ssh-and-how-to-detach-a-nested-tmux.html">more ...</a>
                 </div>
             </article>
             <hr/>

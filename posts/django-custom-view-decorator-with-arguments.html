@@ -143,18 +143,18 @@ a really great guide which helps you understand Python decorators at a
 new level: <a href="http://www.elfsternberg.com/2009/11/20/python-decorators-with-arguments-with-bonus-django-goodness/" title="Amazing insight about Python decorators">Amazing insight about Python
 decorators</a></p>
 <p>Here is the code I wrote for the decorator:  </p>
-<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">required_parameters</span><span class="p">(</span><span class="n">parameters</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">,</span> <span class="s1">&#39;api_key&#39;</span><span class="p">),</span> <span class="n">http_method</span><span class="o">=</span><span class="s1">&#39;POST&#39;</span><span class="p">):</span>  
+<div class="highlight"><pre><span class="k">def</span> <span class="nf">required_parameters</span><span class="p">(</span><span class="n">parameters</span><span class="o">=</span><span class="p">(</span><span class="s">&#39;email&#39;</span><span class="p">,</span> <span class="s">&#39;api_key&#39;</span><span class="p">),</span> <span class="n">http_method</span><span class="o">=</span><span class="s">&#39;POST&#39;</span><span class="p">):</span>  
     <span class="sd">&quot;&quot;&quot;  </span>
 <span class="sd">    Check if the required parameters are present in the request  </span>
 <span class="sd">    @param parameters: The names of the parameters that should be supplied  </span>
 <span class="sd">    &quot;&quot;&quot;</span>  
     <span class="k">def</span> <span class="nf">inner_decorator</span><span class="p">(</span><span class="n">fn</span><span class="p">):</span>  
         <span class="k">def</span> <span class="nf">wrapped</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>  
-            <span class="c1"># check if the user api_key matches  </span>
+            <span class="c"># check if the user api_key matches  </span>
             <span class="k">for</span> <span class="n">parameter</span> <span class="ow">in</span> <span class="n">parameters</span><span class="p">:</span>  
             <span class="k">if</span> <span class="n">parameter</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">http_method</span><span class="p">):</span>  
-                <span class="k">return</span> <span class="n">json_response</span><span class="p">({</span><span class="s1">&#39;success&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span> <span class="s1">&#39;errors&#39;</span><span class="p">:</span> <span class="s1">&#39;Please use the Web API correctly and supply the parameter: &#39;</span><span class="o">+</span><span class="n">parameter</span><span class="p">})</span>  
-            <span class="c1"># Proceed like normally with the request  </span>
+                <span class="k">return</span> <span class="n">json_response</span><span class="p">({</span><span class="s">&#39;success&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span> <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="s">&#39;Please use the Web API correctly and supply the parameter: &#39;</span><span class="o">+</span><span class="n">parameter</span><span class="p">})</span>  
+            <span class="c"># Proceed like normally with the request  </span>
             <span class="k">return</span> <span class="n">fn</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>  
         <span class="k">return</span> <span class="n">wraps</span><span class="p">(</span><span class="n">fn</span><span class="p">)(</span><span class="n">wrapped</span><span class="p">)</span>  
     <span class="k">return</span> <span class="n">inner_decorator</span>  
@@ -163,9 +163,9 @@ decorators</a></p>
 
 
 <p>An example of using it in your view:  </p>
-<div class="highlight"><pre><span></span><span class="nd">@required_parameters</span><span class="p">(</span><span class="n">parameters</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">,</span> <span class="s1">&#39;username&#39;</span><span class="p">,</span> <span class="s1">&#39;password&#39;</span><span class="p">))</span>  
+<div class="highlight"><pre><span class="nd">@required_parameters</span><span class="p">(</span><span class="n">parameters</span><span class="o">=</span><span class="p">(</span><span class="s">&#39;email&#39;</span><span class="p">,</span> <span class="s">&#39;username&#39;</span><span class="p">,</span> <span class="s">&#39;password&#39;</span><span class="p">))</span>  
 <span class="k">def</span> <span class="nf">view_which_requires_email_username_and_password</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>  
-    <span class="n">bla</span> <span class="o">=</span> <span class="s1">&#39;bla&#39;</span>
+    <span class="n">bla</span> <span class="o">=</span> <span class="s">&#39;bla&#39;</span>
     <span class="k">return</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="n">bla</span><span class="p">)</span>
 </pre></div>
             </div>

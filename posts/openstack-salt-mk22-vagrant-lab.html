@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en"
+>
+<head>
+    <title>OpenStack Salt MK22 Vagrant-based lab - Sam Stoelinga (Samos IT) - Blog</title>
+    <!-- Using the latest rendering mode for IE -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+
+<link rel="canonical" href="http://samos-it.com/posts/openstack-salt-mk22-vagrant-lab.html">
+
+        <meta name="author" content="Sam Stoelinga" />
+        <meta name="keywords" content="openstack,salt" />
+        <meta name="description" content="The blog by Sebastian inspired me to try out OpenStack Salt in combination with the new MK22 Reclass model. Instead of using the TCPcloud provided labs I&#39;m using my own laptop beast (ThinkPad W530 with 32GB of memory). For that reason I created a Vagrantfile for the mk22-lab-basic environment ..." />
+
+        <meta property="og:site_name" content="Sam Stoelinga (Samos IT) - Blog" />
+        <meta property="og:type" content="article"/>
+        <meta property="og:title" content="OpenStack Salt MK22 Vagrant-based lab"/>
+        <meta property="og:url" content="http://samos-it.com/posts/openstack-salt-mk22-vagrant-lab.html"/>
+        <meta property="og:description" content="The blog by Sebastian inspired me to try out OpenStack Salt in combination with the new MK22 Reclass model. Instead of using the TCPcloud provided labs I&#39;m using my own laptop beast (ThinkPad W530 with 32GB of memory). For that reason I created a Vagrantfile for the mk22-lab-basic environment ..."/>
+        <meta property="article:published_time" content="2016-11-08" />
+            <meta property="article:section" content="Openstack" />
+            <meta property="article:tag" content="openstack" />
+            <meta property="article:tag" content="salt" />
+            <meta property="article:author" content="Sam Stoelinga" />
+
+
+    <!-- Bootstrap -->
+        <link rel="stylesheet" href="http://samos-it.com/theme/css/bootstrap.min.css" type="text/css"/>
+    <link href="http://samos-it.com/theme/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="http://samos-it.com/theme/css/pygments/native.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://samos-it.com/theme/css/style.css" type="text/css"/>
+
+
+</head>
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="http://samos-it.com/" class="navbar-brand">
+Sam Stoelinga (Samos IT) - Blog            </a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                        <li >
+                            <a href="http://samos-it.com/category/algorithms.html">Algorithms</a>
+                        </li>
+                        <li >
+                            <a href="http://samos-it.com/category/bandwidth.html">Bandwidth</a>
+                        </li>
+                        <li >
+                            <a href="http://samos-it.com/category/big-data.html">Big data</a>
+                        </li>
+                        <li >
+                            <a href="http://samos-it.com/category/china.html">China</a>
+                        </li>
+                        <li >
+                            <a href="http://samos-it.com/category/linux.html">Linux</a>
+                        </li>
+                        <li class="active">
+                            <a href="http://samos-it.com/category/openstack.html">Openstack</a>
+                        </li>
+                        <li >
+                            <a href="http://samos-it.com/category/python.html">Python</a>
+                        </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="http://samos-it.com/archives.html"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+</div> <!-- /.navbar -->
+<!-- Banner -->
+<!-- End Banner -->
+<div class="container">
+    <div class="row">
+        <div class="col-sm-9">
+
+    <section id="content">
+        <article>
+            <header class="page-header">
+                <h1>
+                    <a href="http://samos-it.com/posts/openstack-salt-mk22-vagrant-lab.html"
+                       rel="bookmark"
+                       title="Permalink to OpenStack Salt MK22 Vagrant-based lab">
+                        OpenStack Salt MK22 Vagrant-based lab
+                    </a>
+                </h1>
+            </header>
+            <div class="entry-content">
+                <div class="panel">
+                    <div class="panel-body">
+<footer class="post-info">
+    <span class="label label-default">Date</span>
+    <span class="published">
+        <i class="fa fa-calendar"></i><time datetime="2016-11-08T13:15:00+01:00"> Tue 08 November 2016</time>
+    </span>
+
+
+
+<span class="label label-default">Tags</span>
+	<a href="http://samos-it.com/tag/openstack.html">openstack</a>
+        /
+	<a href="http://samos-it.com/tag/salt.html">salt</a>
+    
+</footer><!-- /.post-info -->                    </div>
+                </div>
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- samos-it below title -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-0961053069037121"
+     data-ad-slot="7240515610"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+                <p>The blog by <a href="http://www.yet.org/2016/10/os-salt/">Sebastian</a> inspired me to try out OpenStack Salt in combination
+with the new <a href="https://github.com/Mirantis/mk-lab-salt-model">MK22 Reclass  model</a>.
+Instead of using the TCPcloud provided labs I'm using
+my own laptop beast (ThinkPad W530 with 32GB of memory).
+For that reason I created a Vagrantfile for the mk22-lab-basic environment to create VMs on my laptop. The
+Vagrantfile creates the nessecary interfaces and internal networks to mimick
+the model. At the bottom of this post you can find the Vagrantfile. I've also
+created a static branch based on the upstream mk-lab-salt-model that I've verified
+to be working with the instructions provided below. The instructions originally come from
+Ales Komarek. They have been slightly modified to get them working.</p>
+<p>Reclass model used in this blog:
+<a href="https://github.com/samos123/mk-lab-salt-model/tree/sam-vagrant-blog-post">gh:samos123/mk-lab-salt-model branch:sam-vagrant-blog-post</a>.
+The following commits have been created specifically for this post:</p>
+<div class="highlight"><pre>fcea636 Remove Horizon contrail integration because of missing pkgs
+60af84f Del Mirantis Horizon them because pkg unavailable
+cc527df Remove non-used node definitions
+f76eab0 Disable monitoring due to resources
+e55d0fe Remove ens4 nic dhcp config
+5d71986 Change repo to samos123 b/sam-vagrant-blog-post
+6222ff5 Add Vagrant file for mk22-lab-basic
+</pre></div>
+
+
+<p>The Vagrantfile defines and creates the following VMs:</p>
+<ul>
+<li>cfg01: 4GB RAM, used as Salt Master</li>
+<li>ctl01, ctl02, ctl03: 4GB RAM, used for Controllers and Contrail</li>
+<li>cmp01: 2GB</li>
+<li>prx01: 2GB</li>
+</ul>
+<p>Each VM that gets created will get assigned the following networks automatically:
+- eth0/enp0s3: 10.0.2.0/24, NAT interface for internet
+- eth1/enp0s8: 172.16.10.0/24, host-only network for all OpenStack, Contrail and Data Network
+- eth2/enp0s9: 192.168.10.0/24, host-only network for Salt to configure hosts</p>
+<p>By following below instructions you can bring up an OpenStack cloud (I found it often still
+requires debugging and tweaking to make it work):</p>
+<div class="highlight"><pre><span class="c"># Manually setup the salt-master</span>
+vagrant up cfg01
+vagrant ssh cfg01
+<span class="nb">echo</span> <span class="s2">&quot;deb [arch=amd64] http://apt.tcpcloud.eu/nightly/ xenial main security extra tcp tcp-salt&quot;</span> &gt; /etc/apt/sources.list
+wget -O - http://apt.tcpcloud.eu/public.gpg <span class="p">|</span> apt-key add -
+apt-get update
+apt-get upgrade
+apt-get install -y salt-master reclass
+apt-get install -y salt-formula-linux salt-formula-reclass salt-formula-salt <span class="se">\</span>
+                   salt-formula-openssh salt-formula-ntp salt-formula-git <span class="se">\</span>
+                   salt-formula-graphite salt-formula-collectd salt-formula-sensu salt-formula-heka
+apt-get install -y salt-formula-sphinx salt-formula-horizon salt-formula-nginx <span class="se">\</span>
+                   salt-formula-memcached salt-formula-python salt-formula-supervisor
+cat <span class="s">&lt;&lt; &#39;EOF&#39; &gt;&gt; /etc/salt/master.d/master.conf</span>
+<span class="s">file_roots:</span>
+<span class="s">  base:</span>
+<span class="s">  - /usr/share/salt-formulas/env</span>
+<span class="s">pillar_opts: False</span>
+<span class="s">open_mode: True</span>
+<span class="s">reclass: &amp;reclass</span>
+<span class="s">  storage_type: yaml_fs</span>
+<span class="s">  inventory_base_uri: /srv/salt/reclass</span>
+<span class="s">ext_pillar:</span>
+<span class="s">  - reclass: *reclass</span>
+<span class="s">master_tops:</span>
+<span class="s">  reclass: *reclass</span>
+<span class="s">EOF</span>
+
+mkdir /etc/reclass
+cat <span class="s">&lt;&lt; &#39;EOF&#39; &gt;&gt; /etc/reclass/reclass-config.yml</span>
+<span class="s">storage_type: yaml_fs</span>
+<span class="s">pretty_print: True</span>
+<span class="s">output: yaml</span>
+<span class="s">inventory_base_uri: /srv/salt/reclass</span>
+<span class="s">EOF</span>
+
+git clone https://github.com/samos123/mk-lab-salt-model /srv/salt/reclass -b sam-vagrant-blog-post
+mkdir -p /srv/salt/reclass/classes/service
+<span class="k">for</span> i in /usr/share/salt-formulas/reclass/service/*<span class="p">;</span> <span class="k">do</span> ln -s <span class="nv">$i</span> /srv/salt/reclass/classes/service/<span class="p">;</span> <span class="k">done</span>
+
+apt-get install -y salt-minion
+cat &lt;&lt; <span class="s2">&quot;EOF&quot;</span> &gt;&gt; /etc/salt/minion.d/minion.conf
+id: cfg01.mk22-lab-basic.local
+master: localhost
+EOF
+
+service salt-master restart
+service salt-minion restart
+
+<span class="c"># confirm cfg01 is accepted</span>
+salt-key 
+<span class="c"># check reclass model is fine</span>
+reclass-salt --top
+reclass-salt --pillar cfg01.mk22-lab-basic.local
+
+salt <span class="s1">&#39;cfg01*&#39;</span> state.sls reclass.storage
+salt <span class="s1">&#39;*&#39;</span> saltutil.refresh_pillar
+
+salt <span class="s2">&quot;cfg01*&quot;</span> state.sls git,linux,ntp
+salt-call state.sls salt
+salt <span class="s2">&quot;cfg01*&quot;</span> state.sls openssh,reclass,sphinx,nginx
+
+
+<span class="c"># shows there are no nodes added to salt yet</span>
+salt-key
+<span class="c"># exit back to Host running  vagrant</span>
+<span class="nb">exit</span>
+
+<span class="c"># now bring up remaining nodes ctl[1-3], cmp01, prx01</span>
+vagrant up
+
+vagrant ssh cfg01
+<span class="c"># We need m2crypto to be installed else some states will fail</span>
+salt <span class="s1">&#39;*&#39;</span> pkg.install python-m2crypto
+salt <span class="s1">&#39;*&#39;</span> state.sls ntp,linux,salt.minion,openssh
+salt <span class="s2">&quot;ctl*&quot;</span> state.show_top
+salt <span class="s2">&quot;ctl*&quot;</span> --state-output<span class="o">=</span>mixed -b <span class="m">1</span> state.sls keepalived
+salt <span class="s1">&#39;ctl01*&#39;</span> pillar.get keepalived:cluster:instance:VIP:address
+salt <span class="s1">&#39;ctl01*&#39;</span> cmd.run <span class="s2">&quot;ip a&quot;</span>
+salt <span class="s2">&quot;ctl*&quot;</span> --state-output<span class="o">=</span>mixed -b <span class="m">1</span> state.sls memcached,rabbitmq
+
+salt <span class="s1">&#39;ctl*&#39;</span> state.sls glusterfs.server.service
+salt <span class="s1">&#39;ctl*&#39;</span> -b <span class="m">1</span> state.sls glusterfs.server.setup
+<span class="c"># gluterfs.server.setup fails because of issue with formula with older salt minons</span>
+<span class="c"># pr is submitted https://github.com/tcpcloud/salt-formula-glusterfs/pull/8</span>
+<span class="c"># if you still hit this issue, manually start the volume and rerun state again</span>
+salt <span class="s2">&quot;ctl01*&quot;</span> cmd.run <span class="s2">&quot;gluster volume start keystone-keys; gluster volume start glance&quot;</span>
+salt <span class="s1">&#39;ctl*&#39;</span> -b <span class="m">1</span> state.sls glusterfs.server.setup
+
+<span class="c"># verify that gluster is working</span>
+salt <span class="s2">&quot;ctl01*&quot;</span> cmd.run <span class="s2">&quot;gluster peer status; gluster volume status&quot;</span>
+
+<span class="c"># install mysql</span>
+salt -C <span class="s1">&#39;I@galera:master&#39;</span> state.sls galera
+salt -C <span class="s1">&#39;I@galera:slave&#39;</span> state.sls galera
+salt -C <span class="s1">&#39;I@galera:master&#39;</span> mysql.status
+
+
+
+
+salt -C <span class="s1">&#39;I@haproxy:proxy&#39;</span> state.sls haproxy
+salt -C <span class="s1">&#39;I@haproxy:proxy&#39;</span> service.status haproxy
+
+
+<span class="c"># For some reason salt&#39;s keystone module doesn&#39;t work unless you restart the minion</span>
+salt <span class="s1">&#39;ctl*&#39;</span> state.sls keystone -b 1
+salt -C <span class="s1">&#39;I@keystone:client&#39;</span> state.sls keystone.client
+salt <span class="s2">&quot;ctl01*&quot;</span> cmd.run <span class="s2">&quot;. /root/keystonerc; keystone service-list&quot;</span>
+
+salt <span class="s1">&#39;ctl*&#39;</span> -b <span class="m">1</span> state.sls glance
+salt <span class="s1">&#39;ctl*&#39;</span> state.sls glusterfs.client
+salt <span class="s1">&#39;ctl*&#39;</span> cmd.run <span class="s1">&#39;df -h&#39;</span>
+<span class="c"># need to rerun keystone for glance to work</span>
+salt <span class="s1">&#39;ctl*&#39;</span> state.sls keystone
+salt <span class="s2">&quot;ctl*&quot;</span> cmd.run <span class="s2">&quot;. /root/keystonerc; glance image-list&quot;</span>
+
+salt -C <span class="s1">&#39;I@nova:controller&#39;</span> state.sls nova -b 1
+salt -C <span class="s1">&#39;I@keystone:server&#39;</span> cmd.run <span class="s2">&quot;. /root/keystonerc; nova service-list&quot;</span>
+
+<span class="c"># Cinder fails to install some packages</span>
+<span class="c"># workaround is to manually install linux-image-extra-virtual package</span>
+salt <span class="s1">&#39;ctl*&#39;</span> pkg.install linux-image-extra-virtual
+salt -C <span class="s1">&#39;I@cinder:controller&#39;</span> state.sls cinder -b 1
+salt -C <span class="s1">&#39;I@keystone:server&#39;</span> cmd.run <span class="s2">&quot;. /root/keystonerc; cinder list&quot;</span>
+
+<span class="c"># Neutron</span>
+salt -C <span class="s1">&#39;I@neutron:server&#39;</span> state.sls neutron -b 1
+
+<span class="c"># heat 2 states will fail but that&#39;s fine as it was created previously. </span>
+<span class="c"># Should still be fixed though, this is the error seen:</span>
+<span class="c"># State &#39;keystone.role_present&#39; was not found in SLS &#39;heat.server&#39;</span>
+<span class="c">#              Reason: &#39;keystone&#39; __virtual__ returned False</span>
+<span class="c"># also if heat-api isn&#39;t running make sure the following patch is merged</span>
+<span class="c"># https://review.openstack.org/#/c/394599/</span>
+salt -C <span class="s1">&#39;I@heat:server&#39;</span> state.sls heat -b 1
+salt -C <span class="s1">&#39;I@keystone:server&#39;</span> cmd.run <span class="s2">&quot;. /root/keystonerc; heat resource-type-list&quot;</span>
+
+
+
+<span class="c"># Several issues with horizon and dashboard</span>
+<span class="c"># 1. The package openstack-dashboard-contrail-panels is missing so I&#39;ve disabled</span>
+<span class="c">#    Contrail integration by changing the reclass model. See commit #fcea6366ea50</span>
+<span class="c"># 2. The package openstack-dashboard-mirantis-theme is missing so I&#39;ve disabled</span>
+<span class="c">#    mirantis them customization in the reclass model. See commit #60af84f237bab</span>
+<span class="c"># 3. The salt-formula-horizon fails when app.plugin is not set in pillar. For</span>
+<span class="c">#    this I&#39;ve submitted a patch in the formula https://review.openstack.org/#/c/394618/</span>
+<span class="c"># You may have to apply the patch in point 3 manually ^^ horizon fails for me still.</span>
+salt -C <span class="s1">&#39;I@horizon:server&#39;</span> state.sls horizon
+salt -C <span class="s1">&#39;I@nginx:server&#39;</span> state.sls nginx
+
+<span class="c"># Install contrail</span>
+salt <span class="s2">&quot;ctl*&quot;</span> state.sls opencontrail -b 1
+salt -C <span class="s1">&#39;I@keystone:server&#39;</span> cmd.run <span class="s2">&quot;. /root/keystonerc; neutron net-list; nova net-list&quot;</span>
+
+salt <span class="s1">&#39;ctl01*&#39;</span> cmd.run <span class="s2">&quot;/usr/share/contrail-utils/provision_control.py --api_server_ip 172.16.10.254 --api_server_port 8082 --host_name ctl01 --host_ip 172.16.10.101 --router_asn 64512 --admin_password workshop --admin_user admin --admin_tenant_name admin --oper add&quot;</span>
+salt <span class="s1">&#39;ctl02*&#39;</span> cmd.run <span class="s2">&quot;/usr/share/contrail-utils/provision_control.py --api_server_ip 172.16.10.254 --api_server_port 8082 --host_name ctl02 --host_ip 172.16.10.102 --router_asn 64512 --admin_password workshop --admin_user admin --admin_tenant_name admin --oper add&quot;</span>
+salt <span class="s1">&#39;ctl03*&#39;</span> cmd.run <span class="s2">&quot;/usr/share/contrail-utils/provision_control.py --api_server_ip 172.16.10.254 --api_server_port 8082 --host_name ctl03 --host_ip 172.16.10.103 --router_asn 64512 --admin_password workshop --admin_user admin --admin_tenant_name admin --oper add&quot;</span>
+
+
+<span class="c"># Configure compute nodes</span>
+salt <span class="s1">&#39;cmp*&#39;</span> state.highstate
+salt <span class="s1">&#39;cmp*&#39;</span> state.highstate
+salt <span class="s1">&#39;ctl01*&#39;</span> cmd.run <span class="s2">&quot;/usr/share/contrail-utils/provision_vrouter.py --host_name cmp01 --host_ip 172.16.10.105 --api_server_ip 172.16.10.254 --oper add --admin_user admin --admin_password workshop --admin_tenant_name admin&quot;</span>
+
+<span class="c"># Temporary workaround for mos packages</span>
+salt <span class="s1">&#39;cmp*&#39;</span> cmd.run <span class="s2">&quot;find /etc -xdev -type f | xargs egrep -H &#39;unix_sock_group.*libvirt&#39; | sed -e &#39;s/:.*//&#39; | xargs sed -i -e &#39;s/unix_sock_group = \&quot;libvirtd\&quot;/unix_sock_group = \&quot;libvirt\&quot;/&#39;&quot;</span>
+
+<span class="c"># There is an issue with nova.conf because rabbit_host isn&#39;t set in default section</span>
+<span class="c"># I&#39;ve submitted a patch here: https://review.openstack.org/#/c/395161/</span>
+
+<span class="c"># Try rebooting and see if it still works</span>
+salt <span class="s1">&#39;cmp*&#39;</span> system.reboot
+<span class="c"># For some reason I got an older libvirt from tcprepo instead of mos</span>
+<span class="c"># below installs the correct package. Bug filed here:</span>
+<span class="c"># https://github.com/tcpcloud/salt-formula-libvirt/issues/1</span>
+vim /usr/share/salt-formulas/env/nova/files/mitaka/nova-compute.conf.Debian
+<span class="c"># change virt_type from kvm to qemu, bug has been filed about this here:</span>
+<span class="c"># https://bugs.launchpad.net/openstack-salt/+bug/1640314</span>
+salt <span class="s1">&#39;cmp*&#39;</span> cmd.run <span class="s2">&quot;apt-get update&quot;</span>
+salt <span class="s1">&#39;cmp*&#39;</span> pkg.install libvirt-bin
+salt <span class="s1">&#39;cmp*&#39;</span> cmd.run <span class="s2">&quot;ip a&quot;</span>
+salt <span class="s1">&#39;cmp*&#39;</span> cmd.run <span class="s2">&quot;contrail-status&quot;</span>
+
+<span class="c"># Exit and SSH into ctl01 to test the cloud</span>
+<span class="nb">exit</span>
+vagrant ssh ctl01
+sudo -i
+<span class="nb">source </span>keystonerc
+wget http://download.cirros-cloud.net/0.3.4/cirros-0.3.4-i386-disk.img
+glance image-create --name cirros --visibility public --disk-format qcow2 --container-format bare --progress &lt; /root/cirros-0.3.4-i386-disk.img
+neutron net-create net1
+neutron subnet-create --name subnet1 net1 192.168.32.0/24
+keystone tenant-list
+<span class="nv">netuuid</span><span class="o">=</span><span class="k">$(</span>neutron net-list <span class="p">|</span> grep net1 <span class="p">|</span> awk <span class="s1">&#39;{ print $2 }&#39;</span><span class="k">)</span>
+nova flavor-create --is-public <span class="nb">true </span>m1.macro auto <span class="m">128</span> <span class="m">5</span> 1
+nova boot --nic net-id<span class="o">=</span><span class="nv">$netuuid</span> --image cirros --flavor m1.macro testvm1
+</pre></div>
+
+
+<p>Below is the Vagrantfile that is used in this blog post:</p>
+<div class="highlight"><pre><span class="c1"># -*- mode: ruby -*-</span>
+<span class="c1"># vi: set ft=ruby :</span>
+
+<span class="vg">$script</span> <span class="o">=</span> <span class="o">&lt;&lt;</span><span class="no">SCRIPT</span>
+<span class="sh">echo &quot;deb [arch=amd64] http://apt.tcpcloud.eu/nightly/ trusty main security extra tcp tcp-salt&quot; &gt; /etc/apt/sources.list</span>
+<span class="sh">wget -O - http://apt.tcpcloud.eu/public.gpg | apt-key add -</span>
+<span class="sh">apt-get update</span>
+<span class="sh">apt-get install -y salt-minion</span>
+<span class="sh">cat &lt;&lt; &quot;EOF&quot; &gt;&gt; /etc/salt/minion.d/minion.conf</span>
+<span class="sh">id: {{x}}.mk22-lab-basic.local</span>
+<span class="sh">master: 192.168.10.100</span>
+<span class="sh">EOF</span>
+<span class="no">SCRIPT</span>
+
+<span class="no">Vagrant</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="s2">&quot;2&quot;</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">config</span><span class="o">|</span>
+  <span class="n">config</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">box</span> <span class="o">=</span> <span class="s2">&quot;ubuntu/trusty64&quot;</span>
+
+  <span class="n">config</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">provider</span> <span class="s2">&quot;virtualbox&quot;</span> <span class="k">do</span> <span class="o">|</span><span class="n">vb</span><span class="o">|</span>
+     <span class="c1"># Display the VirtualBox GUI when booting the machine</span>
+     <span class="n">vb</span><span class="o">.</span><span class="n">gui</span> <span class="o">=</span> <span class="kp">true</span>
+
+     <span class="c1"># Customize the amount of memory on the VM:</span>
+     <span class="n">vb</span><span class="o">.</span><span class="n">memory</span> <span class="o">=</span> <span class="s2">&quot;4096&quot;</span>
+  <span class="k">end</span>
+
+  <span class="n">config</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">define</span> <span class="s2">&quot;cfg01&quot;</span> <span class="k">do</span> <span class="o">|</span><span class="n">cfg01</span><span class="o">|</span>
+    <span class="n">cfg01</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">box</span> <span class="o">=</span> <span class="s2">&quot;ubuntu/xenial64&quot;</span>
+    <span class="n">cfg01</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">network</span> <span class="s2">&quot;private_network&quot;</span><span class="p">,</span> <span class="ss">ip</span><span class="p">:</span> <span class="s2">&quot;172.16.10.100&quot;</span>
+    <span class="n">cfg01</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">network</span> <span class="s2">&quot;private_network&quot;</span><span class="p">,</span> <span class="ss">ip</span><span class="p">:</span> <span class="s2">&quot;192.168.10.100&quot;</span>
+  <span class="k">end</span>
+
+  <span class="n">config</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">define</span> <span class="s2">&quot;ctl01&quot;</span> <span class="k">do</span> <span class="o">|</span><span class="n">ctl01</span><span class="o">|</span>
+    <span class="n">ctl01</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">box</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">box</span>
+    <span class="n">ctl01</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">provision</span> <span class="s2">&quot;shell&quot;</span><span class="p">,</span> <span class="ss">inline</span><span class="p">:</span> <span class="vg">$script</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sr">/{{x}}/</span><span class="p">,</span> <span class="s2">&quot;ctl01&quot;</span><span class="p">)</span>
+    <span class="n">ctl01</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">network</span> <span class="s2">&quot;private_network&quot;</span><span class="p">,</span> <span class="ss">ip</span><span class="p">:</span> <span class="s2">&quot;172.16.10.101&quot;</span>
+    <span class="n">ctl01</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">network</span> <span class="s2">&quot;private_network&quot;</span><span class="p">,</span> <span class="ss">ip</span><span class="p">:</span> <span class="s2">&quot;192.168.10.101&quot;</span>
+  <span class="k">end</span>
+
+  <span class="n">config</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">define</span> <span class="s2">&quot;ctl02&quot;</span> <span class="k">do</span> <span class="o">|</span><span class="n">ctl02</span><span class="o">|</span>
+    <span class="n">ctl02</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">box</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">box</span>
+    <span class="n">ctl02</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">provision</span> <span class="s2">&quot;shell&quot;</span><span class="p">,</span> <span class="ss">inline</span><span class="p">:</span> <span class="vg">$script</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sr">/{{x}}/</span><span class="p">,</span> <span class="s2">&quot;ctl02&quot;</span><span class="p">)</span>
+    <span class="n">ctl02</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">network</span> <span class="s2">&quot;private_network&quot;</span><span class="p">,</span> <span class="ss">ip</span><span class="p">:</span> <span class="s2">&quot;172.16.10.102&quot;</span>
+    <span class="n">ctl02</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">network</span> <span class="s2">&quot;private_network&quot;</span><span class="p">,</span> <span class="ss">ip</span><span class="p">:</span> <span class="s2">&quot;192.168.10.102&quot;</span>
+  <span class="k">end</span>
+
+  <span class="n">config</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">define</span> <span class="s2">&quot;ctl03&quot;</span> <span class="k">do</span> <span class="o">|</span><span class="n">ctl03</span><span class="o">|</span>
+    <span class="n">ctl03</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">box</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">box</span>
+    <span class="n">ctl03</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">provision</span> <span class="s2">&quot;shell&quot;</span><span class="p">,</span> <span class="ss">inline</span><span class="p">:</span> <span class="vg">$script</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sr">/{{x}}/</span><span class="p">,</span> <span class="s2">&quot;ctl03&quot;</span><span class="p">)</span>
+    <span class="n">ctl03</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">network</span> <span class="s2">&quot;private_network&quot;</span><span class="p">,</span> <span class="ss">ip</span><span class="p">:</span> <span class="s2">&quot;172.16.10.103&quot;</span>
+    <span class="n">ctl03</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">network</span> <span class="s2">&quot;private_network&quot;</span><span class="p">,</span> <span class="ss">ip</span><span class="p">:</span> <span class="s2">&quot;192.168.10.103&quot;</span>
+  <span class="k">end</span>
+
+  <span class="n">config</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">define</span> <span class="s2">&quot;cmp01&quot;</span> <span class="k">do</span> <span class="o">|</span><span class="n">cmp01</span><span class="o">|</span>
+    <span class="n">cmp01</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">box</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">box</span>
+    <span class="n">cmp01</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">provision</span> <span class="s2">&quot;shell&quot;</span><span class="p">,</span> <span class="ss">inline</span><span class="p">:</span> <span class="vg">$script</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sr">/{{x}}/</span><span class="p">,</span> <span class="s2">&quot;cmp01&quot;</span><span class="p">)</span>
+    <span class="n">cmp01</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">network</span> <span class="s2">&quot;private_network&quot;</span><span class="p">,</span> <span class="ss">ip</span><span class="p">:</span> <span class="s2">&quot;172.16.10.105&quot;</span>
+    <span class="n">cmp01</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">network</span> <span class="s2">&quot;private_network&quot;</span><span class="p">,</span> <span class="ss">ip</span><span class="p">:</span> <span class="s2">&quot;192.168.10.105&quot;</span>
+
+    <span class="n">cmp01</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">provider</span> <span class="s2">&quot;virtualbox&quot;</span> <span class="k">do</span> <span class="o">|</span><span class="n">vb</span><span class="o">|</span>
+       <span class="n">vb</span><span class="o">.</span><span class="n">memory</span> <span class="o">=</span> <span class="s2">&quot;2048&quot;</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="n">config</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">define</span> <span class="s2">&quot;prx01&quot;</span> <span class="k">do</span> <span class="o">|</span><span class="n">prx01</span><span class="o">|</span>
+    <span class="n">prx01</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">box</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">box</span>
+    <span class="n">prx01</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">provision</span> <span class="s2">&quot;shell&quot;</span><span class="p">,</span> <span class="ss">inline</span><span class="p">:</span> <span class="vg">$script</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sr">/{{x}}/</span><span class="p">,</span> <span class="s2">&quot;prx01&quot;</span><span class="p">)</span>
+    <span class="n">prx01</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">network</span> <span class="s2">&quot;private_network&quot;</span><span class="p">,</span> <span class="ss">ip</span><span class="p">:</span> <span class="s2">&quot;172.16.10.107&quot;</span>
+    <span class="n">prx01</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">network</span> <span class="s2">&quot;private_network&quot;</span><span class="p">,</span> <span class="ss">ip</span><span class="p">:</span> <span class="s2">&quot;192.168.10.107&quot;</span>
+
+    <span class="n">prx01</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">provider</span> <span class="s2">&quot;virtualbox&quot;</span> <span class="k">do</span> <span class="o">|</span><span class="n">vb</span><span class="o">|</span>
+       <span class="n">vb</span><span class="o">.</span><span class="n">memory</span> <span class="o">=</span> <span class="s2">&quot;2048&quot;</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+
+
+<span class="k">end</span>
+</pre></div>
+            </div>
+            <!-- /.entry-content -->
+    <hr/>
+    <section class="comments" id="comments">
+        <h2>Comments</h2>
+
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+            /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+            var disqus_shortname = 'samosit'; // required: replace example with your forum shortname
+
+                var disqus_url = 'http://samos-it.com/posts/openstack-salt-mk22-vagrant-lab.html';
+
+            var disqus_config = function () {
+                this.language = "en";
+            };
+
+            /* * * DON'T EDIT BELOW THIS LINE * * */
+            (function () {
+                var dsq = document.createElement('script');
+                dsq.type = 'text/javascript';
+                dsq.async = true;
+                dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by
+            Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+    </section>
+        </article>
+    </section>
+
+        </div>
+        <div class="col-sm-3" id="sidebar">
+            <aside>
+
+<section class="well well-sm">
+    <ul class="list-group list-group-flush">
+            <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Social</span></h4>
+              <ul class="list-group" id="social">
+                <li class="list-group-item"><a href="http://www.linkedin.com/in/sam.stoelinga"><i class="fa fa-linkedin-square fa-lg"></i> linkedin</a></li>
+                <li class="list-group-item"><a href="http://github.com/samos123/"><i class="fa fa-github-square fa-lg"></i> github</a></li>
+              </ul>
+            </li>
+
+
+
+
+    <li class="list-group-item"><h4><i class="fa fa-github fa-lg"></i><span class="icon-label">GitHub Repos</span></h4>
+        <div id="gh_repos">
+            <p class="list-group-item">Status updating...</p>
+        </div>
+    </li>
+    <li class="list-group-item"><h4><i class="fa fa-external-link-square fa-lg"></i><span class="icon-label">Links</span></h4>
+      <ul class="list-group" id="links">
+        <li class="list-group-item">
+            <a href="http://getpelican.com/" target="_blank">
+                Pelican
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://python.org/" target="_blank">
+                Python.org
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://jinja.pocoo.org/" target="_blank">
+                Jinja2
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="#" target="_blank">
+                You can modify those links in your config file
+            </a>
+        </li>
+      </ul>
+    </li>
+    </ul>
+</section>
+            </aside>
+        </div>
+    </div>
+</div>
+<footer>
+   <div class="container">
+      <hr>
+      <div class="row">
+         <div class="col-xs-10">&copy; 2016 Sam Stoelinga
+            &middot; Powered by <a href="https://github.com/DandyDev/pelican-bootstrap3" target="_blank">pelican-bootstrap3</a>,
+            <a href="http://docs.getpelican.com/" target="_blank">Pelican</a>,
+            <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>         </div>
+         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
+      </div>
+   </div>
+</footer>
+<script src="http://samos-it.com/theme/js/jquery.min.js"></script>
+
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="http://samos-it.com/theme/js/bootstrap.min.js"></script>
+
+<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+<script src="http://samos-it.com/theme/js/respond.min.js"></script>
+
+    <!-- GitHub JS -->
+    <script type="text/javascript">
+        $(document).ready(function () {
+            if (!window.jXHR) {
+                var jxhr = document.createElement('script');
+                jxhr.type = 'text/javascript';
+                jxhr.src = 'http://samos-it.com/theme/js/jXHR.js';
+                var s = document.getElementsByTagName('script')[0];
+                s.parentNode.insertBefore(jxhr, s);
+            }
+
+            github.showRepos({
+                user: 'samos123',
+                count: 5,
+                skip_forks: false,
+                target: '#gh_repos'
+            });
+        });
+    </script>
+    <script src="http://samos-it.com/theme/js/github.js" type="text/javascript"></script>
+    <!-- End GitHub JS Code -->
+    <!-- Disqus -->
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'samosit'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function () {
+            var s = document.createElement('script');
+            s.async = true;
+            s.type = 'text/javascript';
+            s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+            (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+        }());
+    </script>
+    <!-- End Disqus Code -->
+    <!-- Google Analytics -->
+    <script type="text/javascript">
+
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-20975967-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function () {
+            var ga = document.createElement('script');
+            ga.type = 'text/javascript';
+            ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
+    <!-- End Google Analytics Code -->
+
+</body>
+</html>

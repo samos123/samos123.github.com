@@ -138,23 +138,23 @@ Sam Stoelinga (Samos IT) - Blog            </a>
                 <p>Tsinghua university uses <a href="https://en.wikipedia.org/wiki/ISATAP">ISATAP</a> to provide IPv6 connectivity to students.
 In Linux you can use the <a href="http://www.saschahlusiak.de/linux/isatap.htm">isatapd</a> program to create an ISATAP tunnel based on an IPv4 device.</p>
 <p>You can use the isatapd command as follows to establish an ISATAPD tunnel:</p>
-<div class="highlight"><pre><span></span>isatapd --router isatap.tsinghua.edu.cn
+<div class="highlight"><pre>isatapd --router isatap.tsinghua.edu.cn
 </pre></div>
 
 
 <p>After connecting check that you have received an global IPv6 address with:</p>
-<div class="highlight"><pre><span></span>ip -6 a
+<div class="highlight"><pre>ip -6 a
 </pre></div>
 
 
 <p>As a last check you need to check your default ipv6 routes. In some cases 2 default routes may get added:</p>
-<div class="highlight"><pre><span></span>ip -6 route
+<div class="highlight"><pre>ip -6 route
 </pre></div>
 
 
 <p>If there are 2 default routes make sure to delete the route which goes out via your physical device e.g(eth0 or enp2u5). In my case I had to delete
 one of the default routes as follows:</p>
-<div class="highlight"><pre><span></span>ip -6 route del default via fe80::5efe:a66f:1501
+<div class="highlight"><pre>ip -6 route del default via fe80::5efe:a66f:1501
 </pre></div>
 
 
