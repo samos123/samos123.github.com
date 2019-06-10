@@ -14,13 +14,13 @@
 
         <meta name="author" content="Sam Stoelinga" />
         <meta name="keywords" content="linux,networking,bridge" />
-        <meta name="description" content="The dillemma: You&#39;re accessing your server via SSH through interface eth1.102 with the ip 10.20.0.2/24 and gateway 10.20.0.1. Now you want to add eth1 to a linux bridge so you can hookin VMs on a vlan trunk. Solution: Create a script ..." />
+        <meta name="description" content="The dillemma: You&#39;re accessing your server via SSH through interface eth1.102 with the ip 10.20.0.2/24 and gateway 10.20.0.1. Now you want to add eth1 to a linux bridge so you can hookin VMs on a vlan trunk. Solution: Create a script which …" />
 
         <meta property="og:site_name" content="Sam Stoelinga (Samos IT) - Blog" />
         <meta property="og:type" content="article"/>
         <meta property="og:title" content="Create Linux bridge without losing existing connection"/>
         <meta property="og:url" content="http://samos-it.com/posts/create-linux-bridge-without-losing-connection.html"/>
-        <meta property="og:description" content="The dillemma: You&#39;re accessing your server via SSH through interface eth1.102 with the ip 10.20.0.2/24 and gateway 10.20.0.1. Now you want to add eth1 to a linux bridge so you can hookin VMs on a vlan trunk. Solution: Create a script ..."/>
+        <meta property="og:description" content="The dillemma: You&#39;re accessing your server via SSH through interface eth1.102 with the ip 10.20.0.2/24 and gateway 10.20.0.1. Now you want to add eth1 to a linux bridge so you can hookin VMs on a vlan trunk. Solution: Create a script which …"/>
         <meta property="article:published_time" content="2015-06-19" />
             <meta property="article:section" content="Linux" />
             <meta property="article:tag" content="linux" />
@@ -65,6 +65,9 @@ Sam Stoelinga (Samos IT) - Blog            </a>
                         </li>
                         <li >
                             <a href="http://samos-it.com/category/china.html">China</a>
+                        </li>
+                        <li >
+                            <a href="http://samos-it.com/category/google-cloud.html">Google cloud</a>
                         </li>
                         <li class="active">
                             <a href="http://samos-it.com/category/linux.html">Linux</a>
@@ -133,24 +136,24 @@ Sam Stoelinga (Samos IT) - Blog            </a>
 Now you want to add eth1 to a linux bridge so you can hookin VMs on a vlan trunk.</p>
 <p>Solution: Create a script which does everything in 1 go and call this script from screen. Make sure the script is flawless else you still loose your connection.</p>
 <p>This is the script I create-bridge.sh used:</p>
-<div class="highlight"><pre><span class="c"># First remove the old vlan device</span>
-ip link <span class="nb">set </span>dev eth1.102 down
+<div class="highlight"><pre><span></span><span class="c1"># First remove the old vlan device</span>
+ip link <span class="nb">set</span> dev eth1.102 down
 ip link delete eth1.102
 
 
-<span class="c"># Create the bridge </span>
+<span class="c1"># Create the bridge </span>
 brctl addbr br-eth1
 brctl addif br-eth1 eth1
 
-ip link <span class="nb">set </span>eth1 up
-ip link <span class="nb">set </span>br-eth1 up
+ip link <span class="nb">set</span> eth1 up
+ip link <span class="nb">set</span> br-eth1 up
 
-<span class="c"># Add the vlan tagging ontop of the bridge</span>
-vconfig add br-eth1 102
+<span class="c1"># Add the vlan tagging ontop of the bridge</span>
+vconfig add br-eth1 <span class="m">102</span>
 
-ip link <span class="nb">set </span>br-eth1.102 up
-ip a add 166.111./24 dev br-eth1.102
-ip route add default via 166.111.80.10
+ip link <span class="nb">set</span> br-eth1.102 up
+ip a add <span class="m">166</span>.111./24 dev br-eth1.102
+ip route add default via <span class="m">166</span>.111.80.10
 </pre></div>
 
 
@@ -244,7 +247,7 @@ ip route add default via 166.111.80.10
    <div class="container">
       <hr>
       <div class="row">
-         <div class="col-xs-10">&copy; 2016 Sam Stoelinga
+         <div class="col-xs-10">&copy; 2019 Sam Stoelinga
             &middot; Powered by <a href="https://github.com/DandyDev/pelican-bootstrap3" target="_blank">pelican-bootstrap3</a>,
             <a href="http://docs.getpelican.com/" target="_blank">Pelican</a>,
             <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>         </div>

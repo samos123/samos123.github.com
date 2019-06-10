@@ -14,13 +14,13 @@
 
         <meta name="author" content="Sam Stoelinga" />
         <meta name="keywords" content="python,pyqt,pip" />
-        <meta name="description" content="Noticed that pip install pyqt isn&#39;t working? At least at the time of writing this blog it isn&#39;t.. This is the error that I got: IOError: [Errno 2] No such file or directory: setup.py It seems they didn&#39;t package it well and it&#39;s using configure ..." />
+        <meta name="description" content="Noticed that pip install pyqt isn&#39;t working? At least at the time of writing this blog it isn&#39;t.. This is the error that I got: IOError: [Errno 2] No such file or directory: setup.py It seems they didn&#39;t package it well and it&#39;s using configure.py to install. So …" />
 
         <meta property="og:site_name" content="Sam Stoelinga (Samos IT) - Blog" />
         <meta property="og:type" content="article"/>
         <meta property="og:title" content="Install PyQt in a virtualenv with Pip"/>
         <meta property="og:url" content="http://samos-it.com/posts/install-pyqt-in-a-virtualenv-with-pip.html"/>
-        <meta property="og:description" content="Noticed that pip install pyqt isn&#39;t working? At least at the time of writing this blog it isn&#39;t.. This is the error that I got: IOError: [Errno 2] No such file or directory: setup.py It seems they didn&#39;t package it well and it&#39;s using configure ..."/>
+        <meta property="og:description" content="Noticed that pip install pyqt isn&#39;t working? At least at the time of writing this blog it isn&#39;t.. This is the error that I got: IOError: [Errno 2] No such file or directory: setup.py It seems they didn&#39;t package it well and it&#39;s using configure.py to install. So …"/>
         <meta property="article:published_time" content="2013-05-30" />
             <meta property="article:section" content="Python" />
             <meta property="article:tag" content="python" />
@@ -65,6 +65,9 @@ Sam Stoelinga (Samos IT) - Blog            </a>
                         </li>
                         <li >
                             <a href="http://samos-it.com/category/china.html">China</a>
+                        </li>
+                        <li >
+                            <a href="http://samos-it.com/category/google-cloud.html">Google cloud</a>
                         </li>
                         <li >
                             <a href="http://samos-it.com/category/linux.html">Linux</a>
@@ -131,13 +134,13 @@ Sam Stoelinga (Samos IT) - Blog            </a>
 </script>
                 <p>Noticed that pip install pyqt isn't working? At least at the time of
 writing this blog it isn't..</p>
-<p>This is the error that I got:<br />
+<p>This is the error that I got:<br>
 IOError: [Errno 2] No such file or directory: setup.py</p>
 <p>It seems they didn't package it well and it's using configure.py to
 install. So here is the solution to install it by using pip to download
 the files and configure and install manually.</p>
 <p><strong>Solution</strong> copied from: <a href="http://stackoverflow.com/a/13967084/376445">http://stackoverflow.com/a/13967084/376445</a></p>
-<div class="highlight"><pre>workon myProject  
+<div class="highlight"><pre><span></span>workon myProject  
 pip install --no-install SIP  
 pip install --no-install PyQt  
 <span class="nb">cd</span> ~/.virtualenvs/myProject/build/SIP  
@@ -148,13 +151,13 @@ make install
 python configure.py  
 make  
 make install  
-<span class="nb">cd</span> <span class="o">&amp;&amp;</span> rm -rf ~/.virtualenvs/myProject/build <span class="c"># Optional.</span>
+<span class="nb">cd</span> <span class="o">&amp;&amp;</span> rm -rf ~/.virtualenvs/myProject/build <span class="c1"># Optional.</span>
 </pre></div>
 
 
 <p><strong>Issues I encountered</strong>:</p>
 <ul>
-<li>Missing development headers for qt: <div class="highlight"><pre>~/.virtualenvs/scrapy/build/PyQt# python configure.py --verbose  
+<li>Missing development headers for qt: <div class="highlight"><pre><span></span>~/.virtualenvs/scrapy/build/PyQt# python configure.py --verbose  
 Determining the layout of your Qt installation...  
 /usr/bin/qmake -o qtdirs.mk qtdirs.pro  
 make -f qtdirs.mk 
@@ -170,7 +173,7 @@ Error: Failed to determine the layout of your Qt installation. Try again using  
 </li>
 </ul>
 <p><strong>Soltution:</strong> Install the development headers (Ubuntu 12.04)</p>
-<div class="highlight"><pre>sudo apt-get install libqt4-dev
+<div class="highlight"><pre><span></span>sudo apt-get install libqt4-dev
 </pre></div>
             </div>
             <!-- /.entry-content -->
@@ -261,7 +264,7 @@ Error: Failed to determine the layout of your Qt installation. Try again using  
    <div class="container">
       <hr>
       <div class="row">
-         <div class="col-xs-10">&copy; 2016 Sam Stoelinga
+         <div class="col-xs-10">&copy; 2019 Sam Stoelinga
             &middot; Powered by <a href="https://github.com/DandyDev/pelican-bootstrap3" target="_blank">pelican-bootstrap3</a>,
             <a href="http://docs.getpelican.com/" target="_blank">Pelican</a>,
             <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>         </div>

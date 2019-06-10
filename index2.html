@@ -59,6 +59,9 @@ Sam Stoelinga (Samos IT) - Blog            </a>
                             <a href="http://samos-it.com/category/china.html">China</a>
                         </li>
                         <li >
+                            <a href="http://samos-it.com/category/google-cloud.html">Google cloud</a>
+                        </li>
+                        <li >
                             <a href="http://samos-it.com/category/linux.html">Linux</a>
                         </li>
                         <li >
@@ -82,6 +85,20 @@ Sam Stoelinga (Samos IT) - Blog            </a>
         <div class="col-sm-9">
 
             <article>
+                <h2><a href="http://samos-it.com/posts/ipv6-tsinghua-linux-isatapd.html">Setup IPv6 in Tsinghua on Linux(ArchLinux))</a></h2>
+                <div class="summary"><p>Tsinghua university uses <a href="https://en.wikipedia.org/wiki/ISATAP">ISATAP</a> to provide IPv6 connectivity to students.
+In Linux you can use the <a href="http://www.saschahlusiak.de/linux/isatap.htm">isatapd</a> program to create an ISATAP tunnel based on an IPv4 device.</p>
+<p>You can use the isatapd command as follows to establish an ISATAPD tunnel:</p>
+<div class="highlight"><pre><span></span>isatapd --router isatap.tsinghua.edu.cn
+</pre></div>
+
+
+<p>After connecting check …</p>
+                    <a class="btn btn-default btn-xs" href="http://samos-it.com/posts/ipv6-tsinghua-linux-isatapd.html">more ...</a>
+                </div>
+            </article>
+            <hr/>
+            <article>
                 <h2><a href="http://samos-it.com/posts/sriov-openstack-juno-fuel-6-1.html">Enable SRIOV on OpenStack Juno</a></h2>
                 <div class="summary"><p>Update: This blog post is deprecated by the official documentation. Please take a look at the official
 <a href="http://docs.openstack.org/liberty/networking-guide/adv_config_sriov.html" target="_blank">
@@ -97,7 +114,7 @@ Networking Guide: Using SRIOV functionality</a>. Patch set that added the offici
 <tbody>
 <tr>
 <th scope="row">SRIOV</th>
-<td>Single Root IO Virtualization. SRIOV allows a PCIe device to appear to be multiple separate ...</td></tr></tbody></thead></table>
+<td>Single Root IO Virtualization. SRIOV allows a PCIe device to appear to be multiple separate …</td></tr></tbody></thead></table>
                     <a class="btn btn-default btn-xs" href="http://samos-it.com/posts/sriov-openstack-juno-fuel-6-1.html">more ...</a>
                 </div>
             </article>
@@ -106,7 +123,7 @@ Networking Guide: Using SRIOV functionality</a>. Patch set that added the offici
                 <h2><a href="http://samos-it.com/posts/create-linux-bridge-without-losing-connection.html">Create Linux bridge without losing existing connection</a></h2>
                 <div class="summary"><p>The dillemma: You're accessing your server via SSH through interface eth1.102 with the ip 10.20.0.2/24 and gateway 10.20.0.1.
 Now you want to add eth1 to a linux bridge so you can hookin VMs on a vlan trunk.</p>
-<p>Solution: Create a script ...</p>
+<p>Solution: Create a script which …</p>
                     <a class="btn btn-default btn-xs" href="http://samos-it.com/posts/create-linux-bridge-without-losing-connection.html">more ...</a>
                 </div>
             </article>
@@ -117,7 +134,7 @@ Now you want to add eth1 to a linux bridge so you can hookin VMs on a vlan trunk
 through Openstack, Cloudinit and Saltstack. We will use Openstack
 to provision servers on demand, cloudconfig to install salt-master and
 salt-minion and saltstack to deploy hadoop namenode and datanodes, all fully
-automated. This makes us able to deploy a ...</p>
+automated. This makes us able to deploy a …</p>
                     <a class="btn btn-default btn-xs" href="http://samos-it.com/posts/hadoop-on-demand-with-openstack-cloudinit-salt.html">more ...</a>
                 </div>
             </article>
@@ -126,7 +143,7 @@ automated. This makes us able to deploy a ...</p>
                 <h2><a href="http://samos-it.com/posts/neutron-multiple-allocation-pools-single-subnet.html">Neutron Multiple allocation pools single subnet (Solve Fragmented floating ips problem)</a></h2>
                 <div class="summary"><p>In a lab environment in the university I only had access to a list of fragmented
 public routable IP addresses in a single subnet. For example I got access to the following ips
-50.15.15.10, 55.15.15.12-15, 55.15.15.17. But I am not allowed ...</p>
+50.15.15.10, 55.15.15.12-15, 55.15.15.17. But I am not allowed …</p>
                     <a class="btn btn-default btn-xs" href="http://samos-it.com/posts/neutron-multiple-allocation-pools-single-subnet.html">more ...</a>
                 </div>
             </article>
@@ -148,7 +165,7 @@ public routable IP addresses in a single subnet. For example I got access to the
                 <div class="summary"><p>In order to access other containers from a container it's needed
 to get the private IP address of the other containers. The following
 command is able to get the private ip address of the container.</p>
-<div class="highlight"><pre><span class="gp">$</span> docker inspect --format<span class="o">=</span><span class="s2">&quot;{{.NetworkSettings.IPAddress}}&quot;</span> <span class="nv">$CONTAINER_ID_OR_NAME</span>
+<div class="highlight"><pre><span></span><span class="gp">$</span> docker inspect --format<span class="o">=</span><span class="s2">&quot;{{.NetworkSettings.IPAddress}}&quot;</span> <span class="nv">$CONTAINER_ID_OR_NAME</span>
 <span class="go">172.17.0.15</span>
 </pre></div>
                     <a class="btn btn-default btn-xs" href="http://samos-it.com/posts/docker-get-private-ip-address-of-container.html">more ...</a>
@@ -161,7 +178,7 @@ command is able to get the private ip address of the container.</p>
 running websites on port 80 using HAproxy as a reverse proxy.
 This makes it possible to run multiple websites on different domains
 on a single public ip of the host.</p>
-<p>The basic setup is to create 1 container for haproxy ...</p>
+<p>The basic setup is to create 1 container for haproxy …</p>
                     <a class="btn btn-default btn-xs" href="http://samos-it.com/posts/docker-multi-website-single-ip-host-haproxy.html">more ...</a>
                 </div>
             </article>
@@ -171,7 +188,7 @@ on a single public ip of the host.</p>
                 <div class="summary"><p>Move the first word of a line to the end of line on Linux using AWK.
 We first store the first column(first word) in the variable t. Then
 we set the first column to be empty. At last we add a new column
-after the last column of the ...</p>
+after the last column of the …</p>
                     <a class="btn btn-default btn-xs" href="http://samos-it.com/posts/move-first-word-to-end-of-line-linux-awk.html">more ...</a>
                 </div>
             </article>
@@ -182,19 +199,8 @@ after the last column of the ...</p>
 but another server which is on the same local network had
 public SSH access from my home. So we can create an SSH tunnel
 via this public server to the server behind a firewall.</p>
-<p>For example the public ssh server ...</p>
+<p>For example the public ssh server …</p>
                     <a class="btn btn-default btn-xs" href="http://samos-it.com/posts/ssh-to-server-behind-firewall-via-ssh-tunnel.html">more ...</a>
-                </div>
-            </article>
-            <hr/>
-            <article>
-                <h2><a href="http://samos-it.com/posts/recursive-karatsuba-multiplication-python.html">Recursive karatsuba multiplication in Python</a></h2>
-                <div class="summary"><p>I'm currently taking the class Algorithm: Design and Analysis of Stanford via Coursera and
-in the class the Karatsuba algorithm got mentioned. I went ahead and implemented it based
-on the lecture slides.</p>
-<p>The Karatsuba algorithm is a fast multiplication algorithm. It's special because
-it was the first ...</p>
-                    <a class="btn btn-default btn-xs" href="http://samos-it.com/posts/recursive-karatsuba-multiplication-python.html">more ...</a>
                 </div>
             </article>
             <hr/>
@@ -270,7 +276,7 @@ it was the first ...</p>
    <div class="container">
       <hr>
       <div class="row">
-         <div class="col-xs-10">&copy; 2016 Sam Stoelinga
+         <div class="col-xs-10">&copy; 2019 Sam Stoelinga
             &middot; Powered by <a href="https://github.com/DandyDev/pelican-bootstrap3" target="_blank">pelican-bootstrap3</a>,
             <a href="http://docs.getpelican.com/" target="_blank">Pelican</a>,
             <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>         </div>

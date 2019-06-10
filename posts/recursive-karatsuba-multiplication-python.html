@@ -14,13 +14,13 @@
 
         <meta name="author" content="Sam Stoelinga" />
         <meta name="keywords" content="coding,programming,python,algorithms" />
-        <meta name="description" content="I&#39;m currently taking the class Algorithm: Design and Analysis of Stanford via Coursera and in the class the Karatsuba algorithm got mentioned. I went ahead and implemented it based on the lecture slides. The Karatsuba algorithm is a fast multiplication algorithm. It&#39;s special because it was the first ..." />
+        <meta name="description" content="I&#39;m currently taking the class Algorithm: Design and Analysis of Stanford via Coursera and in the class the Karatsuba algorithm got mentioned. I went ahead and implemented it based on the lecture slides. The Karatsuba algorithm is a fast multiplication algorithm. It&#39;s special because it was the first multiplication algorithm …" />
 
         <meta property="og:site_name" content="Sam Stoelinga (Samos IT) - Blog" />
         <meta property="og:type" content="article"/>
         <meta property="og:title" content="Recursive karatsuba multiplication in Python"/>
         <meta property="og:url" content="http://samos-it.com/posts/recursive-karatsuba-multiplication-python.html"/>
-        <meta property="og:description" content="I&#39;m currently taking the class Algorithm: Design and Analysis of Stanford via Coursera and in the class the Karatsuba algorithm got mentioned. I went ahead and implemented it based on the lecture slides. The Karatsuba algorithm is a fast multiplication algorithm. It&#39;s special because it was the first ..."/>
+        <meta property="og:description" content="I&#39;m currently taking the class Algorithm: Design and Analysis of Stanford via Coursera and in the class the Karatsuba algorithm got mentioned. I went ahead and implemented it based on the lecture slides. The Karatsuba algorithm is a fast multiplication algorithm. It&#39;s special because it was the first multiplication algorithm …"/>
         <meta property="article:published_time" content="2014-05-04" />
             <meta property="article:section" content="Algorithms" />
             <meta property="article:tag" content="coding" />
@@ -66,6 +66,9 @@ Sam Stoelinga (Samos IT) - Blog            </a>
                         </li>
                         <li >
                             <a href="http://samos-it.com/category/china.html">China</a>
+                        </li>
+                        <li >
+                            <a href="http://samos-it.com/category/google-cloud.html">Google cloud</a>
                         </li>
                         <li >
                             <a href="http://samos-it.com/category/linux.html">Linux</a>
@@ -140,7 +143,7 @@ it was the first multiplication algorithm to be faster than the quadratic "grade
 algorithm. <a href="https://en.wikipedia.org/wiki/Karatsuba_algorithm">Karatsuba algorithm - Wikipedia</a>
 It also has a funny history, see the history at the Wikipedia article.</p>
 <p>My Python implementation using a Divide and Conquer approach:</p>
-<div class="highlight"><pre><span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">ceil</span>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">ceil</span>
 
 <span class="n">memory</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span>
           <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="p">],</span>
@@ -164,7 +167,7 @@ It also has a funny history, see the history at the Wikipedia article.</p>
     <span class="n">str_x</span><span class="p">,</span> <span class="n">str_y</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
     <span class="n">n</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">str_x</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">str_y</span><span class="p">))</span>
     <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="c"># Just for fun to not use any multiplications haha</span>
+        <span class="c1"># Just for fun to not use any multiplications haha</span>
         <span class="k">return</span> <span class="n">memory</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">]</span>
 
     <span class="n">str_x</span> <span class="o">=</span> <span class="n">prepend_zeros</span><span class="p">(</span><span class="n">str_x</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
@@ -178,7 +181,7 @@ It also has a funny history, see the history at the Wikipedia article.</p>
     <span class="n">bd</span> <span class="o">=</span> <span class="n">karatsuba</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
     <span class="n">ad_bc</span> <span class="o">=</span> <span class="n">karatsuba</span><span class="p">((</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">),</span> <span class="p">(</span><span class="n">c</span> <span class="o">+</span> <span class="n">d</span><span class="p">))</span> <span class="o">-</span> <span class="n">ac</span> <span class="o">-</span> <span class="n">bd</span>
 
-    <span class="c"># for supporting edge case where n is not a multiple of 2</span>
+    <span class="c1"># for supporting edge case where n is not a multiple of 2</span>
     <span class="n">n_2</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">ceil</span><span class="p">(</span><span class="n">n</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">))</span>
     <span class="n">n</span> <span class="o">=</span> <span class="n">n</span> <span class="k">if</span> <span class="n">n</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span>
     <span class="k">return</span> <span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">*</span> <span class="n">ac</span><span class="p">)</span>  <span class="o">+</span> <span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="n">n_2</span> <span class="o">*</span> <span class="n">ad_bc</span><span class="p">)</span> <span class="o">+</span> <span class="n">bd</span>
@@ -186,7 +189,7 @@ It also has a funny history, see the history at the Wikipedia article.</p>
 
 
 <p>I also created a testcase to test whether my implementation is correct:</p>
-<div class="highlight"><pre><span class="k">class</span> <span class="nc">MultiplicationTestCase</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MultiplicationTestCase</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
 
     <span class="k">def</span> <span class="nf">test_small_numbers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">karatsuba</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="mi">25</span><span class="p">)</span>
@@ -223,8 +226,8 @@ It also has a funny history, see the history at the Wikipedia article.</p>
             <span class="n">expected</span> <span class="o">=</span> <span class="n">x</span> <span class="o">*</span> <span class="n">y</span>
             <span class="n">result</span> <span class="o">=</span> <span class="n">karatsuba</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">karatsuba</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="n">expected</span><span class="p">,</span>
-                            <span class="p">(</span><span class="s">&quot;Failed with x: </span><span class="si">%s</span><span class="s"> and y: </span><span class="si">%s</span><span class="s">. &quot;</span>
-                             <span class="s">&quot;Expected: </span><span class="si">%s</span><span class="s"> but got </span><span class="si">%s</span><span class="s">&quot;</span><span class="p">)</span> <span class="o">%</span> 
+                            <span class="p">(</span><span class="s2">&quot;Failed with x: </span><span class="si">%s</span><span class="s2"> and y: </span><span class="si">%s</span><span class="s2">. &quot;</span>
+                             <span class="s2">&quot;Expected: </span><span class="si">%s</span><span class="s2"> but got </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">)</span> <span class="o">%</span> 
                              <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">expected</span><span class="p">,</span> <span class="n">result</span><span class="p">))</span>
 </pre></div>
             </div>
@@ -316,7 +319,7 @@ It also has a funny history, see the history at the Wikipedia article.</p>
    <div class="container">
       <hr>
       <div class="row">
-         <div class="col-xs-10">&copy; 2016 Sam Stoelinga
+         <div class="col-xs-10">&copy; 2019 Sam Stoelinga
             &middot; Powered by <a href="https://github.com/DandyDev/pelican-bootstrap3" target="_blank">pelican-bootstrap3</a>,
             <a href="http://docs.getpelican.com/" target="_blank">Pelican</a>,
             <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>         </div>

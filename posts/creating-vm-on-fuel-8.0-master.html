@@ -14,13 +14,13 @@
 
         <meta name="author" content="Sam Stoelinga" />
         <meta name="keywords" content="fuel,centos,openstack" />
-        <meta name="description" content="Creating a KVM VM on the Fuel master node is a nice way to better utilize server resources for small environments that were deployed already without using Fuel compact install or running Fuel as VM itself. We can run Controller, Monitoring or MongoDB as VM on the Fuel node. This ..." />
+        <meta name="description" content="Creating a KVM VM on the Fuel master node is a nice way to better utilize server resources for small environments that were deployed already without using Fuel compact install or running Fuel as VM itself. We can run Controller, Monitoring or MongoDB as VM on the Fuel node. This …" />
 
         <meta property="og:site_name" content="Sam Stoelinga (Samos IT) - Blog" />
         <meta property="og:type" content="article"/>
         <meta property="og:title" content="Creating a KVM VM for StackLight on Fuel 8.0 master node"/>
         <meta property="og:url" content="http://samos-it.com/posts/creating-vm-on-fuel-8.0-master.html"/>
-        <meta property="og:description" content="Creating a KVM VM on the Fuel master node is a nice way to better utilize server resources for small environments that were deployed already without using Fuel compact install or running Fuel as VM itself. We can run Controller, Monitoring or MongoDB as VM on the Fuel node. This ..."/>
+        <meta property="og:description" content="Creating a KVM VM on the Fuel master node is a nice way to better utilize server resources for small environments that were deployed already without using Fuel compact install or running Fuel as VM itself. We can run Controller, Monitoring or MongoDB as VM on the Fuel node. This …"/>
         <meta property="article:published_time" content="2016-06-01" />
             <meta property="article:section" content="Openstack" />
             <meta property="article:tag" content="fuel" />
@@ -65,6 +65,9 @@ Sam Stoelinga (Samos IT) - Blog            </a>
                         </li>
                         <li >
                             <a href="http://samos-it.com/category/china.html">China</a>
+                        </li>
+                        <li >
+                            <a href="http://samos-it.com/category/google-cloud.html">Google cloud</a>
                         </li>
                         <li >
                             <a href="http://samos-it.com/category/linux.html">Linux</a>
@@ -158,7 +161,7 @@ execute the ollowing steps:</p>
 <ol>
 <li>
 <p>Create the file <code>/etc/yum.repos.d/CentOS-base.repo</code> with the following content:</p>
-<div class="highlight"><pre># CentOS-Base.repo
+<div class="highlight"><pre><span></span># CentOS-Base.repo
 [base]
 name=CentOS-$releasever - Base
 mirrorlist=http://mirrorlist.centos.org/?release=$releasever&amp;arch=$basearch&amp;repo=os&amp;infra=$infra
@@ -196,7 +199,7 @@ gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
 </li>
 <li>
 <p>Now install the required packages from CentOS repo</p>
-<div class="highlight"><pre>yum install libvirt qemu-kvm kvm
+<div class="highlight"><pre><span></span>yum install libvirt qemu-kvm kvm
 </pre></div>
 
 
@@ -208,7 +211,7 @@ gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
 <li>
 <p>Prevent libvirt from starting dnsmasq. Execute the following command, delete the parts with dhcp
    and change forwarding to none:</p>
-<div class="highlight"><pre>virsh net-edit default
+<div class="highlight"><pre><span></span>virsh net-edit default
 </pre></div>
 
 
@@ -224,22 +227,22 @@ eth0 to net0 and then creates a bridge named eth0 and assigns the original
 net0 ip address to eth0. I tried to use udev but couldn't get it to work,
 so here we go with a hacky script.</p>
 <p>Create a file <code>/usr/bin/create-eth0-bridge.sh</code> with the following content:</p>
-<div class="highlight"><pre><span class="c">#!/bin/bash</span>
+<div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
 
-<span class="nv">ETH0ADDR</span><span class="o">=</span>10.20.0.2/24
+<span class="nv">ETH0ADDR</span><span class="o">=</span><span class="m">10</span>.20.0.2/24
 
-<span class="c"># Rename eth0 to net0</span>
+<span class="c1"># Rename eth0 to net0</span>
 ip a flush dev eth0
-ip link <span class="nb">set </span>eth0 down
-ip link <span class="nb">set </span>eth0 name net0
-ip link <span class="nb">set </span>net0 up
+ip link <span class="nb">set</span> eth0 down
+ip link <span class="nb">set</span> eth0 name net0
+ip link <span class="nb">set</span> net0 up
 
-<span class="c"># Create bridge eth0 with net0 as interface</span>
+<span class="c1"># Create bridge eth0 with net0 as interface</span>
 brctl addbr eth0
-ip link <span class="nb">set </span>eth0 up
+ip link <span class="nb">set</span> eth0 up
 brctl addif eth0 net0
 
-<span class="c"># Add original eth0addr to bridge</span>
+<span class="c1"># Add original eth0addr to bridge</span>
 ip a add <span class="nv">$ETH0ADDR</span> dev eth0
 </pre></div>
 
@@ -249,7 +252,7 @@ ip a add <span class="nv">$ETH0ADDR</span> dev eth0
 <p>Create a systemd service to launch the script after network was done.
    Create the file <code>/etc/systemd/system/create-eth0-bridge.service</code> with
    the following content:</p>
-<div class="highlight"><pre><span class="o">[</span>Unit<span class="o">]</span>
+<div class="highlight"><pre><span></span><span class="o">[</span>Unit<span class="o">]</span>
 <span class="nv">Description</span><span class="o">=</span>Create eth0 network bridge <span class="k">for</span> Stacklight VM
 <span class="nv">Wants</span><span class="o">=</span>network-online.target
 <span class="nv">After</span><span class="o">=</span>network-online.target
@@ -263,7 +266,7 @@ ip a add <span class="nv">$ETH0ADDR</span> dev eth0
 
 
 <p>Now enable the service to be run on startup by executing the command:</p>
-<div class="highlight"><pre>systemctl <span class="nb">enable </span>create-eth0-bridge
+<div class="highlight"><pre><span></span>systemctl <span class="nb">enable</span> create-eth0-bridge
 </pre></div>
 
 
@@ -275,14 +278,14 @@ ip a add <span class="nv">$ETH0ADDR</span> dev eth0
    which contains the management network on eth2.</p>
 <p>Create the bridge named br-eth2 and add eth2 as port to the bridge
 with the following commands:</p>
-<div class="highlight"><pre>brctl addbr br-eth2
+<div class="highlight"><pre><span></span>brctl addbr br-eth2
 brctl addif br-eth2 eth2
 </pre></div>
 
 
 <p>To make the changes persistent accross reboots create
 the file <code>/etc/sysconfig/network-scripts/ifcfg-br-eth2</code> with the following content:</p>
-<div class="highlight"><pre>DEVICE=br-eth2
+<div class="highlight"><pre><span></span>DEVICE=br-eth2
 BOOTPROTO=none
 ONBOOT=yes
 TYPE=Bridge
@@ -292,7 +295,7 @@ DELAY=0
 
 
 <p>and the file <code>/etc/sysconfig/network-scripts/ifcfg-eth2</code> with the following content:</p>
-<div class="highlight"><pre>TYPE=Ethernet
+<div class="highlight"><pre><span></span>TYPE=Ethernet
 BOOTPROTO=none
 NAME=eth2
 UUID=fe45432f-f08a-4537-9851-d53be572aa00
@@ -312,14 +315,14 @@ enables us to use Fuel's PXE booting.</p>
 <ol>
 <li>
 <p>First create the disk for our KVM VM with the following command:</p>
-<div class="highlight"><pre>qemu-img create -f qcow2 -o <span class="nv">preallocation</span><span class="o">=</span>metadata /var/lib/libvirt/images/monitoring-1.img 300G
+<div class="highlight"><pre><span></span>qemu-img create -f qcow2 -o <span class="nv">preallocation</span><span class="o">=</span>metadata /var/lib/libvirt/images/monitoring-1.img 300G
 </pre></div>
 
 
 </li>
 <li>
 <p>Create a file <code>monitoring1-vm.xml</code> with the following content:</p>
-<div class="highlight"><pre><span class="nt">&lt;domain</span> <span class="na">type=</span><span class="s">&#39;kvm&#39;</span> <span class="na">id=</span><span class="s">&#39;2&#39;</span><span class="nt">&gt;</span>
+<div class="highlight"><pre><span></span><span class="nt">&lt;domain</span> <span class="na">type=</span><span class="s">&#39;kvm&#39;</span> <span class="na">id=</span><span class="s">&#39;2&#39;</span><span class="nt">&gt;</span>
   <span class="nt">&lt;name&gt;</span>monitoring-1<span class="nt">&lt;/name&gt;</span>
   <span class="nt">&lt;memory</span> <span class="na">unit=</span><span class="s">&#39;KiB&#39;</span><span class="nt">&gt;</span>8388608<span class="nt">&lt;/memory&gt;</span>
   <span class="nt">&lt;vcpu</span> <span class="na">placement=</span><span class="s">&#39;static&#39;</span> <span class="na">cpuset=</span><span class="s">&#39;0-7&#39;</span><span class="nt">&gt;</span>8<span class="nt">&lt;/vcpu&gt;</span>
@@ -361,7 +364,7 @@ and bridges according to your actual environment.</p>
 </li>
 <li>
 <p>Launch and create the VM from the xml file:</p>
-<div class="highlight"><pre>virsh define monitoring-1.xml
+<div class="highlight"><pre><span></span>virsh define monitoring-1.xml
 virsh start monitoring-1
 </pre></div>
 
@@ -461,7 +464,7 @@ new node.</p>
    <div class="container">
       <hr>
       <div class="row">
-         <div class="col-xs-10">&copy; 2016 Sam Stoelinga
+         <div class="col-xs-10">&copy; 2019 Sam Stoelinga
             &middot; Powered by <a href="https://github.com/DandyDev/pelican-bootstrap3" target="_blank">pelican-bootstrap3</a>,
             <a href="http://docs.getpelican.com/" target="_blank">Pelican</a>,
             <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>         </div>

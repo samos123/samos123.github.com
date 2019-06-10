@@ -14,13 +14,13 @@
 
         <meta name="author" content="Sam Stoelinga" />
         <meta name="keywords" content="openstack,salt" />
-        <meta name="description" content="The blog by Sebastian inspired me to try out OpenStack Salt in combination with the new MK22 Reclass model. Instead of using the TCPcloud provided labs I&#39;m using my own laptop beast (ThinkPad W530 with 32GB of memory). For that reason I created a Vagrantfile for the mk22-lab-basic environment ..." />
+        <meta name="description" content="The blog by Sebastian inspired me to try out OpenStack Salt in combination with the new MK22 Reclass model. Instead of using the TCPcloud provided labs I&#39;m using my own laptop beast (ThinkPad W530 with 32GB of memory). For that reason I created a Vagrantfile for the mk22-lab-basic environment to …" />
 
         <meta property="og:site_name" content="Sam Stoelinga (Samos IT) - Blog" />
         <meta property="og:type" content="article"/>
         <meta property="og:title" content="OpenStack Salt MK22 Vagrant-based lab"/>
         <meta property="og:url" content="http://samos-it.com/posts/openstack-salt-mk22-vagrant-lab.html"/>
-        <meta property="og:description" content="The blog by Sebastian inspired me to try out OpenStack Salt in combination with the new MK22 Reclass model. Instead of using the TCPcloud provided labs I&#39;m using my own laptop beast (ThinkPad W530 with 32GB of memory). For that reason I created a Vagrantfile for the mk22-lab-basic environment ..."/>
+        <meta property="og:description" content="The blog by Sebastian inspired me to try out OpenStack Salt in combination with the new MK22 Reclass model. Instead of using the TCPcloud provided labs I&#39;m using my own laptop beast (ThinkPad W530 with 32GB of memory). For that reason I created a Vagrantfile for the mk22-lab-basic environment to …"/>
         <meta property="article:published_time" content="2016-11-08" />
             <meta property="article:section" content="Openstack" />
             <meta property="article:tag" content="openstack" />
@@ -64,6 +64,9 @@ Sam Stoelinga (Samos IT) - Blog            </a>
                         </li>
                         <li >
                             <a href="http://samos-it.com/category/china.html">China</a>
+                        </li>
+                        <li >
+                            <a href="http://samos-it.com/category/google-cloud.html">Google cloud</a>
                         </li>
                         <li >
                             <a href="http://samos-it.com/category/linux.html">Linux</a>
@@ -139,13 +142,13 @@ Ales Komarek. They have been slightly modified to get them working.</p>
 <p>Reclass model used in this blog:
 <a href="https://github.com/samos123/mk-lab-salt-model/tree/sam-vagrant-blog-post">gh:samos123/mk-lab-salt-model branch:sam-vagrant-blog-post</a>.
 The following commits have been created specifically for this post:</p>
-<div class="highlight"><pre>fcea636 Remove Horizon contrail integration because of missing pkgs
-60af84f Del Mirantis Horizon them because pkg unavailable
-cc527df Remove non-used node definitions
-f76eab0 Disable monitoring due to resources
-e55d0fe Remove ens4 nic dhcp config
-5d71986 Change repo to samos123 b/sam-vagrant-blog-post
-6222ff5 Add Vagrant file for mk22-lab-basic
+<div class="highlight"><pre><span></span><span class="nv">fcea636</span> <span class="nv">Remove</span> <span class="nv">Horizon</span> <span class="nv">contrail</span> <span class="nv">integration</span> <span class="nv">because</span> <span class="nv">of</span> <span class="nv">missing</span> <span class="nv">pkgs</span>
+<span class="mi">60</span><span class="nv">af84f</span> <span class="nv">Del</span> <span class="nv">Mirantis</span> <span class="nv">Horizon</span> <span class="nv">them</span> <span class="nv">because</span> <span class="nv">pkg</span> <span class="nv">unavailable</span>
+<span class="nv">cc527df</span> <span class="nv">Remove</span> <span class="nv">non</span><span class="o">-</span><span class="nv">used</span> <span class="nv">node</span> <span class="nv">definitions</span>
+<span class="nv">f76eab0</span> <span class="nv">Disable</span> <span class="nv">monitoring</span> <span class="nv">due</span> <span class="nv">to</span> <span class="nv">resources</span>
+<span class="nv">e55d0fe</span> <span class="nv">Remove</span> <span class="nv">ens4</span> <span class="nv">nic</span> <span class="nv">dhcp</span> <span class="nv">config</span>
+<span class="mi">5</span><span class="nv">d71986</span> <span class="nv">Change</span> <span class="nv">repo</span> <span class="nv">to</span> <span class="nv">samos123</span> <span class="nv">b</span><span class="o">/</span><span class="nv">sam</span><span class="o">-</span><span class="nv">vagrant</span><span class="o">-</span><span class="nv">blog</span><span class="o">-</span><span class="nv">post</span>
+<span class="mi">6222</span><span class="nv">ff5</span> <span class="nv">Add</span> <span class="nv">Vagrant</span> <span class="nv">file</span> <span class="k">for</span> <span class="nv">mk22</span><span class="o">-</span><span class="nv">lab</span><span class="o">-</span><span class="nv">basic</span>
 </pre></div>
 
 
@@ -162,7 +165,7 @@ e55d0fe Remove ens4 nic dhcp config
 - eth2/enp0s9: 192.168.10.0/24, host-only network for Salt to configure hosts</p>
 <p>By following below instructions you can bring up an OpenStack cloud (I found it often still
 requires debugging and tweaking to make it work):</p>
-<div class="highlight"><pre><span class="c"># Manually setup the salt-master</span>
+<div class="highlight"><pre><span></span><span class="c1"># Manually setup the salt-master</span>
 vagrant up cfg01
 vagrant ssh cfg01
 <span class="nb">echo</span> <span class="s2">&quot;deb [arch=amd64] http://apt.tcpcloud.eu/nightly/ xenial main security extra tcp tcp-salt&quot;</span> &gt; /etc/apt/sources.list
@@ -211,9 +214,9 @@ EOF
 service salt-master restart
 service salt-minion restart
 
-<span class="c"># confirm cfg01 is accepted</span>
+<span class="c1"># confirm cfg01 is accepted</span>
 salt-key 
-<span class="c"># check reclass model is fine</span>
+<span class="c1"># check reclass model is fine</span>
 reclass-salt --top
 reclass-salt --pillar cfg01.mk22-lab-basic.local
 
@@ -225,16 +228,16 @@ salt-call state.sls salt
 salt <span class="s2">&quot;cfg01*&quot;</span> state.sls openssh,reclass,sphinx,nginx
 
 
-<span class="c"># shows there are no nodes added to salt yet</span>
+<span class="c1"># shows there are no nodes added to salt yet</span>
 salt-key
-<span class="c"># exit back to Host running  vagrant</span>
+<span class="c1"># exit back to Host running  vagrant</span>
 <span class="nb">exit</span>
 
-<span class="c"># now bring up remaining nodes ctl[1-3], cmp01, prx01</span>
+<span class="c1"># now bring up remaining nodes ctl[1-3], cmp01, prx01</span>
 vagrant up
 
 vagrant ssh cfg01
-<span class="c"># We need m2crypto to be installed else some states will fail</span>
+<span class="c1"># We need m2crypto to be installed else some states will fail</span>
 salt <span class="s1">&#39;*&#39;</span> pkg.install python-m2crypto
 salt <span class="s1">&#39;*&#39;</span> state.sls ntp,linux,salt.minion,openssh
 salt <span class="s2">&quot;ctl*&quot;</span> state.show_top
@@ -245,16 +248,16 @@ salt <span class="s2">&quot;ctl*&quot;</span> --state-output<span class="o">=</s
 
 salt <span class="s1">&#39;ctl*&#39;</span> state.sls glusterfs.server.service
 salt <span class="s1">&#39;ctl*&#39;</span> -b <span class="m">1</span> state.sls glusterfs.server.setup
-<span class="c"># gluterfs.server.setup fails because of issue with formula with older salt minons</span>
-<span class="c"># pr is submitted https://github.com/tcpcloud/salt-formula-glusterfs/pull/8</span>
-<span class="c"># if you still hit this issue, manually start the volume and rerun state again</span>
+<span class="c1"># gluterfs.server.setup fails because of issue with formula with older salt minons</span>
+<span class="c1"># pr is submitted https://github.com/tcpcloud/salt-formula-glusterfs/pull/8</span>
+<span class="c1"># if you still hit this issue, manually start the volume and rerun state again</span>
 salt <span class="s2">&quot;ctl01*&quot;</span> cmd.run <span class="s2">&quot;gluster volume start keystone-keys; gluster volume start glance&quot;</span>
 salt <span class="s1">&#39;ctl*&#39;</span> -b <span class="m">1</span> state.sls glusterfs.server.setup
 
-<span class="c"># verify that gluster is working</span>
+<span class="c1"># verify that gluster is working</span>
 salt <span class="s2">&quot;ctl01*&quot;</span> cmd.run <span class="s2">&quot;gluster peer status; gluster volume status&quot;</span>
 
-<span class="c"># install mysql</span>
+<span class="c1"># install mysql</span>
 salt -C <span class="s1">&#39;I@galera:master&#39;</span> state.sls galera
 salt -C <span class="s1">&#39;I@galera:slave&#39;</span> state.sls galera
 salt -C <span class="s1">&#39;I@galera:master&#39;</span> mysql.status
@@ -266,54 +269,54 @@ salt -C <span class="s1">&#39;I@haproxy:proxy&#39;</span> state.sls haproxy
 salt -C <span class="s1">&#39;I@haproxy:proxy&#39;</span> service.status haproxy
 
 
-<span class="c"># For some reason salt&#39;s keystone module doesn&#39;t work unless you restart the minion</span>
-salt <span class="s1">&#39;ctl*&#39;</span> state.sls keystone -b 1
+<span class="c1"># For some reason salt&#39;s keystone module doesn&#39;t work unless you restart the minion</span>
+salt <span class="s1">&#39;ctl*&#39;</span> state.sls keystone -b <span class="m">1</span>
 salt -C <span class="s1">&#39;I@keystone:client&#39;</span> state.sls keystone.client
 salt <span class="s2">&quot;ctl01*&quot;</span> cmd.run <span class="s2">&quot;. /root/keystonerc; keystone service-list&quot;</span>
 
 salt <span class="s1">&#39;ctl*&#39;</span> -b <span class="m">1</span> state.sls glance
 salt <span class="s1">&#39;ctl*&#39;</span> state.sls glusterfs.client
 salt <span class="s1">&#39;ctl*&#39;</span> cmd.run <span class="s1">&#39;df -h&#39;</span>
-<span class="c"># need to rerun keystone for glance to work</span>
+<span class="c1"># need to rerun keystone for glance to work</span>
 salt <span class="s1">&#39;ctl*&#39;</span> state.sls keystone
 salt <span class="s2">&quot;ctl*&quot;</span> cmd.run <span class="s2">&quot;. /root/keystonerc; glance image-list&quot;</span>
 
-salt -C <span class="s1">&#39;I@nova:controller&#39;</span> state.sls nova -b 1
+salt -C <span class="s1">&#39;I@nova:controller&#39;</span> state.sls nova -b <span class="m">1</span>
 salt -C <span class="s1">&#39;I@keystone:server&#39;</span> cmd.run <span class="s2">&quot;. /root/keystonerc; nova service-list&quot;</span>
 
-<span class="c"># Cinder fails to install some packages</span>
-<span class="c"># workaround is to manually install linux-image-extra-virtual package</span>
+<span class="c1"># Cinder fails to install some packages</span>
+<span class="c1"># workaround is to manually install linux-image-extra-virtual package</span>
 salt <span class="s1">&#39;ctl*&#39;</span> pkg.install linux-image-extra-virtual
-salt -C <span class="s1">&#39;I@cinder:controller&#39;</span> state.sls cinder -b 1
+salt -C <span class="s1">&#39;I@cinder:controller&#39;</span> state.sls cinder -b <span class="m">1</span>
 salt -C <span class="s1">&#39;I@keystone:server&#39;</span> cmd.run <span class="s2">&quot;. /root/keystonerc; cinder list&quot;</span>
 
-<span class="c"># Neutron</span>
-salt -C <span class="s1">&#39;I@neutron:server&#39;</span> state.sls neutron -b 1
+<span class="c1"># Neutron</span>
+salt -C <span class="s1">&#39;I@neutron:server&#39;</span> state.sls neutron -b <span class="m">1</span>
 
-<span class="c"># heat 2 states will fail but that&#39;s fine as it was created previously. </span>
-<span class="c"># Should still be fixed though, this is the error seen:</span>
-<span class="c"># State &#39;keystone.role_present&#39; was not found in SLS &#39;heat.server&#39;</span>
-<span class="c">#              Reason: &#39;keystone&#39; __virtual__ returned False</span>
-<span class="c"># also if heat-api isn&#39;t running make sure the following patch is merged</span>
-<span class="c"># https://review.openstack.org/#/c/394599/</span>
-salt -C <span class="s1">&#39;I@heat:server&#39;</span> state.sls heat -b 1
+<span class="c1"># heat 2 states will fail but that&#39;s fine as it was created previously. </span>
+<span class="c1"># Should still be fixed though, this is the error seen:</span>
+<span class="c1"># State &#39;keystone.role_present&#39; was not found in SLS &#39;heat.server&#39;</span>
+<span class="c1">#              Reason: &#39;keystone&#39; __virtual__ returned False</span>
+<span class="c1"># also if heat-api isn&#39;t running make sure the following patch is merged</span>
+<span class="c1"># https://review.openstack.org/#/c/394599/</span>
+salt -C <span class="s1">&#39;I@heat:server&#39;</span> state.sls heat -b <span class="m">1</span>
 salt -C <span class="s1">&#39;I@keystone:server&#39;</span> cmd.run <span class="s2">&quot;. /root/keystonerc; heat resource-type-list&quot;</span>
 
 
 
-<span class="c"># Several issues with horizon and dashboard</span>
-<span class="c"># 1. The package openstack-dashboard-contrail-panels is missing so I&#39;ve disabled</span>
-<span class="c">#    Contrail integration by changing the reclass model. See commit #fcea6366ea50</span>
-<span class="c"># 2. The package openstack-dashboard-mirantis-theme is missing so I&#39;ve disabled</span>
-<span class="c">#    mirantis them customization in the reclass model. See commit #60af84f237bab</span>
-<span class="c"># 3. The salt-formula-horizon fails when app.plugin is not set in pillar. For</span>
-<span class="c">#    this I&#39;ve submitted a patch in the formula https://review.openstack.org/#/c/394618/</span>
-<span class="c"># You may have to apply the patch in point 3 manually ^^ horizon fails for me still.</span>
+<span class="c1"># Several issues with horizon and dashboard</span>
+<span class="c1"># 1. The package openstack-dashboard-contrail-panels is missing so I&#39;ve disabled</span>
+<span class="c1">#    Contrail integration by changing the reclass model. See commit #fcea6366ea50</span>
+<span class="c1"># 2. The package openstack-dashboard-mirantis-theme is missing so I&#39;ve disabled</span>
+<span class="c1">#    mirantis them customization in the reclass model. See commit #60af84f237bab</span>
+<span class="c1"># 3. The salt-formula-horizon fails when app.plugin is not set in pillar. For</span>
+<span class="c1">#    this I&#39;ve submitted a patch in the formula https://review.openstack.org/#/c/394618/</span>
+<span class="c1"># You may have to apply the patch in point 3 manually ^^ horizon fails for me still.</span>
 salt -C <span class="s1">&#39;I@horizon:server&#39;</span> state.sls horizon
 salt -C <span class="s1">&#39;I@nginx:server&#39;</span> state.sls nginx
 
-<span class="c"># Install contrail</span>
-salt <span class="s2">&quot;ctl*&quot;</span> state.sls opencontrail -b 1
+<span class="c1"># Install contrail</span>
+salt <span class="s2">&quot;ctl*&quot;</span> state.sls opencontrail -b <span class="m">1</span>
 salt -C <span class="s1">&#39;I@keystone:server&#39;</span> cmd.run <span class="s2">&quot;. /root/keystonerc; neutron net-list; nova net-list&quot;</span>
 
 salt <span class="s1">&#39;ctl01*&#39;</span> cmd.run <span class="s2">&quot;/usr/share/contrail-utils/provision_control.py --api_server_ip 172.16.10.254 --api_server_port 8082 --host_name ctl01 --host_ip 172.16.10.101 --router_asn 64512 --admin_password workshop --admin_user admin --admin_tenant_name admin --oper add&quot;</span>
@@ -321,51 +324,51 @@ salt <span class="s1">&#39;ctl02*&#39;</span> cmd.run <span class="s2">&quot;/us
 salt <span class="s1">&#39;ctl03*&#39;</span> cmd.run <span class="s2">&quot;/usr/share/contrail-utils/provision_control.py --api_server_ip 172.16.10.254 --api_server_port 8082 --host_name ctl03 --host_ip 172.16.10.103 --router_asn 64512 --admin_password workshop --admin_user admin --admin_tenant_name admin --oper add&quot;</span>
 
 
-<span class="c"># Configure compute nodes</span>
+<span class="c1"># Configure compute nodes</span>
 salt <span class="s1">&#39;cmp*&#39;</span> state.highstate
 salt <span class="s1">&#39;cmp*&#39;</span> state.highstate
 salt <span class="s1">&#39;ctl01*&#39;</span> cmd.run <span class="s2">&quot;/usr/share/contrail-utils/provision_vrouter.py --host_name cmp01 --host_ip 172.16.10.105 --api_server_ip 172.16.10.254 --oper add --admin_user admin --admin_password workshop --admin_tenant_name admin&quot;</span>
 
-<span class="c"># Temporary workaround for mos packages</span>
+<span class="c1"># Temporary workaround for mos packages</span>
 salt <span class="s1">&#39;cmp*&#39;</span> cmd.run <span class="s2">&quot;find /etc -xdev -type f | xargs egrep -H &#39;unix_sock_group.*libvirt&#39; | sed -e &#39;s/:.*//&#39; | xargs sed -i -e &#39;s/unix_sock_group = \&quot;libvirtd\&quot;/unix_sock_group = \&quot;libvirt\&quot;/&#39;&quot;</span>
 
-<span class="c"># There is an issue with nova.conf because rabbit_host isn&#39;t set in default section</span>
-<span class="c"># I&#39;ve submitted a patch here: https://review.openstack.org/#/c/395161/</span>
+<span class="c1"># There is an issue with nova.conf because rabbit_host isn&#39;t set in default section</span>
+<span class="c1"># I&#39;ve submitted a patch here: https://review.openstack.org/#/c/395161/</span>
 
-<span class="c"># Try rebooting and see if it still works</span>
+<span class="c1"># Try rebooting and see if it still works</span>
 salt <span class="s1">&#39;cmp*&#39;</span> system.reboot
-<span class="c"># For some reason I got an older libvirt from tcprepo instead of mos</span>
-<span class="c"># below installs the correct package. Bug filed here:</span>
-<span class="c"># https://github.com/tcpcloud/salt-formula-libvirt/issues/1</span>
+<span class="c1"># For some reason I got an older libvirt from tcprepo instead of mos</span>
+<span class="c1"># below installs the correct package. Bug filed here:</span>
+<span class="c1"># https://github.com/tcpcloud/salt-formula-libvirt/issues/1</span>
 vim /usr/share/salt-formulas/env/nova/files/mitaka/nova-compute.conf.Debian
-<span class="c"># change virt_type from kvm to qemu, bug has been filed about this here:</span>
-<span class="c"># https://bugs.launchpad.net/openstack-salt/+bug/1640314</span>
+<span class="c1"># change virt_type from kvm to qemu, bug has been filed about this here:</span>
+<span class="c1"># https://bugs.launchpad.net/openstack-salt/+bug/1640314</span>
 salt <span class="s1">&#39;cmp*&#39;</span> cmd.run <span class="s2">&quot;apt-get update&quot;</span>
 salt <span class="s1">&#39;cmp*&#39;</span> pkg.install libvirt-bin
 salt <span class="s1">&#39;cmp*&#39;</span> cmd.run <span class="s2">&quot;ip a&quot;</span>
 salt <span class="s1">&#39;cmp*&#39;</span> cmd.run <span class="s2">&quot;contrail-status&quot;</span>
 
-<span class="c"># Exit and SSH into ctl01 to test the cloud</span>
+<span class="c1"># Exit and SSH into ctl01 to test the cloud</span>
 <span class="nb">exit</span>
 vagrant ssh ctl01
 sudo -i
-<span class="nb">source </span>keystonerc
+<span class="nb">source</span> keystonerc
 wget http://download.cirros-cloud.net/0.3.4/cirros-0.3.4-i386-disk.img
 glance image-create --name cirros --visibility public --disk-format qcow2 --container-format bare --progress &lt; /root/cirros-0.3.4-i386-disk.img
 neutron net-create net1
-neutron subnet-create --name subnet1 net1 192.168.32.0/24
+neutron subnet-create --name subnet1 net1 <span class="m">192</span>.168.32.0/24
 keystone tenant-list
 <span class="nv">netuuid</span><span class="o">=</span><span class="k">$(</span>neutron net-list <span class="p">|</span> grep net1 <span class="p">|</span> awk <span class="s1">&#39;{ print $2 }&#39;</span><span class="k">)</span>
-nova flavor-create --is-public <span class="nb">true </span>m1.macro auto <span class="m">128</span> <span class="m">5</span> 1
+nova flavor-create --is-public <span class="nb">true</span> m1.macro auto <span class="m">128</span> <span class="m">5</span> <span class="m">1</span>
 nova boot --nic net-id<span class="o">=</span><span class="nv">$netuuid</span> --image cirros --flavor m1.macro testvm1
 </pre></div>
 
 
 <p>Below is the Vagrantfile that is used in this blog post:</p>
-<div class="highlight"><pre><span class="c1"># -*- mode: ruby -*-</span>
+<div class="highlight"><pre><span></span><span class="c1"># -*- mode: ruby -*-</span>
 <span class="c1"># vi: set ft=ruby :</span>
 
-<span class="vg">$script</span> <span class="o">=</span> <span class="o">&lt;&lt;</span><span class="no">SCRIPT</span>
+<span class="vg">$script</span> <span class="o">=</span> <span class="o">&lt;&lt;</span><span class="dl">SCRIPT</span>
 <span class="sh">echo &quot;deb [arch=amd64] http://apt.tcpcloud.eu/nightly/ trusty main security extra tcp tcp-salt&quot; &gt; /etc/apt/sources.list</span>
 <span class="sh">wget -O - http://apt.tcpcloud.eu/public.gpg | apt-key add -</span>
 <span class="sh">apt-get update</span>
@@ -374,7 +377,7 @@ nova boot --nic net-id<span class="o">=</span><span class="nv">$netuuid</span> -
 <span class="sh">id: {{x}}.mk22-lab-basic.local</span>
 <span class="sh">master: 192.168.10.100</span>
 <span class="sh">EOF</span>
-<span class="no">SCRIPT</span>
+<span class="dl">SCRIPT</span>
 
 <span class="no">Vagrant</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="s2">&quot;2&quot;</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">config</span><span class="o">|</span>
   <span class="n">config</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">box</span> <span class="o">=</span> <span class="s2">&quot;ubuntu/trusty64&quot;</span>
@@ -529,7 +532,7 @@ nova boot --nic net-id<span class="o">=</span><span class="nv">$netuuid</span> -
    <div class="container">
       <hr>
       <div class="row">
-         <div class="col-xs-10">&copy; 2016 Sam Stoelinga
+         <div class="col-xs-10">&copy; 2019 Sam Stoelinga
             &middot; Powered by <a href="https://github.com/DandyDev/pelican-bootstrap3" target="_blank">pelican-bootstrap3</a>,
             <a href="http://docs.getpelican.com/" target="_blank">Pelican</a>,
             <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>         </div>

@@ -14,13 +14,13 @@
 
         <meta name="author" content="Sam Stoelinga" />
         <meta name="keywords" content="linux,docker,container" />
-        <meta name="description" content="This post will describe how to expose multiple docker containers running websites on port 80 using HAproxy as a reverse proxy. This makes it possible to run multiple websites on different domains on a single public ip of the host. The basic setup is to create 1 container for haproxy ..." />
+        <meta name="description" content="This post will describe how to expose multiple docker containers running websites on port 80 using HAproxy as a reverse proxy. This makes it possible to run multiple websites on different domains on a single public ip of the host. The basic setup is to create 1 container for haproxy …" />
 
         <meta property="og:site_name" content="Sam Stoelinga (Samos IT) - Blog" />
         <meta property="og:type" content="article"/>
         <meta property="og:title" content="Docker Multiple websites/domains on single ip/host tutorial using a HAproxy as reverse proxy"/>
         <meta property="og:url" content="http://samos-it.com/posts/docker-multi-website-single-ip-host-haproxy.html"/>
-        <meta property="og:description" content="This post will describe how to expose multiple docker containers running websites on port 80 using HAproxy as a reverse proxy. This makes it possible to run multiple websites on different domains on a single public ip of the host. The basic setup is to create 1 container for haproxy ..."/>
+        <meta property="og:description" content="This post will describe how to expose multiple docker containers running websites on port 80 using HAproxy as a reverse proxy. This makes it possible to run multiple websites on different domains on a single public ip of the host. The basic setup is to create 1 container for haproxy …"/>
         <meta property="article:published_time" content="2014-07-07" />
             <meta property="article:section" content="Linux" />
             <meta property="article:tag" content="linux" />
@@ -65,6 +65,9 @@ Sam Stoelinga (Samos IT) - Blog            </a>
                         </li>
                         <li >
                             <a href="http://samos-it.com/category/china.html">China</a>
+                        </li>
+                        <li >
+                            <a href="http://samos-it.com/category/google-cloud.html">Google cloud</a>
                         </li>
                         <li class="active">
                             <a href="http://samos-it.com/category/linux.html">Linux</a>
@@ -136,7 +139,7 @@ on a single public ip of the host.</p>
 <p>The basic setup is to create 1 container for haproxy which is exposed to
 the host on port 80. This HAproxy container will forward the incoming
 HTTP request to the correct container based on the domain name.</p>
-<p><img alt="Reverse haproxy docker diagram" src="/images/haproxy_reverse_proxy_docker.png" /><br/>
+<p><img alt="Reverse haproxy docker diagram" src="/images/haproxy_reverse_proxy_docker.png"><br/>
 Picture drawn with <a href="http://draw.io" target="_blank">draw.io</a>.</p>
 <p>First launch the containers which run different websites. In our example
 we will use a
@@ -145,13 +148,13 @@ we will use a
 and a 
 <a href="https://registry.hub.docker.com/u/tutum/wordpress/"
    target="_blank">wordpress site container</a>.</p>
-<div class="highlight"><pre><span class="gp">$</span> <span class="c"># Run hello world php demo container (test1.domain.com)</span>
+<div class="highlight"><pre><span></span><span class="gp">$</span> <span class="c1"># Run hello world php demo container (test1.domain.com)</span>
 <span class="gp">$</span> docker run -d tutum/hello-world
 <span class="go">01ec10276761</span>
 <span class="gp">$</span> docker inspect -f <span class="s2">&quot;{{.NetworkSettings.IPAddress}}&quot;</span> 01ec10276761
 <span class="go">172.17.0.26</span>
 
-<span class="gp">$</span> <span class="c"># Run wordpress container (test2.domain.com)</span>
+<span class="gp">$</span> <span class="c1"># Run wordpress container (test2.domain.com)</span>
 <span class="gp">$</span> docker run -d tutum/wordpress
 <span class="go">4d23f10f6b35</span>
 <span class="gp">$</span> docker inspect -f <span class="s2">&quot;{{.NetworkSettings.IPAddress}}&quot;</span> 4d23f10f6b35
@@ -165,17 +168,17 @@ inside a container we need to be able to access the hello-world and
 wordpress container by their private ip accessible from all containers.
 We got this IP using the command: <code>docker inspect -f "{{.NetworkSettings.IPAddress}}" $CONTAINERID</code>.
 Make sure to note down these IPs as they will be used in the haproxy.cfg file.</p>
-<div class="highlight"><pre><span class="gp">$</span> <span class="c"># On the host(not container) create directory containing our haproxy config file</span>
+<div class="highlight"><pre><span></span><span class="gp">$</span> <span class="c1"># On the host(not container) create directory containing our haproxy config file</span>
 <span class="gp">$</span> mkdir ~/haproxy-config
 
-<span class="gp">$</span> <span class="c"># Create ~/haproxy-config/haproxy.cfg</span>
+<span class="gp">$</span> <span class="c1"># Create ~/haproxy-config/haproxy.cfg</span>
 <span class="gp">$</span> vim ~/haproxy-config/haproxy.cfg
 <span class="go">global</span>
 <span class="go">        log 127.0.0.1   local0</span>
 <span class="go">        log 127.0.0.1   local1 notice</span>
 <span class="go">        user haproxy</span>
 <span class="go">        group haproxy</span>
-<span class="go">        # daemon</span>
+<span class="gp">        #</span> daemon
 
 <span class="go">defaults</span>
 <span class="go">        log     global</span>
@@ -201,11 +204,11 @@ Make sure to note down these IPs as they will be used in the haproxy.cfg file.</
 <span class="go">frontend http-in</span>
 <span class="go">        bind *:80</span>
 
-<span class="go">        # Define hosts based on domain names</span>
+<span class="gp">        #</span> Define hosts based on domain names
 <span class="go">        acl host_test1 hdr(host) -i test1.domain.com</span>
 <span class="go">        acl host_test2 hdr(host) -i test2.domain.com</span>
 
-<span class="go">        ## figure out backend to use based on domainname</span>
+<span class="gp">        #</span><span class="c1"># figure out backend to use based on domainname</span>
 <span class="go">        use_backend test1 if host_test1</span>
 <span class="go">        use_backend test2 if host_test2</span>
 
@@ -222,11 +225,11 @@ Make sure to note down these IPs as they will be used in the haproxy.cfg file.</
 <span class="go">    option forwardfor</span>
 <span class="go">    server s1 172.17.0.26:80 # This ip should be ip of wordpress container</span>
 
-<span class="gp">$</span> <span class="c"># Run haproxy and map the host directory ~/haproxy-config to /haproxy-override of the container</span>
-<span class="gp">$</span> <span class="c"># See the image README and Dockerfile for info about this override behaviour.</span>
-<span class="gp">$</span> <span class="c"># HAProxy is exposed on port 80 because all requests to the public ip should</span>
-<span class="gp">$</span> <span class="c"># go to the HAProxy container.</span>
-<span class="gp">$</span> docker run -d -p 80:80 -v ~/haproxy-config:/haproxy-override dockerfile/haproxy
+<span class="gp">$</span> <span class="c1"># Run haproxy and map the host directory ~/haproxy-config to /haproxy-override of the container</span>
+<span class="gp">$</span> <span class="c1"># See the image README and Dockerfile for info about this override behaviour.</span>
+<span class="gp">$</span> <span class="c1"># HAProxy is exposed on port 80 because all requests to the public ip should</span>
+<span class="gp">$</span> <span class="c1"># go to the HAProxy container.</span>
+<span class="gp">$</span> docker run -d -p <span class="m">80</span>:80 -v ~/haproxy-config:/haproxy-override dockerfile/haproxy
 </pre></div>
 
 
@@ -328,7 +331,7 @@ haproxy config file. Although I think it's better to run HAproxy in a container.
    <div class="container">
       <hr>
       <div class="row">
-         <div class="col-xs-10">&copy; 2016 Sam Stoelinga
+         <div class="col-xs-10">&copy; 2019 Sam Stoelinga
             &middot; Powered by <a href="https://github.com/DandyDev/pelican-bootstrap3" target="_blank">pelican-bootstrap3</a>,
             <a href="http://docs.getpelican.com/" target="_blank">Pelican</a>,
             <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>         </div>

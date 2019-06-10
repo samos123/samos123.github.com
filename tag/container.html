@@ -60,6 +60,9 @@ Sam Stoelinga (Samos IT) - Blog            </a>
                             <a href="http://samos-it.com/category/china.html">China</a>
                         </li>
                         <li >
+                            <a href="http://samos-it.com/category/google-cloud.html">Google cloud</a>
+                        </li>
+                        <li >
                             <a href="http://samos-it.com/category/linux.html">Linux</a>
                         </li>
                         <li >
@@ -87,7 +90,7 @@ Sam Stoelinga (Samos IT) - Blog            </a>
                 <div class="summary"><p>In order to access other containers from a container it's needed
 to get the private IP address of the other containers. The following
 command is able to get the private ip address of the container.</p>
-<div class="highlight"><pre><span class="gp">$</span> docker inspect --format<span class="o">=</span><span class="s2">&quot;{{.NetworkSettings.IPAddress}}&quot;</span> <span class="nv">$CONTAINER_ID_OR_NAME</span>
+<div class="highlight"><pre><span></span><span class="gp">$</span> docker inspect --format<span class="o">=</span><span class="s2">&quot;{{.NetworkSettings.IPAddress}}&quot;</span> <span class="nv">$CONTAINER_ID_OR_NAME</span>
 <span class="go">172.17.0.15</span>
 </pre></div>
                     <a class="btn btn-default btn-xs" href="http://samos-it.com/posts/docker-get-private-ip-address-of-container.html">more ...</a>
@@ -100,7 +103,7 @@ command is able to get the private ip address of the container.</p>
 running websites on port 80 using HAproxy as a reverse proxy.
 This makes it possible to run multiple websites on different domains
 on a single public ip of the host.</p>
-<p>The basic setup is to create 1 container for haproxy ...</p>
+<p>The basic setup is to create 1 container for haproxy …</p>
                     <a class="btn btn-default btn-xs" href="http://samos-it.com/posts/docker-multi-website-single-ip-host-haproxy.html">more ...</a>
                 </div>
             </article>

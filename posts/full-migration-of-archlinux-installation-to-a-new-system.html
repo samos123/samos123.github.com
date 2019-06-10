@@ -14,13 +14,13 @@
 
         <meta name="author" content="Sam Stoelinga" />
         <meta name="keywords" content="archlinux,geek,linux,migration" />
-        <meta name="description" content="I&#39;m switching to a new laptop, but don&#39;t want to have to install Archlinux again. So instead of re-installing I will try to copy all files and hope the system will work. In this blogpost I will describe the steps and issues I encountered while doing so. Status ..." />
+        <meta name="description" content="I&#39;m switching to a new laptop, but don&#39;t want to have to install Archlinux again. So instead of re-installing I will try to copy all files and hope the system will work. In this blogpost I will describe the steps and issues I encountered while doing so. Status: Succeeded!!!! Summary …" />
 
         <meta property="og:site_name" content="Sam Stoelinga (Samos IT) - Blog" />
         <meta property="og:type" content="article"/>
         <meta property="og:title" content="Full migration/clone of linux installation to a new system(Without reinstalling)"/>
         <meta property="og:url" content="http://samos-it.com/posts/full-migration-of-archlinux-installation-to-a-new-system.html"/>
-        <meta property="og:description" content="I&#39;m switching to a new laptop, but don&#39;t want to have to install Archlinux again. So instead of re-installing I will try to copy all files and hope the system will work. In this blogpost I will describe the steps and issues I encountered while doing so. Status ..."/>
+        <meta property="og:description" content="I&#39;m switching to a new laptop, but don&#39;t want to have to install Archlinux again. So instead of re-installing I will try to copy all files and hope the system will work. In this blogpost I will describe the steps and issues I encountered while doing so. Status: Succeeded!!!! Summary …"/>
         <meta property="article:published_time" content="2012-11-14" />
             <meta property="article:section" content="Linux" />
             <meta property="article:tag" content="archlinux" />
@@ -66,6 +66,9 @@ Sam Stoelinga (Samos IT) - Blog            </a>
                         </li>
                         <li >
                             <a href="http://samos-it.com/category/china.html">China</a>
+                        </li>
+                        <li >
+                            <a href="http://samos-it.com/category/google-cloud.html">Google cloud</a>
                         </li>
                         <li class="active">
                             <a href="http://samos-it.com/category/linux.html">Linux</a>
@@ -155,12 +158,12 @@ this actually is).</p>
 <li>Recreate the ramdisk</li>
 </ol>
 <h2>Environment:</h2>
-<p>Old Laptop:<br />
-Archlinux 64 bits, 8GB memory, AMD CPU and ATI card<br />
-IP: 192.168.1.108<br />
+<p>Old Laptop:<br>
+Archlinux 64 bits, 8GB memory, AMD CPU and ATI card<br>
+IP: 192.168.1.108<br>
 Connected to router via internet cable, WIFI was way too slow to copy files</p>
 <p>New laptop:
-Intel CPU and nvidia video card<br />
+Intel CPU and nvidia video card<br>
 IP: 192.168.1.111</p>
 <h2>Detailed steps:</h2>
 <p>Boot from a live ubuntu USB on the new laptop and do the following:</p>
@@ -173,7 +176,7 @@ IP: 192.168.1.111</p>
 </li>
 <li>
 <p>After you have created the partitions successfully, mount all partitions to /mnt</p>
-<div class="highlight"><pre>mount /dev/sda2 /mnt
+<div class="highlight"><pre><span></span>mount /dev/sda2 /mnt
 mkdir /mnt/boot
 mount /dev/sda1 /mnt/boot
 mkdir /mnt/home
@@ -184,7 +187,7 @@ mount /dev/sda3 /mnt/home
 </li>
 <li>
 <p>Now go back to the old Archlinux laptop and copy all files to the newly created partitions:</p>
-<div class="highlight"><pre>rsync -azv --progress --exclude<span class="o">=</span>/dev --exclude<span class="o">=</span>/sys / root@192.168.1.111:/mnt/
+<div class="highlight"><pre><span></span>rsync -azv --progress --exclude<span class="o">=</span>/dev --exclude<span class="o">=</span>/sys / root@192.168.1.111:/mnt/
 </pre></div>
 
 
@@ -193,27 +196,27 @@ mount /dev/sda3 /mnt/home
 <li>
 <p>After everything is copied over to the new laptop, we will have to
 change /etc/fstab to look as follows:</p>
-<div class="highlight"><pre>tmpfs /tmp tmpfs nodev,nosuid <span class="m">0</span> 0
-<span class="nv">LABEL</span><span class="o">=</span>root / ext4 defaults,noatime <span class="m">0</span> 1
-<span class="nv">LABEL</span><span class="o">=</span>home /home ext4 defaults,noatime <span class="m">0</span> 2
-<span class="nv">LABEL</span><span class="o">=</span>boot /boot ext2 defaults,noatime <span class="m">0</span> 2
+<div class="highlight"><pre><span></span>tmpfs /tmp tmpfs nodev,nosuid <span class="m">0</span> <span class="m">0</span>
+<span class="nv">LABEL</span><span class="o">=</span>root / ext4 defaults,noatime <span class="m">0</span> <span class="m">1</span>
+<span class="nv">LABEL</span><span class="o">=</span>home /home ext4 defaults,noatime <span class="m">0</span> <span class="m">2</span>
+<span class="nv">LABEL</span><span class="o">=</span>boot /boot ext2 defaults,noatime <span class="m">0</span> <span class="m">2</span>
 </pre></div>
 
 
 </li>
 <li>
-<p>Then reinstall Grub on the hard drive:<br />
+<p>Then reinstall Grub on the hard drive:<br>
 <code>grub-install --force --target=i386-pc --recheck --debug /dev/sda</code></p>
 <p>Why the --force?
 I encountered the following error: will not proceed with 
 blocklists archlinux so after reading the wiki it said I could fix this by using --force.</p>
 </li>
 <li>
-<p>Regenerate grub config:<br />
+<p>Regenerate grub config:<br>
 <code>grub-mkconfig -o /boot/grub/grub.cfg</code></p>
 </li>
 <li>
-<p>Regenerate initial ramdisk:<br />
+<p>Regenerate initial ramdisk:<br>
 <code>mkinitcpio -p linux</code></p>
 </li>
 <li>
@@ -223,7 +226,7 @@ blocklists archlinux so after reading the wiki it said I could fix this by using
 <p>I also had to update my modules.d/xxx to not load some specific AMD modules for laptop-mode tools as the new laptop has an intel processor.
 Also has to remove the ati driver and change to intel open source
 driver:</p>
-<div class="highlight"><pre>yaourt -Rs xf86-video-ati
+<div class="highlight"><pre><span></span>yaourt -Rs xf86-video-ati
 yaourt -S xf86-video-nouveau
 </pre></div>
 
@@ -326,7 +329,7 @@ thing https://bbs.archlinux.org/viewtopic.php?id=145025</p>
    <div class="container">
       <hr>
       <div class="row">
-         <div class="col-xs-10">&copy; 2016 Sam Stoelinga
+         <div class="col-xs-10">&copy; 2019 Sam Stoelinga
             &middot; Powered by <a href="https://github.com/DandyDev/pelican-bootstrap3" target="_blank">pelican-bootstrap3</a>,
             <a href="http://docs.getpelican.com/" target="_blank">Pelican</a>,
             <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>         </div>
