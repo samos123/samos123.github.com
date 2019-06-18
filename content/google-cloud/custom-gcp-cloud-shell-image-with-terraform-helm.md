@@ -51,7 +51,7 @@ following content:
 3. Build the Docker image:  
 `docker build -t gcr.io/$GCP_PROJECT_ID/cloud-shell-image .`
 4. Push the Docker image to Google Cloud Container Registry:  
-`docker build -t gcr.io/$GCP_PROJECT_ID/cloud-shell-image:latest`  
+`docker push gcr.io/$GCP_PROJECT_ID/cloud-shell-image:latest`  
 Note: You will need to configure Docker to authenticate with gcr by following
 the steps [here](https://cloud.google.com/container-registry/docs/pushing-and-pulling).
 
