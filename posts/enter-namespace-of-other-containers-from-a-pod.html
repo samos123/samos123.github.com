@@ -205,7 +205,7 @@ list all containers that have the nginx in their name.</p>
 
 <p>You will notice that there is an <code>eth0@ifX</code> interface inside the container
 network namespace. The <code>X</code> tells you the interface index on the host network.
-This index can then be used to figoure out which veth belongs to the container.</p>
+This index can then be used to figure out which veth belongs to the container.</p>
 <p>Run the following commands to find the veth interface:</p>
 <div class="highlight"><pre><span></span><span class="nv">ifindex</span><span class="o">=</span><span class="k">$(</span>nsenter -t <span class="nv">$pid</span> -n ip link <span class="p">|</span> sed -n -e <span class="s1">&#39;s/.*eth0@if\([0-9]*\):.*/\1/p&#39;</span><span class="k">)</span>
 <span class="nv">veth</span><span class="o">=</span><span class="k">$(</span>ip -o link <span class="p">|</span> grep ^<span class="nv">$ifindex</span> <span class="p">|</span> sed -n -e <span class="s1">&#39;s/.*\(veth[[:alnum:]]*@if[[:digit:]]*\).*/\1/p&#39;</span><span class="k">)</span>

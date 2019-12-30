@@ -87,7 +87,7 @@ Now use the container ID to get the PID of the container:
 
 You will notice that there is an `eth0@ifX` interface inside the container
 network namespace. The `X` tells you the interface index on the host network.
-This index can then be used to figoure out which veth belongs to the container.
+This index can then be used to figure out which veth belongs to the container.
 
 Run the following commands to find the veth interface:
 

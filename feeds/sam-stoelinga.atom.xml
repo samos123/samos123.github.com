@@ -78,7 +78,7 @@ list all containers that have the nginx in their name.&lt;/p&gt;
 
 &lt;p&gt;You will notice that there is an &lt;code&gt;eth0@ifX&lt;/code&gt; interface inside the container
 network namespace. The &lt;code&gt;X&lt;/code&gt; tells you the interface index on the host network.
-This index can then be used to figoure out which veth belongs to the container.&lt;/p&gt;
+This index can then be used to figure out which veth belongs to the container.&lt;/p&gt;
 &lt;p&gt;Run the following commands to find the veth interface:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nv"&gt;ifindex&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;nsenter -t &lt;span class="nv"&gt;$pid&lt;/span&gt; -n ip link &lt;span class="p"&gt;|&lt;/span&gt; sed -n -e &lt;span class="s1"&gt;&amp;#39;s/.*eth0@if\([0-9]*\):.*/\1/p&amp;#39;&lt;/span&gt;&lt;span class="k"&gt;)&lt;/span&gt;
 &lt;span class="nv"&gt;veth&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;ip -o link &lt;span class="p"&gt;|&lt;/span&gt; grep ^&lt;span class="nv"&gt;$ifindex&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; sed -n -e &lt;span class="s1"&gt;&amp;#39;s/.*\(veth[[:alnum:]]*@if[[:digit:]]*\).*/\1/p&amp;#39;&lt;/span&gt;&lt;span class="k"&gt;)&lt;/span&gt;
