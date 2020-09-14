@@ -36,7 +36,7 @@ LINKS = (('Pelican', 'http://getpelican.com/'),
 ## pelican-bootcamp3 settings
 GITHUB_URL = 'http://github.com/samos123/'
 GITHUB_USER = "samos123"
-SOCIAL = (('linkedin', 'http://www.linkedin.com/in/sam.stoelinga'),
+SOCIAL = (('linkedin', 'https://www.linkedin.com/in/samstoelinga/'),
           ('github', 'http://github.com/samos123/'),)
 DISPLAY_TAGS_ON_SIDEBAR=False
 
