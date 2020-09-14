@@ -2,7 +2,7 @@
 <html lang="en"
 >
 <head>
-    <title>Using Sendgrid with Django on Heroku (How to find your Sendgrid password on Heroku) - Sam Stoelinga (Samos IT) - Blog</title>
+    <title>Creating L2 connectivity between GCE VMs in GCP using VXLAN - Sam Stoelinga (Samos IT) - Blog</title>
     <!-- Using the latest rendering mode for IE -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta charset="utf-8">
@@ -10,18 +10,24 @@
 
 
 
-<link rel="canonical" href="https://samos-it.com/posts/using-sendgrid-with-django-on-heroku-how-to-find-your-sendgrid-password-on-heroku.html">
+<link rel="canonical" href="https://samos-it.com/posts/gce-vm-vxlan-l2-connectivity.html">
 
         <meta name="author" content="Sam Stoelinga" />
-        <meta name="description" content="While setting up sentgrid I was searching for my password of sendgrid, but coudn&#39;t find it. You can get it in the following way: heroku config --long Which will show the parameters: SENDGRID_PASSWORD, SENDGRID_USERNAME After you get your username don&#39;t forget to add it to django settings: EMAIL\_HOST = &#39;smtp …" />
+        <meta name="keywords" content="google cloud,gcp,vxlan,networking,gce" />
+        <meta name="description" content="Cloud providers often prevent you from using L2 protocols such as ARP. These protocols however are heavily used in existing software such as keepalived. This can make it hard for to move certain workloads to the cloud. This blog post demonstrates a method for creating L2 connectivity between Virtual Machines …" />
 
         <meta property="og:site_name" content="Sam Stoelinga (Samos IT) - Blog" />
         <meta property="og:type" content="article"/>
-        <meta property="og:title" content="Using Sendgrid with Django on Heroku (How to find your Sendgrid password on Heroku)"/>
-        <meta property="og:url" content="https://samos-it.com/posts/using-sendgrid-with-django-on-heroku-how-to-find-your-sendgrid-password-on-heroku.html"/>
-        <meta property="og:description" content="While setting up sentgrid I was searching for my password of sendgrid, but coudn&#39;t find it. You can get it in the following way: heroku config --long Which will show the parameters: SENDGRID_PASSWORD, SENDGRID_USERNAME After you get your username don&#39;t forget to add it to django settings: EMAIL\_HOST = &#39;smtp …"/>
-        <meta property="article:published_time" content="2012-04-11" />
-            <meta property="article:section" content="Python" />
+        <meta property="og:title" content="Creating L2 connectivity between GCE VMs in GCP using VXLAN"/>
+        <meta property="og:url" content="https://samos-it.com/posts/gce-vm-vxlan-l2-connectivity.html"/>
+        <meta property="og:description" content="Cloud providers often prevent you from using L2 protocols such as ARP. These protocols however are heavily used in existing software such as keepalived. This can make it hard for to move certain workloads to the cloud. This blog post demonstrates a method for creating L2 connectivity between Virtual Machines …"/>
+        <meta property="article:published_time" content="2020-09-13" />
+            <meta property="article:section" content="Google Cloud" />
+            <meta property="article:tag" content="google cloud" />
+            <meta property="article:tag" content="gcp" />
+            <meta property="article:tag" content="vxlan" />
+            <meta property="article:tag" content="networking" />
+            <meta property="article:tag" content="gce" />
             <meta property="article:author" content="Sam Stoelinga" />
 
 
@@ -62,7 +68,7 @@ Sam Stoelinga (Samos IT) - Blog            </a>
                         <li >
                             <a href="https://samos-it.com/category/china.html">China</a>
                         </li>
-                        <li >
+                        <li class="active">
                             <a href="https://samos-it.com/category/google-cloud.html">Google cloud</a>
                         </li>
                         <li >
@@ -74,7 +80,7 @@ Sam Stoelinga (Samos IT) - Blog            </a>
                         <li >
                             <a href="https://samos-it.com/category/openstack.html">Openstack</a>
                         </li>
-                        <li class="active">
+                        <li >
                             <a href="https://samos-it.com/category/python.html">Python</a>
                         </li>
             </ul>
@@ -95,10 +101,10 @@ Sam Stoelinga (Samos IT) - Blog            </a>
         <article>
             <header class="page-header">
                 <h1>
-                    <a href="https://samos-it.com/posts/using-sendgrid-with-django-on-heroku-how-to-find-your-sendgrid-password-on-heroku.html"
+                    <a href="https://samos-it.com/posts/gce-vm-vxlan-l2-connectivity.html"
                        rel="bookmark"
-                       title="Permalink to Using Sendgrid with Django on Heroku (How to find your Sendgrid password on Heroku)">
-                        Using Sendgrid with Django on Heroku (How to find your Sendgrid password on Heroku)
+                       title="Permalink to Creating L2 connectivity between GCE VMs in GCP using VXLAN">
+                        Creating L2 connectivity between GCE VMs in GCP using VXLAN
                     </a>
                 </h1>
             </header>
@@ -108,32 +114,133 @@ Sam Stoelinga (Samos IT) - Blog            </a>
 <footer class="post-info">
     <span class="label label-default">Date</span>
     <span class="published">
-        <i class="fa fa-calendar"></i><time datetime="2012-04-11T09:43:00+02:00"> Wed 11 April 2012</time>
+        <i class="fa fa-calendar"></i><time datetime="2020-09-13T22:42:00+02:00"> Sun 13 September 2020</time>
     </span>
 
 
 
+<span class="label label-default">Tags</span>
+	<a href="https://samos-it.com/tag/google-cloud.html">google cloud</a>
+        /
+	<a href="https://samos-it.com/tag/gcp.html">gcp</a>
+        /
+	<a href="https://samos-it.com/tag/vxlan.html">vxlan</a>
+        /
+	<a href="https://samos-it.com/tag/networking.html">networking</a>
+        /
+	<a href="https://samos-it.com/tag/gce.html">gce</a>
     
 </footer><!-- /.post-info -->                    </div>
                 </div>
-                <p>While setting up sentgrid I was searching for my password of sendgrid,
-but coudn't find it. You can get it in the following way:</p>
-<div class="highlight"><pre><span></span><code>heroku config --long
+                <p>Cloud providers often prevent you from using L2 protocols such as ARP. These
+protocols however are heavily used in existing software such as keepalived.
+This can make it hard for to move certain workloads to the cloud.
+This blog post demonstrates a method for creating L2 connectivity between
+Virtual Machines (VMs) running in GCP. The method used relies on VXLAN to
+create an L2 mesh between all the VMs. </p>
+<p>In this blog post, we'll be creating the 2 VMs, named <code>vm-1</code> and <code>vm-2.
+The VMs will be launched on the default VPC network. Each of the VMs
+will have an additional</code>vxlan0<code>interface, this interface we'll
+be using the</code>10.200.0.0/24` subnet.</p>
+<h3>1. Create the VMs</h3>
+<p>In this section you will create 2 Ubuntu 20.04 VMs</p>
+<ol>
+<li>
+<p>Let's start by creating <code>vm-1</code></p>
+<div class="highlight"><pre><span></span><code>gcloud compute instances create vm-1 <span class="se">\</span>
+          --image-family<span class="o">=</span>ubuntu-2004-lts --image-project<span class="o">=</span>ubuntu-os-cloud <span class="se">\</span>
+          --zone<span class="o">=</span>us-central1-a <span class="se">\</span>
+          --boot-disk-size 20G <span class="se">\</span>
+          --boot-disk-type pd-ssd <span class="se">\</span>
+          --can-ip-forward <span class="se">\</span>
+          --network default <span class="se">\</span>
+          --machine-type n1-standard-2
 </code></pre></div>
 
 
-<p>Which will show the parameters:<br>
-SENDGRID_PASSWORD, SENDGRID_USERNAME</p>
-<p>After you get your username don't forget to add it to django settings:  </p>
-<div class="highlight"><pre><span></span><code><span class="n">EMAIL</span>\<span class="n">_HOST</span> <span class="o">=</span> <span class="s1">&#39;smtp.sendgrid.net&#39;</span>  
-<span class="n">EMAIL</span>\<span class="n">_HOST</span>\<span class="n">_USER</span> <span class="o">=</span> <span class="s1">&#39;app11111111@heroku.com&#39;</span>  
-<span class="n">EMAIL</span>\<span class="n">_HOST</span>\<span class="n">_PASSWORD</span> <span class="o">=</span> <span class="s1">&#39;thepassyougotbefore&#39;</span>  
-<span class="n">EMAIL</span>\<span class="n">_PORT</span> <span class="o">=</span> <span class="mi">587</span>  
-<span class="n">EMAIL</span>\<span class="n">_USE</span>\<span class="n">_TLS</span> <span class="o">=</span> <span class="bp">True</span>
+</li>
+<li>
+<p>Repeat the same command creating <code>vm-2</code> this time:</p>
+<div class="highlight"><pre><span></span><code>gcloud compute instances create vm-2 <span class="se">\</span>
+          --image-family<span class="o">=</span>ubuntu-2004-lts --image-project<span class="o">=</span>ubuntu-os-cloud <span class="se">\</span>
+          --zone<span class="o">=</span>us-central1-a <span class="se">\</span>
+          --boot-disk-size 20G <span class="se">\</span>
+          --boot-disk-type pd-ssd <span class="se">\</span>
+          --can-ip-forward <span class="se">\</span>
+          --network default <span class="se">\</span>
+          --machine-type n1-standard-2
 </code></pre></div>
 
 
-<p>Hope it helped somebody</p>
+</li>
+<li>
+<p>Verify that SSH to both VMs is available and up. You might need o be patient.</p>
+<div class="highlight"><pre><span></span><code>gcloud compute ssh root@vm-1 --zone us-central1-a --comand <span class="s2">&quot;echo &#39;SSH to vm-1 succeeded&#39;&quot;</span>
+gcloud compute ssh root@vm-2 --zone us-central1-a --comand <span class="s2">&quot;echo &#39;SSH to vm-2 succeeded&#39;&quot;</span>
+</code></pre></div>
+
+
+</li>
+</ol>
+<h3>2. Setup VXLAN mesh between the VMs</h3>
+<p>In this section, you will be creating the VXLAN mesh between <code>vm-1</code> and <code>vm-2</code>
+that you just created.</p>
+<ol>
+<li>
+<p>Create bash variables that will be used for setting up the VXLAN mesh</p>
+<div class="highlight"><pre><span></span><code><span class="nv">VM1_VPC_IP</span><span class="o">=</span><span class="k">$(</span>gcloud compute instances describe vm-1 <span class="se">\</span>
+               --format<span class="o">=</span><span class="s1">&#39;get(networkInterfaces[0].networkIP)&#39;</span><span class="k">)</span>
+<span class="nv">VM2_VPC_IP</span><span class="o">=</span><span class="k">$(</span>gcloud compute instances describe vm-2 <span class="se">\</span>
+               --format<span class="o">=</span><span class="s1">&#39;get(networkInterfaces[0].networkIP)&#39;</span><span class="k">)</span>
+</code></pre></div>
+
+
+</li>
+<li>
+<p>Create the VXLAN device and mesh on <code>vm-1</code></p>
+<div class="highlight"><pre><span></span><code>gcloud compute ssh root@vm-1 --zone us-central1-a  <span class="s">&lt;&lt; EOF</span>
+<span class="s">ip link add vxlan0 type vxlan id 42 dev ens4 dstport 0</span>
+<span class="s">bridge fdb append to 00:00:00:00:00:00 dst \$VM2_VPC_IP dev vxlan0</span>
+<span class="s">ip addr add 10.200.0.2/24 dev vxlan0</span>
+<span class="s">ip link set up dev vxlan0</span>
+<span class="s">EOF</span>
+</code></pre></div>
+
+
+</li>
+<li>
+<p>Create the VXLAN device and mesh on <code>vm-2</code></p>
+<div class="highlight"><pre><span></span><code>gcloud compute ssh root@vm-2 --zone us-central1-a  <span class="s">&lt;&lt; EOF</span>
+<span class="s">ip link add vxlan0 type vxlan id 42 dev ens4 dstport 0</span>
+<span class="s">bridge fdb append to 00:00:00:00:00:00 dst \$VM1_VPC_IP dev vxlan0</span>
+<span class="s">ip addr add 10.200.0.3/24 dev vxlan0</span>
+<span class="s">ip link set up dev vxlan0</span>
+<span class="s">EOF</span>
+</code></pre></div>
+
+
+</li>
+<li>
+<p>Start a tcpdump on vm-1</p>
+<div class="highlight"><pre><span></span><code>gcloud compute ssh root@vm-1 --zone us-central1-a --command <span class="s2">&quot;tcpdump -i vxlan0 -n&quot;</span>
+</code></pre></div>
+
+
+</li>
+<li>
+<p>In another session ping <code>vm-2</code> from <code>vm-1</code>  and take a look at tcpdump output. Notice the arp.</p>
+<div class="highlight"><pre><span></span><code>gcloud compute ssh root@vm-1 --zone us-central1-a --command <span class="s2">&quot;ping </span><span class="nv">$VM2_VPC_IP</span><span class="s2"> -c 3&quot;</span>
+</code></pre></div>
+
+
+</li>
+</ol>
+<h3>Summary</h3>
+<p>You have setup a VXLAN mesh between 2 VMs and can now easily repeat this to
+more VMs. If you want to have a mesh between more VMs than for each additional
+VM you would need to run <code>bridge fdp append</code>.</p>
+<p>This blog post wouldn't have been possible without Mikal's blog on
+<a href="https://www.madebymikal.com/setting-up-vxlan-on-google-compute-engine/">Setting up VXLAN on Google Compute Engine</a>.</p>
             </div>
             <!-- /.entry-content -->
     <hr/>
@@ -145,7 +252,7 @@ SENDGRID_PASSWORD, SENDGRID_USERNAME</p>
             /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
             var disqus_shortname = 'samosit'; // required: replace example with your forum shortname
 
-                var disqus_url = 'https://samos-it.com/posts/using-sendgrid-with-django-on-heroku-how-to-find-your-sendgrid-password-on-heroku.html';
+                var disqus_url = 'https://samos-it.com/posts/gce-vm-vxlan-l2-connectivity.html';
 
             var disqus_config = function () {
                 this.language = "en";
