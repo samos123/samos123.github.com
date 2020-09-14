@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0"><channel><title>Sam Stoelinga (Samos IT) - Blog - Robot Router</title><link>http://samos-it.com/</link><description></description><lastBuildDate>Tue, 11 Oct 2016 00:00:00 +0200</lastBuildDate><item><title>RobotRouter: Bandwidth of Xfinity Internet on 2016-10-11</title><link>http://samos-it.com/posts/robotrouter-bandwidth-test-result-2016-10-11.html</link><description>&lt;p&gt;RobotRouter ran speedtest-cli.sh every hour on 2016-10-11 and reported
+<rss version="2.0"><channel><title>Sam Stoelinga (Samos IT) - Blog - Robot Router</title><link>https://samos-it.com/</link><description></description><lastBuildDate>Tue, 11 Oct 2016 00:00:00 +0200</lastBuildDate><item><title>RobotRouter: Bandwidth of Xfinity Internet on 2016-10-11</title><link>https://samos-it.com/posts/robotrouter-bandwidth-test-result-2016-10-11.html</link><description>&lt;p&gt;RobotRouter ran speedtest-cli.sh every hour on 2016-10-11 and reported
 the following aggregate statistics:&lt;/p&gt;
 &lt;table&gt;
 &lt;thead&gt;
@@ -35,7 +35,7 @@ the following aggregate statistics:&lt;/p&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
-&lt;p&gt;The raw results can …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Robot Router</dc:creator><pubDate>Tue, 11 Oct 2016 00:00:00 +0200</pubDate><guid isPermaLink="false">tag:samos-it.com,2016-10-11:/posts/robotrouter-bandwidth-test-result-2016-10-11.html</guid><category>bandwidth</category><category>openwrt</category></item><item><title>RobotRouter: Bandwidth of Xfinity Internet on 2016-10-10</title><link>http://samos-it.com/posts/robotrouter-bandwidth-test-result-2016-10-10.html</link><description>&lt;p&gt;RobotRouter ran speedtest-cli.sh every hour on 2016-10-10 and reported
+&lt;p&gt;The raw results can …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Robot Router</dc:creator><pubDate>Tue, 11 Oct 2016 00:00:00 +0200</pubDate><guid isPermaLink="false">tag:samos-it.com,2016-10-11:/posts/robotrouter-bandwidth-test-result-2016-10-11.html</guid><category>Bandwidth</category><category>bandwidth</category><category>openwrt</category></item><item><title>RobotRouter: Bandwidth of Xfinity Internet on 2016-10-10</title><link>https://samos-it.com/posts/robotrouter-bandwidth-test-result-2016-10-10.html</link><description>&lt;p&gt;RobotRouter ran speedtest-cli.sh every hour on 2016-10-10 and reported
 the following aggregate statistics:&lt;/p&gt;
 &lt;table&gt;
 &lt;thead&gt;
@@ -71,7 +71,7 @@ the following aggregate statistics:&lt;/p&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
-&lt;p&gt;The raw results can …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Robot Router</dc:creator><pubDate>Mon, 10 Oct 2016 00:00:00 +0200</pubDate><guid isPermaLink="false">tag:samos-it.com,2016-10-10:/posts/robotrouter-bandwidth-test-result-2016-10-10.html</guid><category>bandwidth</category><category>openwrt</category></item><item><title>RobotRouter: Bandwidth of Xfinity Internet on 2016-10-09</title><link>http://samos-it.com/posts/robotrouter-bandwidth-test-result-2016-10-09.html</link><description>&lt;p&gt;RobotRouter ran speedtest-cli.sh every hour on 2016-10-09 and reported
+&lt;p&gt;The raw results can …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Robot Router</dc:creator><pubDate>Mon, 10 Oct 2016 00:00:00 +0200</pubDate><guid isPermaLink="false">tag:samos-it.com,2016-10-10:/posts/robotrouter-bandwidth-test-result-2016-10-10.html</guid><category>Bandwidth</category><category>bandwidth</category><category>openwrt</category></item><item><title>RobotRouter: Bandwidth of Xfinity Internet on 2016-10-09</title><link>https://samos-it.com/posts/robotrouter-bandwidth-test-result-2016-10-09.html</link><description>&lt;p&gt;RobotRouter ran speedtest-cli.sh every hour on 2016-10-09 and reported
 the following aggregate statistics:&lt;/p&gt;
 &lt;table&gt;
 &lt;thead&gt;
@@ -107,4 +107,4 @@ the following aggregate statistics:&lt;/p&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
-&lt;p&gt;The raw results can …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Robot Router</dc:creator><pubDate>Sun, 09 Oct 2016 00:00:00 +0200</pubDate><guid isPermaLink="false">tag:samos-it.com,2016-10-09:/posts/robotrouter-bandwidth-test-result-2016-10-09.html</guid><category>bandwidth</category><category>openwrt</category></item></channel></rss>
+&lt;p&gt;The raw results can …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Robot Router</dc:creator><pubDate>Sun, 09 Oct 2016 00:00:00 +0200</pubDate><guid isPermaLink="false">tag:samos-it.com,2016-10-09:/posts/robotrouter-bandwidth-test-result-2016-10-09.html</guid><category>Bandwidth</category><category>bandwidth</category><category>openwrt</category></item></channel></rss>

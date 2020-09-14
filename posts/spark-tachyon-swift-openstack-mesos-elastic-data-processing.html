@@ -10,7 +10,7 @@
 
 
 
-<link rel="canonical" href="http://samos-it.com/posts/spark-tachyon-swift-openstack-mesos-elastic-data-processing.html">
+<link rel="canonical" href="https://samos-it.com/posts/spark-tachyon-swift-openstack-mesos-elastic-data-processing.html">
 
         <meta name="author" content="Sam Stoelinga" />
         <meta name="keywords" content="spark,tachyon,swift,hadoop,openstack,big data" />
@@ -19,7 +19,7 @@
         <meta property="og:site_name" content="Sam Stoelinga (Samos IT) - Blog" />
         <meta property="og:type" content="article"/>
         <meta property="og:title" content="Elastic Data Processing on OpenStack with Spark, Tachyon and Swift"/>
-        <meta property="og:url" content="http://samos-it.com/posts/spark-tachyon-swift-openstack-mesos-elastic-data-processing.html"/>
+        <meta property="og:url" content="https://samos-it.com/posts/spark-tachyon-swift-openstack-mesos-elastic-data-processing.html"/>
         <meta property="og:description" content="This post will describe how to configure, build and deploy Spark with Tachyon and Swift as storage. This architecture is meant to be more suitable for running Big Data workloads on top of the cloud such as OpenStack. Using Swift as storage layer for Spark gives us the ability to …"/>
         <meta property="article:published_time" content="2015-11-09" />
             <meta property="article:section" content="Big Data" />
@@ -33,11 +33,11 @@
 
 
     <!-- Bootstrap -->
-        <link rel="stylesheet" href="http://samos-it.com/theme/css/bootstrap.min.css" type="text/css"/>
-    <link href="http://samos-it.com/theme/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://samos-it.com/theme/css/bootstrap.min.css" type="text/css"/>
+    <link href="https://samos-it.com/theme/css/font-awesome.min.css" rel="stylesheet">
 
-    <link href="http://samos-it.com/theme/css/pygments/native.css" rel="stylesheet">
-    <link rel="stylesheet" href="http://samos-it.com/theme/css/style.css" type="text/css"/>
+    <link href="https://samos-it.com/theme/css/pygments/native.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://samos-it.com/theme/css/style.css" type="text/css"/>
 
 
 </head>
@@ -52,41 +52,41 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a href="http://samos-it.com/" class="navbar-brand">
+            <a href="https://samos-it.com/" class="navbar-brand">
 Sam Stoelinga (Samos IT) - Blog            </a>
         </div>
         <div class="collapse navbar-collapse navbar-ex1-collapse">
             <ul class="nav navbar-nav">
                         <li >
-                            <a href="http://samos-it.com/category/algorithms.html">Algorithms</a>
+                            <a href="https://samos-it.com/category/algorithms.html">Algorithms</a>
                         </li>
                         <li >
-                            <a href="http://samos-it.com/category/bandwidth.html">Bandwidth</a>
+                            <a href="https://samos-it.com/category/bandwidth.html">Bandwidth</a>
                         </li>
                         <li class="active">
-                            <a href="http://samos-it.com/category/big-data.html">Big data</a>
+                            <a href="https://samos-it.com/category/big-data.html">Big data</a>
                         </li>
                         <li >
-                            <a href="http://samos-it.com/category/china.html">China</a>
+                            <a href="https://samos-it.com/category/china.html">China</a>
                         </li>
                         <li >
-                            <a href="http://samos-it.com/category/google-cloud.html">Google cloud</a>
+                            <a href="https://samos-it.com/category/google-cloud.html">Google cloud</a>
                         </li>
                         <li >
-                            <a href="http://samos-it.com/category/k8s.html">K8s</a>
+                            <a href="https://samos-it.com/category/k8s.html">K8s</a>
                         </li>
                         <li >
-                            <a href="http://samos-it.com/category/linux.html">Linux</a>
+                            <a href="https://samos-it.com/category/linux.html">Linux</a>
                         </li>
                         <li >
-                            <a href="http://samos-it.com/category/openstack.html">Openstack</a>
+                            <a href="https://samos-it.com/category/openstack.html">Openstack</a>
                         </li>
                         <li >
-                            <a href="http://samos-it.com/category/python.html">Python</a>
+                            <a href="https://samos-it.com/category/python.html">Python</a>
                         </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-              <li><a href="http://samos-it.com/archives.html"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
+              <li><a href="https://samos-it.com/archives.html"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
             </ul>
         </div>
         <!-- /.navbar-collapse -->
@@ -102,7 +102,7 @@ Sam Stoelinga (Samos IT) - Blog            </a>
         <article>
             <header class="page-header">
                 <h1>
-                    <a href="http://samos-it.com/posts/spark-tachyon-swift-openstack-mesos-elastic-data-processing.html"
+                    <a href="https://samos-it.com/posts/spark-tachyon-swift-openstack-mesos-elastic-data-processing.html"
                        rel="bookmark"
                        title="Permalink to Elastic Data Processing on OpenStack with Spark, Tachyon and Swift">
                         Elastic Data Processing on OpenStack with Spark, Tachyon and Swift
@@ -121,17 +121,17 @@ Sam Stoelinga (Samos IT) - Blog            </a>
 
 
 <span class="label label-default">Tags</span>
-	<a href="http://samos-it.com/tag/spark.html">spark</a>
+	<a href="https://samos-it.com/tag/spark.html">spark</a>
         /
-	<a href="http://samos-it.com/tag/tachyon.html">tachyon</a>
+	<a href="https://samos-it.com/tag/tachyon.html">tachyon</a>
         /
-	<a href="http://samos-it.com/tag/swift.html">swift</a>
+	<a href="https://samos-it.com/tag/swift.html">swift</a>
         /
-	<a href="http://samos-it.com/tag/hadoop.html">hadoop</a>
+	<a href="https://samos-it.com/tag/hadoop.html">hadoop</a>
         /
-	<a href="http://samos-it.com/tag/openstack.html">openstack</a>
+	<a href="https://samos-it.com/tag/openstack.html">openstack</a>
         /
-	<a href="http://samos-it.com/tag/big-data.html">big data</a>
+	<a href="https://samos-it.com/tag/big-data.html">big data</a>
     
 </footer><!-- /.post-info -->                    </div>
                 </div>
@@ -169,25 +169,25 @@ performance and also elasticity of the cloud.</p>
 </ol>
 <h2>Tachyon 0.8.0 installation with Swift as underFS</h2>
 <p>Download and extract Tachyon to the mesos-master and mesos-slave</p>
-<div class="highlight"><pre><span></span>wget http://tachyon-project.org/downloads/files/0.8.0/tachyon-0.8.0-hadoop2.6-bin.tar.gz
+<div class="highlight"><pre><span></span><code>wget http://tachyon-project.org/downloads/files/0.8.0/tachyon-0.8.0-hadoop2.6-bin.tar.gz
 scp tachyon-0.8.0-hadoop2.6-bin.tar.gz mesos-master-1:/srv/
 scp tachyon-0.8.0-hadoop2.6-bin.tar.gz mesos-slave-1:/srv/
 ssh mesos-master-1 <span class="s2">&quot;cd /srv/ &amp;&amp; tar xzf tachyon-0.8.0-hadoop2.6-bin.tar.gz&quot;</span>
 ssh mesos-slave-1 <span class="s2">&quot;cd /srv/ &amp;&amp; tar xzf tachyon-0.8.0-hadoop2.6-bin.tar.gz&quot;</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>On both mesos-master-1 and mesos-slave-1, copy /srv/tachyon-0.8.0/conf/tachyon-env.sh.swift
 to /srv/tachyon-0.8.0/conf/tachyon-env.sh</p>
-<div class="highlight"><pre><span></span>mv /srv/tachyon-0.8.0/conf/tachyon-env.sh<span class="o">{</span>.swift,<span class="o">}</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code>mv /srv/tachyon-0.8.0/conf/tachyon-env.sh<span class="o">{</span>.swift,<span class="o">}</span>
+</code></pre></div>
 
 
 <p>Make minor modifications to /srv/tachyon-0.8.0/conf/tachyon-env.sh on both mesos-master-1 and
 mesos-slave-1:</p>
-<div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">TACHYON_MASTER_ADDRESS</span><span class="o">=</span><span class="m">192</span>.168.111.54
+<div class="highlight"><pre><span></span><code><span class="nb">export</span> <span class="nv">TACHYON_MASTER_ADDRESS</span><span class="o">=</span><span class="m">192</span>.168.111.54
 <span class="nb">export</span> <span class="nv">TACHYON_UNDERFS_ADDRESS</span><span class="o">=</span>swift://spark.swift1
-</pre></div>
+</code></pre></div>
 
 
 <p>The TACHYON_MASTER_ADDRESS is set to the use the external IP
@@ -202,7 +202,7 @@ to authenticate with Swift and also to retreive the
 correct endpoint.</p>
 <p>I've changed core-site.xml according to my Swift environment and
 copied it to tachyon/conf/core-site.xml. The following changes were made:</p>
-<div class="highlight"><pre><span></span>&lt;property&gt;
+<div class="highlight"><pre><span></span><code>&lt;property&gt;
  &lt;name&gt;fs.swift.service.swift1.location-aware&lt;/name&gt;
  &lt;value&gt;false&lt;/value&gt;
 &lt;/property&gt;
@@ -238,33 +238,33 @@ copied it to tachyon/conf/core-site.xml. The following changes were made:</p>
   &lt;name&gt;fs.swift.service.swift1.username&lt;/name&gt;
   &lt;value&gt;spark&lt;/value&gt;
 &lt;/property&gt;
-</pre></div>
+</code></pre></div>
 
 
 <p>After all config changes are done we can start launching
 the Tachyon master process on the mesos-master-1 node.</p>
-<div class="highlight"><pre><span></span>/srv/tachyon-0.8.0/bin/tachyon-start.sh master -f
-</pre></div>
+<div class="highlight"><pre><span></span><code>/srv/tachyon-0.8.0/bin/tachyon-start.sh master -f
+</code></pre></div>
 
 
 <p>After successful start of the tachyon master, also start the tachyon worker
 on mesos-slave-1:</p>
-<div class="highlight"><pre><span></span>/srv/tachyon-0.8.0/bin/tachyon-start.sh worker SudoMount
-</pre></div>
+<div class="highlight"><pre><span></span><code>/srv/tachyon-0.8.0/bin/tachyon-start.sh worker SudoMount
+</code></pre></div>
 
 
 <p>You should now have Tachyon running and you can access it via
 http://192.168.111.54:19999</p>
 <h2>Building Spark with Tachyon 0.8.0 and Swift</h2>
 <p>Checkout latest master branch of spark:</p>
-<div class="highlight"><pre><span></span>git clone https://github.com/apache/spark.git
-</pre></div>
+<div class="highlight"><pre><span></span><code>git clone https://github.com/apache/spark.git
+</code></pre></div>
 
 
 <p>Apply the following patches to core/pom.xml and make_distribution.sh
 to use tachyon 0.8.0 and to include hdfs as underfs dependency.
 Make sure to exclude mockito-all else the build will fail with</p>
-<div class="highlight"><pre><span></span><span class="gh">diff --git a/core/pom.xml b/core/pom.xml</span>
+<div class="highlight"><pre><span></span><code><span class="gh">diff --git a/core/pom.xml b/core/pom.xml</span>
 <span class="gh">index 570a25c..98285a0 100644</span>
 <span class="gd">--- a/core/pom.xml</span>
 <span class="gi">+++ b/core/pom.xml</span>
@@ -308,19 +308,19 @@ Make sure to exclude mockito-all else the build will fail with</p>
 <span class="gi">+TACHYON_VERSION=&quot;0.8.0&quot;</span>
  TACHYON_TGZ=&quot;tachyon-${TACHYON_VERSION}-bin.tar.gz&quot;
  TACHYON_URL=&quot;http://tachyon-project.org/downloads/files/${TACHYON_VERSION}/${TACHYON_TGZ}&quot;
-</pre></div>
+</code></pre></div>
 
 
 <p>Build Spark with Tachyon and Swift as underfs:</p>
-<div class="highlight"><pre><span></span>./make-distribution.sh --name spark-master-tachyon-0.8.0 --tgz --with-tachyon -Pyarn -Phadoop-2.6 -Dhadoop.version<span class="o">=</span><span class="m">2</span>.6.0 -DskipTests
-</pre></div>
+<div class="highlight"><pre><span></span><code>./make-distribution.sh --name spark-master-tachyon-0.8.0 --tgz --with-tachyon -Pyarn -Phadoop-2.6 -Dhadoop.version<span class="o">=</span><span class="m">2</span>.6.0 -DskipTests
+</code></pre></div>
 
 
 <p>Add core-site.xml which we used in Tachyon to the Spark tarball. </p>
-<div class="highlight"><pre><span></span>tar xzf spark-1.6.0-SNAPSHOT-bin-spark-master-tachyon-0.8.0.tgz
+<div class="highlight"><pre><span></span><code>tar xzf spark-1.6.0-SNAPSHOT-bin-spark-master-tachyon-0.8.0.tgz
 cp /srv/tachyon-0.8.0/conf/core-site.xml spark-1.6.0*/conf/core-site.xml
 tar czf spark-1.6.0.tar.gz spark-1.6.0-SNAPSHOT-bin-spark-master-tachyon-0.8.0
-</pre></div>
+</code></pre></div>
 
 
 <p>For some reason Spark also needs core-site.xml with the Swift connection settings
@@ -328,10 +328,10 @@ even though we already configured this in Tachyon.</p>
 <h2>Running a Spark job with Tachyon as input backed by Swift</h2>
 <p>Assuming that in our Swift container we have an object called
 output.log we can now create a Spark shell session and use</p>
-<div class="highlight"><pre><span></span>spark-shell
+<div class="highlight"><pre><span></span><code>spark-shell
 val <span class="nv">textFile</span> <span class="o">=</span> sc.textFile<span class="o">(</span><span class="s2">&quot;tachyon://mesos-master-1:19998/output.log&quot;</span><span class="o">)</span>
 textFile.count<span class="o">()</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>I've also verified that I could successfuly use sequenceFiles and Spark pickleFiles on
@@ -348,7 +348,7 @@ Tachyon with Swift by running the Python spark jobs of my other project:
             /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
             var disqus_shortname = 'samosit'; // required: replace example with your forum shortname
 
-                var disqus_url = 'http://samos-it.com/posts/spark-tachyon-swift-openstack-mesos-elastic-data-processing.html';
+                var disqus_url = 'https://samos-it.com/posts/spark-tachyon-swift-openstack-mesos-elastic-data-processing.html';
 
             var disqus_config = function () {
                 this.language = "en";
@@ -434,13 +434,13 @@ Tachyon with Swift by running the Python spark jobs of my other project:
       </div>
    </div>
 </footer>
-<script src="http://samos-it.com/theme/js/jquery.min.js"></script>
+<script src="https://samos-it.com/theme/js/jquery.min.js"></script>
 
 <!-- Include all compiled plugins (below), or include individual files as needed -->
-<script src="http://samos-it.com/theme/js/bootstrap.min.js"></script>
+<script src="https://samos-it.com/theme/js/bootstrap.min.js"></script>
 
 <!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
-<script src="http://samos-it.com/theme/js/respond.min.js"></script>
+<script src="https://samos-it.com/theme/js/respond.min.js"></script>
 
     <!-- GitHub JS -->
     <script type="text/javascript">
@@ -448,7 +448,7 @@ Tachyon with Swift by running the Python spark jobs of my other project:
             if (!window.jXHR) {
                 var jxhr = document.createElement('script');
                 jxhr.type = 'text/javascript';
-                jxhr.src = 'http://samos-it.com/theme/js/jXHR.js';
+                jxhr.src = 'https://samos-it.com/theme/js/jXHR.js';
                 var s = document.getElementsByTagName('script')[0];
                 s.parentNode.insertBefore(jxhr, s);
             }
@@ -461,7 +461,7 @@ Tachyon with Swift by running the Python spark jobs of my other project:
             });
         });
     </script>
-    <script src="http://samos-it.com/theme/js/github.js" type="text/javascript"></script>
+    <script src="https://samos-it.com/theme/js/github.js" type="text/javascript"></script>
     <!-- End GitHub JS Code -->
     <!-- Disqus -->
     <script type="text/javascript">

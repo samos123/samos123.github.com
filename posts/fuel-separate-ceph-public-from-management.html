@@ -10,7 +10,7 @@
 
 
 
-<link rel="canonical" href="http://samos-it.com/posts/fuel-separate-ceph-public-from-management.html">
+<link rel="canonical" href="https://samos-it.com/posts/fuel-separate-ceph-public-from-management.html">
 
         <meta name="author" content="Sam Stoelinga" />
         <meta name="keywords" content="openstack,networking,fuel,ceph,mirantis" />
@@ -19,7 +19,7 @@
         <meta property="og:site_name" content="Sam Stoelinga (Samos IT) - Blog" />
         <meta property="og:type" content="article"/>
         <meta property="og:title" content="Fuel: Separate Ceph Public from Management using Network Templates"/>
-        <meta property="og:url" content="http://samos-it.com/posts/fuel-separate-ceph-public-from-management.html"/>
+        <meta property="og:url" content="https://samos-it.com/posts/fuel-separate-ceph-public-from-management.html"/>
         <meta property="og:description" content="This post will demonstrate using Network Templates in Fuel to separate Ceph Public Network from Management Network. By default Fuel combines the ceph public network with the management network. The Ceph Public network is used for communicating from the compute nodes to the Ceph nodes. So in high performant storage …"/>
         <meta property="article:published_time" content="2016-08-27" />
             <meta property="article:section" content="Openstack" />
@@ -32,11 +32,11 @@
 
 
     <!-- Bootstrap -->
-        <link rel="stylesheet" href="http://samos-it.com/theme/css/bootstrap.min.css" type="text/css"/>
-    <link href="http://samos-it.com/theme/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://samos-it.com/theme/css/bootstrap.min.css" type="text/css"/>
+    <link href="https://samos-it.com/theme/css/font-awesome.min.css" rel="stylesheet">
 
-    <link href="http://samos-it.com/theme/css/pygments/native.css" rel="stylesheet">
-    <link rel="stylesheet" href="http://samos-it.com/theme/css/style.css" type="text/css"/>
+    <link href="https://samos-it.com/theme/css/pygments/native.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://samos-it.com/theme/css/style.css" type="text/css"/>
 
 
 </head>
@@ -51,41 +51,41 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a href="http://samos-it.com/" class="navbar-brand">
+            <a href="https://samos-it.com/" class="navbar-brand">
 Sam Stoelinga (Samos IT) - Blog            </a>
         </div>
         <div class="collapse navbar-collapse navbar-ex1-collapse">
             <ul class="nav navbar-nav">
                         <li >
-                            <a href="http://samos-it.com/category/algorithms.html">Algorithms</a>
+                            <a href="https://samos-it.com/category/algorithms.html">Algorithms</a>
                         </li>
                         <li >
-                            <a href="http://samos-it.com/category/bandwidth.html">Bandwidth</a>
+                            <a href="https://samos-it.com/category/bandwidth.html">Bandwidth</a>
                         </li>
                         <li >
-                            <a href="http://samos-it.com/category/big-data.html">Big data</a>
+                            <a href="https://samos-it.com/category/big-data.html">Big data</a>
                         </li>
                         <li >
-                            <a href="http://samos-it.com/category/china.html">China</a>
+                            <a href="https://samos-it.com/category/china.html">China</a>
                         </li>
                         <li >
-                            <a href="http://samos-it.com/category/google-cloud.html">Google cloud</a>
+                            <a href="https://samos-it.com/category/google-cloud.html">Google cloud</a>
                         </li>
                         <li >
-                            <a href="http://samos-it.com/category/k8s.html">K8s</a>
+                            <a href="https://samos-it.com/category/k8s.html">K8s</a>
                         </li>
                         <li >
-                            <a href="http://samos-it.com/category/linux.html">Linux</a>
+                            <a href="https://samos-it.com/category/linux.html">Linux</a>
                         </li>
                         <li class="active">
-                            <a href="http://samos-it.com/category/openstack.html">Openstack</a>
+                            <a href="https://samos-it.com/category/openstack.html">Openstack</a>
                         </li>
                         <li >
-                            <a href="http://samos-it.com/category/python.html">Python</a>
+                            <a href="https://samos-it.com/category/python.html">Python</a>
                         </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-              <li><a href="http://samos-it.com/archives.html"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
+              <li><a href="https://samos-it.com/archives.html"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
             </ul>
         </div>
         <!-- /.navbar-collapse -->
@@ -101,7 +101,7 @@ Sam Stoelinga (Samos IT) - Blog            </a>
         <article>
             <header class="page-header">
                 <h1>
-                    <a href="http://samos-it.com/posts/fuel-separate-ceph-public-from-management.html"
+                    <a href="https://samos-it.com/posts/fuel-separate-ceph-public-from-management.html"
                        rel="bookmark"
                        title="Permalink to Fuel: Separate Ceph Public from Management using Network Templates">
                         Fuel: Separate Ceph Public from Management using Network Templates
@@ -120,15 +120,15 @@ Sam Stoelinga (Samos IT) - Blog            </a>
 
 
 <span class="label label-default">Tags</span>
-	<a href="http://samos-it.com/tag/openstack.html">openstack</a>
+	<a href="https://samos-it.com/tag/openstack.html">openstack</a>
         /
-	<a href="http://samos-it.com/tag/networking.html">networking</a>
+	<a href="https://samos-it.com/tag/networking.html">networking</a>
         /
-	<a href="http://samos-it.com/tag/fuel.html">fuel</a>
+	<a href="https://samos-it.com/tag/fuel.html">fuel</a>
         /
-	<a href="http://samos-it.com/tag/ceph.html">ceph</a>
+	<a href="https://samos-it.com/tag/ceph.html">ceph</a>
         /
-	<a href="http://samos-it.com/tag/mirantis.html">mirantis</a>
+	<a href="https://samos-it.com/tag/mirantis.html">mirantis</a>
     
 </footer><!-- /.post-info -->                    </div>
                 </div>
@@ -166,12 +166,12 @@ used for ceph public and other networks via VLAN tagging.
 Although in a production environment you could
 easily put the new Ceph Public network on a dedicated NIC.</p>
 <p>The following steps show to create the Ceph Public network with VLAN tag 13:</p>
-<div class="highlight"><pre><span></span><span class="c1"># First list the network groups to see what node-group is being used</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># First list the network groups to see what node-group is being used</span>
 <span class="c1"># group-id is usually the same as environment id</span>
 fuel network-group
 <span class="c1"># Create the new ceph-public network</span>
 fuel network-group --create --node-group <span class="m">6</span> --name ceph-public --vlan <span class="m">13</span> --cidr <span class="m">192</span>.168.251.0/24
-</pre></div>
+</code></pre></div>
 
 
 <h2>Write and upload network template</h2>
@@ -182,7 +182,7 @@ template and then create new Ceph Public network group.</p>
 <p>The below template is based on the default template with a minor
 modification to split out the ceph/public network role from the
 management network.</p>
-<div class="highlight"><pre><span></span><span class="nt">adv_net_template</span><span class="p">:</span>
+<div class="highlight"><pre><span></span><code><span class="nt">adv_net_template</span><span class="p">:</span>
   <span class="nt">default</span><span class="p">:</span> 
     <span class="nt">nic_mapping</span><span class="p">:</span>
       <span class="nt">default</span><span class="p">:</span>
@@ -333,22 +333,22 @@ management network.</p>
           <span class="nt">mgmt/corosync</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">br-mgmt</span>
           <span class="nt">mgmt/vip</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">br-mgmt</span>
           <span class="nt">mgmt/api</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">br-mgmt</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>Save the above file with the name <code>network_template_6.yaml</code> on your Fuel node. Fuel network template requires that the file name is in the following
 format: <code>network_template_{{ env_id }}.yaml</code>. If your fuel doesn't match the format you won't be able to upload.</p>
 <p>Now upload the the file <code>network_template_6.yaml</code> to Fuel via:</p>
-<div class="highlight"><pre><span></span>fuel network-template --env <span class="m">6</span> --upload --dir .
-</pre></div>
+<div class="highlight"><pre><span></span><code>fuel network-template --env <span class="m">6</span> --upload --dir .
+</code></pre></div>
 
 
 <h2>Review and tune final deployment settings</h2>
 <p>This last step is to make sure that the Network settings set by Network Templates
 and Network group match expectations. Download the final deployment settings
 for the environment using the below command:</p>
-<div class="highlight"><pre><span></span>fuel deployment --default --env <span class="m">6</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code>fuel deployment --default --env <span class="m">6</span>
+</code></pre></div>
 
 
 <p>This will create a directory called <code>deployment_6</code> containing deployment settings
@@ -356,8 +356,8 @@ for the actual deployment. Open for example <code>deployment_6/master.yaml</code
 and verify that ceph/public network role is assigned to controllers and ceph-osd nodes. Next to
 that make sure that ceph/public is assigned a specific IP address on each node.</p>
 <p>Now we're ready to deploy and can trigger the deployment with:</p>
-<div class="highlight"><pre><span></span>fuel deploy-changes --env <span class="m">6</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code>fuel deploy-changes --env <span class="m">6</span>
+</code></pre></div>
 
 
 <p>If you're lucky enough to not have made mistakes and hit bugs, then you will be running in no time :)
@@ -374,7 +374,7 @@ working.</p>
             /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
             var disqus_shortname = 'samosit'; // required: replace example with your forum shortname
 
-                var disqus_url = 'http://samos-it.com/posts/fuel-separate-ceph-public-from-management.html';
+                var disqus_url = 'https://samos-it.com/posts/fuel-separate-ceph-public-from-management.html';
 
             var disqus_config = function () {
                 this.language = "en";
@@ -460,13 +460,13 @@ working.</p>
       </div>
    </div>
 </footer>
-<script src="http://samos-it.com/theme/js/jquery.min.js"></script>
+<script src="https://samos-it.com/theme/js/jquery.min.js"></script>
 
 <!-- Include all compiled plugins (below), or include individual files as needed -->
-<script src="http://samos-it.com/theme/js/bootstrap.min.js"></script>
+<script src="https://samos-it.com/theme/js/bootstrap.min.js"></script>
 
 <!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
-<script src="http://samos-it.com/theme/js/respond.min.js"></script>
+<script src="https://samos-it.com/theme/js/respond.min.js"></script>
 
     <!-- GitHub JS -->
     <script type="text/javascript">
@@ -474,7 +474,7 @@ working.</p>
             if (!window.jXHR) {
                 var jxhr = document.createElement('script');
                 jxhr.type = 'text/javascript';
-                jxhr.src = 'http://samos-it.com/theme/js/jXHR.js';
+                jxhr.src = 'https://samos-it.com/theme/js/jXHR.js';
                 var s = document.getElementsByTagName('script')[0];
                 s.parentNode.insertBefore(jxhr, s);
             }
@@ -487,7 +487,7 @@ working.</p>
             });
         });
     </script>
-    <script src="http://samos-it.com/theme/js/github.js" type="text/javascript"></script>
+    <script src="https://samos-it.com/theme/js/github.js" type="text/javascript"></script>
     <!-- End GitHub JS Code -->
     <!-- Disqus -->
     <script type="text/javascript">

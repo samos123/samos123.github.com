@@ -5,11 +5,13 @@ import os
 
 AUTHOR = 'Sam Stoelinga'
 SITENAME = 'Sam Stoelinga (Samos IT) - Blog'
-SITEURL = 'http://localhost:8000'
+SITEURL = 'http://localhost:8001'
 #DISQUS_SITENAME = 'samosit'
 
 OUTPUT_PATH = os.path.abspath(__file__)
 PATH = "content"
+
+PLUGINS=[]
 
 ARTICLE_URL = 'posts/{slug}.html'
 ARTICLE_SAVE_AS = 'posts/{slug}.html'
