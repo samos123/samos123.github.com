@@ -12,7 +12,7 @@ This blog post demonstrates a method for creating L2 connectivity between
 Virtual Machines (VMs) running in GCP. The method used relies on VXLAN to
 create an L2 mesh between all the VMs. 
 
-In this blog post, we'll be creating the 2 VMs, named `vm-1` and `vm-2.
+In this blog post, we'll be creating the 2 VMs, named `vm-1` and `vm-2`.
 The VMs will be launched on the default VPC network. Each of the VMs
 will have an additional `vxlan0` interface, this interface we'll
 be using the `10.200.0.0/24` subnet.
@@ -50,8 +50,8 @@ In this section you will create 2 Ubuntu 20.04 VMs
 3. Verify that SSH to both VMs is available and up. You might need o be patient.
 
         :::bash
-        gcloud compute ssh root@vm-1 --zone us-central1-a --comand "echo 'SSH to vm-1 succeeded'"
-        gcloud compute ssh root@vm-2 --zone us-central1-a --comand "echo 'SSH to vm-2 succeeded'"
+        gcloud compute ssh root@vm-1 --zone us-central1-a --command "echo 'SSH to vm-1 succeeded'"
+        gcloud compute ssh root@vm-2 --zone us-central1-a --command "echo 'SSH to vm-2 succeeded'"
 
 ### 2. Setup VXLAN mesh between the VMs
 In this section, you will be creating the VXLAN mesh between `vm-1` and `vm-2`
@@ -64,14 +64,17 @@ that you just created.
                        --format='get(networkInterfaces[0].networkIP)')
         VM2_VPC_IP=$(gcloud compute instances describe vm-2 \
                        --format='get(networkInterfaces[0].networkIP)')
+        echo $VM1_VPC_IP
+        echo $VM2_VPC_IP
 
 
 2. Create the VXLAN device and mesh on `vm-1`
 
         :::bash
         gcloud compute ssh root@vm-1 --zone us-central1-a  << EOF
+        set -x
         ip link add vxlan0 type vxlan id 42 dev ens4 dstport 0
-        bridge fdb append to 00:00:00:00:00:00 dst \$VM2_VPC_IP dev vxlan0
+        bridge fdb append to 00:00:00:00:00:00 dst $VM2_VPC_IP dev vxlan0
         ip addr add 10.200.0.2/24 dev vxlan0
         ip link set up dev vxlan0
         EOF
@@ -80,8 +83,9 @@ that you just created.
 
         :::bash
         gcloud compute ssh root@vm-2 --zone us-central1-a  << EOF
+        set -x
         ip link add vxlan0 type vxlan id 42 dev ens4 dstport 0
-        bridge fdb append to 00:00:00:00:00:00 dst \$VM1_VPC_IP dev vxlan0
+        bridge fdb append to 00:00:00:00:00:00 dst $VM1_VPC_IP dev vxlan0
         ip addr add 10.200.0.3/24 dev vxlan0
         ip link set up dev vxlan0
         EOF
@@ -89,12 +93,14 @@ that you just created.
 4. Start a tcpdump on vm-1
 
         :::bash
-        gcloud compute ssh root@vm-1 --zone us-central1-a --command "tcpdump -i vxlan0 -n"
+        gcloud compute ssh root@vm-1 --zone us-central1-a
+        tcpdump -i vxlan0 -n
 
 5. In another session ping `vm-2` from `vm-1`  and take a look at tcpdump output. Notice the arp.
 
         :::bash
-        gcloud compute ssh root@vm-1 --zone us-central1-a --command "ping $VM2_VPC_IP -c 3"
+        gcloud compute ssh root@vm-1 --zone us-central1-a
+        ping 10.200.0.3
 
 
 ### Summary

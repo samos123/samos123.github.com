@@ -138,10 +138,10 @@ This can make it hard for to move certain workloads to the cloud.
 This blog post demonstrates a method for creating L2 connectivity between
 Virtual Machines (VMs) running in GCP. The method used relies on VXLAN to
 create an L2 mesh between all the VMs. </p>
-<p>In this blog post, we'll be creating the 2 VMs, named <code>vm-1</code> and <code>vm-2.
+<p>In this blog post, we'll be creating the 2 VMs, named <code>vm-1</code> and <code>vm-2</code>.
 The VMs will be launched on the default VPC network. Each of the VMs
-will have an additional</code>vxlan0<code>interface, this interface we'll
-be using the</code>10.200.0.0/24` subnet.</p>
+will have an additional <code>vxlan0</code> interface, this interface we'll
+be using the <code>10.200.0.0/24</code> subnet.</p>
 <h3>1. Create the VMs</h3>
 <p>In this section you will create 2 Ubuntu 20.04 VMs</p>
 <ol>
@@ -175,8 +175,8 @@ be using the</code>10.200.0.0/24` subnet.</p>
 </li>
 <li>
 <p>Verify that SSH to both VMs is available and up. You might need o be patient.</p>
-<div class="highlight"><pre><span></span><code>gcloud compute ssh root@vm-1 --zone us-central1-a --comand <span class="s2">&quot;echo &#39;SSH to vm-1 succeeded&#39;&quot;</span>
-gcloud compute ssh root@vm-2 --zone us-central1-a --comand <span class="s2">&quot;echo &#39;SSH to vm-2 succeeded&#39;&quot;</span>
+<div class="highlight"><pre><span></span><code>gcloud compute ssh root@vm-1 --zone us-central1-a --command <span class="s2">&quot;echo &#39;SSH to vm-1 succeeded&#39;&quot;</span>
+gcloud compute ssh root@vm-2 --zone us-central1-a --command <span class="s2">&quot;echo &#39;SSH to vm-2 succeeded&#39;&quot;</span>
 </code></pre></div>
 
 
@@ -192,6 +192,8 @@ that you just created.</p>
                --format<span class="o">=</span><span class="s1">&#39;get(networkInterfaces[0].networkIP)&#39;</span><span class="k">)</span>
 <span class="nv">VM2_VPC_IP</span><span class="o">=</span><span class="k">$(</span>gcloud compute instances describe vm-2 <span class="se">\</span>
                --format<span class="o">=</span><span class="s1">&#39;get(networkInterfaces[0].networkIP)&#39;</span><span class="k">)</span>
+<span class="nb">echo</span> <span class="nv">$VM1_VPC_IP</span>
+<span class="nb">echo</span> <span class="nv">$VM2_VPC_IP</span>
 </code></pre></div>
 
 
@@ -199,8 +201,9 @@ that you just created.</p>
 <li>
 <p>Create the VXLAN device and mesh on <code>vm-1</code></p>
 <div class="highlight"><pre><span></span><code>gcloud compute ssh root@vm-1 --zone us-central1-a  <span class="s">&lt;&lt; EOF</span>
+<span class="s">set -x</span>
 <span class="s">ip link add vxlan0 type vxlan id 42 dev ens4 dstport 0</span>
-<span class="s">bridge fdb append to 00:00:00:00:00:00 dst \$VM2_VPC_IP dev vxlan0</span>
+<span class="s">bridge fdb append to 00:00:00:00:00:00 dst $VM2_VPC_IP dev vxlan0</span>
 <span class="s">ip addr add 10.200.0.2/24 dev vxlan0</span>
 <span class="s">ip link set up dev vxlan0</span>
 <span class="s">EOF</span>
@@ -211,8 +214,9 @@ that you just created.</p>
 <li>
 <p>Create the VXLAN device and mesh on <code>vm-2</code></p>
 <div class="highlight"><pre><span></span><code>gcloud compute ssh root@vm-2 --zone us-central1-a  <span class="s">&lt;&lt; EOF</span>
+<span class="s">set -x</span>
 <span class="s">ip link add vxlan0 type vxlan id 42 dev ens4 dstport 0</span>
-<span class="s">bridge fdb append to 00:00:00:00:00:00 dst \$VM1_VPC_IP dev vxlan0</span>
+<span class="s">bridge fdb append to 00:00:00:00:00:00 dst $VM1_VPC_IP dev vxlan0</span>
 <span class="s">ip addr add 10.200.0.3/24 dev vxlan0</span>
 <span class="s">ip link set up dev vxlan0</span>
 <span class="s">EOF</span>
@@ -222,14 +226,16 @@ that you just created.</p>
 </li>
 <li>
 <p>Start a tcpdump on vm-1</p>
-<div class="highlight"><pre><span></span><code>gcloud compute ssh root@vm-1 --zone us-central1-a --command <span class="s2">&quot;tcpdump -i vxlan0 -n&quot;</span>
+<div class="highlight"><pre><span></span><code>gcloud compute ssh root@vm-1 --zone us-central1-a
+tcpdump -i vxlan0 -n
 </code></pre></div>
 
 
 </li>
 <li>
 <p>In another session ping <code>vm-2</code> from <code>vm-1</code>  and take a look at tcpdump output. Notice the arp.</p>
-<div class="highlight"><pre><span></span><code>gcloud compute ssh root@vm-1 --zone us-central1-a --command <span class="s2">&quot;ping </span><span class="nv">$VM2_VPC_IP</span><span class="s2"> -c 3&quot;</span>
+<div class="highlight"><pre><span></span><code>gcloud compute ssh root@vm-1 --zone us-central1-a
+ping <span class="m">10</span>.200.0.3
 </code></pre></div>
 
 

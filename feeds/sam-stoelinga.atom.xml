@@ -9,10 +9,10 @@ This can make it hard for to move certain workloads to the cloud.
 This blog post demonstrates a method for creating L2 connectivity between
 Virtual Machines (VMs) running in GCP. The method used relies on VXLAN to
 create an L2 mesh between all the VMs. &lt;/p&gt;
-&lt;p&gt;In this blog post, we'll be creating the 2 VMs, named &lt;code&gt;vm-1&lt;/code&gt; and &lt;code&gt;vm-2.
+&lt;p&gt;In this blog post, we'll be creating the 2 VMs, named &lt;code&gt;vm-1&lt;/code&gt; and &lt;code&gt;vm-2&lt;/code&gt;.
 The VMs will be launched on the default VPC network. Each of the VMs
-will have an additional&lt;/code&gt;vxlan0&lt;code&gt;interface, this interface we'll
-be using the&lt;/code&gt;10.200.0.0/24` subnet.&lt;/p&gt;
+will have an additional &lt;code&gt;vxlan0&lt;/code&gt; interface, this interface we'll
+be using the &lt;code&gt;10.200.0.0/24&lt;/code&gt; subnet.&lt;/p&gt;
 &lt;h3&gt;1. Create the VMs&lt;/h3&gt;
 &lt;p&gt;In this section you will create 2 Ubuntu 20.04 VMs&lt;/p&gt;
 &lt;ol&gt;
@@ -46,8 +46,8 @@ be using the&lt;/code&gt;10.200.0.0/24` subnet.&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;Verify that SSH to both VMs is available and up. You might need o be patient.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;gcloud compute ssh root@vm-1 --zone us-central1-a --comand &lt;span class="s2"&gt;&amp;quot;echo &amp;#39;SSH to vm-1 succeeded&amp;#39;&amp;quot;&lt;/span&gt;
-gcloud compute ssh root@vm-2 --zone us-central1-a --comand &lt;span class="s2"&gt;&amp;quot;echo &amp;#39;SSH to vm-2 succeeded&amp;#39;&amp;quot;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;gcloud compute ssh root@vm-1 --zone us-central1-a --command &lt;span class="s2"&gt;&amp;quot;echo &amp;#39;SSH to vm-1 succeeded&amp;#39;&amp;quot;&lt;/span&gt;
+gcloud compute ssh root@vm-2 --zone us-central1-a --command &lt;span class="s2"&gt;&amp;quot;echo &amp;#39;SSH to vm-2 succeeded&amp;#39;&amp;quot;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -63,6 +63,8 @@ that you just created.&lt;/p&gt;
                --format&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;get(networkInterfaces[0].networkIP)&amp;#39;&lt;/span&gt;&lt;span class="k"&gt;)&lt;/span&gt;
 &lt;span class="nv"&gt;VM2_VPC_IP&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;gcloud compute instances describe vm-2 &lt;span class="se"&gt;\&lt;/span&gt;
                --format&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;get(networkInterfaces[0].networkIP)&amp;#39;&lt;/span&gt;&lt;span class="k"&gt;)&lt;/span&gt;
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="nv"&gt;$VM1_VPC_IP&lt;/span&gt;
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="nv"&gt;$VM2_VPC_IP&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
@@ -70,8 +72,9 @@ that you just created.&lt;/p&gt;
 &lt;li&gt;
 &lt;p&gt;Create the VXLAN device and mesh on &lt;code&gt;vm-1&lt;/code&gt;&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;gcloud compute ssh root@vm-1 --zone us-central1-a  &lt;span class="s"&gt;&amp;lt;&amp;lt; EOF&lt;/span&gt;
+&lt;span class="s"&gt;set -x&lt;/span&gt;
 &lt;span class="s"&gt;ip link add vxlan0 type vxlan id 42 dev ens4 dstport 0&lt;/span&gt;
-&lt;span class="s"&gt;bridge fdb append to 00:00:00:00:00:00 dst \$VM2_VPC_IP dev vxlan0&lt;/span&gt;
+&lt;span class="s"&gt;bridge fdb append to 00:00:00:00:00:00 dst $VM2_VPC_IP dev vxlan0&lt;/span&gt;
 &lt;span class="s"&gt;ip addr add 10.200.0.2/24 dev vxlan0&lt;/span&gt;
 &lt;span class="s"&gt;ip link set up dev vxlan0&lt;/span&gt;
 &lt;span class="s"&gt;EOF&lt;/span&gt;
@@ -82,8 +85,9 @@ that you just created.&lt;/p&gt;
 &lt;li&gt;
 &lt;p&gt;Create the VXLAN device and mesh on &lt;code&gt;vm-2&lt;/code&gt;&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;gcloud compute ssh root@vm-2 --zone us-central1-a  &lt;span class="s"&gt;&amp;lt;&amp;lt; EOF&lt;/span&gt;
+&lt;span class="s"&gt;set -x&lt;/span&gt;
 &lt;span class="s"&gt;ip link add vxlan0 type vxlan id 42 dev ens4 dstport 0&lt;/span&gt;
-&lt;span class="s"&gt;bridge fdb append to 00:00:00:00:00:00 dst \$VM1_VPC_IP dev vxlan0&lt;/span&gt;
+&lt;span class="s"&gt;bridge fdb append to 00:00:00:00:00:00 dst $VM1_VPC_IP dev vxlan0&lt;/span&gt;
 &lt;span class="s"&gt;ip addr add 10.200.0.3/24 dev vxlan0&lt;/span&gt;
 &lt;span class="s"&gt;ip link set up dev vxlan0&lt;/span&gt;
 &lt;span class="s"&gt;EOF&lt;/span&gt;
@@ -93,14 +97,16 @@ that you just created.&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;Start a tcpdump on vm-1&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;gcloud compute ssh root@vm-1 --zone us-central1-a --command &lt;span class="s2"&gt;&amp;quot;tcpdump -i vxlan0 -n&amp;quot;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;gcloud compute ssh root@vm-1 --zone us-central1-a
+tcpdump -i vxlan0 -n
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;In another session ping &lt;code&gt;vm-2&lt;/code&gt; from &lt;code&gt;vm-1&lt;/code&gt;  and take a look at tcpdump output. Notice the arp.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;gcloud compute ssh root@vm-1 --zone us-central1-a --command &lt;span class="s2"&gt;&amp;quot;ping &lt;/span&gt;&lt;span class="nv"&gt;$VM2_VPC_IP&lt;/span&gt;&lt;span class="s2"&gt; -c 3&amp;quot;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;gcloud compute ssh root@vm-1 --zone us-central1-a
+ping &lt;span class="m"&gt;10&lt;/span&gt;.200.0.3
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
