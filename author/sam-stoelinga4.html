@@ -88,6 +88,24 @@ Sam Stoelinga (Samos IT) - Blog            </a>
         <div class="col-sm-9">
 
             <article>
+                <h2><a href="https://samos-it.com/posts/simple-function-to-return-json-in-django.html">Simple function to return json in Django</a></h2>
+                <div class="summary"><p>Just a small code snippet I use when I need to return json, comments are
+welcomed.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">django.http</span> <span class="kn">import</span> <span class="n">HttpResponse</span>  
+<span class="kn">from</span> <span class="nn">django.utils</span> <span class="kn">import</span> <span class="n">simplejson</span> <span class="k">as</span> <span class="n">json</span>
+
+<span class="k">def</span> <span class="nf">json_response</span><span class="p">(</span><span class="n">dict_to_convert_to_json</span><span class="p">):</span>  
+    <span class="k">return</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">dict_to_convert_to_json</span><span class="p">),</span>
+                        <span class="n">mimetype</span><span class="o">=</span><span class="s2">&quot;application/json&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+
+<p>To use it in your view you just do it this …</p>
+                    <a class="btn btn-default btn-xs" href="https://samos-it.com/posts/simple-function-to-return-json-in-django.html">more ...</a>
+                </div>
+            </article>
+            <hr/>
+            <article>
                 <h2><a href="https://samos-it.com/posts/chinese-new-year-2012.html">Chinese New Year 2012</a></h2>
                 <div class="summary"><p>The Chinese New Year aka Spring Festival is the most important festival
 in Chinese culture. All the people travel back to their hometown,
@@ -194,16 +212,6 @@ a call that his bike got lost. So my first thought was must be stolen,
 but then he said he put it in front of the police post. So I gave it
 another thought and …</p>
                     <a class="btn btn-default btn-xs" href="https://samos-it.com/posts/bart-and-his-lost-bike.html">more ...</a>
-                </div>
-            </article>
-            <hr/>
-            <article>
-                <h2><a href="https://samos-it.com/posts/a-new-start-in-beijing.html">A New Start in Beijing</a></h2>
-                <div class="summary"><p>Pics: <a href="https://picasaweb.google.com/118136053313378320646/Beijing2011WithBart">https://picasaweb.google.com/118136053313378320646/Beijing2011WithBart</a></p>
-<p>After a tough trip, waiting in moscow for 8,5 hours we finally arrived
-in Beijing. On the way to the hotel Bart found the traffic here a little rough
-and dangerous, but actually I found the driver today was driving quite peacefully …</p>
-                    <a class="btn btn-default btn-xs" href="https://samos-it.com/posts/a-new-start-in-beijing.html">more ...</a>
                 </div>
             </article>
             <hr/>

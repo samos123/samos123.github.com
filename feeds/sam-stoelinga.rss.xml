@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0"><channel><title>Sam Stoelinga (Samos IT) - Blog - Sam Stoelinga</title><link>https://samos-it.com/</link><description></description><lastBuildDate>Sun, 13 Sep 2020 22:42:00 +0200</lastBuildDate><item><title>Creating L2 connectivity between GCE VMs in GCP using VXLAN</title><link>https://samos-it.com/posts/gce-vm-vxlan-l2-connectivity.html</link><description>&lt;p&gt;Cloud providers often prevent you from using L2 protocols such as ARP. These
+<rss version="2.0"><channel><title>Sam Stoelinga (Samos IT) - Blog - Sam Stoelinga</title><link>https://samos-it.com/</link><description></description><lastBuildDate>Sat, 07 Nov 2020 22:42:00 +0100</lastBuildDate><item><title>Deploying OpenStack on GCP</title><link>https://samos-it.com/posts/deploying-openstack-on-gcp.html</link><description>&lt;p&gt;You want private cloud inside public cloud for additional security,
+improved agility, lower opex and ultimate flexibility? I present you
+OpenStack running on Google Compute Engine (GCE). I hope you got the
+joke, if not, let me explain there are no benefits to running OpenStack
+on GCP. OpenStack on GCP …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Sam Stoelinga</dc:creator><pubDate>Sat, 07 Nov 2020 22:42:00 +0100</pubDate><guid isPermaLink="false">tag:samos-it.com,2020-11-07:/posts/deploying-openstack-on-gcp.html</guid><category>Google Cloud</category><category>google cloud</category><category>gcp</category><category>openstack</category><category>kvm</category></item><item><title>Creating L2 connectivity between GCE VMs in GCP using VXLAN</title><link>https://samos-it.com/posts/gce-vm-vxlan-l2-connectivity.html</link><description>&lt;p&gt;Cloud providers often prevent you from using L2 protocols such as ARP. These
 protocols however are heavily used in existing software such as keepalived.
 This can make it hard for to move certain workloads to the cloud.
 This blog post demonstrates a method for creating L2 connectivity between

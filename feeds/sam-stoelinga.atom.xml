@@ -1,5 +1,129 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Sam Stoelinga (Samos IT) - Blog - Sam Stoelinga</title><link href="https://samos-it.com/" rel="alternate"></link><link href="https://samos-it.com/feeds/sam-stoelinga.atom.xml" rel="self"></link><id>https://samos-it.com/</id><updated>2020-09-13T22:42:00+02:00</updated><entry><title>Creating L2 connectivity between GCE VMs in GCP using VXLAN</title><link href="https://samos-it.com/posts/gce-vm-vxlan-l2-connectivity.html" rel="alternate"></link><published>2020-09-13T22:42:00+02:00</published><updated>2020-09-13T22:42:00+02:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2020-09-13:/posts/gce-vm-vxlan-l2-connectivity.html</id><summary type="html">&lt;p&gt;Cloud providers often prevent you from using L2 protocols such as ARP. These
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Sam Stoelinga (Samos IT) - Blog - Sam Stoelinga</title><link href="https://samos-it.com/" rel="alternate"></link><link href="https://samos-it.com/feeds/sam-stoelinga.atom.xml" rel="self"></link><id>https://samos-it.com/</id><updated>2020-11-07T22:42:00+01:00</updated><entry><title>Deploying OpenStack on GCP</title><link href="https://samos-it.com/posts/deploying-openstack-on-gcp.html" rel="alternate"></link><published>2020-11-07T22:42:00+01:00</published><updated>2020-11-07T22:42:00+01:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2020-11-07:/posts/deploying-openstack-on-gcp.html</id><summary type="html">&lt;p&gt;You want private cloud inside public cloud for additional security,
+improved agility, lower opex and ultimate flexibility? I present you
+OpenStack running on Google Compute Engine (GCE). I hope you got the
+joke, if not, let me explain there are no benefits to running OpenStack
+on GCP. OpenStack on GCP …&lt;/p&gt;</summary><content type="html">&lt;p&gt;You want private cloud inside public cloud for additional security,
+improved agility, lower opex and ultimate flexibility? I present you
+OpenStack running on Google Compute Engine (GCE). I hope you got the
+joke, if not, let me explain there are no benefits to running OpenStack
+on GCP. OpenStack on GCP is meant for testing
+purposes only and this doesn't make sense for a real scenario.&lt;/p&gt;
+&lt;p&gt;In this blog post, you will learn how to utilize &lt;a href="https://cloud.google.com/compute/docs/instances/enable-nested-virtualization-vm-instances"&gt;nested KVM&lt;/a&gt;
+inside GCP to deploy an OpenStack environment. The use case of why I did this was
+for testing the OpenStack K8s Cloud Provider with K8s.&lt;/p&gt;
+&lt;p&gt;The guide is split up in the following sections:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Creating the GCE VM with nested KVM enabled&lt;/li&gt;
+&lt;li&gt;Deploying OpenStack using OpenStack Ansible with all in one(aio) node mode&lt;/li&gt;
+&lt;li&gt;Accessing the environment&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3&gt;1. Creating the GCE VMs with nested KVM enbaled&lt;/h3&gt;
+&lt;p&gt;Let's create a VM called &lt;code&gt;openstack-1&lt;/code&gt; with 32 vCPUs. This VM will be used to run additional VMs
+that are spawned by OpenStack. The GCE VM itself will run the OpenStack control plane and serve
+as an OpenStack compute node. In this section you will create 2 Ubuntu 20.04 VMs&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;gcloud compute disks create ubuntu2004disk &lt;span class="se"&gt;\&lt;/span&gt;
+  --image-project ubuntu-os-cloud --image-family ubuntu-2004-lts &lt;span class="se"&gt;\&lt;/span&gt;
+  --zone us-central1-a
+
+gcloud compute images create ubuntu-2004-nested &lt;span class="se"&gt;\&lt;/span&gt;
+  --source-disk ubuntu2004disk --source-disk-zone us-central1-a &lt;span class="se"&gt;\&lt;/span&gt;
+  --licenses &lt;span class="s2"&gt;&amp;quot;https://www.googleapis.com/compute/v1/projects/vm-options/global/licenses/enable-vmx&amp;quot;&lt;/span&gt;
+
+gcloud compute instances create openstack-1 --zone us-central1-a &lt;span class="se"&gt;\&lt;/span&gt;
+              --image ubuntu-2004-nested &lt;span class="se"&gt;\&lt;/span&gt;
+              --boot-disk-size 600G &lt;span class="se"&gt;\&lt;/span&gt;
+              --boot-disk-type pd-ssd &lt;span class="se"&gt;\&lt;/span&gt;
+              --can-ip-forward &lt;span class="se"&gt;\&lt;/span&gt;
+              --network default &lt;span class="se"&gt;\&lt;/span&gt;
+              --tags http-server,https-server,novnc,openstack-apis &lt;span class="se"&gt;\&lt;/span&gt;
+              --min-cpu-platform &lt;span class="s2"&gt;&amp;quot;Intel Haswell&amp;quot;&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
+              --machine-type n1-standard-32
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Now verify that nested KVM is enabled:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;gcloud compute ssh openstack-1 --zone us-central1-a
+sudo -i
+apt-get update &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; apt-get install qemu-kvm -y
+kvm-ok
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;The output of kvm-ok should show the following:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;kvm-ok&lt;/span&gt;
+&lt;span class="err"&gt;# Output should look like below&lt;/span&gt;
+&lt;span class="c"&gt;INFO: /dev/kvm exists&lt;/span&gt;
+&lt;span class="err"&gt;KVM acceleration can be used&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;2. Deploying OpenStack&lt;/h3&gt;
+&lt;p&gt;Now let's deploy OpenStack using OpenStack Ansible with all in one(aio) mode.
+Ensure you're still SSHed into the &lt;code&gt;openstack-1&lt;/code&gt; VM, if not run:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;gcloud compute ssh openstack-1 --zone us-central1-a
+sudo -i
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Start a screen or tmux session because deploying OpenStack can take 30 min to 
+2 hours. Run the following command:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;screen
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Clone openstack-ansible repo to openstack-1:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;git clone https://opendev.org/openstack/openstack-ansible &lt;span class="se"&gt;\&lt;/span&gt;
+    /opt/openstack-ansible
+&lt;span class="nb"&gt;cd&lt;/span&gt; /opt/openstack-ansible
+git checkout stable/ussuri
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Install Ansible on the VM and install all the required Ansible roles:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;scripts/bootstrap-ansible.sh
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Bootstrap the AIO configuration for openstack ansible&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nb"&gt;export&lt;/span&gt; &lt;span class="nv"&gt;SCENARIO&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;aio_lxc_barbican_octavia&amp;#39;&lt;/span&gt;
+scripts/bootstrap-aio.sh
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Create the LXC containers that run the different OpenStack components
+and install OpenStack:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;openstack-ansible playbooks/setup-hosts.yml &lt;span class="se"&gt;\&lt;/span&gt;
+    playbooks/setup-infrastructure.yml &lt;span class="se"&gt;\&lt;/span&gt;
+    playbooks/setup-openstack.yml
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Now OpenStack should have been succesfully deployed on the openstack-1 VM.&lt;/p&gt;
+&lt;h3&gt;3. Accessing the environment&lt;/h3&gt;
+&lt;p&gt;The environment is currently only exposed on the internal IP address. The
+floating IP range is also only routable within the &lt;code&gt;openstack-1&lt;/code&gt; VM. So
+let's setup a tunnel to the &lt;code&gt;openstack-1&lt;/code&gt; VM to be able to access the
+newly deployed environment. One way to create a tunnel is to use sshuttle.&lt;/p&gt;
+&lt;p&gt;On your local machine (laptop, desktop etc), run the following commands
+to setup the tunnel with sshuttle:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nv"&gt;PUBLIC_IP&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;gcloud compute instances describe openstack-1 --zone us-central1-a &lt;span class="se"&gt;\&lt;/span&gt;
+         --format&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;get(networkInterfaces[0].accessConfigs[0].natIP)&amp;#39;&lt;/span&gt;&lt;span class="k"&gt;)&lt;/span&gt;
+&lt;span class="c1"&gt;# note that you may need to add your public SSH key in GCP&lt;/span&gt;
+sshuttle -r sam@&lt;span class="nv"&gt;$PUBLIC_IP&lt;/span&gt; &lt;span class="m"&gt;10&lt;/span&gt;.0.0.0/8 &lt;span class="m"&gt;172&lt;/span&gt;.16.0.0/12 &lt;span class="m"&gt;192&lt;/span&gt;.168.0.0/16
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Now you should be able to access the web UI on the private VPC IP address
+of your VM. Get the private address of your &lt;code&gt;openstack-1&lt;/code&gt; VM with the
+following command:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;gcloud compute instances describe openstack-1 --zone us-central1-a &lt;span class="se"&gt;\&lt;/span&gt;
+         --format&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="err"&gt;&amp;#39;&lt;/span&gt;get&lt;span class="o"&gt;(&lt;/span&gt;networkInterfaces&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;.networkIP&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;In your browser go to &lt;code&gt;https://$PRIVATE_IP&lt;/code&gt; and you should be able to
+see the Horizon UI. &lt;/p&gt;</content><category term="Google Cloud"></category><category term="google cloud"></category><category term="gcp"></category><category term="openstack"></category><category term="kvm"></category></entry><entry><title>Creating L2 connectivity between GCE VMs in GCP using VXLAN</title><link href="https://samos-it.com/posts/gce-vm-vxlan-l2-connectivity.html" rel="alternate"></link><published>2020-09-13T22:42:00+02:00</published><updated>2020-09-13T22:42:00+02:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2020-09-13:/posts/gce-vm-vxlan-l2-connectivity.html</id><summary type="html">&lt;p&gt;Cloud providers often prevent you from using L2 protocols such as ARP. These
 protocols however are heavily used in existing software such as keepalived.
 This can make it hard for to move certain workloads to the cloud.
 This blog post demonstrates a method for creating L2 connectivity between
