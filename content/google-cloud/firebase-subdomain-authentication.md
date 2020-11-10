@@ -3,7 +3,10 @@ Date: 2020-11-08 22:42
 Author: Sam Stoelinga
 Category: Google Cloud
 Tags: google cloud, gcp, openstack, kvm
-Slug: deploying-openstack-on-gcp
+Slug: firebase-auth-cross-subdomain-shared
+Status: draft
+
+WORK IN PROGRESS: DRAFT
 
 Let's assume you have multiple applications running on
 different subdomains:

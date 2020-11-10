@@ -127,7 +127,7 @@ of your VM. Get the private address of your `openstack-1` VM with the
 following command:
 ```bash
 gcloud compute instances describe openstack-1 --zone us-central1-a \
-         --format='get(networkInterfaces[0].networkIP)
+         --format='get(networkInterfaces[0].networkIP)'
 ```
 
 In your browser go to `https://$PRIVATE_IP` and you should be able to

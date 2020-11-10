@@ -244,7 +244,7 @@ sshuttle -r sam@<span class="nv">$PUBLIC_IP</span> <span class="m">10</span>.0.0
 of your VM. Get the private address of your <code>openstack-1</code> VM with the
 following command:</p>
 <div class="highlight"><pre><span></span><code>gcloud compute instances describe openstack-1 --zone us-central1-a <span class="se">\</span>
-         --format<span class="o">=</span><span class="err">&#39;</span>get<span class="o">(</span>networkInterfaces<span class="o">[</span><span class="m">0</span><span class="o">]</span>.networkIP<span class="o">)</span>
+         --format<span class="o">=</span><span class="s1">&#39;get(networkInterfaces[0].networkIP)&#39;</span>
 </code></pre></div>
 
 
