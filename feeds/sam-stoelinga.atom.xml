@@ -21,7 +21,7 @@ for testing the OpenStack K8s Cloud Provider with K8s.&lt;/p&gt;
 &lt;h3&gt;1. Creating the GCE VMs with nested KVM enbaled&lt;/h3&gt;
 &lt;p&gt;Let's create a VM called &lt;code&gt;openstack-1&lt;/code&gt; with 32 vCPUs. This VM will be used to run additional VMs
 that are spawned by OpenStack. The GCE VM itself will run the OpenStack control plane and serve
-as an OpenStack compute node. In this section you will create 2 Ubuntu 20.04 VMs&lt;/p&gt;
+as an OpenStack compute node. Run the following commands:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;gcloud compute disks create ubuntu2004disk &lt;span class="se"&gt;\&lt;/span&gt;
   --image-project ubuntu-os-cloud --image-family ubuntu-2004-lts &lt;span class="se"&gt;\&lt;/span&gt;
   --zone us-central1-a

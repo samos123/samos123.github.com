@@ -26,7 +26,7 @@ The guide is split up in the following sections:
 
 Let's create a VM called `openstack-1` with 32 vCPUs. This VM will be used to run additional VMs
 that are spawned by OpenStack. The GCE VM itself will run the OpenStack control plane and serve
-as an OpenStack compute node. In this section you will create 2 Ubuntu 20.04 VMs
+as an OpenStack compute node. Run the following commands:
 
 ```bash
 gcloud compute disks create ubuntu2004disk \
