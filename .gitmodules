@@ -1,3 +1,6 @@
 [submodule "themes/pelican-bootstrap3"]
 	path = themes/pelican-bootstrap3
 	url = https://github.com/samos123/pelican-bootstrap3
+[submodule "themes/pelican-hyde"]
+	path = themes/pelican-hyde
+	url = https://github.com/jvanz/pelican-hyde.git

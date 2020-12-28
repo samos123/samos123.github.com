@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 import os
 
 AUTHOR = 'Sam Stoelinga'
-SITENAME = 'Sam Stoelinga (Samos IT) - Blog'
+SITENAME = 'Sam Stoelinga'
 SITEURL = 'http://localhost:8001'
 #DISQUS_SITENAME = 'samosit'
 
@@ -16,7 +16,7 @@ PLUGINS=[]
 ARTICLE_URL = 'posts/{slug}.html'
 ARTICLE_SAVE_AS = 'posts/{slug}.html'
 
-THEME = "themes/pelican-bootstrap3"
+THEME = "themes/pelican-hyde"
 
 TIMEZONE = 'Europe/Paris'
 
@@ -28,18 +28,18 @@ CATEGORY_FEED_ATOM = None
 TRANSLATION_FEED_ATOM = None
 
 # Blogroll
-LINKS = (('Pelican', 'http://getpelican.com/'),
-         ('Python.org', 'http://python.org/'),
-         ('Jinja2', 'http://jinja.pocoo.org/'),
-         ('You can modify those links in your config file', '#'),)
+LINKS = (('Websu (Web Speed Analysis)', 'https://websu.io'),
+         ('github.com/websu-io/websu', 'https://github.com/websu-io/websu'),)
 
 ## pelican-bootcamp3 settings
-GITHUB_URL = 'http://github.com/samos123/'
-GITHUB_USER = "samos123"
 SOCIAL = (('linkedin', 'https://www.linkedin.com/in/samstoelinga/'),
           ('github', 'http://github.com/samos123/'),)
 DISPLAY_TAGS_ON_SIDEBAR=False
+DISPLAY_CATEGORIES_ON_MENU=False
+DISPLAY_PAGES_ON_MENU=True
 
+BIO="Open source contributor and Cloud Architect. Creator of <a href='https://websu.io'>https://websu.io</a>"
+PROFILE_IMAGE="sam-young.jpg"
 
 
 

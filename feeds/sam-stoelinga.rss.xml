@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0"><channel><title>Sam Stoelinga (Samos IT) - Blog - Sam Stoelinga</title><link>https://samos-it.com/</link><description></description><lastBuildDate>Mon, 28 Dec 2020 10:42:00 +0100</lastBuildDate><item><title>Securing Redis with Istio TLS origination</title><link>https://samos-it.com/posts/securing-redis-istio-tls-origniation-termination.html</link><description>&lt;p&gt;Istio is daunting and not all use cases are well documented. The public docs
+<rss version="2.0"><channel><title>Sam Stoelinga - Sam Stoelinga</title><link>https://samos-it.com/</link><description></description><lastBuildDate>Mon, 28 Dec 2020 10:42:00 +0100</lastBuildDate><item><title>Securing Redis with Istio TLS origination</title><link>https://samos-it.com/posts/securing-redis-istio-tls-origniation-termination.html</link><description>&lt;p&gt;Istio is daunting and not all use cases are well documented. The public docs
 focus mostly on using the egress gateway for TLS orignation. The use case
 of using the sidecar for TLS origination with a database isn't documented
 well. This blog post hopes to solve that.&lt;/p&gt;

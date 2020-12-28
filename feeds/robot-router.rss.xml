@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0"><channel><title>Sam Stoelinga (Samos IT) - Blog - Robot Router</title><link>https://samos-it.com/</link><description></description><lastBuildDate>Tue, 11 Oct 2016 00:00:00 +0200</lastBuildDate><item><title>RobotRouter: Bandwidth of Xfinity Internet on 2016-10-11</title><link>https://samos-it.com/posts/robotrouter-bandwidth-test-result-2016-10-11.html</link><description>&lt;p&gt;RobotRouter ran speedtest-cli.sh every hour on 2016-10-11 and reported
+<rss version="2.0"><channel><title>Sam Stoelinga - Robot Router</title><link>https://samos-it.com/</link><description></description><lastBuildDate>Tue, 11 Oct 2016 00:00:00 +0200</lastBuildDate><item><title>RobotRouter: Bandwidth of Xfinity Internet on 2016-10-11</title><link>https://samos-it.com/posts/robotrouter-bandwidth-test-result-2016-10-11.html</link><description>&lt;p&gt;RobotRouter ran speedtest-cli.sh every hour on 2016-10-11 and reported
 the following aggregate statistics:&lt;/p&gt;
 &lt;table&gt;
 &lt;thead&gt;

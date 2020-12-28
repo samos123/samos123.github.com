@@ -33,10 +33,11 @@ Aiven is a managed database provider and provides a managed Redis service.
 The Redis service allows you to require TLS which is what will be used in
 this blog post. You can use any TLS Redis service instead of Aiven.
 
-Simply head over to [aiven.io/redis](https://aiven.io/redis) and follow
+Go to [aiven.io/redis](https://aiven.io/redis) and follow
 the steps to create a Redis service using the 30 day free trial. Aiven was
-really convenient for me but Redislabs the creators of Redis provide similar
-service with a fully [free 30MB Redis instance](https://redislabs.com/try-free/).
+really convenient for me. Redislabs the creators of Redis provide similar
+service with a [free 30MB Redis instance](https://redislabs.com/try-free/).
+You might want to support the creators of Redis by using Redislabs.
 
 In this blog post the variables will be used:
 ```bash
@@ -136,8 +137,8 @@ EOF
 ```
 Wait for the pods to come up....
 
-Get a shell to the redis-client container
-```
+Get a shell to the redis-client container:
+```bash
 kubectl exec -ti deploy/redis-client -c redis-client -- bash
 redis-cli -h REPLACE_WITH_REDIS_HOST -p REPLACE_WITH_REDIS_PORT -a REPLACE_WITH_YOUR_PASSWORD
 set "hello" "world"
@@ -147,12 +148,13 @@ The above should return "world". The redis client is using standard TCP while th
 Istio sidecar upgraded the connection to TLS in the background.
 If you need even more validation, go and create another deployment but this time
 set the annotation to `sidecar.istio.io/inject: "false"`. That will prevent Istio
-from injecting a side car. After you do that you will notice that you can not
+from injecting a sidecar. After you do that you will notice that you can not
 connect to Redis anymore if your Redis is enforcing TLS.
 
 
 You can also Check the logs of the istio-proxy to see that Istio is indeed making
 the TLS connections.
+
 ```bash
 kubectl logs deploy/redis-client -c istio-proxy
 ```
@@ -173,6 +175,6 @@ In my case the following logs could be seen in the Istio proxy logs:
 ```
 
 ### Summary
- able to use Istio to do TLS originiation using the sidecar instead
+You were able to use Istio to do TLS originiation using the sidecar instead
 of using the egress gateway by just using a DestinationRule and a ServiceEntry.
-We validated that TLS origination is working as expected.
+You also validated that TLS origination is working as expected.
