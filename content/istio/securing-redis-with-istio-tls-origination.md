@@ -24,7 +24,8 @@ ingress proxy accepts incoming TLS connections, decrypts the TLS, and
 passes unencrypted requests on to internal mesh services.
 
 The blog post contains the following sections:
-1. Creating the Redis instance with Aiven
+
+1. Creating the Redis instance with Aiven or Redislabs
 2. Creating the Istio resources
 3. Validating that TLS origination worked
 

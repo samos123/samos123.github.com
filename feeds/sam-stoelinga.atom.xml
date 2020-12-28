@@ -18,10 +18,12 @@ the requests, and then forward them to HTTPS servers that are secured using
 simple or mutual TLS. This is the opposite of TLS termination where an
 ingress proxy accepts incoming TLS connections, decrypts the TLS, and
 passes unencrypted requests on to internal mesh services.&lt;/p&gt;
-&lt;p&gt;The blog post contains the following sections:
-1. Creating the Redis instance with Aiven
-2. Creating the Istio resources
-3. Validating that TLS origination worked&lt;/p&gt;
+&lt;p&gt;The blog post contains the following sections:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Creating the Redis instance with Aiven or Redislabs&lt;/li&gt;
+&lt;li&gt;Creating the Istio resources&lt;/li&gt;
+&lt;li&gt;Validating that TLS origination worked&lt;/li&gt;
+&lt;/ol&gt;
 &lt;h3&gt;1. Creating the Redis instance with Aiven or Redislabs&lt;/h3&gt;
 &lt;p&gt;Aiven is a managed database provider and provides a managed Redis service.
 The Redis service allows you to require TLS which is what will be used in
