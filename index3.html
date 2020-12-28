@@ -62,6 +62,9 @@ Sam Stoelinga (Samos IT) - Blog            </a>
                             <a href="https://samos-it.com/category/google-cloud.html">Google cloud</a>
                         </li>
                         <li >
+                            <a href="https://samos-it.com/category/istio.html">Istio</a>
+                        </li>
+                        <li >
                             <a href="https://samos-it.com/category/k8s.html">K8s</a>
                         </li>
                         <li >
@@ -87,6 +90,18 @@ Sam Stoelinga (Samos IT) - Blog            </a>
     <div class="row">
         <div class="col-sm-9">
 
+            <article>
+                <h2><a href="https://samos-it.com/posts/docker-get-private-ip-address-of-container.html">Docker get private ip address of container</a></h2>
+                <div class="summary"><p>In order to access other containers from a container it's needed
+to get the private IP address of the other containers. The following
+command is able to get the private ip address of the container.</p>
+<div class="highlight"><pre><span></span><code><span class="gp">$</span> docker inspect --format<span class="o">=</span><span class="s2">&quot;{{.NetworkSettings.IPAddress}}&quot;</span> <span class="nv">$CONTAINER_ID_OR_NAME</span>
+<span class="go">172.17.0.15</span>
+</code></pre></div>
+                    <a class="btn btn-default btn-xs" href="https://samos-it.com/posts/docker-get-private-ip-address-of-container.html">more ...</a>
+                </div>
+            </article>
+            <hr/>
             <article>
                 <h2><a href="https://samos-it.com/posts/docker-multi-website-single-ip-host-haproxy.html">Docker Multiple websites/domains on single ip/host tutorial using a HAproxy as reverse proxy</a></h2>
                 <div class="summary"><p>This post will describe how to expose multiple docker containers
@@ -192,18 +207,6 @@ commit and then creates a tar archive of those changed files.</p>
 <div class="highlight"><pre><span></span><code>git show <span class="o">{{</span>COMMIT_ID<span class="o">}}</span> --name-status <span class="p">|</span> grep -Ew <span class="s1">&#39;^M|A&#39;</span> <span class="p">|</span> awk <span class="s1">&#39;{ print $2 }&#39;</span> <span class="p">|</span> xargs tar czf usb-passthrough.tar.gz
 </code></pre></div>
                     <a class="btn btn-default btn-xs" href="https://samos-it.com/posts/create-tar-archive-of-changedadded-files-in-a-git-commit.html">more ...</a>
-                </div>
-            </article>
-            <hr/>
-            <article>
-                <h2><a href="https://samos-it.com/posts/full-migration-of-archlinux-installation-to-a-new-system.html">Full migration/clone of linux installation to a new system(Without reinstalling)</a></h2>
-                <div class="summary"><p>I'm switching to a new laptop, but don't want to have to install
-Archlinux again. So instead of re-installing I will try to copy all
-files and hope the system will work. In this blogpost I will describe
-the steps and issues I encountered while doing so.</p>
-<p><strong>Status: Succeeded!!!!</strong></p>
-<p><strong>Summary …</strong></p>
-                    <a class="btn btn-default btn-xs" href="https://samos-it.com/posts/full-migration-of-archlinux-installation-to-a-new-system.html">more ...</a>
                 </div>
             </article>
             <hr/>

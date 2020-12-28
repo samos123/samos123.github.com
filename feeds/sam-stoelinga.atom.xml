@@ -1,5 +1,170 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Sam Stoelinga (Samos IT) - Blog - Sam Stoelinga</title><link href="https://samos-it.com/" rel="alternate"></link><link href="https://samos-it.com/feeds/sam-stoelinga.atom.xml" rel="self"></link><id>https://samos-it.com/</id><updated>2020-11-07T22:42:00+01:00</updated><entry><title>Deploying OpenStack on GCP</title><link href="https://samos-it.com/posts/deploying-openstack-on-gcp.html" rel="alternate"></link><published>2020-11-07T22:42:00+01:00</published><updated>2020-11-07T22:42:00+01:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2020-11-07:/posts/deploying-openstack-on-gcp.html</id><summary type="html">&lt;p&gt;You want private cloud inside public cloud for additional security,
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Sam Stoelinga (Samos IT) - Blog - Sam Stoelinga</title><link href="https://samos-it.com/" rel="alternate"></link><link href="https://samos-it.com/feeds/sam-stoelinga.atom.xml" rel="self"></link><id>https://samos-it.com/</id><updated>2020-12-28T10:42:00+01:00</updated><entry><title>Securing Redis with Istio TLS origination</title><link href="https://samos-it.com/posts/securing-redis-istio-tls-origniation-termination.html" rel="alternate"></link><published>2020-12-28T10:42:00+01:00</published><updated>2020-12-28T10:42:00+01:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2020-12-28:/posts/securing-redis-istio-tls-origniation-termination.html</id><summary type="html">&lt;p&gt;Istio is daunting and not all use cases are well documented. The public docs
+focus mostly on using the egress gateway for TLS orignation. The use case
+of using the sidecar for TLS origination with a database isn't documented
+well. This blog post hopes to solve that.&lt;/p&gt;
+&lt;p&gt;So you've actually …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Istio is daunting and not all use cases are well documented. The public docs
+focus mostly on using the egress gateway for TLS orignation. The use case
+of using the sidecar for TLS origination with a database isn't documented
+well. This blog post hopes to solve that.&lt;/p&gt;
+&lt;p&gt;So you've actually done security well and are using an external Redis provider
+that only allows TLS to talk to it. You could simply configure each of your
+applications to use TLS from the application pod or you can use Istio to
+handle the TLS part. This blog is focused on how to use Istio to do TLS
+origination for Redis (TCP) using the sidecar instead of the egress gateway.&lt;/p&gt;
+&lt;p&gt;TLS origination occurs when an Istio proxy (sidecar or egress gateway)
+is configured to accept unencrypted internal HTTP connections, encrypt
+the requests, and then forward them to HTTPS servers that are secured using
+simple or mutual TLS. This is the opposite of TLS termination where an
+ingress proxy accepts incoming TLS connections, decrypts the TLS, and
+passes unencrypted requests on to internal mesh services.&lt;/p&gt;
+&lt;p&gt;The blog post contains the following sections:
+1. Creating the Redis instance with Aiven
+2. Creating the Istio resources
+3. Validating that TLS origination worked&lt;/p&gt;
+&lt;h3&gt;1. Creating the Redis instance with Aiven or Redislabs&lt;/h3&gt;
+&lt;p&gt;Aiven is a managed database provider and provides a managed Redis service.
+The Redis service allows you to require TLS which is what will be used in
+this blog post. You can use any TLS Redis service instead of Aiven.&lt;/p&gt;
+&lt;p&gt;Simply head over to &lt;a href="https://aiven.io/redis"&gt;aiven.io/redis&lt;/a&gt; and follow
+the steps to create a Redis service using the 30 day free trial. Aiven was
+really convenient for me but Redislabs the creators of Redis provide similar
+service with a fully &lt;a href="https://redislabs.com/try-free/"&gt;free 30MB Redis instance&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;In this blog post the variables will be used:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nb"&gt;export&lt;/span&gt; &lt;span class="nv"&gt;REDIS_HOST&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;redis-1425a1d9-google-bc39.aivencloud.com
+&lt;span class="nb"&gt;export&lt;/span&gt; &lt;span class="nv"&gt;REDIS_PORT&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;16222&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;You will need to set these variables to your environment specifics.&lt;/p&gt;
+&lt;h3&gt;2. Creating the Istio resources&lt;/h3&gt;
+&lt;p&gt;In this section, you will create the following Istio resources:
+- DestinationRule: To configure how outgoing connections to Redis should
+  be handled. For example, this is how we configure the TLS settings.
+- ServiceEntry: Such that Istio knows about the external Redis service&lt;/p&gt;
+&lt;p&gt;Create the Redis namespace which is used for testing:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;kubectl create ns redis
+&lt;span class="c1"&gt;# If you use kubectx&lt;/span&gt;
+kubens redis 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Create the following ServiceEntry:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;cat &lt;span class="s"&gt;&amp;lt;&amp;lt;EOF | kubectl apply --namespace=redis -f -&lt;/span&gt;
+&lt;span class="s"&gt;apiVersion: networking.istio.io/v1beta1&lt;/span&gt;
+&lt;span class="s"&gt;kind: ServiceEntry&lt;/span&gt;
+&lt;span class="s"&gt;metadata:&lt;/span&gt;
+&lt;span class="s"&gt;  name: external-aiven-redis&lt;/span&gt;
+&lt;span class="s"&gt;spec:&lt;/span&gt;
+&lt;span class="s"&gt;  hosts:&lt;/span&gt;
+&lt;span class="s"&gt;  - $REDIS_HOST&lt;/span&gt;
+&lt;span class="s"&gt;  location: MESH_EXTERNAL&lt;/span&gt;
+&lt;span class="s"&gt;  resolution: DNS&lt;/span&gt;
+&lt;span class="s"&gt;  ports:&lt;/span&gt;
+&lt;span class="s"&gt;  - number: $REDIS_PORT&lt;/span&gt;
+&lt;span class="s"&gt;    name: tcp-redis&lt;/span&gt;
+&lt;span class="s"&gt;    protocol: TCP&lt;/span&gt;
+&lt;span class="s"&gt;EOF&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Create the DestinationRule:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;cat &lt;span class="s"&gt;&amp;lt;&amp;lt;EOF | kubectl apply -f -&lt;/span&gt;
+&lt;span class="s"&gt;apiVersion: networking.istio.io/v1beta1&lt;/span&gt;
+&lt;span class="s"&gt;kind: DestinationRule&lt;/span&gt;
+&lt;span class="s"&gt;metadata:&lt;/span&gt;
+&lt;span class="s"&gt;  name: external-aiven-redis&lt;/span&gt;
+&lt;span class="s"&gt;  namespace: redis&lt;/span&gt;
+&lt;span class="s"&gt;spec:&lt;/span&gt;
+&lt;span class="s"&gt;  host: $REDIS_HOST&lt;/span&gt;
+&lt;span class="s"&gt;  trafficPolicy:&lt;/span&gt;
+&lt;span class="s"&gt;    tls:&lt;/span&gt;
+&lt;span class="s"&gt;      mode: SIMPLE&lt;/span&gt;
+&lt;span class="s"&gt;      caCertificates: /etc/ssl/certs/ca-certificates.crt&lt;/span&gt;
+&lt;span class="s"&gt;EOF&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Note that Istio has a security issue that if you do not specify the
+caCertificates that it will not validate the cert at all. So in the
+destination rule we simply point it to the system certs. For more
+info on this issue see &lt;a href="https://github.com/istio/istio/issues/25652"&gt;#25652&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;The destination rule tells Istio that TLS should be used and mode simple
+means that this is using standard TLS instead of mutual TLS.&lt;/p&gt;
+&lt;p&gt;That was all that's needed from the Istio side.&lt;/p&gt;
+&lt;h3&gt;3. Validating that TLS origination worked&lt;/h3&gt;
+&lt;p&gt;Create a pod that has redis-client installed:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;cat &lt;span class="s"&gt;&amp;lt;&amp;lt; EOF | kubectl apply -f -&lt;/span&gt;
+&lt;span class="s"&gt;apiVersion: apps/v1&lt;/span&gt;
+&lt;span class="s"&gt;kind: Deployment&lt;/span&gt;
+&lt;span class="s"&gt;metadata:&lt;/span&gt;
+&lt;span class="s"&gt;  name: redis-client&lt;/span&gt;
+&lt;span class="s"&gt;  namespace: redis&lt;/span&gt;
+&lt;span class="s"&gt;  labels:&lt;/span&gt;
+&lt;span class="s"&gt;    app: redis-client&lt;/span&gt;
+&lt;span class="s"&gt;spec:&lt;/span&gt;
+&lt;span class="s"&gt;  replicas: 1&lt;/span&gt;
+&lt;span class="s"&gt;  selector:&lt;/span&gt;
+&lt;span class="s"&gt;    matchLabels:&lt;/span&gt;
+&lt;span class="s"&gt;      app: redis-client&lt;/span&gt;
+&lt;span class="s"&gt;  template:&lt;/span&gt;
+&lt;span class="s"&gt;    metadata:&lt;/span&gt;
+&lt;span class="s"&gt;      labels:&lt;/span&gt;
+&lt;span class="s"&gt;        app: redis-client&lt;/span&gt;
+&lt;span class="s"&gt;      annotations:&lt;/span&gt;
+&lt;span class="s"&gt;        sidecar.istio.io/logLevel: debug&lt;/span&gt;
+&lt;span class="s"&gt;        sidecar.istio.io/inject: &amp;quot;true&amp;quot;&lt;/span&gt;
+&lt;span class="s"&gt;    spec:&lt;/span&gt;
+&lt;span class="s"&gt;      containers:&lt;/span&gt;
+&lt;span class="s"&gt;        - image: redis&lt;/span&gt;
+&lt;span class="s"&gt;          name: redis-client&lt;/span&gt;
+&lt;span class="s"&gt;          command: [ &amp;quot;/bin/bash&amp;quot;, &amp;quot;-c&amp;quot;, &amp;quot;--&amp;quot; ]&lt;/span&gt;
+&lt;span class="s"&gt;          args: [ &amp;quot;while true; do sleep 30; done;&amp;quot; ]&lt;/span&gt;
+&lt;span class="s"&gt;EOF&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Wait for the pods to come up....&lt;/p&gt;
+&lt;p&gt;Get a shell to the redis-client container&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;kubectl exec -ti deploy/redis-client -c redis-client -- bash&lt;/span&gt;
+&lt;span class="err"&gt;redis-cli -h REPLACE_WITH_REDIS_HOST -p REPLACE_WITH_REDIS_PORT -a REPLACE_WITH_YOUR_PASSWORD&lt;/span&gt;
+&lt;span class="err"&gt;set &amp;quot;hello&amp;quot; &amp;quot;world&amp;quot;&lt;/span&gt;
+&lt;span class="err"&gt;get &amp;quot;hello&amp;quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;The above should return "world". The redis client is using standard TCP while the
+Istio sidecar upgraded the connection to TLS in the background.
+If you need even more validation, go and create another deployment but this time
+set the annotation to &lt;code&gt;sidecar.istio.io/inject: "false"&lt;/code&gt;. That will prevent Istio
+from injecting a side car. After you do that you will notice that you can not
+connect to Redis anymore if your Redis is enforcing TLS.&lt;/p&gt;
+&lt;p&gt;You can also Check the logs of the istio-proxy to see that Istio is indeed making
+the TLS connections.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;kubectl logs deploy/redis-client -c istio-proxy
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;In my case the following logs could be seen in the Istio proxy logs:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;2020-12-28T21:57:43.055354Z     debug   envoy connection        [C486] write flush complete
+2020-12-28T21:57:43.058429Z     debug   envoy connection        [C486] remote early close
+2020-12-28T21:57:43.058465Z     debug   envoy connection        [C486] closing socket: 0
+2020-12-28T21:57:43.058534Z     debug   envoy conn_handler      [C486] adding to cleanup list
+2020-12-28T21:57:43.187286Z     debug   envoy upstream  DNS refresh rate reset for zipkin.istio-system, (failure) refresh rate 5000 ms
+2020-12-28T21:57:43.531497Z     debug   envoy upstream  transport socket match, socket default selected for host with address 35.238.219.217:
+16222
+2020-12-28T21:57:43.531562Z     debug   envoy upstream  DNS refresh rate reset for redis-1425a1d9-google-bc39.aivencloud.com, refresh rate 14
+000 ms
+2020-12-28T21:57:45.050182Z     debug   envoy conn_handler      [C487] new connection
+2020-12-28T21:57:45.050333Z     debug   envoy http      [C487] new stream
+2020-12-28T21:57:45.050424Z     debug   envoy http      [C487][S11853156146631931010] request headers complete (end_stream=true):
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;Summary&lt;/h3&gt;
+&lt;p&gt;able to use Istio to do TLS originiation using the sidecar instead
+of using the egress gateway by just using a DestinationRule and a ServiceEntry.
+We validated that TLS origination is working as expected.&lt;/p&gt;</content><category term="Istio"></category><category term="Anthos"></category><category term="GKE"></category><category term="Istio"></category><category term="networking"></category></entry><entry><title>Deploying OpenStack on GCP</title><link href="https://samos-it.com/posts/deploying-openstack-on-gcp.html" rel="alternate"></link><published>2020-11-07T22:42:00+01:00</published><updated>2020-11-07T22:42:00+01:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2020-11-07:/posts/deploying-openstack-on-gcp.html</id><summary type="html">&lt;p&gt;You want private cloud inside public cloud for additional security,
 improved agility, lower opex and ultimate flexibility? I present you
 OpenStack running on Google Compute Engine (GCE). I hope you got the
 joke, if not, let me explain there are no benefits to running OpenStack

@@ -62,6 +62,9 @@ Sam Stoelinga (Samos IT) - Blog            </a>
                             <a href="https://samos-it.com/category/google-cloud.html">Google cloud</a>
                         </li>
                         <li >
+                            <a href="https://samos-it.com/category/istio.html">Istio</a>
+                        </li>
+                        <li >
                             <a href="https://samos-it.com/category/k8s.html">K8s</a>
                         </li>
                         <li >
@@ -87,6 +90,17 @@ Sam Stoelinga (Samos IT) - Blog            </a>
     <div class="row">
         <div class="col-sm-9">
 
+            <article>
+                <h2><a href="https://samos-it.com/posts/fuel-separate-ceph-public-from-management.html">Fuel: Separate Ceph Public from Management using Network Templates</a></h2>
+                <div class="summary"><p>This post will demonstrate using Network Templates in Fuel to
+separate Ceph Public Network from Management Network. By default
+Fuel combines the ceph public network with the management network.
+The Ceph Public network is used for communicating from the compute nodes
+to the Ceph nodes. So in high performant storage …</p>
+                    <a class="btn btn-default btn-xs" href="https://samos-it.com/posts/fuel-separate-ceph-public-from-management.html">more ...</a>
+                </div>
+            </article>
+            <hr/>
             <article>
                 <h2><a href="https://samos-it.com/posts/creating-vm-on-fuel-8.0-master.html">Creating a KVM VM for StackLight on Fuel 8.0 master node</a></h2>
                 <div class="summary"><p>Creating a KVM VM on the Fuel master node is a nice way
@@ -195,18 +209,6 @@ public routable IP addresses in a single subnet. For example I got access to the
 <li><a href="http://www.hastexo.com/system/files/neutron_packet_flows-notes-handout.pdf">Hastexto: Neutron Packet Flows (PDF/Presentation)</a></li>
 </ul>
                     <a class="btn btn-default btn-xs" href="https://samos-it.com/posts/openstack-networking-study-notes.html">more ...</a>
-                </div>
-            </article>
-            <hr/>
-            <article>
-                <h2><a href="https://samos-it.com/posts/docker-get-private-ip-address-of-container.html">Docker get private ip address of container</a></h2>
-                <div class="summary"><p>In order to access other containers from a container it's needed
-to get the private IP address of the other containers. The following
-command is able to get the private ip address of the container.</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$</span> docker inspect --format<span class="o">=</span><span class="s2">&quot;{{.NetworkSettings.IPAddress}}&quot;</span> <span class="nv">$CONTAINER_ID_OR_NAME</span>
-<span class="go">172.17.0.15</span>
-</code></pre></div>
-                    <a class="btn btn-default btn-xs" href="https://samos-it.com/posts/docker-get-private-ip-address-of-container.html">more ...</a>
                 </div>
             </article>
             <hr/>
