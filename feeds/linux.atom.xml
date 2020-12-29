@@ -1,0 +1,442 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Sam Stoelinga - Linux</title><link href="https://samos-it.com/" rel="alternate"></link><link href="https://samos-it.com/feeds/linux.atom.xml" rel="self"></link><id>https://samos-it.com/</id><updated>2016-10-11T14:25:00+02:00</updated><entry><title>OpenWRT hourly speedtest maximum bandwidth delivered by ISP</title><link href="https://samos-it.com/posts/openwrt-speedtest-bandwidth.html" rel="alternate"></link><published>2016-10-11T14:25:00+02:00</published><updated>2016-10-11T14:25:00+02:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2016-10-11:/posts/openwrt-speedtest-bandwidth.html</id><content type="html">&lt;p&gt;Work in progress, place holder, these are the commands required to run
+the python code that I wrote&lt;/p&gt;
+&lt;p&gt;opkg install python3-light
+opkg install python3-email&lt;/p&gt;
+&lt;p&gt;opkg install python3-openssl
+opkg install python3-codecs&lt;/p&gt;
+&lt;p&gt;opkg install ca-certificates&lt;/p&gt;</content><category term="Linux"></category><category term="linux"></category><category term="openwrt"></category><category term="speedtest"></category></entry><entry><title>Setup IPv6 in Tsinghua on Linux(ArchLinux))</title><link href="https://samos-it.com/posts/ipv6-tsinghua-linux-isatapd.html" rel="alternate"></link><published>2015-10-08T12:42:00+02:00</published><updated>2015-10-08T12:42:00+02:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2015-10-08:/posts/ipv6-tsinghua-linux-isatapd.html</id><summary type="html">&lt;p&gt;Tsinghua university uses &lt;a href="https://en.wikipedia.org/wiki/ISATAP"&gt;ISATAP&lt;/a&gt; to provide IPv6 connectivity to students.
+In Linux you can use the &lt;a href="http://www.saschahlusiak.de/linux/isatap.htm"&gt;isatapd&lt;/a&gt; program to create an ISATAP tunnel based on an IPv4 device.&lt;/p&gt;
+&lt;p&gt;You can use the isatapd command as follows to establish an ISATAPD tunnel:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;isatapd --router isatap.tsinghua.edu.cn
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;After connecting check …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Tsinghua university uses &lt;a href="https://en.wikipedia.org/wiki/ISATAP"&gt;ISATAP&lt;/a&gt; to provide IPv6 connectivity to students.
+In Linux you can use the &lt;a href="http://www.saschahlusiak.de/linux/isatap.htm"&gt;isatapd&lt;/a&gt; program to create an ISATAP tunnel based on an IPv4 device.&lt;/p&gt;
+&lt;p&gt;You can use the isatapd command as follows to establish an ISATAPD tunnel:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;isatapd --router isatap.tsinghua.edu.cn
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;After connecting check that you have received an global IPv6 address with:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;ip -6 a
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;As a last check you need to check your default ipv6 routes. In some cases 2 default routes may get added:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;ip -6 route
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;If there are 2 default routes make sure to delete the route which goes out via your physical device e.g(eth0 or enp2u5). In my case I had to delete
+one of the default routes as follows:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;ip -6 route del default via fe80::5efe:a66f:1501
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;Archlinux&lt;/h2&gt;
+&lt;p&gt;Archlinux provides an isatapd package, which you can install via &lt;code&gt;pacman -S isatapd&lt;/code&gt;.
+The package comes with a systemd service at &lt;code&gt;/usr/lib/systemd/system/isatapd@.service&lt;/code&gt;. You
+can start the service with: &lt;code&gt;systemctl start isatapd@isatap.tsinghua.edu.cn&lt;/code&gt;&lt;/p&gt;</content><category term="Linux"></category><category term="archlinux"></category><category term="ipv6"></category><category term="linux"></category><category term="isatap"></category><category term="isatapd"></category></entry><entry><title>Create Linux bridge without losing existing connection</title><link href="https://samos-it.com/posts/create-linux-bridge-without-losing-connection.html" rel="alternate"></link><published>2015-06-19T14:25:00+02:00</published><updated>2015-06-19T14:25:00+02:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2015-06-19:/posts/create-linux-bridge-without-losing-connection.html</id><summary type="html">&lt;p&gt;The dillemma: You're accessing your server via SSH through interface eth1.102 with the ip 10.20.0.2/24 and gateway 10.20.0.1.
+Now you want to add eth1 to a linux bridge so you can hookin VMs on a vlan trunk.&lt;/p&gt;
+&lt;p&gt;Solution: Create a script which …&lt;/p&gt;</summary><content type="html">&lt;p&gt;The dillemma: You're accessing your server via SSH through interface eth1.102 with the ip 10.20.0.2/24 and gateway 10.20.0.1.
+Now you want to add eth1 to a linux bridge so you can hookin VMs on a vlan trunk.&lt;/p&gt;
+&lt;p&gt;Solution: Create a script which does everything in 1 go and call this script from screen. Make sure the script is flawless else you still loose your connection.&lt;/p&gt;
+&lt;p&gt;This is the script I create-bridge.sh used:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# First remove the old vlan device&lt;/span&gt;
+ip link &lt;span class="nb"&gt;set&lt;/span&gt; dev eth1.102 down
+ip link delete eth1.102
+
+
+&lt;span class="c1"&gt;# Create the bridge &lt;/span&gt;
+brctl addbr br-eth1
+brctl addif br-eth1 eth1
+
+ip link &lt;span class="nb"&gt;set&lt;/span&gt; eth1 up
+ip link &lt;span class="nb"&gt;set&lt;/span&gt; br-eth1 up
+
+&lt;span class="c1"&gt;# Add the vlan tagging ontop of the bridge&lt;/span&gt;
+vconfig add br-eth1 &lt;span class="m"&gt;102&lt;/span&gt;
+
+ip link &lt;span class="nb"&gt;set&lt;/span&gt; br-eth1.102 up
+ip a add &lt;span class="m"&gt;166&lt;/span&gt;.111./24 dev br-eth1.102
+ip route add default via &lt;span class="m"&gt;166&lt;/span&gt;.111.80.10
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Now you should first open a screen session(maybe optional) and then call &lt;code&gt;./create-bridge.sh&lt;/code&gt;, which create your bridge and setup the previous interface ontop of the bridge without losing your SSH connection :)&lt;/p&gt;</content><category term="Linux"></category><category term="linux"></category><category term="networking"></category><category term="bridge"></category></entry><entry><title>Docker get private ip address of container</title><link href="https://samos-it.com/posts/docker-get-private-ip-address-of-container.html" rel="alternate"></link><published>2014-07-08T14:25:00+02:00</published><updated>2014-07-08T14:25:00+02:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2014-07-08:/posts/docker-get-private-ip-address-of-container.html</id><content type="html">&lt;p&gt;In order to access other containers from a container it's needed
+to get the private IP address of the other containers. The following
+command is able to get the private ip address of the container.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$&lt;/span&gt; docker inspect --format&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;{{.NetworkSettings.IPAddress}}&amp;quot;&lt;/span&gt; &lt;span class="nv"&gt;$CONTAINER_ID_OR_NAME&lt;/span&gt;
+&lt;span class="go"&gt;172.17.0.15&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content><category term="Linux"></category><category term="linux"></category><category term="docker"></category><category term="container"></category></entry><entry><title>Docker Multiple websites/domains on single ip/host tutorial using a HAproxy as reverse proxy</title><link href="https://samos-it.com/posts/docker-multi-website-single-ip-host-haproxy.html" rel="alternate"></link><published>2014-07-07T10:15:00+02:00</published><updated>2014-07-07T10:15:00+02:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2014-07-07:/posts/docker-multi-website-single-ip-host-haproxy.html</id><summary type="html">&lt;p&gt;This post will describe how to expose multiple docker containers
+running websites on port 80 using HAproxy as a reverse proxy.
+This makes it possible to run multiple websites on different domains
+on a single public ip of the host.&lt;/p&gt;
+&lt;p&gt;The basic setup is to create 1 container for haproxy …&lt;/p&gt;</summary><content type="html">&lt;p&gt;This post will describe how to expose multiple docker containers
+running websites on port 80 using HAproxy as a reverse proxy.
+This makes it possible to run multiple websites on different domains
+on a single public ip of the host.&lt;/p&gt;
+&lt;p&gt;The basic setup is to create 1 container for haproxy which is exposed to
+the host on port 80. This HAproxy container will forward the incoming
+HTTP request to the correct container based on the domain name.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Reverse haproxy docker diagram" src="/images/haproxy_reverse_proxy_docker.png"&gt;&lt;br/&gt;
+Picture drawn with &lt;a href="http://draw.io" target="_blank"&gt;draw.io&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;First launch the containers which run different websites. In our example
+we will use a
+&lt;a href="https://registry.hub.docker.com/u/tutum/hello-world/"
+   target="_blank"&gt;hello-world php demo container&lt;/a&gt;
+and a 
+&lt;a href="https://registry.hub.docker.com/u/tutum/wordpress/"
+   target="_blank"&gt;wordpress site container&lt;/a&gt;.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$&lt;/span&gt; &lt;span class="c1"&gt;# Run hello world php demo container (test1.domain.com)&lt;/span&gt;
+&lt;span class="gp"&gt;$&lt;/span&gt; docker run -d tutum/hello-world
+&lt;span class="go"&gt;01ec10276761&lt;/span&gt;
+&lt;span class="gp"&gt;$&lt;/span&gt; docker inspect -f &lt;span class="s2"&gt;&amp;quot;{{.NetworkSettings.IPAddress}}&amp;quot;&lt;/span&gt; 01ec10276761
+&lt;span class="go"&gt;172.17.0.26&lt;/span&gt;
+
+&lt;span class="gp"&gt;$&lt;/span&gt; &lt;span class="c1"&gt;# Run wordpress container (test2.domain.com)&lt;/span&gt;
+&lt;span class="gp"&gt;$&lt;/span&gt; docker run -d tutum/wordpress
+&lt;span class="go"&gt;4d23f10f6b35&lt;/span&gt;
+&lt;span class="gp"&gt;$&lt;/span&gt; docker inspect -f &lt;span class="s2"&gt;&amp;quot;{{.NetworkSettings.IPAddress}}&amp;quot;&lt;/span&gt; 4d23f10f6b35
+&lt;span class="go"&gt;172.17.0.25&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Now we need to create our haproxy configuration to configure HAproxy as
+reverse proxy for our docker containers. Because HAProxy is also running
+inside a container we need to be able to access the hello-world and
+wordpress container by their private ip accessible from all containers.
+We got this IP using the command: &lt;code&gt;docker inspect -f "{{.NetworkSettings.IPAddress}}" $CONTAINERID&lt;/code&gt;.
+Make sure to note down these IPs as they will be used in the haproxy.cfg file.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$&lt;/span&gt; &lt;span class="c1"&gt;# On the host(not container) create directory containing our haproxy config file&lt;/span&gt;
+&lt;span class="gp"&gt;$&lt;/span&gt; mkdir ~/haproxy-config
+
+&lt;span class="gp"&gt;$&lt;/span&gt; &lt;span class="c1"&gt;# Create ~/haproxy-config/haproxy.cfg&lt;/span&gt;
+&lt;span class="gp"&gt;$&lt;/span&gt; vim ~/haproxy-config/haproxy.cfg
+&lt;span class="go"&gt;global&lt;/span&gt;
+&lt;span class="go"&gt;        log 127.0.0.1   local0&lt;/span&gt;
+&lt;span class="go"&gt;        log 127.0.0.1   local1 notice&lt;/span&gt;
+&lt;span class="go"&gt;        user haproxy&lt;/span&gt;
+&lt;span class="go"&gt;        group haproxy&lt;/span&gt;
+&lt;span class="gp"&gt;        #&lt;/span&gt; daemon
+
+&lt;span class="go"&gt;defaults&lt;/span&gt;
+&lt;span class="go"&gt;        log     global&lt;/span&gt;
+&lt;span class="go"&gt;        mode    http&lt;/span&gt;
+&lt;span class="go"&gt;        option  httplog&lt;/span&gt;
+&lt;span class="go"&gt;        option  dontlognull&lt;/span&gt;
+&lt;span class="go"&gt;        option forwardfor&lt;/span&gt;
+&lt;span class="go"&gt;        option http-server-close&lt;/span&gt;
+&lt;span class="go"&gt;        contimeout 5000&lt;/span&gt;
+&lt;span class="go"&gt;        clitimeout 50000&lt;/span&gt;
+&lt;span class="go"&gt;        srvtimeout 50000&lt;/span&gt;
+&lt;span class="go"&gt;        errorfile 400 /etc/haproxy/errors/400.http&lt;/span&gt;
+&lt;span class="go"&gt;        errorfile 403 /etc/haproxy/errors/403.http&lt;/span&gt;
+&lt;span class="go"&gt;        errorfile 408 /etc/haproxy/errors/408.http&lt;/span&gt;
+&lt;span class="go"&gt;        errorfile 500 /etc/haproxy/errors/500.http&lt;/span&gt;
+&lt;span class="go"&gt;        errorfile 502 /etc/haproxy/errors/502.http&lt;/span&gt;
+&lt;span class="go"&gt;        errorfile 503 /etc/haproxy/errors/503.http&lt;/span&gt;
+&lt;span class="go"&gt;        errorfile 504 /etc/haproxy/errors/504.http&lt;/span&gt;
+&lt;span class="go"&gt;        stats enable&lt;/span&gt;
+&lt;span class="go"&gt;        stats auth username:password&lt;/span&gt;
+&lt;span class="go"&gt;        stats uri /haproxyStats&lt;/span&gt;
+
+&lt;span class="go"&gt;frontend http-in&lt;/span&gt;
+&lt;span class="go"&gt;        bind *:80&lt;/span&gt;
+
+&lt;span class="gp"&gt;        #&lt;/span&gt; Define hosts based on domain names
+&lt;span class="go"&gt;        acl host_test1 hdr(host) -i test1.domain.com&lt;/span&gt;
+&lt;span class="go"&gt;        acl host_test2 hdr(host) -i test2.domain.com&lt;/span&gt;
+
+&lt;span class="gp"&gt;        #&lt;/span&gt;&lt;span class="c1"&gt;# figure out backend to use based on domainname&lt;/span&gt;
+&lt;span class="go"&gt;        use_backend test1 if host_test1&lt;/span&gt;
+&lt;span class="go"&gt;        use_backend test2 if host_test2&lt;/span&gt;
+
+
+&lt;span class="go"&gt;backend test1 # test1.domain.com container&lt;/span&gt;
+&lt;span class="go"&gt;    balance roundrobin&lt;/span&gt;
+&lt;span class="go"&gt;    option httpclose&lt;/span&gt;
+&lt;span class="go"&gt;    option forwardfor&lt;/span&gt;
+&lt;span class="go"&gt;    server s2 172.17.0.26:80 # This ip should be the ip of hello-world container&lt;/span&gt;
+
+&lt;span class="go"&gt;backend test2 # test2.domain.com container&lt;/span&gt;
+&lt;span class="go"&gt;    balance roundrobin&lt;/span&gt;
+&lt;span class="go"&gt;    option httpclose&lt;/span&gt;
+&lt;span class="go"&gt;    option forwardfor&lt;/span&gt;
+&lt;span class="go"&gt;    server s1 172.17.0.26:80 # This ip should be ip of wordpress container&lt;/span&gt;
+
+&lt;span class="gp"&gt;$&lt;/span&gt; &lt;span class="c1"&gt;# Run haproxy and map the host directory ~/haproxy-config to /haproxy-override of the container&lt;/span&gt;
+&lt;span class="gp"&gt;$&lt;/span&gt; &lt;span class="c1"&gt;# See the image README and Dockerfile for info about this override behaviour.&lt;/span&gt;
+&lt;span class="gp"&gt;$&lt;/span&gt; &lt;span class="c1"&gt;# HAProxy is exposed on port 80 because all requests to the public ip should&lt;/span&gt;
+&lt;span class="gp"&gt;$&lt;/span&gt; &lt;span class="c1"&gt;# go to the HAProxy container.&lt;/span&gt;
+&lt;span class="gp"&gt;$&lt;/span&gt; docker run -d -p &lt;span class="m"&gt;80&lt;/span&gt;:80 -v ~/haproxy-config:/haproxy-override dockerfile/haproxy
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;The HAProxy configuration could be automated possibly with the use of etcd to store
+information about services or use a similar method to
+&lt;a href="http://jasonwilder.com/blog/2014/03/25/automated-nginx-reverse-proxy-for-docker/"
+   target="_blank"&gt;Automated nginx reverse proxy for docker&lt;/a&gt;. The automated nginx reverse
+proxy didn't work for me though.&lt;/p&gt;
+&lt;p&gt;Thanks to
+&lt;a href="http://oskarhane.com/haproxy-as-a-static-reverse-proxy-for-docker-containers/"
+   target="_blank"&gt;HAProxy as static reverse proxy for docker containers&lt;/a&gt; for the
+haproxy config file. Although I think it's better to run HAproxy in a container.&lt;/p&gt;</content><category term="Linux"></category><category term="linux"></category><category term="docker"></category><category term="container"></category></entry><entry><title>Move first word to end of line (Linux/awk)</title><link href="https://samos-it.com/posts/move-first-word-to-end-of-line-linux-awk.html" rel="alternate"></link><published>2014-06-08T20:29:00+02:00</published><updated>2014-06-08T20:29:00+02:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2014-06-08:/posts/move-first-word-to-end-of-line-linux-awk.html</id><summary type="html">&lt;p&gt;Move the first word of a line to the end of line on Linux using AWK.
+We first store the first column(first word) in the variable t. Then
+we set the first column to be empty. At last we add a new column
+after the last column of the …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Move the first word of a line to the end of line on Linux using AWK.
+We first store the first column(first word) in the variable t. Then
+we set the first column to be empty. At last we add a new column
+after the last column of the line which is stored in $NF.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;$ &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot; move_to_end  should stay at the same place&amp;quot;&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; awk &lt;span class="err"&gt;&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;{&lt;/span&gt;&lt;span class="nv"&gt;t&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;$1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="nv"&gt;$1&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;$(&lt;/span&gt;NF+1&lt;span class="k"&gt;)&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;t&lt;span class="o"&gt;}&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;
+should stay at the same place move_to_end
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;The idea was from a stackoverflow question which I can't find anymore.&lt;/p&gt;</content><category term="Linux"></category></entry><entry><title>SSH to server behind a firewall via an SSH tunnel</title><link href="https://samos-it.com/posts/ssh-to-server-behind-firewall-via-ssh-tunnel.html" rel="alternate"></link><published>2014-05-10T00:00:00+02:00</published><updated>2014-05-10T00:00:00+02:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2014-05-10:/posts/ssh-to-server-behind-firewall-via-ssh-tunnel.html</id><summary type="html">&lt;p&gt;A server behind a firewall was unaccesible from my home,
+but another server which is on the same local network had
+public SSH access from my home. So we can create an SSH tunnel
+via this public server to the server behind a firewall.&lt;/p&gt;
+&lt;p&gt;For example the public ssh server …&lt;/p&gt;</summary><content type="html">&lt;p&gt;A server behind a firewall was unaccesible from my home,
+but another server which is on the same local network had
+public SSH access from my home. So we can create an SSH tunnel
+via this public server to the server behind a firewall.&lt;/p&gt;
+&lt;p&gt;For example the public ssh server is 8.8.8.8 and the
+server on the private network that we want to access is 192.168.1.5. Then we
+can create an SSH tunnel from my laptop at home in the
+following way:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;ssh root@8.8.8.8 -L &lt;span class="m"&gt;2020&lt;/span&gt;:192.168.1.5:22
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;The above command creates an SSH tunnel, where the
+local port 2020 on my laptop will be forwarded to port
+22 of the private server behind the firewall.&lt;/p&gt;
+&lt;p&gt;After the tunnel is created  you can use the following command
+to directly SSH from your home laptop to the private server
+with ip 192.168.1.5:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;ssh ubuntu@localhost -p &lt;span class="m"&gt;2020&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content><category term="Linux"></category><category term="linux"></category><category term="ssh"></category><category term="firewall"></category><category term="tunnel"></category></entry><entry><title>Using nested tmux over ssh and how to detach a nested tmux</title><link href="https://samos-it.com/posts/using-nested-tmux-over-ssh-and-how-to-detach-a-nested-tmux.html" rel="alternate"></link><published>2013-08-15T02:08:00+02:00</published><updated>2013-08-15T02:08:00+02:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2013-08-15:/posts/using-nested-tmux-over-ssh-and-how-to-detach-a-nested-tmux.html</id><summary type="html">&lt;p&gt;Today I logged in to my laptop at home from work which was already
+running a tmux session, so thought yea just attach cool can continue
+with what I was looking at at home. I forgot that the keys would be the
+same ofcourse, and was unable to use the …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Today I logged in to my laptop at home from work which was already
+running a tmux session, so thought yea just attach cool can continue
+with what I was looking at at home. I forgot that the keys would be the
+same ofcourse, and was unable to use the tmux session at my laptop at
+home. Whenever I would type Ctrl + B + n etc it would do that on my work
+desktop which was also running tmux. I was lolling oh damn how to get
+out of that laptops tmux session.&lt;/p&gt;
+&lt;p&gt;Google to the rescue. Here is the solution:&lt;/p&gt;
+&lt;p&gt;If you want to access the tmux session inside the ssh session so in my
+example on my laptop, you have to just use Ctrl + b + Ctrl + b&lt;/p&gt;
+&lt;p&gt;So if you want to detach the nested tmux session you have to execute the
+following: (Ctrl + b) + (Ctrl + b) + d.&lt;/p&gt;
+&lt;p&gt;(Resource: &lt;a href="http://fizbancyr.wordpress.com/2012/05/31/tmux-tips/"&gt;Tmux
+Tips&lt;/a&gt;)&lt;/p&gt;</content><category term="Linux"></category></entry><entry><title>Remove/detach a PCI device linux (kvm VGA passthrgough Nvidia Quadro 2000)</title><link href="https://samos-it.com/posts/removedetach-a-pci-device-linux-kvm-vga-passthrgough-nvidia-quadro-2000.html" rel="alternate"></link><published>2013-06-09T08:55:00+02:00</published><updated>2013-06-09T08:55:00+02:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2013-06-09:/posts/removedetach-a-pci-device-linux-kvm-vga-passthrgough-nvidia-quadro-2000.html</id><summary type="html">&lt;p&gt;&lt;strong&gt;Answer:&lt;/strong&gt;  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; -n &lt;span class="s2"&gt;&amp;quot;1&amp;quot;&lt;/span&gt; &amp;gt; /sys/bus/pci/devices/0000:02:00.0/remove
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Where 0000:02:00.0 is related to your pci device address which can
+be obtained from the command &lt;code&gt;lspci&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Related story:&lt;/strong&gt;&lt;br&gt;
+Was working on KVM vga passthrough and encountered problems with the
+graphics card nvidia Quadro …&lt;/p&gt;</summary><content type="html">&lt;p&gt;&lt;strong&gt;Answer:&lt;/strong&gt;  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; -n &lt;span class="s2"&gt;&amp;quot;1&amp;quot;&lt;/span&gt; &amp;gt; /sys/bus/pci/devices/0000:02:00.0/remove
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Where 0000:02:00.0 is related to your pci device address which can
+be obtained from the command &lt;code&gt;lspci&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Related story:&lt;/strong&gt;&lt;br&gt;
+Was working on KVM vga passthrough and encountered problems with the
+graphics card nvidia Quadro 2000.&lt;/p&gt;
+&lt;p&gt;This was the error I got when attaching this particular VGA card:&lt;br&gt;
+libvirtError: internal error Unable to reset PCI device 0000:83:00.0:
+internal error Active 0000:83:00.1 devices on bus with 0000:83:00.0, not
+doing bus reset&lt;/p&gt;
+&lt;p&gt;After investigating I noticed that 0000:83:00.1 is a Sound compatible
+controller on the video card. Tried lots of stuff such as disable the
+drivers of that sound compatbile controller but without much success.&lt;/p&gt;
+&lt;p&gt;So in the end I decided I should just remove the pci device, but
+couldn't find how to do it, so just tried some stuff and this is what I
+came up with. I have no idea if it will break your system or what it
+does exactly, but after removing the sound compatbile controller I was
+able to pass the nvidia Quadro 2000 card to my virtual machine :)&lt;/p&gt;
+&lt;p&gt;Here is the code to remove the pci device using a simple linux command:  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;lspci -k | grep NVID -C3  &lt;/span&gt;
+&lt;span class="c"&gt;00:83.0 VGA compatible controller: Nvidia Quadro 2000.... (Dont have&lt;/span&gt;
+&lt;span class="err"&gt;the card anymore)  &lt;/span&gt;
+&lt;span class="c"&gt;00:83.1 Sound device: Nvidia Quadro Audo captabiel balbalbal. 2000 GP  &lt;/span&gt;
+&lt;span class="err"&gt;echo -n &amp;quot;1&amp;quot; &amp;gt; /sys/bus/pci/devices/0000:02:00.1/remove&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content><category term="Linux"></category></entry><entry><title>Ignoring every channels join/part/quit messages in IRSSI</title><link href="https://samos-it.com/posts/ignoring-every-channels-joinpartquit-messages-in-irssi.html" rel="alternate"></link><published>2013-05-11T02:00:00+02:00</published><updated>2013-05-11T02:00:00+02:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2013-05-11:/posts/ignoring-every-channels-joinpartquit-messages-in-irssi.html</id><content type="html">&lt;p&gt;Tired of all those join part messages?&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;/ignore &lt;span class="se"&gt;\*&lt;/span&gt; joins  
+/ignore &lt;span class="se"&gt;\*&lt;/span&gt; parts  
+/ignore &lt;span class="se"&gt;\*&lt;/span&gt; quits  
+/save
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Read more about ignore &lt;code&gt;/help ignore&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Taken from Archwiki:
+&lt;a href="https://wiki.archlinux.org/index.php/Irssi"&gt;https://wiki.archlinux.org/index.php/Irssi&lt;/a&gt;&lt;/p&gt;</content><category term="Linux"></category><category term="irssi"></category><category term="linux"></category></entry><entry><title>Create tar archive of changed/added files in a git commit</title><link href="https://samos-it.com/posts/create-tar-archive-of-changedadded-files-in-a-git-commit.html" rel="alternate"></link><published>2013-05-02T02:12:00+02:00</published><updated>2013-05-02T02:12:00+02:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2013-05-02:/posts/create-tar-archive-of-changedadded-files-in-a-git-commit.html</id><content type="html">&lt;p&gt;The following command first gets the changed and added files of a git
+commit and then creates a tar archive of those changed files.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;git show &lt;span class="o"&gt;{{&lt;/span&gt;COMMIT_ID&lt;span class="o"&gt;}}&lt;/span&gt; --name-status &lt;span class="p"&gt;|&lt;/span&gt; grep -Ew &lt;span class="s1"&gt;&amp;#39;^M|A&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; awk &lt;span class="s1"&gt;&amp;#39;{ print $2 }&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; xargs tar czf usb-passthrough.tar.gz
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content><category term="Linux"></category><category term="git"></category><category term="linux"></category><category term="shell"></category><category term="bash"></category></entry><entry><title>Full migration/clone of linux installation to a new system(Without reinstalling)</title><link href="https://samos-it.com/posts/full-migration-of-archlinux-installation-to-a-new-system.html" rel="alternate"></link><published>2012-11-14T13:26:00+01:00</published><updated>2012-11-14T13:26:00+01:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2012-11-14:/posts/full-migration-of-archlinux-installation-to-a-new-system.html</id><summary type="html">&lt;p&gt;I'm switching to a new laptop, but don't want to have to install
+Archlinux again. So instead of re-installing I will try to copy all
+files and hope the system will work. In this blogpost I will describe
+the steps and issues I encountered while doing so.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Status: Succeeded!!!!&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Summary …&lt;/strong&gt;&lt;/p&gt;</summary><content type="html">&lt;p&gt;I'm switching to a new laptop, but don't want to have to install
+Archlinux again. So instead of re-installing I will try to copy all
+files and hope the system will work. In this blogpost I will describe
+the steps and issues I encountered while doing so.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Status: Succeeded!!!!&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Summary of the plan&lt;/strong&gt;: Boot from a live usb on the new system, create
+partitions with gparted, copy all the files over, change /etc/fstab to
+partition uuids, regenerate the mkinitcpio stuff (Still should read what
+this actually is).&lt;/p&gt;
+&lt;p&gt;On the new laptop following steps should be done:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Boot from a Ubuntu live cd and start gparted&lt;/li&gt;
+&lt;li&gt;Create a / partition (ext4)&lt;/li&gt;
+&lt;li&gt;Create a /home parition (ext4)&lt;/li&gt;
+&lt;li&gt;Create a /boot partition (ext2)&lt;/li&gt;
+&lt;li&gt;Mount the newly created partitions under /mnt/&lt;/li&gt;
+&lt;li&gt;Copy all files of the old laptop / /home to new laptop /mnt/ /mnt/home using rsync&lt;/li&gt;
+&lt;li&gt;Chroot into the copied files on the new laptop&lt;/li&gt;
+&lt;li&gt;Change the /etc/fstab to point to the new partition UUIDs&lt;/li&gt;
+&lt;li&gt;Install grub on new harddrive and reconfigure Grub&lt;/li&gt;
+&lt;li&gt;Recreate the ramdisk&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;Environment:&lt;/h2&gt;
+&lt;p&gt;Old Laptop:&lt;br&gt;
+Archlinux 64 bits, 8GB memory, AMD CPU and ATI card&lt;br&gt;
+IP: 192.168.1.108&lt;br&gt;
+Connected to router via internet cable, WIFI was way too slow to copy files&lt;/p&gt;
+&lt;p&gt;New laptop:
+Intel CPU and nvidia video card&lt;br&gt;
+IP: 192.168.1.111&lt;/p&gt;
+&lt;h2&gt;Detailed steps:&lt;/h2&gt;
+&lt;p&gt;Boot from a live ubuntu USB on the new laptop and do the following:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;Use gparted or fdisk to create the following partitions:
+   /dev/sda1 filesystem: ext2 size: 512mb label: boot (100mb is needed, but had enough space will become /boot)
+   /dev/sda2 filesystem: ext4 size: 30gb label: root(will become root /)
+   /dev/sda3 filesystem: ext4 size: 180gb label: home(will become home /home)&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;After you have created the partitions successfully, mount all partitions to /mnt&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;mount /dev/sda2 /mnt
+mkdir /mnt/boot
+mount /dev/sda1 /mnt/boot
+mkdir /mnt/home
+mount /dev/sda3 /mnt/home
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Now go back to the old Archlinux laptop and copy all files to the newly created partitions:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;rsync -azv --progress --exclude&lt;span class="o"&gt;=&lt;/span&gt;/dev --exclude&lt;span class="o"&gt;=&lt;/span&gt;/sys / root@192.168.1.111:/mnt/
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;This may take a while..................&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;After everything is copied over to the new laptop, we will have to
+change /etc/fstab to look as follows:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;tmpfs /tmp tmpfs nodev,nosuid &lt;span class="m"&gt;0&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt;
+&lt;span class="nv"&gt;LABEL&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;root / ext4 defaults,noatime &lt;span class="m"&gt;0&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;
+&lt;span class="nv"&gt;LABEL&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;home /home ext4 defaults,noatime &lt;span class="m"&gt;0&lt;/span&gt; &lt;span class="m"&gt;2&lt;/span&gt;
+&lt;span class="nv"&gt;LABEL&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;boot /boot ext2 defaults,noatime &lt;span class="m"&gt;0&lt;/span&gt; &lt;span class="m"&gt;2&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Then reinstall Grub on the hard drive:&lt;br&gt;
+&lt;code&gt;grub-install --force --target=i386-pc --recheck --debug /dev/sda&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Why the --force?
+I encountered the following error: will not proceed with 
+blocklists archlinux so after reading the wiki it said I could fix this by using --force.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Regenerate grub config:&lt;br&gt;
+&lt;code&gt;grub-mkconfig -o /boot/grub/grub.cfg&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Regenerate initial ramdisk:&lt;br&gt;
+&lt;code&gt;mkinitcpio -p linux&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Reboot the system&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;I also had to update my modules.d/xxx to not load some specific AMD modules for laptop-mode tools as the new laptop has an intel processor.
+Also has to remove the ati driver and change to intel open source
+driver:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;yaourt -Rs xf86-video-ati
+yaourt -S xf86-video-nouveau
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;The reason I am switching: My current HP 625 laptop has served its
+purpose for nearly 2 years. The CPU seems to be nearly burnt out, when I
+opened the laptop few days ago, the CPU was totally black, but still
+working.&lt;/p&gt;
+&lt;p&gt;References I used:
+Archlinux wiki: Migrate installation to new
+hardware https://wiki.archlinux.org/index.php/Migrate_installation_to_new_hardware
+Forum post which basically does the same
+thing https://bbs.archlinux.org/viewtopic.php?id=145025&lt;/p&gt;</content><category term="Linux"></category><category term="archlinux"></category><category term="geek"></category><category term="linux"></category><category term="migration"></category></entry><entry><title>Importing a SQL dump in postgres</title><link href="https://samos-it.com/posts/importing-a-sql-dump-in-postgres.html" rel="alternate"></link><published>2011-11-29T13:46:00+01:00</published><updated>2011-11-29T13:46:00+01:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2011-11-29:/posts/importing-a-sql-dump-in-postgres.html</id><content type="html">&lt;p&gt;I always keep forgetting how to import a SQL dump into postgres and
+found it always hard to find the right documentation. So I thought lets
+share it:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;psql -d dbname -U username -f dumpfile.sql
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;This should also work with files created by pgdump.&lt;/p&gt;</content><category term="Linux"></category></entry><entry><title>Installing fastboot for Ubuntu (Linux)</title><link href="https://samos-it.com/posts/installing-fastboot-for-ubuntu-linux.html" rel="alternate"></link><published>2011-11-22T14:11:00+01:00</published><updated>2011-11-22T14:11:00+01:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2011-11-22:/posts/installing-fastboot-for-ubuntu-linux.html</id><content type="html">&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;mkdir ~/fastboot  
+&lt;span class="nb"&gt;cd&lt;/span&gt; ~/fastboot  
+wget http://xt720.ru/Tools/fastboot  
+chmod +x fastboot  
+sudo ./fastboot --help
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Reference: &lt;a href="http://forum.xda-developers.com/showthread.php?t=1121420"&gt;http://forum.xda-developers.com/showthread.php?t=1121420&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;I tested the above with Ubuntu 11.10, but it should work on any ubuntu
+version I think.&lt;/p&gt;</content><category term="Linux"></category></entry><entry><title>Ubuntu 11.10 error while loading shared libraries: libssl.so.0.9.8: cannot open shared object file: No such file or directory</title><link href="https://samos-it.com/posts/ubuntu-11-10-error-while-loading-shared-libraries-libssl-so-0-9-8-cannot-open-shared-object-file-no-such-file-or-directory.html" rel="alternate"></link><published>2011-10-29T06:15:00+02:00</published><updated>2011-10-29T06:15:00+02:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2011-10-29:/posts/ubuntu-11-10-error-while-loading-shared-libraries-libssl-so-0-9-8-cannot-open-shared-object-file-no-such-file-or-directory.html</id><summary type="html">&lt;p&gt;A quick solution is to install the libssl 0.9.8 package with the
+&lt;strong&gt;Following command&lt;/strong&gt;:&lt;br&gt;
+&lt;code&gt;sudo apt-get install libssl0.9.8&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Thanks to Rob who commented below and provided an answer on
+&lt;a href="http://stackoverflow.com/questions/7937225/django-runserver-error-while-loading-shared-libraries-libssl-so-0-9-8-cannot-o"&gt;Stackoverflow&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;I just upgraded from ubuntu 11.04 to 11.10 with a fresh install, by
+keeping …&lt;/p&gt;</summary><content type="html">&lt;p&gt;A quick solution is to install the libssl 0.9.8 package with the
+&lt;strong&gt;Following command&lt;/strong&gt;:&lt;br&gt;
+&lt;code&gt;sudo apt-get install libssl0.9.8&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Thanks to Rob who commented below and provided an answer on
+&lt;a href="http://stackoverflow.com/questions/7937225/django-runserver-error-while-loading-shared-libraries-libssl-so-0-9-8-cannot-o"&gt;Stackoverflow&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;I just upgraded from ubuntu 11.04 to 11.10 with a fresh install, by
+keeping my old home folder so not loosing my personal data, but only
+formatting the whole system partition. After reinstalling my most
+important development software I still couldn't run django's server. I
+kept getting the followering error:&lt;br&gt;
+error while loading shared libraries: libssl.so.0.9.8:
+cannot open shared object file: No such file or directory  &lt;/p&gt;
+&lt;p&gt;You will also get this error:&lt;br&gt;
+python: error while loading shared libraries:
+libcrypto.so.0.9.8: cannot open shared object file: No such file or
+directory&lt;/p&gt;
+&lt;p&gt;It seems this problem was because the virtualenv was still using the
+previous python libraries, which linked to a no longer there ssl
+package, what I did was create a new virtualenv and problem was solved.
+Anybody know a better way? Is there a way to update virtualenv to a new
+python version?&lt;/p&gt;
+&lt;p&gt;Update: Seems it's just the upgrade process is too buggy normally.
+I really enjoy Archlinux and recommend it to anybody who hates these
+kind of issues.&lt;/p&gt;</content><category term="Linux"></category></entry></feed>

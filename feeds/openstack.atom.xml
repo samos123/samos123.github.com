@@ -1,0 +1,1263 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Sam Stoelinga - Openstack</title><link href="https://samos-it.com/" rel="alternate"></link><link href="https://samos-it.com/feeds/openstack.atom.xml" rel="self"></link><id>https://samos-it.com/</id><updated>2016-11-08T13:15:00+01:00</updated><entry><title>OpenStack Salt MK22 Vagrant-based lab</title><link href="https://samos-it.com/posts/openstack-salt-mk22-vagrant-lab.html" rel="alternate"></link><published>2016-11-08T13:15:00+01:00</published><updated>2016-11-08T13:15:00+01:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2016-11-08:/posts/openstack-salt-mk22-vagrant-lab.html</id><summary type="html">&lt;p&gt;The blog by &lt;a href="http://www.yet.org/2016/10/os-salt/"&gt;Sebastian&lt;/a&gt; inspired me to try out OpenStack Salt in combination
+with the new &lt;a href="https://github.com/Mirantis/mk-lab-salt-model"&gt;MK22 Reclass  model&lt;/a&gt;.
+Instead of using the TCPcloud provided labs I'm using
+my own laptop beast (ThinkPad W530 with 32GB of memory).
+For that reason I created a Vagrantfile for the mk22-lab-basic environment to …&lt;/p&gt;</summary><content type="html">&lt;p&gt;The blog by &lt;a href="http://www.yet.org/2016/10/os-salt/"&gt;Sebastian&lt;/a&gt; inspired me to try out OpenStack Salt in combination
+with the new &lt;a href="https://github.com/Mirantis/mk-lab-salt-model"&gt;MK22 Reclass  model&lt;/a&gt;.
+Instead of using the TCPcloud provided labs I'm using
+my own laptop beast (ThinkPad W530 with 32GB of memory).
+For that reason I created a Vagrantfile for the mk22-lab-basic environment to create VMs on my laptop. The
+Vagrantfile creates the nessecary interfaces and internal networks to mimick
+the model. At the bottom of this post you can find the Vagrantfile. I've also
+created a static branch based on the upstream mk-lab-salt-model that I've verified
+to be working with the instructions provided below. The instructions originally come from
+Ales Komarek. They have been slightly modified to get them working.&lt;/p&gt;
+&lt;p&gt;Reclass model used in this blog:
+&lt;a href="https://github.com/samos123/mk-lab-salt-model/tree/sam-vagrant-blog-post"&gt;gh:samos123/mk-lab-salt-model branch:sam-vagrant-blog-post&lt;/a&gt;.
+The following commits have been created specifically for this post:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;fcea636 Remove Horizon contrail integration because of missing pkgs&lt;/span&gt;
+&lt;span class="err"&gt;60af84f Del Mirantis Horizon them because pkg unavailable&lt;/span&gt;
+&lt;span class="err"&gt;cc527df Remove non-used node definitions&lt;/span&gt;
+&lt;span class="err"&gt;f76eab0 Disable monitoring due to resources&lt;/span&gt;
+&lt;span class="err"&gt;e55d0fe Remove ens4 nic dhcp config&lt;/span&gt;
+&lt;span class="err"&gt;5d71986 Change repo to samos123 b/sam-vagrant-blog-post&lt;/span&gt;
+&lt;span class="err"&gt;6222ff5 Add Vagrant file for mk22-lab-basic&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;The Vagrantfile defines and creates the following VMs:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;cfg01: 4GB RAM, used as Salt Master&lt;/li&gt;
+&lt;li&gt;ctl01, ctl02, ctl03: 4GB RAM, used for Controllers and Contrail&lt;/li&gt;
+&lt;li&gt;cmp01: 2GB&lt;/li&gt;
+&lt;li&gt;prx01: 2GB&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Each VM that gets created will get assigned the following networks automatically:
+- eth0/enp0s3: 10.0.2.0/24, NAT interface for internet
+- eth1/enp0s8: 172.16.10.0/24, host-only network for all OpenStack, Contrail and Data Network
+- eth2/enp0s9: 192.168.10.0/24, host-only network for Salt to configure hosts&lt;/p&gt;
+&lt;p&gt;By following below instructions you can bring up an OpenStack cloud (I found it often still
+requires debugging and tweaking to make it work):&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# Manually setup the salt-master&lt;/span&gt;
+vagrant up cfg01
+vagrant ssh cfg01
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;deb [arch=amd64] http://apt.tcpcloud.eu/nightly/ xenial main security extra tcp tcp-salt&amp;quot;&lt;/span&gt; &amp;gt; /etc/apt/sources.list
+wget -O - http://apt.tcpcloud.eu/public.gpg &lt;span class="p"&gt;|&lt;/span&gt; apt-key add -
+apt-get update
+apt-get upgrade
+apt-get install -y salt-master reclass
+apt-get install -y salt-formula-linux salt-formula-reclass salt-formula-salt &lt;span class="se"&gt;\&lt;/span&gt;
+                   salt-formula-openssh salt-formula-ntp salt-formula-git &lt;span class="se"&gt;\&lt;/span&gt;
+                   salt-formula-graphite salt-formula-collectd salt-formula-sensu salt-formula-heka
+apt-get install -y salt-formula-sphinx salt-formula-horizon salt-formula-nginx &lt;span class="se"&gt;\&lt;/span&gt;
+                   salt-formula-memcached salt-formula-python salt-formula-supervisor
+cat &lt;span class="s"&gt;&amp;lt;&amp;lt; &amp;#39;EOF&amp;#39; &amp;gt;&amp;gt; /etc/salt/master.d/master.conf&lt;/span&gt;
+&lt;span class="s"&gt;file_roots:&lt;/span&gt;
+&lt;span class="s"&gt;  base:&lt;/span&gt;
+&lt;span class="s"&gt;  - /usr/share/salt-formulas/env&lt;/span&gt;
+&lt;span class="s"&gt;pillar_opts: False&lt;/span&gt;
+&lt;span class="s"&gt;open_mode: True&lt;/span&gt;
+&lt;span class="s"&gt;reclass: &amp;amp;reclass&lt;/span&gt;
+&lt;span class="s"&gt;  storage_type: yaml_fs&lt;/span&gt;
+&lt;span class="s"&gt;  inventory_base_uri: /srv/salt/reclass&lt;/span&gt;
+&lt;span class="s"&gt;ext_pillar:&lt;/span&gt;
+&lt;span class="s"&gt;  - reclass: *reclass&lt;/span&gt;
+&lt;span class="s"&gt;master_tops:&lt;/span&gt;
+&lt;span class="s"&gt;  reclass: *reclass&lt;/span&gt;
+&lt;span class="s"&gt;EOF&lt;/span&gt;
+
+mkdir /etc/reclass
+cat &lt;span class="s"&gt;&amp;lt;&amp;lt; &amp;#39;EOF&amp;#39; &amp;gt;&amp;gt; /etc/reclass/reclass-config.yml&lt;/span&gt;
+&lt;span class="s"&gt;storage_type: yaml_fs&lt;/span&gt;
+&lt;span class="s"&gt;pretty_print: True&lt;/span&gt;
+&lt;span class="s"&gt;output: yaml&lt;/span&gt;
+&lt;span class="s"&gt;inventory_base_uri: /srv/salt/reclass&lt;/span&gt;
+&lt;span class="s"&gt;EOF&lt;/span&gt;
+
+git clone https://github.com/samos123/mk-lab-salt-model /srv/salt/reclass -b sam-vagrant-blog-post
+mkdir -p /srv/salt/reclass/classes/service
+&lt;span class="k"&gt;for&lt;/span&gt; i in /usr/share/salt-formulas/reclass/service/*&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; ln -s &lt;span class="nv"&gt;$i&lt;/span&gt; /srv/salt/reclass/classes/service/&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;done&lt;/span&gt;
+
+apt-get install -y salt-minion
+cat &amp;lt;&amp;lt; &lt;span class="s2"&gt;&amp;quot;EOF&amp;quot;&lt;/span&gt; &amp;gt;&amp;gt; /etc/salt/minion.d/minion.conf
+id: cfg01.mk22-lab-basic.local
+master: localhost
+EOF
+
+service salt-master restart
+service salt-minion restart
+
+&lt;span class="c1"&gt;# confirm cfg01 is accepted&lt;/span&gt;
+salt-key 
+&lt;span class="c1"&gt;# check reclass model is fine&lt;/span&gt;
+reclass-salt --top
+reclass-salt --pillar cfg01.mk22-lab-basic.local
+
+salt &lt;span class="s1"&gt;&amp;#39;cfg01*&amp;#39;&lt;/span&gt; state.sls reclass.storage
+salt &lt;span class="s1"&gt;&amp;#39;*&amp;#39;&lt;/span&gt; saltutil.refresh_pillar
+
+salt &lt;span class="s2"&gt;&amp;quot;cfg01*&amp;quot;&lt;/span&gt; state.sls git,linux,ntp
+salt-call state.sls salt
+salt &lt;span class="s2"&gt;&amp;quot;cfg01*&amp;quot;&lt;/span&gt; state.sls openssh,reclass,sphinx,nginx
+
+
+&lt;span class="c1"&gt;# shows there are no nodes added to salt yet&lt;/span&gt;
+salt-key
+&lt;span class="c1"&gt;# exit back to Host running  vagrant&lt;/span&gt;
+&lt;span class="nb"&gt;exit&lt;/span&gt;
+
+&lt;span class="c1"&gt;# now bring up remaining nodes ctl[1-3], cmp01, prx01&lt;/span&gt;
+vagrant up
+
+vagrant ssh cfg01
+&lt;span class="c1"&gt;# We need m2crypto to be installed else some states will fail&lt;/span&gt;
+salt &lt;span class="s1"&gt;&amp;#39;*&amp;#39;&lt;/span&gt; pkg.install python-m2crypto
+salt &lt;span class="s1"&gt;&amp;#39;*&amp;#39;&lt;/span&gt; state.sls ntp,linux,salt.minion,openssh
+salt &lt;span class="s2"&gt;&amp;quot;ctl*&amp;quot;&lt;/span&gt; state.show_top
+salt &lt;span class="s2"&gt;&amp;quot;ctl*&amp;quot;&lt;/span&gt; --state-output&lt;span class="o"&gt;=&lt;/span&gt;mixed -b &lt;span class="m"&gt;1&lt;/span&gt; state.sls keepalived
+salt &lt;span class="s1"&gt;&amp;#39;ctl01*&amp;#39;&lt;/span&gt; pillar.get keepalived:cluster:instance:VIP:address
+salt &lt;span class="s1"&gt;&amp;#39;ctl01*&amp;#39;&lt;/span&gt; cmd.run &lt;span class="s2"&gt;&amp;quot;ip a&amp;quot;&lt;/span&gt;
+salt &lt;span class="s2"&gt;&amp;quot;ctl*&amp;quot;&lt;/span&gt; --state-output&lt;span class="o"&gt;=&lt;/span&gt;mixed -b &lt;span class="m"&gt;1&lt;/span&gt; state.sls memcached,rabbitmq
+
+salt &lt;span class="s1"&gt;&amp;#39;ctl*&amp;#39;&lt;/span&gt; state.sls glusterfs.server.service
+salt &lt;span class="s1"&gt;&amp;#39;ctl*&amp;#39;&lt;/span&gt; -b &lt;span class="m"&gt;1&lt;/span&gt; state.sls glusterfs.server.setup
+&lt;span class="c1"&gt;# gluterfs.server.setup fails because of issue with formula with older salt minons&lt;/span&gt;
+&lt;span class="c1"&gt;# pr is submitted https://github.com/tcpcloud/salt-formula-glusterfs/pull/8&lt;/span&gt;
+&lt;span class="c1"&gt;# if you still hit this issue, manually start the volume and rerun state again&lt;/span&gt;
+salt &lt;span class="s2"&gt;&amp;quot;ctl01*&amp;quot;&lt;/span&gt; cmd.run &lt;span class="s2"&gt;&amp;quot;gluster volume start keystone-keys; gluster volume start glance&amp;quot;&lt;/span&gt;
+salt &lt;span class="s1"&gt;&amp;#39;ctl*&amp;#39;&lt;/span&gt; -b &lt;span class="m"&gt;1&lt;/span&gt; state.sls glusterfs.server.setup
+
+&lt;span class="c1"&gt;# verify that gluster is working&lt;/span&gt;
+salt &lt;span class="s2"&gt;&amp;quot;ctl01*&amp;quot;&lt;/span&gt; cmd.run &lt;span class="s2"&gt;&amp;quot;gluster peer status; gluster volume status&amp;quot;&lt;/span&gt;
+
+&lt;span class="c1"&gt;# install mysql&lt;/span&gt;
+salt -C &lt;span class="s1"&gt;&amp;#39;I@galera:master&amp;#39;&lt;/span&gt; state.sls galera
+salt -C &lt;span class="s1"&gt;&amp;#39;I@galera:slave&amp;#39;&lt;/span&gt; state.sls galera
+salt -C &lt;span class="s1"&gt;&amp;#39;I@galera:master&amp;#39;&lt;/span&gt; mysql.status
+
+
+
+
+salt -C &lt;span class="s1"&gt;&amp;#39;I@haproxy:proxy&amp;#39;&lt;/span&gt; state.sls haproxy
+salt -C &lt;span class="s1"&gt;&amp;#39;I@haproxy:proxy&amp;#39;&lt;/span&gt; service.status haproxy
+
+
+&lt;span class="c1"&gt;# For some reason salt&amp;#39;s keystone module doesn&amp;#39;t work unless you restart the minion&lt;/span&gt;
+salt &lt;span class="s1"&gt;&amp;#39;ctl*&amp;#39;&lt;/span&gt; state.sls keystone -b &lt;span class="m"&gt;1&lt;/span&gt;
+salt -C &lt;span class="s1"&gt;&amp;#39;I@keystone:client&amp;#39;&lt;/span&gt; state.sls keystone.client
+salt &lt;span class="s2"&gt;&amp;quot;ctl01*&amp;quot;&lt;/span&gt; cmd.run &lt;span class="s2"&gt;&amp;quot;. /root/keystonerc; keystone service-list&amp;quot;&lt;/span&gt;
+
+salt &lt;span class="s1"&gt;&amp;#39;ctl*&amp;#39;&lt;/span&gt; -b &lt;span class="m"&gt;1&lt;/span&gt; state.sls glance
+salt &lt;span class="s1"&gt;&amp;#39;ctl*&amp;#39;&lt;/span&gt; state.sls glusterfs.client
+salt &lt;span class="s1"&gt;&amp;#39;ctl*&amp;#39;&lt;/span&gt; cmd.run &lt;span class="s1"&gt;&amp;#39;df -h&amp;#39;&lt;/span&gt;
+&lt;span class="c1"&gt;# need to rerun keystone for glance to work&lt;/span&gt;
+salt &lt;span class="s1"&gt;&amp;#39;ctl*&amp;#39;&lt;/span&gt; state.sls keystone
+salt &lt;span class="s2"&gt;&amp;quot;ctl*&amp;quot;&lt;/span&gt; cmd.run &lt;span class="s2"&gt;&amp;quot;. /root/keystonerc; glance image-list&amp;quot;&lt;/span&gt;
+
+salt -C &lt;span class="s1"&gt;&amp;#39;I@nova:controller&amp;#39;&lt;/span&gt; state.sls nova -b &lt;span class="m"&gt;1&lt;/span&gt;
+salt -C &lt;span class="s1"&gt;&amp;#39;I@keystone:server&amp;#39;&lt;/span&gt; cmd.run &lt;span class="s2"&gt;&amp;quot;. /root/keystonerc; nova service-list&amp;quot;&lt;/span&gt;
+
+&lt;span class="c1"&gt;# Cinder fails to install some packages&lt;/span&gt;
+&lt;span class="c1"&gt;# workaround is to manually install linux-image-extra-virtual package&lt;/span&gt;
+salt &lt;span class="s1"&gt;&amp;#39;ctl*&amp;#39;&lt;/span&gt; pkg.install linux-image-extra-virtual
+salt -C &lt;span class="s1"&gt;&amp;#39;I@cinder:controller&amp;#39;&lt;/span&gt; state.sls cinder -b &lt;span class="m"&gt;1&lt;/span&gt;
+salt -C &lt;span class="s1"&gt;&amp;#39;I@keystone:server&amp;#39;&lt;/span&gt; cmd.run &lt;span class="s2"&gt;&amp;quot;. /root/keystonerc; cinder list&amp;quot;&lt;/span&gt;
+
+&lt;span class="c1"&gt;# Neutron&lt;/span&gt;
+salt -C &lt;span class="s1"&gt;&amp;#39;I@neutron:server&amp;#39;&lt;/span&gt; state.sls neutron -b &lt;span class="m"&gt;1&lt;/span&gt;
+
+&lt;span class="c1"&gt;# heat 2 states will fail but that&amp;#39;s fine as it was created previously. &lt;/span&gt;
+&lt;span class="c1"&gt;# Should still be fixed though, this is the error seen:&lt;/span&gt;
+&lt;span class="c1"&gt;# State &amp;#39;keystone.role_present&amp;#39; was not found in SLS &amp;#39;heat.server&amp;#39;&lt;/span&gt;
+&lt;span class="c1"&gt;#              Reason: &amp;#39;keystone&amp;#39; __virtual__ returned False&lt;/span&gt;
+&lt;span class="c1"&gt;# also if heat-api isn&amp;#39;t running make sure the following patch is merged&lt;/span&gt;
+&lt;span class="c1"&gt;# https://review.openstack.org/#/c/394599/&lt;/span&gt;
+salt -C &lt;span class="s1"&gt;&amp;#39;I@heat:server&amp;#39;&lt;/span&gt; state.sls heat -b &lt;span class="m"&gt;1&lt;/span&gt;
+salt -C &lt;span class="s1"&gt;&amp;#39;I@keystone:server&amp;#39;&lt;/span&gt; cmd.run &lt;span class="s2"&gt;&amp;quot;. /root/keystonerc; heat resource-type-list&amp;quot;&lt;/span&gt;
+
+
+
+&lt;span class="c1"&gt;# Several issues with horizon and dashboard&lt;/span&gt;
+&lt;span class="c1"&gt;# 1. The package openstack-dashboard-contrail-panels is missing so I&amp;#39;ve disabled&lt;/span&gt;
+&lt;span class="c1"&gt;#    Contrail integration by changing the reclass model. See commit #fcea6366ea50&lt;/span&gt;
+&lt;span class="c1"&gt;# 2. The package openstack-dashboard-mirantis-theme is missing so I&amp;#39;ve disabled&lt;/span&gt;
+&lt;span class="c1"&gt;#    mirantis them customization in the reclass model. See commit #60af84f237bab&lt;/span&gt;
+&lt;span class="c1"&gt;# 3. The salt-formula-horizon fails when app.plugin is not set in pillar. For&lt;/span&gt;
+&lt;span class="c1"&gt;#    this I&amp;#39;ve submitted a patch in the formula https://review.openstack.org/#/c/394618/&lt;/span&gt;
+&lt;span class="c1"&gt;# You may have to apply the patch in point 3 manually ^^ horizon fails for me still.&lt;/span&gt;
+salt -C &lt;span class="s1"&gt;&amp;#39;I@horizon:server&amp;#39;&lt;/span&gt; state.sls horizon
+salt -C &lt;span class="s1"&gt;&amp;#39;I@nginx:server&amp;#39;&lt;/span&gt; state.sls nginx
+
+&lt;span class="c1"&gt;# Install contrail&lt;/span&gt;
+salt &lt;span class="s2"&gt;&amp;quot;ctl*&amp;quot;&lt;/span&gt; state.sls opencontrail -b &lt;span class="m"&gt;1&lt;/span&gt;
+salt -C &lt;span class="s1"&gt;&amp;#39;I@keystone:server&amp;#39;&lt;/span&gt; cmd.run &lt;span class="s2"&gt;&amp;quot;. /root/keystonerc; neutron net-list; nova net-list&amp;quot;&lt;/span&gt;
+
+salt &lt;span class="s1"&gt;&amp;#39;ctl01*&amp;#39;&lt;/span&gt; cmd.run &lt;span class="s2"&gt;&amp;quot;/usr/share/contrail-utils/provision_control.py --api_server_ip 172.16.10.254 --api_server_port 8082 --host_name ctl01 --host_ip 172.16.10.101 --router_asn 64512 --admin_password workshop --admin_user admin --admin_tenant_name admin --oper add&amp;quot;&lt;/span&gt;
+salt &lt;span class="s1"&gt;&amp;#39;ctl02*&amp;#39;&lt;/span&gt; cmd.run &lt;span class="s2"&gt;&amp;quot;/usr/share/contrail-utils/provision_control.py --api_server_ip 172.16.10.254 --api_server_port 8082 --host_name ctl02 --host_ip 172.16.10.102 --router_asn 64512 --admin_password workshop --admin_user admin --admin_tenant_name admin --oper add&amp;quot;&lt;/span&gt;
+salt &lt;span class="s1"&gt;&amp;#39;ctl03*&amp;#39;&lt;/span&gt; cmd.run &lt;span class="s2"&gt;&amp;quot;/usr/share/contrail-utils/provision_control.py --api_server_ip 172.16.10.254 --api_server_port 8082 --host_name ctl03 --host_ip 172.16.10.103 --router_asn 64512 --admin_password workshop --admin_user admin --admin_tenant_name admin --oper add&amp;quot;&lt;/span&gt;
+
+
+&lt;span class="c1"&gt;# Configure compute nodes&lt;/span&gt;
+salt &lt;span class="s1"&gt;&amp;#39;cmp*&amp;#39;&lt;/span&gt; state.highstate
+salt &lt;span class="s1"&gt;&amp;#39;cmp*&amp;#39;&lt;/span&gt; state.highstate
+salt &lt;span class="s1"&gt;&amp;#39;ctl01*&amp;#39;&lt;/span&gt; cmd.run &lt;span class="s2"&gt;&amp;quot;/usr/share/contrail-utils/provision_vrouter.py --host_name cmp01 --host_ip 172.16.10.105 --api_server_ip 172.16.10.254 --oper add --admin_user admin --admin_password workshop --admin_tenant_name admin&amp;quot;&lt;/span&gt;
+
+&lt;span class="c1"&gt;# Temporary workaround for mos packages&lt;/span&gt;
+salt &lt;span class="s1"&gt;&amp;#39;cmp*&amp;#39;&lt;/span&gt; cmd.run &lt;span class="s2"&gt;&amp;quot;find /etc -xdev -type f | xargs egrep -H &amp;#39;unix_sock_group.*libvirt&amp;#39; | sed -e &amp;#39;s/:.*//&amp;#39; | xargs sed -i -e &amp;#39;s/unix_sock_group = \&amp;quot;libvirtd\&amp;quot;/unix_sock_group = \&amp;quot;libvirt\&amp;quot;/&amp;#39;&amp;quot;&lt;/span&gt;
+
+&lt;span class="c1"&gt;# There is an issue with nova.conf because rabbit_host isn&amp;#39;t set in default section&lt;/span&gt;
+&lt;span class="c1"&gt;# I&amp;#39;ve submitted a patch here: https://review.openstack.org/#/c/395161/&lt;/span&gt;
+
+&lt;span class="c1"&gt;# Try rebooting and see if it still works&lt;/span&gt;
+salt &lt;span class="s1"&gt;&amp;#39;cmp*&amp;#39;&lt;/span&gt; system.reboot
+&lt;span class="c1"&gt;# For some reason I got an older libvirt from tcprepo instead of mos&lt;/span&gt;
+&lt;span class="c1"&gt;# below installs the correct package. Bug filed here:&lt;/span&gt;
+&lt;span class="c1"&gt;# https://github.com/tcpcloud/salt-formula-libvirt/issues/1&lt;/span&gt;
+vim /usr/share/salt-formulas/env/nova/files/mitaka/nova-compute.conf.Debian
+&lt;span class="c1"&gt;# change virt_type from kvm to qemu, bug has been filed about this here:&lt;/span&gt;
+&lt;span class="c1"&gt;# https://bugs.launchpad.net/openstack-salt/+bug/1640314&lt;/span&gt;
+salt &lt;span class="s1"&gt;&amp;#39;cmp*&amp;#39;&lt;/span&gt; cmd.run &lt;span class="s2"&gt;&amp;quot;apt-get update&amp;quot;&lt;/span&gt;
+salt &lt;span class="s1"&gt;&amp;#39;cmp*&amp;#39;&lt;/span&gt; pkg.install libvirt-bin
+salt &lt;span class="s1"&gt;&amp;#39;cmp*&amp;#39;&lt;/span&gt; cmd.run &lt;span class="s2"&gt;&amp;quot;ip a&amp;quot;&lt;/span&gt;
+salt &lt;span class="s1"&gt;&amp;#39;cmp*&amp;#39;&lt;/span&gt; cmd.run &lt;span class="s2"&gt;&amp;quot;contrail-status&amp;quot;&lt;/span&gt;
+
+&lt;span class="c1"&gt;# Exit and SSH into ctl01 to test the cloud&lt;/span&gt;
+&lt;span class="nb"&gt;exit&lt;/span&gt;
+vagrant ssh ctl01
+sudo -i
+&lt;span class="nb"&gt;source&lt;/span&gt; keystonerc
+wget http://download.cirros-cloud.net/0.3.4/cirros-0.3.4-i386-disk.img
+glance image-create --name cirros --visibility public --disk-format qcow2 --container-format bare --progress &amp;lt; /root/cirros-0.3.4-i386-disk.img
+neutron net-create net1
+neutron subnet-create --name subnet1 net1 &lt;span class="m"&gt;192&lt;/span&gt;.168.32.0/24
+keystone tenant-list
+&lt;span class="nv"&gt;netuuid&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;neutron net-list &lt;span class="p"&gt;|&lt;/span&gt; grep net1 &lt;span class="p"&gt;|&lt;/span&gt; awk &lt;span class="s1"&gt;&amp;#39;{ print $2 }&amp;#39;&lt;/span&gt;&lt;span class="k"&gt;)&lt;/span&gt;
+nova flavor-create --is-public &lt;span class="nb"&gt;true&lt;/span&gt; m1.macro auto &lt;span class="m"&gt;128&lt;/span&gt; &lt;span class="m"&gt;5&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;
+nova boot --nic net-id&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;$netuuid&lt;/span&gt; --image cirros --flavor m1.macro testvm1
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Below is the Vagrantfile that is used in this blog post:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# -*- mode: ruby -*-&lt;/span&gt;
+&lt;span class="c1"&gt;# vi: set ft=ruby :&lt;/span&gt;
+
+&lt;span class="vg"&gt;$script&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt;&lt;span class="dl"&gt;SCRIPT&lt;/span&gt;
+&lt;span class="sh"&gt;echo &amp;quot;deb [arch=amd64] http://apt.tcpcloud.eu/nightly/ trusty main security extra tcp tcp-salt&amp;quot; &amp;gt; /etc/apt/sources.list&lt;/span&gt;
+&lt;span class="sh"&gt;wget -O - http://apt.tcpcloud.eu/public.gpg | apt-key add -&lt;/span&gt;
+&lt;span class="sh"&gt;apt-get update&lt;/span&gt;
+&lt;span class="sh"&gt;apt-get install -y salt-minion&lt;/span&gt;
+&lt;span class="sh"&gt;cat &amp;lt;&amp;lt; &amp;quot;EOF&amp;quot; &amp;gt;&amp;gt; /etc/salt/minion.d/minion.conf&lt;/span&gt;
+&lt;span class="sh"&gt;id: {{x}}.mk22-lab-basic.local&lt;/span&gt;
+&lt;span class="sh"&gt;master: 192.168.10.100&lt;/span&gt;
+&lt;span class="sh"&gt;EOF&lt;/span&gt;
+&lt;span class="dl"&gt;SCRIPT&lt;/span&gt;
+
+&lt;span class="no"&gt;Vagrant&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;configure&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;2&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+  &lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;vm&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;box&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;ubuntu/trusty64&amp;quot;&lt;/span&gt;
+
+  &lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;vm&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;provider&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;virtualbox&amp;quot;&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;vb&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+     &lt;span class="c1"&gt;# Display the VirtualBox GUI when booting the machine&lt;/span&gt;
+     &lt;span class="n"&gt;vb&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;gui&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kp"&gt;true&lt;/span&gt;
+
+     &lt;span class="c1"&gt;# Customize the amount of memory on the VM:&lt;/span&gt;
+     &lt;span class="n"&gt;vb&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;memory&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;4096&amp;quot;&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+
+  &lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;vm&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;define&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;cfg01&amp;quot;&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;cfg01&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+    &lt;span class="n"&gt;cfg01&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;vm&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;box&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;ubuntu/xenial64&amp;quot;&lt;/span&gt;
+    &lt;span class="n"&gt;cfg01&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;vm&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;network&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;private_network&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;ip&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;172.16.10.100&amp;quot;&lt;/span&gt;
+    &lt;span class="n"&gt;cfg01&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;vm&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;network&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;private_network&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;ip&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;192.168.10.100&amp;quot;&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+
+  &lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;vm&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;define&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;ctl01&amp;quot;&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;ctl01&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+    &lt;span class="n"&gt;ctl01&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;vm&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;box&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;vm&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;box&lt;/span&gt;
+    &lt;span class="n"&gt;ctl01&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;vm&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;provision&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;shell&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;inline&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="vg"&gt;$script&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sub&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sr"&gt;/{{x}}/&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;ctl01&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;ctl01&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;vm&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;network&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;private_network&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;ip&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;172.16.10.101&amp;quot;&lt;/span&gt;
+    &lt;span class="n"&gt;ctl01&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;vm&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;network&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;private_network&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;ip&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;192.168.10.101&amp;quot;&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+
+  &lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;vm&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;define&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;ctl02&amp;quot;&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;ctl02&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+    &lt;span class="n"&gt;ctl02&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;vm&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;box&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;vm&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;box&lt;/span&gt;
+    &lt;span class="n"&gt;ctl02&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;vm&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;provision&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;shell&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;inline&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="vg"&gt;$script&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sub&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sr"&gt;/{{x}}/&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;ctl02&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;ctl02&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;vm&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;network&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;private_network&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;ip&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;172.16.10.102&amp;quot;&lt;/span&gt;
+    &lt;span class="n"&gt;ctl02&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;vm&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;network&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;private_network&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;ip&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;192.168.10.102&amp;quot;&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+
+  &lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;vm&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;define&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;ctl03&amp;quot;&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;ctl03&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+    &lt;span class="n"&gt;ctl03&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;vm&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;box&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;vm&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;box&lt;/span&gt;
+    &lt;span class="n"&gt;ctl03&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;vm&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;provision&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;shell&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;inline&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="vg"&gt;$script&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sub&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sr"&gt;/{{x}}/&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;ctl03&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;ctl03&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;vm&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;network&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;private_network&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;ip&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;172.16.10.103&amp;quot;&lt;/span&gt;
+    &lt;span class="n"&gt;ctl03&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;vm&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;network&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;private_network&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;ip&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;192.168.10.103&amp;quot;&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+
+  &lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;vm&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;define&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;cmp01&amp;quot;&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;cmp01&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+    &lt;span class="n"&gt;cmp01&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;vm&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;box&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;vm&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;box&lt;/span&gt;
+    &lt;span class="n"&gt;cmp01&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;vm&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;provision&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;shell&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;inline&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="vg"&gt;$script&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sub&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sr"&gt;/{{x}}/&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;cmp01&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;cmp01&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;vm&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;network&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;private_network&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;ip&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;172.16.10.105&amp;quot;&lt;/span&gt;
+    &lt;span class="n"&gt;cmp01&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;vm&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;network&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;private_network&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;ip&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;192.168.10.105&amp;quot;&lt;/span&gt;
+
+    &lt;span class="n"&gt;cmp01&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;vm&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;provider&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;virtualbox&amp;quot;&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;vb&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+       &lt;span class="n"&gt;vb&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;memory&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;2048&amp;quot;&lt;/span&gt;
+    &lt;span class="k"&gt;end&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+
+  &lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;vm&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;define&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;prx01&amp;quot;&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;prx01&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+    &lt;span class="n"&gt;prx01&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;vm&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;box&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;vm&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;box&lt;/span&gt;
+    &lt;span class="n"&gt;prx01&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;vm&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;provision&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;shell&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;inline&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="vg"&gt;$script&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sub&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sr"&gt;/{{x}}/&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;prx01&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;prx01&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;vm&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;network&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;private_network&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;ip&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;172.16.10.107&amp;quot;&lt;/span&gt;
+    &lt;span class="n"&gt;prx01&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;vm&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;network&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;private_network&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;ip&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;192.168.10.107&amp;quot;&lt;/span&gt;
+
+    &lt;span class="n"&gt;prx01&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;vm&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;provider&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;virtualbox&amp;quot;&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;vb&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+       &lt;span class="n"&gt;vb&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;memory&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;2048&amp;quot;&lt;/span&gt;
+    &lt;span class="k"&gt;end&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+
+
+
+&lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content><category term="Openstack"></category><category term="openstack"></category><category term="salt"></category></entry><entry><title>Fuel: Separate Ceph Public from Management using Network Templates</title><link href="https://samos-it.com/posts/fuel-separate-ceph-public-from-management.html" rel="alternate"></link><published>2016-08-27T14:01:00+02:00</published><updated>2016-08-27T14:01:00+02:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2016-08-27:/posts/fuel-separate-ceph-public-from-management.html</id><summary type="html">&lt;p&gt;This post will demonstrate using Network Templates in Fuel to
+separate Ceph Public Network from Management Network. By default
+Fuel combines the ceph public network with the management network.
+The Ceph Public network is used for communicating from the compute nodes
+to the Ceph nodes. So in high performant storage …&lt;/p&gt;</summary><content type="html">&lt;p&gt;This post will demonstrate using Network Templates in Fuel to
+separate Ceph Public Network from Management Network. By default
+Fuel combines the ceph public network with the management network.
+The Ceph Public network is used for communicating from the compute nodes
+to the Ceph nodes. So in high performant storage networks we would like to be
+able to isolate this network from any other network such that we can
+guarantee performance.&lt;/p&gt;
+&lt;p&gt;Fuel Network Templates allow us separate or combine networks. The general workflow
+for separating the Ceph Public network is as follows:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Create a new Network Group for the new network&lt;/li&gt;
+&lt;li&gt;Write and upload a network template that defines how the newly created network should be used&lt;/li&gt;
+&lt;li&gt;Review and tune the actual deployment settings via the CLI&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;Demo environment&lt;/h2&gt;
+&lt;p&gt;This blog post is using the following example environment:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;5 x VirtualBox VMs&lt;/li&gt;
+&lt;li&gt;1 x Fuel Master 9.0&lt;/li&gt;
+&lt;li&gt;1 x Controller node&lt;/li&gt;
+&lt;li&gt;1 x Compute node&lt;/li&gt;
+&lt;li&gt;2 x Ceph-OSD&lt;/li&gt;
+&lt;li&gt;Each VM has 3 NICs: enp0s3, enp0s8, enp0s9&lt;/li&gt;
+&lt;li&gt;enp0s3 is used for Admin/PXE network&lt;/li&gt;
+&lt;li&gt;enp0s8 is used for Public/Floating network&lt;/li&gt;
+&lt;li&gt;enp0s9 is used for Management, Storage, Private and Ceph Public network&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Create the new Ceph Public network group&lt;/h2&gt;
+&lt;p&gt;First the newly defined Ceph Public network needs to be created. This is done
+by creating a new network group via Fuel. In the demo, the nic enp0s9 is
+used for ceph public and other networks via VLAN tagging. 
+Although in a production environment you could
+easily put the new Ceph Public network on a dedicated NIC.&lt;/p&gt;
+&lt;p&gt;The following steps show to create the Ceph Public network with VLAN tag 13:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# First list the network groups to see what node-group is being used&lt;/span&gt;
+&lt;span class="c1"&gt;# group-id is usually the same as environment id&lt;/span&gt;
+fuel network-group
+&lt;span class="c1"&gt;# Create the new ceph-public network&lt;/span&gt;
+fuel network-group --create --node-group &lt;span class="m"&gt;6&lt;/span&gt; --name ceph-public --vlan &lt;span class="m"&gt;13&lt;/span&gt; --cidr &lt;span class="m"&gt;192&lt;/span&gt;.168.251.0/24
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;Write and upload network template&lt;/h2&gt;
+&lt;p&gt;After having created the new network we use Network Templates functionality
+to assign the ceph/public network role to our newly created network. Note
+that the order does not matter. You could also first create and upload
+template and then create new Ceph Public network group.&lt;/p&gt;
+&lt;p&gt;The below template is based on the default template with a minor
+modification to split out the ceph/public network role from the
+management network.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nt"&gt;adv_net_template&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+  &lt;span class="nt"&gt;default&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; 
+    &lt;span class="nt"&gt;nic_mapping&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+      &lt;span class="nt"&gt;default&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="nt"&gt;adm&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;enp0s3&lt;/span&gt;
+        &lt;span class="nt"&gt;pub&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;enp0s8&lt;/span&gt;
+        &lt;span class="nt"&gt;man&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;enp0s9.10&lt;/span&gt;
+        &lt;span class="nt"&gt;priv&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;enp0s9.11&lt;/span&gt;
+        &lt;span class="nt"&gt;stor&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;enp0s9.12&lt;/span&gt;
+        &lt;span class="nt"&gt;cephpub&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;enp0s9.13&lt;/span&gt;
+    &lt;span class="nt"&gt;templates_for_node_role&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="nt"&gt;controller&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+          &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;public&lt;/span&gt;
+          &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;private&lt;/span&gt;
+          &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;storage&lt;/span&gt;
+          &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;ceph-public&lt;/span&gt;
+          &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;common&lt;/span&gt;
+        &lt;span class="nt"&gt;compute&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+          &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;common&lt;/span&gt;
+          &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;ceph-public&lt;/span&gt;
+          &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;private&lt;/span&gt;
+        &lt;span class="nt"&gt;cinder&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+          &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;common&lt;/span&gt;
+          &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;storage&lt;/span&gt;
+        &lt;span class="nt"&gt;ceph-osd&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+          &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;common&lt;/span&gt;
+          &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;ceph-public&lt;/span&gt;
+          &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;storage&lt;/span&gt;
+    &lt;span class="nt"&gt;network_assignments&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; 
+        &lt;span class="nt"&gt;storage&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+          &lt;span class="nt"&gt;ep&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;br-storage&lt;/span&gt;
+        &lt;span class="nt"&gt;ceph-public&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+          &lt;span class="nt"&gt;ep&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;br-ceph-public&lt;/span&gt;
+        &lt;span class="nt"&gt;private&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+          &lt;span class="nt"&gt;ep&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;br-prv&lt;/span&gt;
+        &lt;span class="nt"&gt;public&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+          &lt;span class="nt"&gt;ep&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;br-ex&lt;/span&gt;
+        &lt;span class="nt"&gt;management&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+          &lt;span class="nt"&gt;ep&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;br-mgmt&lt;/span&gt;
+        &lt;span class="nt"&gt;fuelweb_admin&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+          &lt;span class="nt"&gt;ep&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;br-fw-admin&lt;/span&gt;
+    &lt;span class="nt"&gt;network_scheme&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+      &lt;span class="nt"&gt;storage&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="nt"&gt;transformations&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+          &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="nt"&gt;action&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;add-br&lt;/span&gt;
+            &lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;br-storage&lt;/span&gt;
+          &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="nt"&gt;action&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;add-port&lt;/span&gt;
+            &lt;span class="nt"&gt;bridge&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;br-storage&lt;/span&gt;
+            &lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;&amp;lt;% stor %&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;endpoints&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+          &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;br-storage&lt;/span&gt;
+        &lt;span class="nt"&gt;roles&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+          &lt;span class="nt"&gt;cinder/iscsi&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;br-storage&lt;/span&gt;
+          &lt;span class="nt"&gt;swift/replication&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;br-storage&lt;/span&gt;
+          &lt;span class="nt"&gt;ceph/replication&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;br-storage&lt;/span&gt;
+          &lt;span class="nt"&gt;storage&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;br-storage&lt;/span&gt;
+      &lt;span class="nt"&gt;ceph-public&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="nt"&gt;transformations&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+          &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="nt"&gt;action&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;add-br&lt;/span&gt;
+            &lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;br-ceph-public&lt;/span&gt;
+          &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="nt"&gt;action&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;add-port&lt;/span&gt;
+            &lt;span class="nt"&gt;bridge&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;br-ceph-public&lt;/span&gt;
+            &lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;&amp;lt;% cephpub %&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;endpoints&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+          &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;br-ceph-public&lt;/span&gt;
+        &lt;span class="nt"&gt;roles&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+          &lt;span class="nt"&gt;ceph/public&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;br-ceph-public&lt;/span&gt;
+      &lt;span class="nt"&gt;private&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="nt"&gt;transformations&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+          &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="nt"&gt;action&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;add-br&lt;/span&gt;
+            &lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;br-prv&lt;/span&gt;
+            &lt;span class="nt"&gt;provider&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;ovs&lt;/span&gt;
+          &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="nt"&gt;action&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;add-br&lt;/span&gt;
+            &lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;br-aux&lt;/span&gt;
+          &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="nt"&gt;action&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;add-patch&lt;/span&gt;
+            &lt;span class="nt"&gt;bridges&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+            &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;br-prv&lt;/span&gt;
+            &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;br-aux&lt;/span&gt;
+            &lt;span class="nt"&gt;provider&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;ovs&lt;/span&gt;
+            &lt;span class="nt"&gt;mtu&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;65000&lt;/span&gt;
+          &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="nt"&gt;action&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;add-port&lt;/span&gt;
+            &lt;span class="nt"&gt;bridge&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;br-aux&lt;/span&gt;
+            &lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;&amp;lt;% priv %&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;endpoints&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+          &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;br-prv&lt;/span&gt;
+        &lt;span class="nt"&gt;roles&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+          &lt;span class="nt"&gt;neutron/private&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;br-prv&lt;/span&gt;
+      &lt;span class="nt"&gt;public&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="nt"&gt;transformations&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+          &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="nt"&gt;action&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;add-br&lt;/span&gt;
+            &lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;br-ex&lt;/span&gt;
+          &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="nt"&gt;action&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;add-br&lt;/span&gt;
+            &lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;br-floating&lt;/span&gt;
+            &lt;span class="nt"&gt;provider&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;ovs&lt;/span&gt;
+          &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="nt"&gt;action&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;add-patch&lt;/span&gt;
+            &lt;span class="nt"&gt;bridges&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+            &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;br-floating&lt;/span&gt;
+            &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;br-ex&lt;/span&gt;
+            &lt;span class="nt"&gt;provider&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;ovs&lt;/span&gt;
+            &lt;span class="nt"&gt;mtu&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;65000&lt;/span&gt;
+          &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="nt"&gt;action&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;add-port&lt;/span&gt;
+            &lt;span class="nt"&gt;bridge&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;br-ex&lt;/span&gt;
+            &lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;&amp;lt;% pub %&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;endpoints&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+          &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;br-ex&lt;/span&gt;
+        &lt;span class="nt"&gt;roles&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+          &lt;span class="nt"&gt;public/vip&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;br-ex&lt;/span&gt;
+          &lt;span class="nt"&gt;neutron/floating&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;br-floating&lt;/span&gt;
+          &lt;span class="nt"&gt;ceph/radosgw&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;br-ex&lt;/span&gt;
+          &lt;span class="nt"&gt;ex&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;br-ex&lt;/span&gt;
+      &lt;span class="nt"&gt;common&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="c1"&gt;# In this example the common network is created for Management and Admin traffic.&lt;/span&gt;
+        &lt;span class="nt"&gt;transformations&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+          &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="nt"&gt;action&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;add-br&lt;/span&gt;
+            &lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;br-fw-admin&lt;/span&gt;
+          &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="nt"&gt;action&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;add-port&lt;/span&gt;
+            &lt;span class="nt"&gt;bridge&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;br-fw-admin&lt;/span&gt;
+            &lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;&amp;lt;% adm %&amp;gt;&lt;/span&gt;
+          &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="nt"&gt;action&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;add-br&lt;/span&gt;
+            &lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;br-mgmt&lt;/span&gt;
+          &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="nt"&gt;action&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;add-port&lt;/span&gt;
+            &lt;span class="nt"&gt;bridge&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;br-mgmt&lt;/span&gt;
+            &lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;&amp;lt;% man %&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;endpoints&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+          &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;br-fw-admin&lt;/span&gt;
+          &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;br-mgmt&lt;/span&gt;
+        &lt;span class="nt"&gt;roles&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+          &lt;span class="nt"&gt;admin/pxe&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;br-fw-admin&lt;/span&gt;
+          &lt;span class="nt"&gt;fw-admin&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;br-fw-admin&lt;/span&gt;
+          &lt;span class="nt"&gt;mongo/db&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;br-mgmt&lt;/span&gt;
+          &lt;span class="nt"&gt;management&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;br-mgmt&lt;/span&gt;
+          &lt;span class="nt"&gt;keystone/api&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;br-mgmt&lt;/span&gt;
+          &lt;span class="nt"&gt;neutron/api&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;br-mgmt&lt;/span&gt;
+          &lt;span class="nt"&gt;neutron/mesh&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;br-mgmt&lt;/span&gt;
+          &lt;span class="nt"&gt;swift/api&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;br-mgmt&lt;/span&gt;
+          &lt;span class="nt"&gt;sahara/api&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;br-mgmt&lt;/span&gt;
+          &lt;span class="nt"&gt;ceilometer/api&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;br-mgmt&lt;/span&gt;
+          &lt;span class="nt"&gt;cinder/api&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;br-mgmt&lt;/span&gt;
+          &lt;span class="nt"&gt;glance/api&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;br-mgmt&lt;/span&gt;
+          &lt;span class="nt"&gt;heat/api&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;br-mgmt&lt;/span&gt;
+          &lt;span class="nt"&gt;nova/api&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;br-mgmt&lt;/span&gt;
+          &lt;span class="nt"&gt;nova/migration&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;br-mgmt&lt;/span&gt;
+          &lt;span class="nt"&gt;murano/api&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;br-mgmt&lt;/span&gt;
+          &lt;span class="nt"&gt;horizon&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;br-mgmt&lt;/span&gt;
+          &lt;span class="nt"&gt;mgmt/api&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;br-mgmt&lt;/span&gt;
+          &lt;span class="nt"&gt;mgmt/memcache&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;br-mgmt&lt;/span&gt;
+          &lt;span class="nt"&gt;mgmt/database&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;br-mgmt&lt;/span&gt;
+          &lt;span class="nt"&gt;mgmt/messaging&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;br-mgmt&lt;/span&gt;
+          &lt;span class="nt"&gt;mgmt/corosync&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;br-mgmt&lt;/span&gt;
+          &lt;span class="nt"&gt;mgmt/vip&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;br-mgmt&lt;/span&gt;
+          &lt;span class="nt"&gt;mgmt/api&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;br-mgmt&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Save the above file with the name &lt;code&gt;network_template_6.yaml&lt;/code&gt; on your Fuel node. Fuel network template requires that the file name is in the following
+format: &lt;code&gt;network_template_{{ env_id }}.yaml&lt;/code&gt;. If your fuel doesn't match the format you won't be able to upload.&lt;/p&gt;
+&lt;p&gt;Now upload the the file &lt;code&gt;network_template_6.yaml&lt;/code&gt; to Fuel via:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;fuel network-template --env &lt;span class="m"&gt;6&lt;/span&gt; --upload --dir .
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;Review and tune final deployment settings&lt;/h2&gt;
+&lt;p&gt;This last step is to make sure that the Network settings set by Network Templates
+and Network group match expectations. Download the final deployment settings
+for the environment using the below command:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;fuel deployment --default --env &lt;span class="m"&gt;6&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;This will create a directory called &lt;code&gt;deployment_6&lt;/code&gt; containing deployment settings
+for the actual deployment. Open for example &lt;code&gt;deployment_6/master.yaml&lt;/code&gt; or &lt;code&gt;deployment_6/10.yaml&lt;/code&gt;
+and verify that ceph/public network role is assigned to controllers and ceph-osd nodes. Next to
+that make sure that ceph/public is assigned a specific IP address on each node.&lt;/p&gt;
+&lt;p&gt;Now we're ready to deploy and can trigger the deployment with:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;fuel deploy-changes --env &lt;span class="m"&gt;6&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;If you're lucky enough to not have made mistakes and hit bugs, then you will be running in no time :)
+This isn't easy to use functionality, without the help of my colleague xarxes I wasn't able to get it
+working.&lt;/p&gt;</content><category term="Openstack"></category><category term="openstack"></category><category term="networking"></category><category term="fuel"></category><category term="ceph"></category><category term="mirantis"></category></entry><entry><title>Creating a KVM VM for StackLight on Fuel 8.0 master node</title><link href="https://samos-it.com/posts/creating-vm-on-fuel-8.0-master.html" rel="alternate"></link><published>2016-06-01T09:31:00+02:00</published><updated>2016-06-01T09:31:00+02:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2016-06-01:/posts/creating-vm-on-fuel-8.0-master.html</id><summary type="html">&lt;p&gt;Creating a KVM VM on the Fuel master node is a nice way
+to better utilize server resources for small environments
+that were deployed already without using Fuel compact install or
+running Fuel as VM itself.
+We can run Controller, Monitoring or MongoDB as VM on the Fuel
+node. This …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Creating a KVM VM on the Fuel master node is a nice way
+to better utilize server resources for small environments
+that were deployed already without using Fuel compact install or
+running Fuel as VM itself.
+We can run Controller, Monitoring or MongoDB as VM on the Fuel
+node. This blog post explains in detail how to create a KVM VM
+on the Fuel master node, which can be used for any role defined by
+Fuel. In this example we assign the StackLight monitoring role
+to the VM created on the Fuel master node.&lt;/p&gt;
+&lt;p&gt;Please note that I do not recommend running VMs on Fuel master
+but instead recommend using the compact install functionality
+or running Fuel itself as a VM. This guide is meant for
+people who already deployed Fuel on a physical server
+which is mostly idle but now want to add StackLight LMA
+without adding new server resources.&lt;/p&gt;
+&lt;p&gt;The general steps are:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Install KVM on Fuel master node (Enable CentOS repo, install kvm and libvirt packages)&lt;/li&gt;
+&lt;li&gt;Create network bridges on the Fuel master node for Admin/PXE and Management network&lt;/li&gt;
+&lt;li&gt;Create the KVM VM through libvirt using an XML template&lt;/li&gt;
+&lt;li&gt;PXE boot the KVM VM such that it gets discovered by Fuel&lt;/li&gt;
+&lt;li&gt;Assign your desired role to the VMs via Fuel and deploy&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h1&gt;1. Install KVM and libvirt on the Fuel master&lt;/h1&gt;
+&lt;p&gt;The first step is install KVM and libvirt on the Fuel master node. SSH into Fuel Master node and
+execute the ollowing steps:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;Create the file &lt;code&gt;/etc/yum.repos.d/CentOS-base.repo&lt;/code&gt; with the following content:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;# CentOS-Base.repo
+[base]
+name=CentOS-$releasever - Base
+mirrorlist=http://mirrorlist.centos.org/?release=$releasever&amp;amp;arch=$basearch&amp;amp;repo=os&amp;amp;infra=$infra
+#baseurl=http://mirror.centos.org/centos/$releasever/os/$basearch/
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
+
+#released updates
+[updates]
+name=CentOS-$releasever - Updates
+mirrorlist=http://mirrorlist.centos.org/?release=$releasever&amp;amp;arch=$basearch&amp;amp;repo=updates&amp;amp;infra=$infra
+#baseurl=http://mirror.centos.org/centos/$releasever/updates/$basearch/
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
+
+#additional packages that may be useful
+[extras]
+name=CentOS-$releasever - Extras
+mirrorlist=http://mirrorlist.centos.org/?release=$releasever&amp;amp;arch=$basearch&amp;amp;repo=extras&amp;amp;infra=$infra
+#baseurl=http://mirror.centos.org/centos/$releasever/extras/$basearch/
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
+
+#additional packages that extend functionality of existing packages
+[centosplus]
+name=CentOS-$releasever - Plus
+mirrorlist=http://mirrorlist.centos.org/?release=$releasever&amp;amp;arch=$basearch&amp;amp;repo=centosplus&amp;amp;infra=$infra
+#baseurl=http://mirror.centos.org/centos/$releasever/centosplus/$basearch/
+gpgcheck=1
+enabled=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Now install the required packages from CentOS repo&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;yum install libvirt qemu-kvm kvm
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;2. Create networking bridges for KVM VM&lt;/h2&gt;
+&lt;p&gt;Here we create network bridges on the Fuel master node for Admin/PXE and Management network.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;Prevent libvirt from starting dnsmasq. Execute the following command, delete the parts with dhcp
+   and change forwarding to none:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;virsh net-edit default
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Create the bridge for Admin/PXE network. This step is not using
+    the standard way to create the bridge, because I didn't want to change
+    the network device name to which the IP is bound. It seems that some
+    containers by default use eth0 and host networking. I don't recommend
+    doing it this way, but it "works".&lt;/p&gt;
+&lt;p&gt;I created a script which doesn't change eth0, but instead renames
+eth0 to net0 and then creates a bridge named eth0 and assigns the original
+net0 ip address to eth0. I tried to use udev but couldn't get it to work,
+so here we go with a hacky script.&lt;/p&gt;
+&lt;p&gt;Create a file &lt;code&gt;/usr/bin/create-eth0-bridge.sh&lt;/code&gt; with the following content:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="ch"&gt;#!/bin/bash&lt;/span&gt;
+
+&lt;span class="nv"&gt;ETH0ADDR&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;10&lt;/span&gt;.20.0.2/24
+
+&lt;span class="c1"&gt;# Rename eth0 to net0&lt;/span&gt;
+ip a flush dev eth0
+ip link &lt;span class="nb"&gt;set&lt;/span&gt; eth0 down
+ip link &lt;span class="nb"&gt;set&lt;/span&gt; eth0 name net0
+ip link &lt;span class="nb"&gt;set&lt;/span&gt; net0 up
+
+&lt;span class="c1"&gt;# Create bridge eth0 with net0 as interface&lt;/span&gt;
+brctl addbr eth0
+ip link &lt;span class="nb"&gt;set&lt;/span&gt; eth0 up
+brctl addif eth0 net0
+
+&lt;span class="c1"&gt;# Add original eth0addr to bridge&lt;/span&gt;
+ip a add &lt;span class="nv"&gt;$ETH0ADDR&lt;/span&gt; dev eth0
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Create a systemd service to launch the script after network was done.
+   Create the file &lt;code&gt;/etc/systemd/system/create-eth0-bridge.service&lt;/code&gt; with
+   the following content:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="o"&gt;[&lt;/span&gt;Unit&lt;span class="o"&gt;]&lt;/span&gt;
+&lt;span class="nv"&gt;Description&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;Create eth0 network bridge &lt;span class="k"&gt;for&lt;/span&gt; Stacklight VM
+&lt;span class="nv"&gt;Wants&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;network-online.target
+&lt;span class="nv"&gt;After&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;network-online.target
+
+&lt;span class="o"&gt;[&lt;/span&gt;Service&lt;span class="o"&gt;]&lt;/span&gt;
+&lt;span class="nv"&gt;ExecStart&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;/usr/bin/create-eth0-bridge.sh
+
+&lt;span class="o"&gt;[&lt;/span&gt;Install&lt;span class="o"&gt;]&lt;/span&gt;
+&lt;span class="nv"&gt;WantedBy&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;multi-user.target
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Now enable the service to be run on startup by executing the command:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;systemctl &lt;span class="nb"&gt;enable&lt;/span&gt; create-eth0-bridge
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Create the bridge which contains other possible networks. Please
+   note that if you used VLAN tagging then you should add the VLAN
+   trunk port to your bridge. In this example I have a vlan trunk
+   which contains the management network on eth2.&lt;/p&gt;
+&lt;p&gt;Create the bridge named br-eth2 and add eth2 as port to the bridge
+with the following commands:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;brctl addbr br-eth2
+brctl addif br-eth2 eth2
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;To make the changes persistent accross reboots create
+the file &lt;code&gt;/etc/sysconfig/network-scripts/ifcfg-br-eth2&lt;/code&gt; with the following content:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;DEVICE=br-eth2
+BOOTPROTO=none
+ONBOOT=yes
+TYPE=Bridge
+NM_CONTROLLED=no
+DELAY=0
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;and the file &lt;code&gt;/etc/sysconfig/network-scripts/ifcfg-eth2&lt;/code&gt; with the following content:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;TYPE=Ethernet
+BOOTPROTO=none
+NAME=eth2
+UUID=fe45432f-f08a-4537-9851-d53be572aa00
+DEVICE=eth2
+ONBOOT=yes
+NM_CONTROLLED=no
+BRIDGE=br-eth2
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;3. Create the KVM VM&lt;/h2&gt;
+&lt;p&gt;In this part we create the KVM VM using libvirt XML to describe
+the VM. In the XML we specify to boot from network first, which
+enables us to use Fuel's PXE booting.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;First create the disk for our KVM VM with the following command:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;qemu-img create -f qcow2 -o &lt;span class="nv"&gt;preallocation&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;metadata /var/lib/libvirt/images/monitoring-1.img 300G
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Create a file &lt;code&gt;monitoring1-vm.xml&lt;/code&gt; with the following content:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nt"&gt;&amp;lt;domain&lt;/span&gt; &lt;span class="na"&gt;type=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;kvm&amp;#39;&lt;/span&gt; &lt;span class="na"&gt;id=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;2&amp;#39;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+  &lt;span class="nt"&gt;&amp;lt;name&amp;gt;&lt;/span&gt;monitoring-1&lt;span class="nt"&gt;&amp;lt;/name&amp;gt;&lt;/span&gt;
+  &lt;span class="nt"&gt;&amp;lt;memory&lt;/span&gt; &lt;span class="na"&gt;unit=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;KiB&amp;#39;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;8388608&lt;span class="nt"&gt;&amp;lt;/memory&amp;gt;&lt;/span&gt;
+  &lt;span class="nt"&gt;&amp;lt;vcpu&lt;/span&gt; &lt;span class="na"&gt;placement=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;static&amp;#39;&lt;/span&gt; &lt;span class="na"&gt;cpuset=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;0-7&amp;#39;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;8&lt;span class="nt"&gt;&amp;lt;/vcpu&amp;gt;&lt;/span&gt;
+  &lt;span class="nt"&gt;&amp;lt;os&amp;gt;&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;lt;type&lt;/span&gt; &lt;span class="na"&gt;arch=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;x86_64&amp;#39;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;hvm&lt;span class="nt"&gt;&amp;lt;/type&amp;gt;&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;lt;boot&lt;/span&gt; &lt;span class="na"&gt;dev=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;network&amp;#39;&lt;/span&gt;&lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;lt;boot&lt;/span&gt; &lt;span class="na"&gt;dev=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;hd&amp;#39;&lt;/span&gt;&lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;lt;boot&lt;/span&gt; &lt;span class="na"&gt;dev=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;cdrom&amp;#39;&lt;/span&gt;&lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;lt;bootmenu&lt;/span&gt; &lt;span class="na"&gt;enable=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;yes&amp;#39;&lt;/span&gt;&lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
+  &lt;span class="nt"&gt;&amp;lt;/os&amp;gt;&lt;/span&gt;
+  &lt;span class="nt"&gt;&amp;lt;features&amp;gt;&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;lt;acpi/&amp;gt;&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;lt;apic/&amp;gt;&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;lt;pae/&amp;gt;&lt;/span&gt;
+  &lt;span class="nt"&gt;&amp;lt;/features&amp;gt;&lt;/span&gt;
+  &lt;span class="nt"&gt;&amp;lt;clock&lt;/span&gt; &lt;span class="na"&gt;offset=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;utc&amp;#39;&lt;/span&gt;&lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
+  &lt;span class="nt"&gt;&amp;lt;devices&amp;gt;&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;lt;disk&lt;/span&gt; &lt;span class="na"&gt;type=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;file&amp;#39;&lt;/span&gt; &lt;span class="na"&gt;device=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;disk&amp;#39;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+      &lt;span class="nt"&gt;&amp;lt;driver&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;qemu&amp;#39;&lt;/span&gt; &lt;span class="na"&gt;type=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;qcow2&amp;#39;&lt;/span&gt;&lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
+      &lt;span class="nt"&gt;&amp;lt;source&lt;/span&gt; &lt;span class="na"&gt;file=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;/var/lib/libvirt/images/monitoring-1.img&amp;#39;&lt;/span&gt;&lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
+      &lt;span class="nt"&gt;&amp;lt;target&lt;/span&gt; &lt;span class="na"&gt;dev=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;sda&amp;#39;&lt;/span&gt; &lt;span class="na"&gt;bus=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;scsi&amp;#39;&lt;/span&gt;&lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;lt;/disk&amp;gt;&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;lt;interface&lt;/span&gt; &lt;span class="na"&gt;type=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;bridge&amp;#39;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+      &lt;span class="nt"&gt;&amp;lt;source&lt;/span&gt; &lt;span class="na"&gt;bridge=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;eth0&amp;#39;&lt;/span&gt;&lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
+      &lt;span class="nt"&gt;&amp;lt;model&lt;/span&gt; &lt;span class="na"&gt;type=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;virtio&amp;#39;&lt;/span&gt;&lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;lt;/interface&amp;gt;&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;lt;interface&lt;/span&gt; &lt;span class="na"&gt;type=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;bridge&amp;#39;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+      &lt;span class="nt"&gt;&amp;lt;source&lt;/span&gt; &lt;span class="na"&gt;bridge=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;br-eth2&amp;#39;&lt;/span&gt;&lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
+      &lt;span class="nt"&gt;&amp;lt;model&lt;/span&gt; &lt;span class="na"&gt;type=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;virtio&amp;#39;&lt;/span&gt;&lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;lt;/interface&amp;gt;&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;lt;graphics&lt;/span&gt; &lt;span class="na"&gt;type=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;vnc&amp;#39;&lt;/span&gt; &lt;span class="na"&gt;port=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;-1&amp;#39;&lt;/span&gt; &lt;span class="na"&gt;listen=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;127.0.0.1&amp;#39;&lt;/span&gt;&lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
+  &lt;span class="nt"&gt;&amp;lt;/devices&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;/domain&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Note you may need to tweak the parameters such as vcpus, memory
+and bridges according to your actual environment.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Launch and create the VM from the xml file:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;virsh define monitoring-1.xml
+virsh start monitoring-1
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;4. Fuel PXE booting and assigning roles&lt;/h2&gt;
+&lt;p&gt;After you have done the previous steps correctly, you should see
+a new unallocated node pop up. You can now assign any role to this
+new node.&lt;/p&gt;</content><category term="Openstack"></category><category term="fuel"></category><category term="centos"></category><category term="openstack"></category></entry><entry><title>Enable SRIOV on OpenStack Juno</title><link href="https://samos-it.com/posts/sriov-openstack-juno-fuel-6-1.html" rel="alternate"></link><published>2015-07-15T16:31:00+02:00</published><updated>2015-07-15T16:31:00+02:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2015-07-15:/posts/sriov-openstack-juno-fuel-6-1.html</id><summary type="html">&lt;p&gt;Update: This blog post is deprecated by the official documentation. Please take a look at the official
+&lt;a href="http://docs.openstack.org/liberty/networking-guide/adv_config_sriov.html" target="_blank"&gt;
+Networking Guide: Using SRIOV functionality&lt;/a&gt;. Patch set that added the official documentation:
+&lt;a target="_blank" href="https://review.openstack.org/#/c/213985/"&gt;changeset&lt;/a&gt;. &lt;/p&gt;
+&lt;table class="table table-bordered table-hover"&gt;
+&lt;caption&gt;Terms used&lt;/caption&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th class="col-md-2"&gt;Term&lt;/th&gt;
+&lt;th&gt;Definition&lt;/th&gt;
+&lt;/tr&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;th scope="row"&gt;SRIOV&lt;/th&gt;
+&lt;td&gt;Single Root IO Virtualization. SRIOV allows a PCIe device to appear to be multiple separate …&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/thead&gt;&lt;/table&gt;</summary><content type="html">&lt;p&gt;Update: This blog post is deprecated by the official documentation. Please take a look at the official
+&lt;a href="http://docs.openstack.org/liberty/networking-guide/adv_config_sriov.html" target="_blank"&gt;
+Networking Guide: Using SRIOV functionality&lt;/a&gt;. Patch set that added the official documentation:
+&lt;a target="_blank" href="https://review.openstack.org/#/c/213985/"&gt;changeset&lt;/a&gt;. &lt;/p&gt;
+&lt;table class="table table-bordered table-hover"&gt;
+&lt;caption&gt;Terms used&lt;/caption&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th class="col-md-2"&gt;Term&lt;/th&gt;
+&lt;th&gt;Definition&lt;/th&gt;
+&lt;/tr&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;th scope="row"&gt;SRIOV&lt;/th&gt;
+&lt;td&gt;Single Root IO Virtualization. SRIOV allows a PCIe device to appear to be multiple separate physical PCIe devices.
+&lt;a target="_blank" href="http://blog.scottlowe.org/2009/12/02/what-is-sr-iov/"&gt;What's SRIOV? By Scott Lowe&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;th scope="row"&gt;PF &amp; VF&lt;/th&gt;&lt;td&gt;PF is a physical function. VF is a virtual function. 
+A PF is the physical PCI-e network card. A VF is a virtual network card with it's own PCI address.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;This post describes how to enable Neutron SRIOV functionality on Mirantis OpenStack Juno
+deployed with Fuel 6.1 using Ubuntu 14.04 as host OS. This tutorial assumes you already have deployed OpenStack with
+OVS + vlan mode for networking. Next to that for the private interface we have selected
+eth3, which serves both as PF for the VFs and also as private vlan trunk for non SRIOV
+instances. In our environment we're using the "Intel Corporation 82599" network card which is assigned to eth3.
+We will create 7 VFs per PF.&lt;/p&gt;
+&lt;p&gt;I have created an ansible playbook to automate the whole process.
+You can view this Ansible playbook here: &lt;a href="https://github.com/samos123/fuel-ansible-sriov"&gt;Fuel Ansible SRIOV&lt;/a&gt;
+Automated methods are recommended over manual configuring!&lt;/p&gt;
+&lt;p&gt;The following steps have to be taken to enable SRIOV manually for reference:
+&lt;ol&gt;
+&lt;li&gt;Enabling Virtual Functions in the host Operating System&lt;/li&gt;
+&lt;li&gt;Whitelist which PCI devices should be used for SRIOV in nova.conf on computes&lt;/li&gt;
+&lt;li&gt;Configuring Neutron server for SRIOV&lt;/li&gt;
+&lt;li&gt;Enabling the PCIDeviceScheduler in nova-scheduler&lt;/li&gt;
+&lt;li&gt;Creating your SRIOV instance&lt;/li&gt;
+&lt;/ol&gt;&lt;/p&gt;
+&lt;h3&gt;1. Enable Virtual Functions in Host OS&lt;/h3&gt;
+&lt;p&gt;First we need to make sure SRIOV is enabled in BIOS, check for VT-d and make sure it's enabled.
+After enabling VT-d we also need enable IOMMU on Linux by adding intel_iommu=on to kernel parameters.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;vim /etc/default/grub
+change &lt;span class="s2"&gt;&amp;quot;GRUB_CMDLINE_LINUX_DEFAULT=&amp;quot;&lt;/span&gt;nomdmonddf nomdmonisw&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;
+&lt;span class="s2"&gt;to &amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;GRUB_CMDLINE_LINUX_DEFAULT&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;nomdmonddf nomdmonisw intel_iommu=on&amp;quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;If you added new parameters you need to run:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;update-grub
+reboot
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;On each compute node we need to create the VFs via the PCI SYS interface.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;7&amp;#39;&lt;/span&gt; &amp;gt; /sys/class/net/eth3/device/sriov_numvfs
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Now verify that the VFs have been created correctly&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;lspci &lt;span class="p"&gt;|&lt;/span&gt; grep Ethernet
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;We just created the VFs for this session. If we would reboot the node these changes would get lost.
+So we also add a line to /etc/rc.local to apply these settings on a reboot.
+Note: The suggested way of making these settings persistent seems to be through sysfs.conf, but
+for some reason it did not work for me hence the rc.local workaround.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;echo &amp;#39;7&amp;#39; &amp;gt; /sys/class/net/eth3/device/sriov_numvfs&amp;quot;&lt;/span&gt; &amp;gt;&amp;gt; /etc/rc.local
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Verify by rebooting your node that the settings persist.&lt;/p&gt;
+&lt;h3&gt;2. Whitelist PCI devices nova.conf on computes&lt;/h3&gt;
+&lt;p&gt;In /etc/nova/nova.conf add the line &lt;code&gt;pci_passthrough_whitelist={ "devname": "eth3", "physical_network": "physnet2"}&lt;/code&gt;, this tells nova
+that all VFs belonging to eth3 are allowed to be passed through to VMs. Restart nova compute to let the changes have effect
+&lt;code&gt;service restart nova-compute&lt;/code&gt;&lt;/p&gt;
+&lt;h3&gt;3. Configuring Neutron server&lt;/h3&gt;
+&lt;p&gt;Add sriovnicswitch to neutron ml2 conf&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sed -i &lt;span class="s2"&gt;&amp;quot;s/mechanism_drivers =openvswitch/mechanism_drivers =openvswitch,sriovnicswitch/g&amp;quot;&lt;/span&gt; /etc/neutron/plugins/ml2/ml2_conf.ini
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Find out the vendor_id and product_id of your VFs. Please note this should be the VF not the PF&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;lspci -nn &lt;span class="p"&gt;|&lt;/span&gt; grep -i ethernet
+&lt;span class="m"&gt;87&lt;/span&gt;:00.0 Ethernet controller &lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="m"&gt;0200&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;: Intel Corporation &lt;span class="m"&gt;82599&lt;/span&gt; &lt;span class="m"&gt;10&lt;/span&gt; Gigabit Dual Port Backplane Connection &lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="m"&gt;8086&lt;/span&gt;:10f8&lt;span class="o"&gt;]&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;rev &lt;span class="m"&gt;01&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;span class="m"&gt;87&lt;/span&gt;:10.1 Ethernet controller &lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="m"&gt;0200&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;: Intel Corporation &lt;span class="m"&gt;82599&lt;/span&gt; Ethernet Controller Virtual Function &lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="m"&gt;8086&lt;/span&gt;:10ed&lt;span class="o"&gt;]&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;rev &lt;span class="m"&gt;01&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;span class="m"&gt;87&lt;/span&gt;:10.3 Ethernet controller &lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="m"&gt;0200&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;: Intel Corporation &lt;span class="m"&gt;82599&lt;/span&gt; Ethernet Controller Virtual Function &lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="m"&gt;8086&lt;/span&gt;:10ed&lt;span class="o"&gt;]&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;rev &lt;span class="m"&gt;01&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;In our case the vendor_id is 8086 and the product_id is 10ed. We need to tell Neutron the vendor_id and product_id of
+the VFs that are supported.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sed -i &lt;span class="s2"&gt;&amp;quot;s/# supported_pci_vendor_devs.*=.*/supported_pci_vendor_devs = 8086:10ed/g&amp;quot;&lt;/span&gt; /etc/neutron/plugins/ml2/ml2_conf_sriov.ini
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Neutron also has support for running a special sriov-agent which is able set the admin state. I didn't see
+any need for setting admin state, so to reduce complexity, we've disabled sriov-agent. &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sed -i &lt;span class="s2"&gt;&amp;quot;s/# agent_required =.*/agent_required=false/g&amp;quot;&lt;/span&gt; /etc/neutron/plugins/ml2/ml2_conf_sriov.ini
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;We now need to add these new config files as parameter to the neutron-server daemon.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;vim /etc/init/neutron-server.conf
+change &lt;span class="s2"&gt;&amp;quot;--config-file /etc/neutron/neutron.conf&amp;quot;&lt;/span&gt;
+to &lt;span class="s2"&gt;&amp;quot;--config-file /etc/neutron/neutron.conf --config-file /etc/neutron/plugin.ini --config-file /etc/neutron/plugins/ml2/ml2_conf_sriov.ini&amp;quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Restart neutron-server on every controller&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;service neutron-server restart
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;4. Enabling the PCIDeviceScheduler in nova-scheduler&lt;/h3&gt;
+&lt;p&gt;On every controller node running nova-scheduler we need to add PCIDeviceScheduler to the filters.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;vim /etc/nova/nova.conf
+change &lt;span class="s2"&gt;&amp;quot;scheduler_default_filters=DifferentHostFilter,RetryFilter,AvailabilityZoneFilter,RamFilter,CoreFilter,DiskFilter,ComputeFilter,ComputeCapabilitiesFilter,ImagePropertiesFilter,ServerGroupAntiAffinityFilter,ServerGroupAffinityFilter&amp;quot;&lt;/span&gt;
+
+to &lt;span class="s2"&gt;&amp;quot;scheduler_default_filters=DifferentHostFilter,RetryFilter,AvailabilityZoneFilter,RamFilter,CoreFilter,DiskFilter,ComputeFilter,ComputeCapabilitiesFilter,ImagePropertiesFilter,ServerGroupAntiAffinityFilter,ServerGroupAffinityFilter,PciPassthroughFilter&amp;quot;&lt;/span&gt;
+
+also add the following line: &lt;span class="s2"&gt;&amp;quot;scheduler_available_filters=nova.scheduler.filters.pci_passthrough_filter.PciPassthroughFilter&amp;quot;&lt;/span&gt;
+below the line: &lt;span class="s2"&gt;&amp;quot;scheduler_available_filters=nova.scheduler.filters.all_filters&amp;quot;&lt;/span&gt;
+
+&lt;span class="c1"&gt;# Restart nova-scheduler&lt;/span&gt;
+service nova-scheduler restart
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;5. Launching an Instance with SRIOV ports&lt;/h3&gt;
+&lt;p&gt;After configuring all components we can start trying to launch an instance through the CLI or API.
+Horizon currently does not support creating SRIOV instances.&lt;/p&gt;
+&lt;p&gt;Get the id of the neutron network where you want the SR-IOV port to be created.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nv"&gt;net_id&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="sb"&gt;`&lt;/span&gt;neutron net-show net04 &lt;span class="p"&gt;|&lt;/span&gt; grep &lt;span class="s2"&gt;&amp;quot;\ id\ &amp;quot;&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; awk &lt;span class="s1"&gt;&amp;#39;{ print $4 }&amp;#39;&lt;/span&gt;&lt;span class="sb"&gt;`&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Create the SR-IOV port. We specify vnic_type direct, which means that this a SR-IOV port.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nv"&gt;port_id&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="sb"&gt;`&lt;/span&gt;neutron port-create &lt;span class="nv"&gt;$net_id&lt;/span&gt; --name sriov_port --binding:vnic_type direct &lt;span class="p"&gt;|&lt;/span&gt; grep &lt;span class="s2"&gt;&amp;quot;\ id\ &amp;quot;&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; awk &lt;span class="s1"&gt;&amp;#39;{ print $4 }&amp;#39;&lt;/span&gt;&lt;span class="sb"&gt;`&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Create the VM specifying that as 1st nic we want to use the previously created sr-iov port.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;nova boot --flavor m1.large --image ubuntu_14.04 --nic port-id&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;$port_id&lt;/span&gt; --key-name sam test-sriov
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;References which deserve credit:
+* &lt;a href="https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/6/html/Virtualization_Host_Configuration_and_Guest_Installation_Guide/sect-Virtualization_Host_Configuration_and_Guest_Installation_Guide-SR_IOV-How_SR_IOV_Libvirt_Works.html"&gt;Red Hat Documentation on using SRIOV&lt;/a&gt;
+* &lt;a href="https://wiki.openstack.org/wiki/SR-IOV-Passthrough-For-Networking"&gt;OpenStack Wiki: SR-IOV-Passthrough-For-Networking&lt;/a&gt;&lt;/p&gt;</content><category term="Openstack"></category><category term="openstack"></category><category term="networking"></category><category term="sriov"></category><category term="sr-iov"></category><category term="fuel"></category><category term="mirantis openstack"></category></entry><entry><title>Hadoop on demand with Openstack, Cloudinit and Salt</title><link href="https://samos-it.com/posts/hadoop-on-demand-with-openstack-cloudinit-salt.html" rel="alternate"></link><published>2014-11-27T13:12:00+01:00</published><updated>2014-11-27T13:12:00+01:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2014-11-27:/posts/hadoop-on-demand-with-openstack-cloudinit-salt.html</id><summary type="html">&lt;p&gt;This post will describe the whole process of providing hadoop on demand
+through Openstack, Cloudinit and Saltstack. We will use Openstack
+to provision servers on demand, cloudconfig to install salt-master and
+salt-minion and saltstack to deploy hadoop namenode and datanodes, all fully
+automated. This makes us able to deploy a …&lt;/p&gt;</summary><content type="html">&lt;p&gt;This post will describe the whole process of providing hadoop on demand
+through Openstack, Cloudinit and Saltstack. We will use Openstack
+to provision servers on demand, cloudconfig to install salt-master and
+salt-minion and saltstack to deploy hadoop namenode and datanodes, all fully
+automated. This makes us able to deploy a 5-100+ node (still need to test 20+) Hadoop HDFS
+cluster within 5 minutes.&lt;/p&gt;
+&lt;h2&gt;Deploy salt-master with Cloudconfig&lt;/h2&gt;
+&lt;p&gt;We will install and configure salt-master to
+auto_accept key files from the minions. Please note
+that this is a security risk.&lt;/p&gt;
+&lt;p&gt;Create the following master-cloudconfig file:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;#cloud-config&lt;/span&gt;
+&lt;span class="nt"&gt;apt_mirror&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;http://mirror.bjtu.edu.cn/ubuntu/&lt;/span&gt;
+
+&lt;span class="nt"&gt;apt_sources&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+ &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="nt"&gt;source&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;ppa:saltstack/salt&amp;quot;&lt;/span&gt;
+
+&lt;span class="nt"&gt;packages&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+ &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;python-software-properties&lt;/span&gt;
+ &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;salt-master&lt;/span&gt;
+ &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;git&lt;/span&gt;
+
+&lt;span class="nt"&gt;runcmd&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+ &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;bash /tmp/bootstrap-master.sh&lt;/span&gt;
+
+&lt;span class="nt"&gt;write_files&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+ &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="nt"&gt;content&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p p-Indicator"&gt;|&lt;/span&gt;
+        &lt;span class="no"&gt;#!/bin/bash&lt;/span&gt;
+        &lt;span class="no"&gt;sed -i &amp;#39;s/^#auto_accept.*$/auto_accept: True/g&amp;#39; /etc/salt/master&lt;/span&gt;
+        &lt;span class="no"&gt;sudo service salt-master restart&lt;/span&gt;
+   &lt;span class="nt"&gt;path&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;/tmp/bootstrap-master.sh&lt;/span&gt;
+   &lt;span class="nt"&gt;permissions&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;0755&amp;quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Now launch openstack instance with: &lt;code&gt;nova boot --image ubuntu_14.04 --user-data master-cloudconfig --flavor m1.medium --key-name sam salt_master&lt;/code&gt;.
+The salt-master that we launched in our case has as ip 192.168.111.66. You can ssh to this machine via ssh ubuntu@192.168.111.66&lt;/p&gt;
+&lt;h2&gt;Configuring the salt master to deploy a hadoop cluster&lt;/h2&gt;
+&lt;p&gt;In order to be able to deploy hadoop on the salt-master we are going to
+manually configure the salt-master with the official hadoop formula.
+We could also automate this via cloudconfig, but for sake of demonstration
+I'm going to list the manual steps here.&lt;/p&gt;
+&lt;h3&gt;Configuring salt to use hadoop-formula and it's dependencies&lt;/h3&gt;
+&lt;p&gt;We are going to use the following formula: &lt;a href="https://github.com/saltstack-formulas/hadoop-formula"&gt;Hadoop formula&lt;/a&gt;, which
+has as dependencies the &lt;a href="https://github.com/saltstack-formulas/hostsfile-formula"&gt;hostsfile-formula&lt;/a&gt; and the
+&lt;a href="https://github.com/saltstack-formulas/sun-java-formula"&gt;sun-java-formula&lt;/a&gt;.
+The hostsfile formula is to make all nodes accessible by their hostname/fqdn and
+the sun-java-formula lets you automatically install java from oracle.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;ssh ubuntu@192.168.111.66 &lt;span class="c1"&gt;# SSH into your salt-master&lt;/span&gt;
+sudo mkdir /srv/salt
+sudo mkdir /srv/salt/formulas
+sudo &lt;span class="s2"&gt;&amp;quot;cd /srv/salt/formulas &amp;amp;&amp;amp; &lt;/span&gt;
+&lt;span class="s2"&gt;      git clone https://github.com/saltstack-formulas/hadoop-formula&lt;/span&gt;
+&lt;span class="s2"&gt;      git clone https://github.com/saltstack-formulas/hostsfile-formula &amp;amp;&amp;amp;&lt;/span&gt;
+&lt;span class="s2"&gt;      git clone https://github.com/saltstack-formulas/sun-java-formula&amp;quot;&lt;/span&gt;
+
+cat &lt;span class="s"&gt;&amp;lt;&amp;lt; EOF &amp;gt; /etc/salt/master.d/file_roots.conf&lt;/span&gt;
+&lt;span class="s"&gt;file_roots:&lt;/span&gt;
+&lt;span class="s"&gt;  base:&lt;/span&gt;
+&lt;span class="s"&gt;    - /srv/salt&lt;/span&gt;
+&lt;span class="s"&gt;    - /srv/salt/formulas/hadoop-formula&lt;/span&gt;
+&lt;span class="s"&gt;    - /srv/salt/formulas/hostsfile-formula&lt;/span&gt;
+&lt;span class="s"&gt;    - /srv/salt/formulas/sun-java-formula&lt;/span&gt;
+&lt;span class="s"&gt;EOF&lt;/span&gt;
+
+cat &lt;span class="s"&gt;&amp;lt;&amp;lt; EOF &amp;gt; /etc/salt/master.d/pillar_roots.conf&lt;/span&gt;
+&lt;span class="s"&gt;pillar_roots:&lt;/span&gt;
+&lt;span class="s"&gt;  base:&lt;/span&gt;
+&lt;span class="s"&gt;    - /srv/pillar&lt;/span&gt;
+&lt;span class="s"&gt;EOF&lt;/span&gt;
+
+sudo service salt-master restart
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;Creating SSH keypairs for hadoop-formula&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; /srv/salt/formulas/hadoop-formula/hadoop/files &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; ./generate-keypairs.sh
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;Configuring the top.sls state file to include hadoop and deps&lt;/h3&gt;
+&lt;p&gt;On the salt-master create the following file /srv/salt/top.sls:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nt"&gt;base&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+  &lt;span class="s"&gt;&amp;#39;G@roles:hadoop_slave&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;or&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;G@roles:hadoop_master&amp;#39;&lt;/span&gt;&lt;span class="p p-Indicator"&gt;:&lt;/span&gt;
+    &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="nt"&gt;match&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;compound&lt;/span&gt;
+    &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;hostsfile&lt;/span&gt;
+    &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;hostsfile.hostname&lt;/span&gt;
+    &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;sun-java&lt;/span&gt;
+    &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;sun-java.env&lt;/span&gt;
+    &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;hadoop&lt;/span&gt;
+    &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;hadoop.hdfs&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;By using &lt;a href="http://docs.saltstack.com/en/latest/topics/pillar/"&gt;pillar&lt;/a&gt; we can also change the parameters of hadoop.
+You can check all available parameters that are change-able here: 
+&lt;a href="https://github.com/saltstack-formulas/hadoop-formula/blob/master/pillar.example"&gt;hadoop-pillar.example&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Create the following top.sls pillar file /srv/pillar/top.sls:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nt"&gt;base&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+  &lt;span class="s"&gt;&amp;#39;G@roles:hadoop_slave&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;or&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;G@roles:hadoop_master&amp;#39;&lt;/span&gt;&lt;span class="p p-Indicator"&gt;:&lt;/span&gt;
+     &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;hadoop&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;and the following hadoop specific pillar file /srv/pillar/hadoop.sls:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nt"&gt;hadoop&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+  &lt;span class="nt"&gt;version&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;hdp-2.2.0&lt;/span&gt; &lt;span class="c1"&gt;# [&amp;#39;apache-1.2.1&amp;#39;, &amp;#39;apache-2.2.0&amp;#39;, &amp;#39;hdp-1.3.0&amp;#39;, &amp;#39;hdp-2.2.0&amp;#39;, &amp;#39;cdh-4.5.0&amp;#39;, &amp;#39;cdh-4.5.0-mr1&amp;#39;]&lt;/span&gt;
+  &lt;span class="nt"&gt;users&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="nt"&gt;hadoop&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;6000&lt;/span&gt;
+    &lt;span class="nt"&gt;hdfs&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;6001&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;Deploy salt-minions as hadoop nodes&lt;/h2&gt;
+&lt;p&gt;Now that we have configured our salt-master we can start
+deploying the salt-minions which will either server as hadoop-master(namenode)
+or as hadoop-slave(datanode).&lt;/p&gt;
+&lt;h3&gt;Launching hadoop-master(namenode) nodes&lt;/h3&gt;
+&lt;p&gt;First create our cloudconfig file used by openstack hadoopmaster-cloudconfig:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;#cloud-config&lt;/span&gt;
+&lt;span class="nt"&gt;apt_mirror&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;http://mirror.bjtu.edu.cn/ubuntu/&amp;quot;&lt;/span&gt;
+&lt;span class="nt"&gt;apt_sources&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; 
+  &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="nt"&gt;source&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;ppa:saltstack/salt&amp;quot;&lt;/span&gt;
+&lt;span class="nt"&gt;packages&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; 
+  &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;python-software-properties&lt;/span&gt;
+  &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;salt-minion&lt;/span&gt;
+
+&lt;span class="nt"&gt;runcmd&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; 
+ &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;bash /tmp/bootstrap-minion.sh&lt;/span&gt;
+
+&lt;span class="nt"&gt;write_files&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; 
+  &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="nt"&gt;content&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p p-Indicator"&gt;|&lt;/span&gt;
+         &lt;span class="no"&gt;roles:&lt;/span&gt;
+            &lt;span class="no"&gt;- hadoop_master&lt;/span&gt;
+    &lt;span class="nt"&gt;path&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;/etc/salt/grains&lt;/span&gt;
+  &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="nt"&gt;content&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p p-Indicator"&gt;|&lt;/span&gt;
+        &lt;span class="no"&gt;#!/bin/bash&lt;/span&gt;
+        &lt;span class="no"&gt;sed -i &amp;#39;s/^#master.*$/master: 192.168.111.66/g&amp;#39; /etc/salt/minion&lt;/span&gt;
+        &lt;span class="no"&gt;sudo service salt-minion restart&lt;/span&gt;
+    &lt;span class="nt"&gt;path&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;/tmp/bootstrap-minion.sh&lt;/span&gt;
+    &lt;span class="nt"&gt;permissions&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;0755&amp;quot;&lt;/span&gt;
+  &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="nt"&gt;content&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p p-Indicator"&gt;|&lt;/span&gt;
+        &lt;span class="no"&gt;mine_functions:&lt;/span&gt;
+            &lt;span class="no"&gt;network.interfaces: []&lt;/span&gt;
+            &lt;span class="no"&gt;network.ip_addrs: []&lt;/span&gt;
+            &lt;span class="no"&gt;grains.items: []&lt;/span&gt;
+    &lt;span class="nt"&gt;path&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;/etc/salt/minion.d/mine_functions.conf&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Then create a new instance using openstack:
+&lt;code&gt;nova boot --image ubuntu_14.04 --user-data hadoopmaster-cloudconfig --flavor m1.medium --key-name sam hadoop-master-1&lt;/code&gt;&lt;/p&gt;
+&lt;h3&gt;Deploying hadoop-slave(datanode) nodes&lt;/h3&gt;
+&lt;p&gt;Create a hadoopslave-cloudconfig:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;#cloud-config&lt;/span&gt;
+&lt;span class="nt"&gt;apt_mirror&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;http://mirror.bjtu.edu.cn/ubuntu/&amp;quot;&lt;/span&gt;
+&lt;span class="nt"&gt;apt_sources&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; 
+  &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="nt"&gt;source&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;ppa:saltstack/salt&amp;quot;&lt;/span&gt;
+&lt;span class="nt"&gt;packages&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; 
+  &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;python-software-properties&lt;/span&gt;
+  &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;salt-minion&lt;/span&gt;
+
+&lt;span class="nt"&gt;runcmd&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; 
+ &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;bash /tmp/bootstrap-minion.sh&lt;/span&gt;
+
+&lt;span class="nt"&gt;write_files&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; 
+  &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="nt"&gt;content&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p p-Indicator"&gt;|&lt;/span&gt;
+         &lt;span class="no"&gt;roles:&lt;/span&gt;
+            &lt;span class="no"&gt;- hadoop_slave&lt;/span&gt;
+    &lt;span class="nt"&gt;path&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;/etc/salt/grains&lt;/span&gt;
+  &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="nt"&gt;content&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p p-Indicator"&gt;|&lt;/span&gt;
+        &lt;span class="no"&gt;#!/bin/bash&lt;/span&gt;
+        &lt;span class="no"&gt;sed -i &amp;#39;s/^#master.*$/master: 192.168.111.66/g&amp;#39; /etc/salt/minion&lt;/span&gt;
+        &lt;span class="no"&gt;sudo service salt-minion restart&lt;/span&gt;
+    &lt;span class="nt"&gt;path&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;/tmp/bootstrap-minion.sh&lt;/span&gt;
+    &lt;span class="nt"&gt;permissions&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;0755&amp;quot;&lt;/span&gt;
+  &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="nt"&gt;content&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p p-Indicator"&gt;|&lt;/span&gt;
+        &lt;span class="no"&gt;mine_functions:&lt;/span&gt;
+            &lt;span class="no"&gt;network.interfaces: []&lt;/span&gt;
+            &lt;span class="no"&gt;network.ip_addrs: []&lt;/span&gt;
+            &lt;span class="no"&gt;grains.items: []&lt;/span&gt;
+    &lt;span class="nt"&gt;path&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;/etc/salt/minion.d/mine_functions.conf&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Now launch 10 hadoop-slave nodes
+&lt;code&gt;nova boot --num-instances 10 --image ubuntu_14.04 --user-data hadoopslave-cloudconfig --flavor m1.medium --key-name sam hadoop-slave&lt;/code&gt;&lt;/p&gt;
+&lt;h3&gt;Let saltstack deploy hadoop&lt;/h3&gt;
+&lt;p&gt;First make sure that the salt-master detected all our hadoop-master and hadoop-slave nodes. Execute the following comand: &lt;code&gt;salt '*' managed.up&lt;/code&gt;
+it should show your 11 nodes.&lt;/p&gt;
+&lt;p&gt;If all nodes are up and detected you can start deployment of hadoop with the following command:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;salt &lt;span class="s1"&gt;&amp;#39;*&amp;#39;&lt;/span&gt; state.highstate
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;Accessing the hadoop HDFS cluster&lt;/h2&gt;
+&lt;p&gt;After hadoop has been successfully deployed you can go to http://{hadoop_masterip}:50070 and check that
+10 live nodes are active.&lt;/p&gt;
+&lt;p&gt;Now you can login to any of the nodes and save files to hdfs like this:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sudo -u hdfs -i
+hadoop fs -mkdir -p /user/hdfs&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;
+&lt;span class="s2"&gt;hadoop fs -put /tmp/bootstrap-minion.sh /user/hdfs/test.sh&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Hope this tutorial was useful! &lt;/p&gt;
+&lt;p&gt;Notes: You can also configure
+&lt;a href="https://github.com/number5/cloud-init/blob/master/doc/examples/cloud-config-salt-minion.txt"&gt;salt-minion directly through cloudconfig&lt;/a&gt; instead.&lt;/p&gt;</content><category term="Openstack"></category><category term="openstack"></category><category term="salt"></category><category term="cloudinit"></category><category term="cloudconfig"></category><category term="hadoop"></category><category term="devops"></category></entry><entry><title>Neutron Multiple allocation pools single subnet (Solve Fragmented floating ips problem)</title><link href="https://samos-it.com/posts/neutron-multiple-allocation-pools-single-subnet.html" rel="alternate"></link><published>2014-11-24T12:01:00+01:00</published><updated>2014-11-24T12:01:00+01:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2014-11-24:/posts/neutron-multiple-allocation-pools-single-subnet.html</id><summary type="html">&lt;p&gt;In a lab environment in the university I only had access to a list of fragmented
+public routable IP addresses in a single subnet. For example I got access to the following ips
+50.15.15.10, 55.15.15.12-15, 55.15.15.17. But I am not allowed …&lt;/p&gt;</summary><content type="html">&lt;p&gt;In a lab environment in the university I only had access to a list of fragmented
+public routable IP addresses in a single subnet. For example I got access to the following ips
+50.15.15.10, 55.15.15.12-15, 55.15.15.17. But I am not allowed
+to use 55.15.15.11 and 55.15.15.16. &lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Update&lt;/strong&gt;: The Openstack neutron API supports fragmented floating ips but not through the CLI.
+You have to use the Python API like below:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;logging&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;neutronclient.neutron&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;client&lt;/span&gt;
+
+&lt;span class="n"&gt;auth_url&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;http://192.168.33.11:5000/v2.0&amp;quot;&lt;/span&gt;
+
+&lt;span class="n"&gt;logging&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;basicConfig&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;level&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;logging&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;DEBUG&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;neutron&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;client&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Client&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;2.0&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;username&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;admin&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;password&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;password&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;tenant_name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;demo&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;auth_url&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;auth_url&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="nb"&gt;print&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;join&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;neutron&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;list_subnets&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt;
+
+&lt;span class="n"&gt;req&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;subnet&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;allocation_pools&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[{&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;start&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;10.0.2.3&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;end&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;10.0.2.15&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;},&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;start&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;10.0.2.17&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;end&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;10.0.2.17&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;},&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;start&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;10.0.2.19&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;end&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;10.0.2.254&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;}]}}&lt;/span&gt;
+
+&lt;span class="n"&gt;neutron&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;update_subnet&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;d5d48930-7bfb-4f0c-8968-13f8af785868&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;req&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;Old hacky way:&lt;/h2&gt;
+&lt;p&gt;It seems that currently the only way to solve this is to manually change the database
+bypassing the API. I used the following SQL insert statements to solve my problem.
+This is assuming that 55.15.15.10 is already part of the pool.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;use&lt;/span&gt; &lt;span class="n"&gt;neutron&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="k"&gt;select&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="k"&gt;from&lt;/span&gt; &lt;span class="n"&gt;ipallocationpools&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="c1"&gt;--------------------------------------+--------------------------------------+----------------+-----------------+&lt;/span&gt;
+&lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;id&lt;/span&gt;                                   &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;subnet_id&lt;/span&gt;                            &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;first_ip&lt;/span&gt;       &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;last_ip&lt;/span&gt;         &lt;span class="o"&gt;|&lt;/span&gt;
+&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="c1"&gt;--------------------------------------+--------------------------------------+----------------+-----------------+&lt;/span&gt;
+&lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="mi"&gt;78857059&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;658&lt;/span&gt;&lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;4027&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;909&lt;/span&gt;&lt;span class="n"&gt;d&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;7&lt;/span&gt;&lt;span class="n"&gt;b8c6d62e52f&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;c58d4e69&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;d614&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="n"&gt;d05&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;91&lt;/span&gt;&lt;span class="n"&gt;e5&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;95&lt;/span&gt;&lt;span class="n"&gt;b5cc48b670&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="mi"&gt;55&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;15&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;15&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;    &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="mi"&gt;55&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;15&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;15&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;     &lt;span class="o"&gt;|&lt;/span&gt;
+&lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;c2931835&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;050&lt;/span&gt;&lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;40&lt;/span&gt;&lt;span class="n"&gt;a0&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;bfc6&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;6&lt;/span&gt;&lt;span class="n"&gt;dcb833517f6&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;eda970d4&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;21&lt;/span&gt;&lt;span class="n"&gt;c0&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;4488&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;85&lt;/span&gt;&lt;span class="n"&gt;b2&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="n"&gt;d3d0000ebb9&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="mi"&gt;192&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;168&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;111&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;  &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="mi"&gt;192&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;168&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;111&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;254&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;
+&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="c1"&gt;--------------------------------------+--------------------------------------+----------------+-----------------+&lt;/span&gt;
+
+&lt;span class="k"&gt;insert&lt;/span&gt; &lt;span class="k"&gt;into&lt;/span&gt; &lt;span class="n"&gt;ipallocationpools&lt;/span&gt; &lt;span class="k"&gt;VALUES&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;UUID&lt;/span&gt;&lt;span class="p"&gt;(),&lt;/span&gt; &lt;span class="ss"&gt;&amp;quot;c58d4e69-d614-4d05-91e5-95b5cc48b670&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; 
+                                      &lt;span class="ss"&gt;&amp;quot;55.15.15.12&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;&amp;quot;55.15.15.15&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt; 
+&lt;span class="k"&gt;insert&lt;/span&gt; &lt;span class="k"&gt;into&lt;/span&gt; &lt;span class="n"&gt;ipallocationpools&lt;/span&gt; &lt;span class="k"&gt;VALUES&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;UUID&lt;/span&gt;&lt;span class="p"&gt;(),&lt;/span&gt; &lt;span class="ss"&gt;&amp;quot;c58d4e69-d614-4d05-91e5-95b5cc48b670&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; 
+                                      &lt;span class="ss"&gt;&amp;quot;55.15.15.17&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;&amp;quot;55.15.15.17&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;After inserting the ips, the floating ips can be allocated automatically using horizon and be successfuly assigned to
+instances. But please note that this is not officially supported and hacky! I haven't seen any
+problems as of now, but there probably are some problems with this approach. I just used it
+for testing.&lt;/p&gt;
+&lt;h3&gt;Side note&lt;/h3&gt;
+&lt;p&gt;Previously in nova-network you could easily add single floating ips or smaller ranges within
+a subnet. But with neutron the CLI and API's seems to not support this. So after looking at the
+code I noticed that the data model in fact supports multiple allocation pools for a single subnet:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;IPAllocationPool&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;model_base&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;BASEV2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;HasId&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="sd"&gt;&amp;quot;&amp;quot;&amp;quot;Representation of an allocation pool in a Neutron subnet.&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+
+    &lt;span class="n"&gt;subnet_id&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;sa&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Column&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;sa&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;String&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;36&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;sa&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ForeignKey&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;subnets.id&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                                                       &lt;span class="n"&gt;ondelete&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;CASCADE&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+                          &lt;span class="n"&gt;nullable&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;True&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;first_ip&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;sa&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Column&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;sa&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;String&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;64&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;nullable&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;False&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;last_ip&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;sa&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Column&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;sa&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;String&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;64&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;nullable&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;False&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;available_ranges&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;orm&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;relationship&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;IPAvailabilityRange&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                                        &lt;span class="n"&gt;backref&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;ipallocationpool&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                                        &lt;span class="n"&gt;lazy&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;joined&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                                        &lt;span class="n"&gt;cascade&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;all, delete-orphan&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+
+&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Subnet&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;model_base&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;BASEV2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;HasId&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;HasTenant&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="sd"&gt;&amp;quot;&amp;quot;&amp;quot;Represents a neutron subnet.&lt;/span&gt;
+
+&lt;span class="sd"&gt;    When a subnet is created the first and last entries will be created. These&lt;/span&gt;
+&lt;span class="sd"&gt;    are used for the IP allocation.&lt;/span&gt;
+&lt;span class="sd"&gt;    &amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+
+    &lt;span class="n"&gt;name&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;sa&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Column&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;sa&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;String&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;255&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+    &lt;span class="n"&gt;network_id&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;sa&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Column&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;sa&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;String&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;36&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;sa&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ForeignKey&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;networks.id&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+    &lt;span class="n"&gt;ip_version&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;sa&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Column&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;sa&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Integer&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;nullable&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;False&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;cidr&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;sa&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Column&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;sa&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;String&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;64&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;nullable&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;False&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;gateway_ip&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;sa&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Column&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;sa&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;String&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;64&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+    &lt;span class="n"&gt;allocation_pools&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;orm&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;relationship&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;IPAllocationPool&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                                        &lt;span class="n"&gt;backref&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;subnet&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                                        &lt;span class="n"&gt;lazy&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;joined&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                                        &lt;span class="n"&gt;cascade&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;delete&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content><category term="Openstack"></category><category term="openstack"></category><category term="networking"></category><category term="neutron"></category></entry><entry><title>Openstack Networking Study Notes</title><link href="https://samos-it.com/posts/openstack-networking-study-notes.html" rel="alternate"></link><published>2014-08-29T13:42:00+02:00</published><updated>2014-08-29T13:42:00+02:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2014-08-29:/posts/openstack-networking-study-notes.html</id><content type="html">&lt;p&gt;I recommend these links in the following order:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://blog.scottlowe.org/2013/05/07/using-gre-tunnels-with-open-vswitch/"&gt;ScottLowe blog: Using GRE tunnels with OpenvSwitch&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://blog.scottlowe.org/2013/05/15/examining-open-vswitch-traffic-patterns/"&gt;ScottLowe blog: Examining OpenvSwitch traffic patterns&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.hastexo.com/system/files/neutron_packet_flows-notes-handout.pdf"&gt;Hastexto: Neutron Packet Flows (PDF/Presentation)&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</content><category term="Openstack"></category><category term="openstack"></category><category term="networking"></category><category term="neutron"></category><category term="study"></category></entry></feed>

@@ -22,11 +22,6 @@ TIMEZONE = 'Europe/Paris'
 
 DEFAULT_LANG = 'en'
 
-# Feed generation is usually not desired when developing
-FEED_ALL_ATOM = None
-CATEGORY_FEED_ATOM = None
-TRANSLATION_FEED_ATOM = None
-
 # Blogroll
 LINKS = (('Websu (Web Speed Analysis)', 'https://websu.io'),
          ('github.com/websu-io/websu', 'https://github.com/websu-io/websu'),)

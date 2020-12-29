@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Sam Stoelinga - Python</title><link href="https://samos-it.com/" rel="alternate"></link><link href="https://samos-it.com/feeds/python.atom.xml" rel="self"></link><id>https://samos-it.com/</id><updated>2013-05-30T15:48:00+02:00</updated><entry><title>Install PyQt in a virtualenv with Pip</title><link href="https://samos-it.com/posts/install-pyqt-in-a-virtualenv-with-pip.html" rel="alternate"></link><published>2013-05-30T15:48:00+02:00</published><updated>2013-05-30T15:48:00+02:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2013-05-30:/posts/install-pyqt-in-a-virtualenv-with-pip.html</id><summary type="html">&lt;p&gt;Noticed that pip install pyqt isn't working? At least at the time of
+writing this blog it isn't..&lt;/p&gt;
+&lt;p&gt;This is the error that I got:&lt;br&gt;
+IOError: [Errno 2] No such file or directory: setup.py&lt;/p&gt;
+&lt;p&gt;It seems they didn't package it well and it's using configure.py to
+install. So …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Noticed that pip install pyqt isn't working? At least at the time of
+writing this blog it isn't..&lt;/p&gt;
+&lt;p&gt;This is the error that I got:&lt;br&gt;
+IOError: [Errno 2] No such file or directory: setup.py&lt;/p&gt;
+&lt;p&gt;It seems they didn't package it well and it's using configure.py to
+install. So here is the solution to install it by using pip to download
+the files and configure and install manually.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Solution&lt;/strong&gt; copied from: &lt;a href="http://stackoverflow.com/a/13967084/376445"&gt;http://stackoverflow.com/a/13967084/376445&lt;/a&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;workon myProject  
+pip install --no-install SIP  
+pip install --no-install PyQt  
+&lt;span class="nb"&gt;cd&lt;/span&gt; ~/.virtualenvs/myProject/build/SIP  
+python configure.py  
+make  
+make install  
+&lt;span class="nb"&gt;cd&lt;/span&gt; ~/.virtualenvs/myProject/build/PyQt  
+python configure.py  
+make  
+make install  
+&lt;span class="nb"&gt;cd&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; rm -rf ~/.virtualenvs/myProject/build &lt;span class="c1"&gt;# Optional.&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;strong&gt;Issues I encountered&lt;/strong&gt;:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Missing development headers for qt: &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;~/.virtualenvs/scrapy/build/PyQt# python configure.py --verbose  
+Determining the layout of your Qt installation...  
+/usr/bin/qmake -o qtdirs.mk qtdirs.pro  
+make -f qtdirs.mk 
+g++ -c -m64 -pipe -O2 -Wall -W -D_REENTRANT -DQT_NO_DEBUG
+-DQT_CORE_LIB -I/usr/share/qt4/mkspecs/linux-g++-64 -I.
+-I/usr/includ e/qt4/QtCore -I/usr/include/qt4 -I. -o qtdirs.o qtdirs.cpp  
+qtdirs.cpp:1:28: fatal error: QCoreApplication: No such file or directory compilation terminated.  
+make: *** &lt;span class="o"&gt;[&lt;/span&gt;qtdirs.o&lt;span class="o"&gt;]&lt;/span&gt; Error &lt;span class="m"&gt;1&lt;/span&gt;  
+Error: Failed to determine the layout of your Qt installation. Try again using  the --verbose flag to see more detail about the problem.
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Soltution:&lt;/strong&gt; Install the development headers (Ubuntu 12.04)&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sudo apt-get install libqt4-dev
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content><category term="Python"></category><category term="python"></category><category term="pyqt"></category><category term="pip"></category></entry><entry><title>Only use worker when required on heroku with Django/Python</title><link href="https://samos-it.com/posts/only-use-worker-when-required-on-heroku-with-djangopython.html" rel="alternate"></link><published>2012-04-13T09:42:00+02:00</published><updated>2012-04-13T09:42:00+02:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2012-04-13:/posts/only-use-worker-when-required-on-heroku-with-djangopython.html</id><summary type="html">&lt;p&gt;For a mobile project I required a background worker which sents an email
+with 300 generated QR codes zipped together as attachment. This costs
+quite some time so we need a background worker to execute this task.&lt;/p&gt;
+&lt;p&gt;I wanted to achieve the following result:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;When the user wants to generate …&lt;/li&gt;&lt;/ul&gt;</summary><content type="html">&lt;p&gt;For a mobile project I required a background worker which sents an email
+with 300 generated QR codes zipped together as attachment. This costs
+quite some time so we need a background worker to execute this task.&lt;/p&gt;
+&lt;p&gt;I wanted to achieve the following result:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;When the user wants to generate qr codes, Start the celery worker
+    process with scale(1)&lt;/li&gt;
+&lt;li&gt;Delay the celery task to be executed by the celeryworker&lt;/li&gt;
+&lt;li&gt;After our task is finished, stop the celeryworker with scale(0)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Why I want this? Well workers costs quite some money if they are running
+constantly, which is in our case maybe only 1 hour a month. Saving us
+about \$30 / month.&lt;/p&gt;
+&lt;p&gt;For more information about how to run a worker check the &lt;a href="https://devcenter.heroku.com/articles/django#running_a_worker"&gt;Official
+Heroku Django
+documentation&lt;/a&gt;,
+which shows you how to setup Django with celery. Here you can find how
+to create the task itself in celery: &lt;a href="http://ask.github.com/django-celery/getting-started/index.html"&gt;Django-celery
+tutorial&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;To talk with the Heroku REST API we are using
+&lt;a href="https://github.com/heroku/heroku.py"&gt;Heroku.py&lt;/a&gt;. This API let's us
+scale and stop / start proccesses with Python. The official
+documentation tells to do it this way:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;heroku&lt;/span&gt;  
+&lt;span class="n"&gt;cloud&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;heroku&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;from_key&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;settings&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;HEROKU_APIKEY&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+&lt;span class="n"&gt;app&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;processes&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;celeryd&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;scale&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+&lt;span class="c1"&gt;# now execute our celerytask  &lt;/span&gt;
+&lt;span class="n"&gt;generate_qr_codes&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;delay&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;product_id&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;product&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;id&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;The only problem is that this line actually does not work:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;app&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;processes&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;celeryd&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;scale&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;It will give an KeyError exception, because the celeryd is not running
+which is kind of a bug, thats why I want to scale it to 1 in the first
+place...&lt;/p&gt;
+&lt;p&gt;So I got stuck on that problem, but after checking out the Heroku
+Python library I decided to use their internal API as they have an easy way of
+calling Heroku HTTP resources. It's a quick work around to do what I
+wanted:  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;cloud&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_http_resource&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;method&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;POST&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                    &lt;span class="n"&gt;resource&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;apps&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;heroku_processname&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;ps&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;scale&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;  
+&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;type&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;celeryd&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;qty&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;})&lt;/span&gt;
+&lt;span class="c1"&gt;# qty 0 is scale to 0 processes, if you want 1 process running change to qty 1&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;I have created an issue in the github repo about not being able to scale
+a non running process: &lt;a href="https://github.com/heroku/heroku.py/issues/10"&gt;https://github.com/heroku/heroku.py/issues/10&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;This is how our celery task looks like:  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;logging&lt;/span&gt;  
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;celery.decorators&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;task&lt;/span&gt;
+
+&lt;span class="nd"&gt;@task&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;  
+&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;generate_qrs&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;product_id&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;  
+    &lt;span class="k"&gt;try&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;  
+        &lt;span class="n"&gt;y&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="n"&gt;product_id&lt;/span&gt;  
+        &lt;span class="c1"&gt;# this is where your code will be that gets executed in the background  &lt;/span&gt;
+    &lt;span class="k"&gt;except&lt;/span&gt; &lt;span class="ne"&gt;Exception&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;  
+        &lt;span class="n"&gt;logging&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;exception&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;Exception occured in the celery task to generate QR codes&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;settings&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;DEBUG&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="kc"&gt;False&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;heroku&lt;/span&gt;
+        &lt;span class="n"&gt;cloud&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;heroku&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;from_key&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;settings&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;HEROKU_APIKEY&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+        &lt;span class="n"&gt;app&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;cloud&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;apps&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;appname&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;  
+        &lt;span class="n"&gt;cloud&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;_http_resource&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;method&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;POST&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;resource&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;apps&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;heroku_processname&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;ps&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;scale&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+                             &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;type&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;celeryd&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;qty&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;})&lt;/span&gt;
+        &lt;span class="c1"&gt;# the above line will stop the celeryd worker, so we dont have to pay&lt;/span&gt;
+        &lt;span class="c1"&gt;# for the woker only when it&amp;#39;s actually executing tasks&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content><category term="Python"></category><category term="coding"></category><category term="python"></category><category term="django"></category><category term="heroku"></category></entry><entry><title>Using Sendgrid with Django on Heroku (How to find your Sendgrid password on Heroku)</title><link href="https://samos-it.com/posts/using-sendgrid-with-django-on-heroku-how-to-find-your-sendgrid-password-on-heroku.html" rel="alternate"></link><published>2012-04-11T09:43:00+02:00</published><updated>2012-04-11T09:43:00+02:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2012-04-11:/posts/using-sendgrid-with-django-on-heroku-how-to-find-your-sendgrid-password-on-heroku.html</id><summary type="html">&lt;p&gt;While setting up sentgrid I was searching for my password of sendgrid,
+but coudn't find it. You can get it in the following way:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;heroku config --long
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Which will show the parameters:&lt;br&gt;
+SENDGRID_PASSWORD, SENDGRID_USERNAME&lt;/p&gt;
+&lt;p&gt;After you get your username don't forget to add it to django settings:  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;EMAIL&lt;/span&gt;\&lt;span class="n"&gt;_HOST&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;smtp …&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;While setting up sentgrid I was searching for my password of sendgrid,
+but coudn't find it. You can get it in the following way:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;heroku config --long
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Which will show the parameters:&lt;br&gt;
+SENDGRID_PASSWORD, SENDGRID_USERNAME&lt;/p&gt;
+&lt;p&gt;After you get your username don't forget to add it to django settings:  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;EMAIL&lt;/span&gt;\&lt;span class="n"&gt;_HOST&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;smtp.sendgrid.net&amp;#39;&lt;/span&gt;  
+&lt;span class="n"&gt;EMAIL&lt;/span&gt;\&lt;span class="n"&gt;_HOST&lt;/span&gt;\&lt;span class="n"&gt;_USER&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;app11111111@heroku.com&amp;#39;&lt;/span&gt;  
+&lt;span class="n"&gt;EMAIL&lt;/span&gt;\&lt;span class="n"&gt;_HOST&lt;/span&gt;\&lt;span class="n"&gt;_PASSWORD&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;thepassyougotbefore&amp;#39;&lt;/span&gt;  
+&lt;span class="n"&gt;EMAIL&lt;/span&gt;\&lt;span class="n"&gt;_PORT&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;587&lt;/span&gt;  
+&lt;span class="n"&gt;EMAIL&lt;/span&gt;\&lt;span class="n"&gt;_USE&lt;/span&gt;\&lt;span class="n"&gt;_TLS&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="bp"&gt;True&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Hope it helped somebody&lt;/p&gt;</content><category term="Python"></category></entry><entry><title>Django Custom View Decorator with Arguments</title><link href="https://samos-it.com/posts/django-custom-view-decorator-with-arguments.html" rel="alternate"></link><published>2012-02-23T17:52:00+01:00</published><updated>2012-02-23T17:52:00+01:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2012-02-23:/posts/django-custom-view-decorator-with-arguments.html</id><summary type="html">&lt;p&gt;To make my life easier I made a simple decorator which checks if the
+parameters are present in the request.POST or request.GET and returns a
+response if they are not.&lt;/p&gt;
+&lt;p&gt;It accepts a list of parameters in string format and will loop through
+each parameter to check if …&lt;/p&gt;</summary><content type="html">&lt;p&gt;To make my life easier I made a simple decorator which checks if the
+parameters are present in the request.POST or request.GET and returns a
+response if they are not.&lt;/p&gt;
+&lt;p&gt;It accepts a list of parameters in string format and will loop through
+each parameter to check if they are present in the request.POST.&lt;/p&gt;
+&lt;p&gt;I noticed there weren't a lot of guides about how to write a decorator
+for Django which takes arguments. I based my code on this tutorial, it's
+a really great guide which helps you understand Python decorators at a
+new level: &lt;a href="http://www.elfsternberg.com/2009/11/20/python-decorators-with-arguments-with-bonus-django-goodness/" title="Amazing insight about Python decorators"&gt;Amazing insight about Python
+decorators&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Here is the code I wrote for the decorator:  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;required_parameters&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;parameters&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;email&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;api_key&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;http_method&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;POST&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;  
+    &lt;span class="sd"&gt;&amp;quot;&amp;quot;&amp;quot;  &lt;/span&gt;
+&lt;span class="sd"&gt;    Check if the required parameters are present in the request  &lt;/span&gt;
+&lt;span class="sd"&gt;    @param parameters: The names of the parameters that should be supplied  &lt;/span&gt;
+&lt;span class="sd"&gt;    &amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;  
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;inner_decorator&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;fn&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;  
+        &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;wrapped&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;request&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="n"&gt;kwargs&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;  
+            &lt;span class="c1"&gt;# check if the user api_key matches  &lt;/span&gt;
+            &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;parameter&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;parameters&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;  
+            &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;parameter&lt;/span&gt; &lt;span class="ow"&gt;not&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="nb"&gt;getattr&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;request&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;http_method&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;  
+                &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;json_response&lt;/span&gt;&lt;span class="p"&gt;({&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;success&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kc"&gt;False&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;errors&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;Please use the Web API correctly and supply the parameter: &amp;#39;&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="n"&gt;parameter&lt;/span&gt;&lt;span class="p"&gt;})&lt;/span&gt;  
+            &lt;span class="c1"&gt;# Proceed like normally with the request  &lt;/span&gt;
+            &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;fn&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;request&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="n"&gt;kwargs&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;wraps&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;fn&lt;/span&gt;&lt;span class="p"&gt;)(&lt;/span&gt;&lt;span class="n"&gt;wrapped&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;inner_decorator&lt;/span&gt;  
+    &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;python&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;An example of using it in your view:  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nd"&gt;@required_parameters&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;parameters&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;email&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;username&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;password&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;  
+&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;view_which_requires_email_username_and_password&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;request&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
+    &lt;span class="n"&gt;bla&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;bla&amp;#39;&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;HttpResponse&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;bla&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content><category term="Python"></category><category term="django"></category><category term="python"></category><category term="coding"></category><category term="decorators"></category></entry><entry><title>Simple function to return json in Django</title><link href="https://samos-it.com/posts/simple-function-to-return-json-in-django.html" rel="alternate"></link><published>2012-02-22T15:53:00+01:00</published><updated>2012-02-22T15:53:00+01:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2012-02-22:/posts/simple-function-to-return-json-in-django.html</id><summary type="html">&lt;p&gt;Just a small code snippet I use when I need to return json, comments are
+welcomed.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;django.http&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;HttpResponse&lt;/span&gt;  
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;django.utils&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;simplejson&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="n"&gt;json&lt;/span&gt;
+
+&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;json_response&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;dict_to_convert_to_json&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;  
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;HttpResponse&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;json&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;dumps&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;dict_to_convert_to_json&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+                        &lt;span class="n"&gt;mimetype&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;application/json&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;To use it in your view you just do it this …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Just a small code snippet I use when I need to return json, comments are
+welcomed.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;django.http&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;HttpResponse&lt;/span&gt;  
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;django.utils&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;simplejson&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="n"&gt;json&lt;/span&gt;
+
+&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;json_response&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;dict_to_convert_to_json&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;  
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;HttpResponse&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;json&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;dumps&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;dict_to_convert_to_json&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+                        &lt;span class="n"&gt;mimetype&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;application/json&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;To use it in your view you just do it this way:  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;login&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;request&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;  
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;json_response&lt;/span&gt;&lt;span class="p"&gt;({&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;success&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kc"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;user&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;name&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;Sam&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                                                      &lt;span class="s1"&gt;&amp;#39;speciality&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;Django/Python&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;}})&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;You could also create a decorator to do this but I think using a simple function
+is more straight forward.&lt;/p&gt;</content><category term="Python"></category><category term="python"></category><category term="django"></category><category term="json"></category></entry><entry><title>Trying to install scrapy with pip lxml error: command 'gcc' failed with exit status 1</title><link href="https://samos-it.com/posts/trying-to-install-scrapy-with-pip-lxml-error-command-gcc-failed-with-exit-status-1.html" rel="alternate"></link><published>2011-11-01T14:31:00+01:00</published><updated>2011-11-01T14:31:00+01:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2011-11-01:/posts/trying-to-install-scrapy-with-pip-lxml-error-command-gcc-failed-with-exit-status-1.html</id><summary type="html">&lt;p&gt;Just tried to install scrapy with pip / easy_install, but when it comes
+to installing lxml it will give the following error:&lt;/p&gt;
+&lt;p&gt;gcc -pthread -fno-strict-aliasing -DNDEBUG -g -fwrapv -O2
+-Wall -Wstrict-prototypes -fPIC -I/usr/include/python2.7 -c
+src/lxml/lxml.etree.c -o
+build/temp.linux-x86_64-2.7/src/lxml/lxml …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Just tried to install scrapy with pip / easy_install, but when it comes
+to installing lxml it will give the following error:&lt;/p&gt;
+&lt;p&gt;gcc -pthread -fno-strict-aliasing -DNDEBUG -g -fwrapv -O2
+-Wall -Wstrict-prototypes -fPIC -I/usr/include/python2.7 -c
+src/lxml/lxml.etree.c -o
+build/temp.linux-x86_64-2.7/src/lxml/lxml.etree.o -w&lt;/p&gt;
+&lt;p&gt;In file included from src/lxml/lxml.etree.c:239:0:
+src/lxml/etree_defs.h:9:31: fatal error: libxml/xmlversion.h: No such
+file or directory
+compilation terminated.&lt;/p&gt;
+&lt;p&gt;error: command 'gcc' failed with exit status 1  &lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;The solution&lt;/strong&gt;&lt;br&gt;
+Install Python development package:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sudo apt-get install python-dev
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Install the development packages of libxml and libst  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sudo apt-get install libxml2-dev  
+sudo apt-get install libxslt1-dev&lt;span class="o"&gt;[&lt;/span&gt;/sourcecode&lt;span class="o"&gt;]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content><category term="Python"></category><category term="python"></category><category term="linux"></category><category term="ubuntu"></category></entry><entry><title>How to install Setuptools to a specific python version</title><link href="https://samos-it.com/posts/how-to-install-setuptools-to-a-specific-python-version.html" rel="alternate"></link><published>2011-07-18T19:34:00+02:00</published><updated>2011-07-18T19:34:00+02:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2011-07-18:/posts/how-to-install-setuptools-to-a-specific-python-version.html</id><summary type="html">&lt;p&gt;To install easy_install for a specific python version. I just installed
+from source and used the python version you want to install setuptools
+too. I used the following steps in Ubuntu 11.04 with Python 2.5 and
+Python 2.7 installed. The following commands will install setuptools to
+python …&lt;/p&gt;</summary><content type="html">&lt;p&gt;To install easy_install for a specific python version. I just installed
+from source and used the python version you want to install setuptools
+too. I used the following steps in Ubuntu 11.04 with Python 2.5 and
+Python 2.7 installed. The following commands will install setuptools to
+python 2.5  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;wget
+http://pypi.python.org/packages/source/s/setuptools/setuptools-0.6c11.tar.gz#md5&lt;span class="o"&gt;=&lt;/span&gt;7df2a529a074f613b509fb44feefe74e  
+tar -zxvf setuptools-0.6c11.tar.gz &lt;span class="nb"&gt;cd&lt;/span&gt; setuptools-0.6c11/  
+sudo python2.5 setup.py install
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;The following command installs the pil module to 2.5: &lt;br&gt;
+&lt;code&gt;sudo easy_install-2.5 pil&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;This command installs the pil module to 2.7: &lt;br&gt;
+&lt;code&gt;sudo easy\_install-2.7 pil&lt;/code&gt;&lt;/p&gt;</content><category term="Python"></category><category term="python"></category><category term="ubuntu"></category><category term="linux"></category></entry></feed>
