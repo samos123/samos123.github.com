@@ -76,6 +76,25 @@ ga('send', 'pageview');
 </div>		<div class="content container">
 	<div class="posts">
 			<div class="post">
+				<h1 class="post-title" href="https://samos-it.com/posts/using-sendgrid-with-django-on-heroku-how-to-find-your-sendgrid-password-on-heroku.html">
+					<a href="https://samos-it.com/posts/using-sendgrid-with-django-on-heroku-how-to-find-your-sendgrid-password-on-heroku.html">Using Sendgrid with Django on Heroku (How to find your Sendgrid password on Heroku)</a>
+				</h1>
+				<span class="post-date">Wed 11 April 2012</span>
+				<p>
+					<p>While setting up sentgrid I was searching for my password of sendgrid,
+but coudn't find it. You can get it in the following way:</p>
+<div class="highlight"><pre><span></span><code>heroku config --long
+</code></pre></div>
+
+
+<p>Which will show the parameters:<br>
+SENDGRID_PASSWORD, SENDGRID_USERNAME</p>
+<p>After you get your username don't forget to add it to django settings:  </p>
+<div class="highlight"><pre><span></span><code><span class="n">EMAIL</span>\<span class="n">_HOST</span> <span class="o">=</span> <span class="s1">&#39;smtp …</span></code></pre></div>
+				</p>
+				<a class="read-more" href="posts/using-sendgrid-with-django-on-heroku-how-to-find-your-sendgrid-password-on-heroku.html">Continue reading »</a>
+			</div>
+			<div class="post">
 				<h1 class="post-title" href="https://samos-it.com/posts/django-custom-view-decorator-with-arguments.html">
 					<a href="https://samos-it.com/posts/django-custom-view-decorator-with-arguments.html">Django Custom View Decorator with Arguments</a>
 				</h1>
@@ -220,19 +239,6 @@ closed already :( We biked the following path I created the route on
 Google …</p>
 				</p>
 				<a class="read-more" href="posts/the-beijing-bike-tour-and-china-belly-problems.html">Continue reading »</a>
-			</div>
-			<div class="post">
-				<h1 class="post-title" href="https://samos-it.com/posts/the-watercube-and-its-big-waterpark.html">
-					<a href="https://samos-it.com/posts/the-watercube-and-its-big-waterpark.html">The Watercube and it's big waterpark</a>
-				</h1>
-				<span class="post-date">Thu 18 August 2011</span>
-				<p>
-					<p>The day before yesterday we went to a big waterpark inside the Watercube
-in the Olympic Park. We watched some pictures and thought it was really
-big, but when we came there we noticed it wasn't as big as we thought :P
-Pictures not only lie with girls, but also …</p>
-				</p>
-				<a class="read-more" href="posts/the-watercube-and-its-big-waterpark.html">Continue reading »</a>
 			</div>
 	</div>
 	<div class="pagination">
