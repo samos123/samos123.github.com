@@ -167,9 +167,9 @@ spec:
     protocol: TCP
 ```
 Notice that we set a static cluster IP so this blog post is easier to follow.
-You will probably want to remove that and let it asign a random clusterIP and
-note down the cluster IP. You will need the CoreDNS cluster IP in the next
-step during configuring kube-dns.
+You will probably want to remove `clusterIP: 10.0.6.177` and let K8s asign a
+random clusterIP, afterwards note note down the cluster IP. You will need the
+CoreDNS cluster IP in the next step during configuring kube-dns.
 
 Create the coredns k8s service:
 ```bash
@@ -177,6 +177,12 @@ kubectl apply -f core-dns-svc.yaml
 ```
 
 ## 2.  Configure kube-dns to use stubDomain that points to CoreDNS
+
+In this step, you will be configuring kube-dns to go to our coredns server
+that holds the custom DNS entries. This is done by configuring a stubDomain
+that for e.g. `example.org` that points to the coreDNS clusterIP.
+
+Create a file named `kube-dns-cm.yaml`:
 
 ```yaml
 apiVersion: v1
@@ -188,3 +194,14 @@ data:
   stubDomains: |
         {"example.org" : ["10.0.6.177"]}
 ```
+
+Apply the config map:
+```bash
+kubectl apply -f kube-dns-cm.yaml
+```
+
+## Summary
+You have deployed a custom DNS server that holds custom DNS entries by using
+coreDNS deployed on K8s. Afterwards you configured kube-dns to point to that
+DNS server by configuring a stubdomain. Now you can test it out by deploying
+a pod and running `dig example.org` from a pod. That should return `10.200.0.1`.
