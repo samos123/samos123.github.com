@@ -238,15 +238,19 @@ change example.org and the specific DNS entries depending on your needs.</p>
 
 
 <p>Notice that we set a static cluster IP so this blog post is easier to follow.
-You will probably want to remove that and let it asign a random clusterIP and
-note down the cluster IP. You will need the CoreDNS cluster IP in the next
-step during configuring kube-dns.</p>
+You will probably want to remove <code>clusterIP: 10.0.6.177</code> and let K8s asign a
+random clusterIP, afterwards note note down the cluster IP. You will need the
+CoreDNS cluster IP in the next step during configuring kube-dns.</p>
 <p>Create the coredns k8s service:</p>
 <div class="highlight"><pre><span></span><code>kubectl apply -f core-dns-svc.yaml
 </code></pre></div>
 
 
 <h2>2.  Configure kube-dns to use stubDomain that points to CoreDNS</h2>
+<p>In this step, you will be configuring kube-dns to go to our coredns server
+that holds the custom DNS entries. This is done by configuring a stubDomain
+that for e.g. <code>example.org</code> that points to the coreDNS clusterIP.</p>
+<p>Create a file named <code>kube-dns-cm.yaml</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">v1</span>
 <span class="nt">kind</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ConfigMap</span>
 <span class="nt">metadata</span><span class="p">:</span>
@@ -256,6 +260,18 @@ step during configuring kube-dns.</p>
   <span class="nt">stubDomains</span><span class="p">:</span> <span class="p p-Indicator">|</span>
         <span class="no">{&quot;example.org&quot; : [&quot;10.0.6.177&quot;]}</span>
 </code></pre></div>
+
+
+<p>Apply the config map:</p>
+<div class="highlight"><pre><span></span><code>kubectl apply -f kube-dns-cm.yaml
+</code></pre></div>
+
+
+<h2>Summary</h2>
+<p>You have deployed a custom DNS server that holds custom DNS entries by using
+coreDNS deployed on K8s. Afterwards you configured kube-dns to point to that
+DNS server by configuring a stubdomain. Now you can test it out by deploying
+a pod and running <code>dig example.org</code> from a pod. That should return <code>10.200.0.1</code>.</p>
 <div id="disqus_thread"></div>
 <script type="text/javascript">
 	var disqus_shortname = 'samosit';

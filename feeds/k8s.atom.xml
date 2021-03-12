@@ -164,15 +164,19 @@ change example.org and the specific DNS entries depending on your needs.&lt;/p&g
 
 
 &lt;p&gt;Notice that we set a static cluster IP so this blog post is easier to follow.
-You will probably want to remove that and let it asign a random clusterIP and
-note down the cluster IP. You will need the CoreDNS cluster IP in the next
-step during configuring kube-dns.&lt;/p&gt;
+You will probably want to remove &lt;code&gt;clusterIP: 10.0.6.177&lt;/code&gt; and let K8s asign a
+random clusterIP, afterwards note note down the cluster IP. You will need the
+CoreDNS cluster IP in the next step during configuring kube-dns.&lt;/p&gt;
 &lt;p&gt;Create the coredns k8s service:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;kubectl apply -f core-dns-svc.yaml
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;h2&gt;2.  Configure kube-dns to use stubDomain that points to CoreDNS&lt;/h2&gt;
+&lt;p&gt;In this step, you will be configuring kube-dns to go to our coredns server
+that holds the custom DNS entries. This is done by configuring a stubDomain
+that for e.g. &lt;code&gt;example.org&lt;/code&gt; that points to the coreDNS clusterIP.&lt;/p&gt;
+&lt;p&gt;Create a file named &lt;code&gt;kube-dns-cm.yaml&lt;/code&gt;:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nt"&gt;apiVersion&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;v1&lt;/span&gt;
 &lt;span class="nt"&gt;kind&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;ConfigMap&lt;/span&gt;
 &lt;span class="nt"&gt;metadata&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
@@ -181,7 +185,19 @@ step during configuring kube-dns.&lt;/p&gt;
 &lt;span class="nt"&gt;data&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
   &lt;span class="nt"&gt;stubDomains&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p p-Indicator"&gt;|&lt;/span&gt;
         &lt;span class="no"&gt;{&amp;quot;example.org&amp;quot; : [&amp;quot;10.0.6.177&amp;quot;]}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content><category term="K8s"></category><category term="k8s"></category><category term="kubernetes"></category><category term="gke"></category><category term="dns"></category></entry><entry><title>Mounting FUSE without privileges on K8s/GKE</title><link href="https://samos-it.com/posts/mounting-fuse-without-privileges-on-k8s-gke.html" rel="alternate"></link><published>2021-03-02T10:02:00+01:00</published><updated>2021-03-02T10:02:00+01:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2021-03-02:/posts/mounting-fuse-without-privileges-on-k8s-gke.html</id><content type="html">&lt;p&gt;This might become a full blog post but for now read the steps here:
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Apply the config map:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;kubectl apply -f kube-dns-cm.yaml
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;Summary&lt;/h2&gt;
+&lt;p&gt;You have deployed a custom DNS server that holds custom DNS entries by using
+coreDNS deployed on K8s. Afterwards you configured kube-dns to point to that
+DNS server by configuring a stubdomain. Now you can test it out by deploying
+a pod and running &lt;code&gt;dig example.org&lt;/code&gt; from a pod. That should return &lt;code&gt;10.200.0.1&lt;/code&gt;.&lt;/p&gt;</content><category term="K8s"></category><category term="k8s"></category><category term="kubernetes"></category><category term="gke"></category><category term="dns"></category></entry><entry><title>Mounting FUSE without privileges on K8s/GKE</title><link href="https://samos-it.com/posts/mounting-fuse-without-privileges-on-k8s-gke.html" rel="alternate"></link><published>2021-03-02T10:02:00+01:00</published><updated>2021-03-02T10:02:00+01:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2021-03-02:/posts/mounting-fuse-without-privileges-on-k8s-gke.html</id><content type="html">&lt;p&gt;This might become a full blog post but for now read the steps here:
 &lt;a href="https://github.com/samos123/gke-gcs-fuse-unprivileged"&gt;https://github.com/samos123/gke-gcs-fuse-unprivileged&lt;/a&gt;&lt;/p&gt;</content><category term="K8s"></category><category term="k8s"></category><category term="kubernetes"></category><category term="gke"></category><category term="fuse"></category></entry><entry><title>How to enter network namespaces of other containers from a pod in K8s?</title><link href="https://samos-it.com/posts/enter-namespace-of-other-containers-from-a-pod.html" rel="alternate"></link><published>2019-12-30T10:02:00+01:00</published><updated>2019-12-30T10:02:00+01:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2019-12-30:/posts/enter-namespace-of-other-containers-from-a-pod.html</id><summary type="html">&lt;p&gt;You might be in a situation where you need to troubleshoot the networking
 stack on a container where you don't have the tools necessary. Or you might
 need to figure out which veth belongs to a container. For both these
