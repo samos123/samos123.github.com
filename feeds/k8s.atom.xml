@@ -1,5 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Sam Stoelinga - K8s</title><link href="https://samos-it.com/" rel="alternate"></link><link href="https://samos-it.com/feeds/k8s.atom.xml" rel="self"></link><id>https://samos-it.com/</id><updated>2021-03-12T22:02:00+01:00</updated><entry><title>GKE custom OSS K8s cluster autoscaler</title><link href="https://samos-it.com/posts/gke-custom-oss-cluster-autoscaler.html" rel="alternate"></link><published>2021-03-12T22:02:00+01:00</published><updated>2021-03-12T22:02:00+01:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2021-03-12:/posts/gke-custom-oss-cluster-autoscaler.html</id><summary type="html">&lt;p&gt;This blog post described how to deploy your own K8s cluster autoscaler instead
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Sam Stoelinga - K8s</title><link href="https://samos-it.com/" rel="alternate"></link><link href="https://samos-it.com/feeds/k8s.atom.xml" rel="self"></link><id>https://samos-it.com/</id><updated>2021-05-21T10:52:00+02:00</updated><entry><title>GKE docker registry with HTTP proxy</title><link href="https://samos-it.com/posts/gke-docker-registry-http-proxy.html" rel="alternate"></link><published>2021-05-21T10:52:00+02:00</published><updated>2021-05-21T10:52:00+02:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2021-05-21:/posts/gke-docker-registry-http-proxy.html</id><summary type="html">&lt;p&gt;You are at one of those places that requires you to use a proxy to access
+your company wide Docker registry. Sometimes HTTP proxies are used to supposedly
+improve security or to workaround IP based rate limits.
+Well good luck, you're in for a ride on how to do this …&lt;/p&gt;</summary><content type="html">&lt;p&gt;You are at one of those places that requires you to use a proxy to access
+your company wide Docker registry. Sometimes HTTP proxies are used to supposedly
+improve security or to workaround IP based rate limits.
+Well good luck, you're in for a ride on how to do this with GKE and I've made
+this easier for you by documenting the steps needed to get this to work on GKE.&lt;/p&gt;
+&lt;p&gt;The high-level solution is to configure HTTP proxy environment variables for
+the docker daemon running on the GKE nodes. This is done by following these
+steps:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Create a script that places a file with proxy config under
+   under &lt;code&gt;/etc/systemd/system/docker.service.d/&lt;/code&gt; on the
+   GKE nodes.&lt;/li&gt;
+&lt;li&gt;Create a K8s DaemonSet that runs the script on each node&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;Creating the docker HTTP proxy script as ConfigMap&lt;/h2&gt;
+&lt;p&gt;There are 2 things the script needs to do:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Place the docker HTTP proxy configuration under &lt;code&gt;/etc/systemd/system/docker.service.d/&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Reload systemd configuration and restart docker daemon&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Now create the file called &lt;code&gt;proxy-inject-cm.yml&lt;/code&gt; with the following content:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nt"&gt;apiVersion&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;v1&lt;/span&gt;
+&lt;span class="nt"&gt;kind&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;ConfigMap&lt;/span&gt;
+&lt;span class="nt"&gt;metadata&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+  &lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;proxy-injector&lt;/span&gt;
+  &lt;span class="nt"&gt;namespace&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;kube-system&lt;/span&gt;
+&lt;span class="nt"&gt;data&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+  &lt;span class="nt"&gt;proxy-injector.sh&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p p-Indicator"&gt;|&lt;/span&gt;
+    &lt;span class="no"&gt;#!/bin/bash&lt;/span&gt;
+
+    &lt;span class="no"&gt;cat &amp;gt; /mnt/etc/systemd/system/docker.service.d/http-proxy.conf &amp;lt;&amp;lt; EOF&lt;/span&gt;
+    &lt;span class="no"&gt;[Service]&lt;/span&gt;
+    &lt;span class="no"&gt;Environment=&amp;quot;HTTP_PROXY=http://sams-proxy:3128&amp;quot;&lt;/span&gt;
+    &lt;span class="no"&gt;EOF&lt;/span&gt;
+    &lt;span class="no"&gt;nsenter --target 1 --mount systemctl daemon-reload&lt;/span&gt;
+    &lt;span class="no"&gt;nsenter --target 1 --mount systemctl restart docker&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Note that you will need to edit this line in &lt;code&gt;proxy-inject-cm.yml&lt;/code&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;    Environment=&amp;quot;HTTP_PROXY=http://sams-proxy:3128&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;You need to change &lt;code&gt;HTTP_PROXY=http://sams-proxy:3128&lt;/code&gt; to your actual HTTP
+proxy.&lt;/p&gt;
+&lt;p&gt;Create the K8s configmap:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;kubectl apply -f proxy-inject-cm.yml
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;Creating the proxy injector DaemonSet&lt;/h2&gt;
+&lt;p&gt;The DaemonSet simply runs the script on each node during node startup.
+Create a file called &lt;code&gt;proxy-injector-dm.yml&lt;/code&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nt"&gt;apiVersion&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;apps/v1&lt;/span&gt;
+&lt;span class="nt"&gt;kind&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;DaemonSet&lt;/span&gt;
+&lt;span class="nt"&gt;metadata&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+  &lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;proxy-injector&lt;/span&gt;
+  &lt;span class="nt"&gt;namespace&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;kube-system&lt;/span&gt;
+  &lt;span class="nt"&gt;labels&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="nt"&gt;app&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;proxy-injector&lt;/span&gt;
+&lt;span class="nt"&gt;spec&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+  &lt;span class="nt"&gt;selector&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="nt"&gt;matchLabels&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+      &lt;span class="nt"&gt;app&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;proxy-injector&lt;/span&gt;
+  &lt;span class="nt"&gt;template&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="nt"&gt;metadata&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+      &lt;span class="nt"&gt;labels&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="nt"&gt;app&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;proxy-injector&lt;/span&gt;
+    &lt;span class="nt"&gt;spec&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+      &lt;span class="nt"&gt;hostPID&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;true&lt;/span&gt;
+      &lt;span class="nt"&gt;initContainers&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+      &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;proxy-injector&lt;/span&gt;
+        &lt;span class="nt"&gt;image&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;ubuntu&lt;/span&gt;
+        &lt;span class="nt"&gt;command&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+          &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;/usr/local/bin/proxy-injector.sh&lt;/span&gt;
+        &lt;span class="nt"&gt;volumeMounts&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+          &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;etc&lt;/span&gt;
+            &lt;span class="nt"&gt;mountPath&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;/mnt/etc&amp;quot;&lt;/span&gt;
+          &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;bins&lt;/span&gt;
+            &lt;span class="nt"&gt;mountPath&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;/usr/local/bin&amp;quot;&lt;/span&gt;
+        &lt;span class="nt"&gt;securityContext&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+          &lt;span class="nt"&gt;privileged&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;true&lt;/span&gt;
+      &lt;span class="nt"&gt;volumes&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+      &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;etc&lt;/span&gt;
+        &lt;span class="nt"&gt;hostPath&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+          &lt;span class="nt"&gt;path&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;/etc&lt;/span&gt;
+      &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;bins&lt;/span&gt;
+        &lt;span class="nt"&gt;configMap&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+          &lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;proxy-injector&lt;/span&gt;
+      &lt;span class="nt"&gt;containers&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+      &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;pause&lt;/span&gt;
+        &lt;span class="nt"&gt;image&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;gcr.io/google_containers/pause&lt;/span&gt;
+      &lt;span class="nt"&gt;priorityClassName&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;system-node-critical&lt;/span&gt;
+      &lt;span class="nt"&gt;tolerations&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="nt"&gt;effect&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;NoSchedule&lt;/span&gt;
+          &lt;span class="nt"&gt;operator&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;Exists&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Before you execute this next command, please note that this will cause
+disruption to existing pods because docker is force restarted. So be extra
+careful before running it. Create the K8s DaemonSet:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;kubectl apply -f proxy-injector-dm.yml
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;Summary&lt;/h2&gt;
+&lt;p&gt;We have rolled out a daemonset that modifies the docker HTTP proxy settings.
+Your GKE nodes will now use the HTTP proxy when pulling down images. Note
+that you would need to create a similar DaemonSet or simple bash script
+that SSHs into the GKE nodes to remove the proxy settings because simply
+delete the DaemonSet will leave the existing proxy settings.&lt;/p&gt;</content><category term="K8s"></category><category term="k8s"></category><category term="kubernetes"></category><category term="gke"></category><category term="proxy"></category><category term="registry"></category></entry><entry><title>GKE custom OSS K8s cluster autoscaler</title><link href="https://samos-it.com/posts/gke-custom-oss-cluster-autoscaler.html" rel="alternate"></link><published>2021-03-12T22:02:00+01:00</published><updated>2021-03-12T22:02:00+01:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2021-03-12:/posts/gke-custom-oss-cluster-autoscaler.html</id><summary type="html">&lt;p&gt;This blog post described how to deploy your own K8s cluster autoscaler instead
 of the cluster autoscaler that's bundled with GKE. This can be helpful in the
 rare case that the bundled GKE cluster autoscaler doesn't work for you.&lt;/p&gt;
 &lt;p&gt;Note that the GKE bundled cluster autoscaler is vastly different from …&lt;/p&gt;</summary><content type="html">&lt;p&gt;This blog post described how to deploy your own K8s cluster autoscaler instead
