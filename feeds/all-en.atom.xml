@@ -1,5 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Sam Stoelinga</title><link href="https://samos-it.com/" rel="alternate"></link><link href="https://samos-it.com/feeds/all-en.atom.xml" rel="self"></link><id>https://samos-it.com/</id><updated>2021-05-21T10:52:00+02:00</updated><entry><title>GKE docker registry with HTTP proxy</title><link href="https://samos-it.com/posts/gke-docker-registry-http-proxy.html" rel="alternate"></link><published>2021-05-21T10:52:00+02:00</published><updated>2021-05-21T10:52:00+02:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2021-05-21:/posts/gke-docker-registry-http-proxy.html</id><summary type="html">&lt;p&gt;You are at one of those places that requires you to use a proxy to access
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Sam Stoelinga</title><link href="https://samos-it.com/" rel="alternate"></link><link href="https://samos-it.com/feeds/all-en.atom.xml" rel="self"></link><id>https://samos-it.com/</id><updated>2021-10-11T14:32:00+02:00</updated><entry><title>GKE move system services (kube-dns, calico) to dedicated nodepool</title><link href="https://samos-it.com/posts/gke-system-services-kube-dns-dedicated-nodepool.html" rel="alternate"></link><published>2021-10-11T14:32:00+02:00</published><updated>2021-10-11T14:32:00+02:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2021-10-11:/posts/gke-system-services-kube-dns-dedicated-nodepool.html</id><summary type="html">&lt;p&gt;GKE by default deploys kube-dns and other system services to any of your
+nodepools. This is probably fine for most cases, but certain use cases
+might require preventing system services from running on the same nodes as
+your where your applications are running. This blog post provides instructions
+on how …&lt;/p&gt;</summary><content type="html">&lt;p&gt;GKE by default deploys kube-dns and other system services to any of your
+nodepools. This is probably fine for most cases, but certain use cases
+might require preventing system services from running on the same nodes as
+your where your applications are running. This blog post provides instructions
+on how to force kube-dns and other GKE system services onto a specific nodepool.&lt;/p&gt;
+&lt;p&gt;Some of the use cases this is helpful for:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Cluster autoscaler unable to scale down a node that's running kube-dns&lt;/li&gt;
+&lt;li&gt;Ensuring all capacity of a nodepool is usable instead of some of it being
+  taken up by system services&lt;/li&gt;
+&lt;li&gt;Preventing an application from possibly messing around with your system
+  services&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The easiest way to achieve this is to use &lt;code&gt;nodeSelector&lt;/code&gt; and specify the label
+of the system services nodepool. Let's take a look at how to modify the
+deployments in the &lt;code&gt;kube-system&lt;/code&gt; namespace and add a &lt;code&gt;nodeSelector&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;First, create the patch to add a nodeSelector by creating a file named
+&lt;code&gt;nodeSelector-patch.yaml&lt;/code&gt; with the following content:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nt"&gt;spec&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+  &lt;span class="nt"&gt;template&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="nt"&gt;spec&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+      &lt;span class="nt"&gt;nodeSelector&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="nt"&gt;cloud.google.com/gke-nodepool&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;system&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Note: this assumes you have a nodepool named &lt;code&gt;system&lt;/code&gt; where all your system
+services will be deployed. You will need to adjust the name of the nodepool to
+match your own environment. In my case I have multiple nodepools where 1 of the
+nodepools is named &lt;code&gt;system&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Now let's patch all the deployments in the &lt;code&gt;kube-system&lt;/code&gt; namespace. Before
+we do that let's take a quick look what's in the &lt;code&gt;kube-system&lt;/code&gt; namespace:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;kubectl get deployment -n kube-system
+NAME                                 READY   UP-TO-DATE   AVAILABLE   AGE
+calico-node-vertical-autoscaler      1/1     1            1           342d
+calico-typha                         1/1     1            1           342d
+calico-typha-horizontal-autoscaler   1/1     1            1           342d
+calico-typha-vertical-autoscaler     1/1     1            1           342d
+config-management-operator           1/1     1            1           236d
+event-exporter-gke                   1/1     1            1           342d
+gke-oidc-envoy                       1/1     1            1           137d
+kube-dns                             2/2     2            2           342d
+kube-dns-autoscaler                  1/1     1            1           342d
+l7-default-backend                   1/1     1            1           342d
+metrics-server-v0.3.6                1/1     1            1           342d
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;That looks fine in my case, but your output may differ so make sure to review
+before you add a nodeSelector to all these deployments.&lt;/p&gt;
+&lt;p&gt;Let's add the nodeSelector by patching all the deployments in &lt;code&gt;kube-system&lt;/code&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;kubectl get deployment -o NAME -n kube-system &lt;span class="p"&gt;|&lt;/span&gt; xargs -n &lt;span class="m"&gt;1&lt;/span&gt; -I &lt;span class="o"&gt;{}&lt;/span&gt; kubectl patch &lt;span class="o"&gt;{}&lt;/span&gt; -n kube-system --patch &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;cat nodeSelector-patch.yaml&lt;span class="k"&gt;)&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;In my case this was the output:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;deployment.apps/calico-node-vertical-autoscaler patched
+deployment.apps/calico-typha patched (no change)
+deployment.apps/calico-typha-horizontal-autoscaler patched
+deployment.apps/calico-typha-vertical-autoscaler patched
+deployment.apps/config-management-operator patched
+deployment.apps/event-exporter-gke patched
+deployment.apps/gke-oidc-envoy patched
+deployment.apps/kube-dns patched (no change)
+deployment.apps/kube-dns-autoscaler patched
+deployment.apps/l7-default-backend patched
+deployment.apps/metrics-server-v0.3.6 patched
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Now the pods belonging to those deployment should be terminated in the old
+nodepool and be running in the nodepool named &lt;code&gt;system&lt;/code&gt;. You can verify this
+by checking for example on which node the kube-dns pods are running:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;kubectl get pods -n kube-system -l k8s-app&lt;span class="o"&gt;=&lt;/span&gt;kube-dns -o wide
+NAME                       READY   STATUS    RESTARTS   AGE   IP         NODE                                 NOMINATED NODE   READINESS GATES
+kube-dns-848bb8c5d-fzh7h   &lt;span class="m"&gt;4&lt;/span&gt;/4     Running   &lt;span class="m"&gt;0&lt;/span&gt;          28m   &lt;span class="m"&gt;10&lt;/span&gt;.4.3.3   gke-cluster-1-system-2db0a54b-jx6s   &amp;lt;none&amp;gt;           &amp;lt;none&amp;gt;
+kube-dns-848bb8c5d-l72fh   &lt;span class="m"&gt;4&lt;/span&gt;/4     Running   &lt;span class="m"&gt;0&lt;/span&gt;          28m   &lt;span class="m"&gt;10&lt;/span&gt;.4.4.3   gke-cluster-1-system-2db0a54b-ll3p   &amp;lt;none&amp;gt;           &amp;lt;none&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content><category term="K8s"></category><category term="k8s"></category><category term="kubernetes"></category><category term="gke"></category><category term="dns"></category></entry><entry><title>GKE docker registry with HTTP proxy</title><link href="https://samos-it.com/posts/gke-docker-registry-http-proxy.html" rel="alternate"></link><published>2021-05-21T10:52:00+02:00</published><updated>2021-05-21T10:52:00+02:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2021-05-21:/posts/gke-docker-registry-http-proxy.html</id><summary type="html">&lt;p&gt;You are at one of those places that requires you to use a proxy to access
 your company wide Docker registry. Sometimes HTTP proxies are used to supposedly
 improve security or to workaround IP based rate limits.
 Well good luck, you're in for a ride on how to do this …&lt;/p&gt;</summary><content type="html">&lt;p&gt;You are at one of those places that requires you to use a proxy to access
