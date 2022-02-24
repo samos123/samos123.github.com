@@ -103,7 +103,6 @@ be using the <code>10.200.0.0/24</code> subnet.</p>
           --machine-type n1-standard-2
 </code></pre></div>
 
-
 </li>
 <li>
 <p>Repeat the same command creating <code>vm-2</code> this time:</p>
@@ -117,14 +116,12 @@ be using the <code>10.200.0.0/24</code> subnet.</p>
           --machine-type n1-standard-2
 </code></pre></div>
 
-
 </li>
 <li>
 <p>Verify that SSH to both VMs is available and up. You might need o be patient.</p>
 <div class="highlight"><pre><span></span><code>gcloud compute ssh root@vm-1 --zone us-central1-a --command <span class="s2">&quot;echo &#39;SSH to vm-1 succeeded&#39;&quot;</span>
 gcloud compute ssh root@vm-2 --zone us-central1-a --command <span class="s2">&quot;echo &#39;SSH to vm-2 succeeded&#39;&quot;</span>
 </code></pre></div>
-
 
 </li>
 </ol>
@@ -142,7 +139,6 @@ that you just created.</p>
 <span class="nb">echo</span> <span class="nv">$VM2_VPC_IP</span>
 </code></pre></div>
 
-
 </li>
 <li>
 <p>Create the VXLAN device and mesh on <code>vm-1</code></p>
@@ -154,7 +150,6 @@ that you just created.</p>
 <span class="s">ip link set up dev vxlan0</span>
 <span class="s">EOF</span>
 </code></pre></div>
-
 
 </li>
 <li>
@@ -168,7 +163,6 @@ that you just created.</p>
 <span class="s">EOF</span>
 </code></pre></div>
 
-
 </li>
 <li>
 <p>Start a tcpdump on vm-1</p>
@@ -176,14 +170,12 @@ that you just created.</p>
 tcpdump -i vxlan0 -n
 </code></pre></div>
 
-
 </li>
 <li>
 <p>In another session ping <code>vm-2</code> from <code>vm-1</code>  and take a look at tcpdump output. Notice the arp.</p>
 <div class="highlight"><pre><span></span><code>gcloud compute ssh root@vm-1 --zone us-central1-a
 ping <span class="m">10</span>.200.0.3
 </code></pre></div>
-
 
 </li>
 </ol>

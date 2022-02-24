@@ -102,25 +102,23 @@ Container Registry.</p>
 <span class="nv">GCP_PROJECT_ID</span><span class="o">=</span>your-project-ID
 </code></pre></div>
 
-
 </li>
 <li>
 <p>Now with your file editor of choice create a file named <code>Dockerfile</code> with the
 following content:</p>
-<div class="highlight"><pre><span></span><code><span class="k">FROM</span> <span class="s">gcr.io/cloudshell-images/cloudshell:latest</span>
+<div class="highlight"><pre><span></span><code><span class="k">FROM</span><span class="w"> </span><span class="s">gcr.io/cloudshell-images/cloudshell:latest</span>
 
-<span class="k">ENV</span> <span class="nv">TERRAFORM_VERSION</span><span class="o">=</span><span class="s2">&quot;0.11.10&quot;</span> <span class="se">\</span>
+<span class="k">ENV</span><span class="w"> </span><span class="nv">TERRAFORM_VERSION</span><span class="o">=</span><span class="s2">&quot;0.11.10&quot;</span> <span class="se">\</span>
     <span class="nv">HELM_VERSION</span><span class="o">=</span><span class="s2">&quot;v2.14.0&quot;</span>
 
-<span class="k">WORKDIR</span><span class="s"> /tmp</span>
+<span class="k">WORKDIR</span><span class="w"> </span><span class="s">/tmp</span>
 
-<span class="k">RUN</span> curl https://releases.hashicorp.com/terraform/<span class="si">${</span><span class="nv">TERRAFORM_VERSION</span><span class="si">}</span>/terraform_<span class="si">${</span><span class="nv">TERRAFORM_VERSION</span><span class="si">}</span>_linux_amd64.zip &gt; terraform_<span class="si">${</span><span class="nv">TERRAFORM_VERSION</span><span class="si">}</span>_linux_amd64.zip <span class="o">&amp;&amp;</span> <span class="se">\</span>
+<span class="k">RUN</span><span class="w"> </span>curl https://releases.hashicorp.com/terraform/<span class="si">${</span><span class="nv">TERRAFORM_VERSION</span><span class="si">}</span>/terraform_<span class="si">${</span><span class="nv">TERRAFORM_VERSION</span><span class="si">}</span>_linux_amd64.zip &gt; terraform_<span class="si">${</span><span class="nv">TERRAFORM_VERSION</span><span class="si">}</span>_linux_amd64.zip <span class="o">&amp;&amp;</span> <span class="se">\</span>
     unzip terraform_<span class="si">${</span><span class="nv">TERRAFORM_VERSION</span><span class="si">}</span>_linux_amd64.zip -d /bin <span class="o">&amp;&amp;</span> <span class="se">\</span>
     wget -q https://storage.googleapis.com/kubernetes-helm/helm-<span class="si">${</span><span class="nv">HELM_VERSION</span><span class="si">}</span>-linux-amd64.tar.gz -O - <span class="p">|</span> tar -xzO linux-amd64/helm &gt; /usr/local/bin/helm <span class="o">&amp;&amp;</span> <span class="se">\</span>
     chmod +x /usr/local/bin/helm <span class="o">&amp;&amp;</span> <span class="se">\</span>
     rm -f terraform_<span class="si">${</span><span class="nv">TERRAFORM_VERSION</span><span class="si">}</span>_linux_amd64.zip
 </code></pre></div>
-
 
 </li>
 <li>

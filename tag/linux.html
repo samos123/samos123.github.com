@@ -103,7 +103,6 @@ In Linux you can use the <a href="http://www.saschahlusiak.de/linux/isatap.htm">
 <div class="highlight"><pre><span></span><code>isatapd --router isatap.tsinghua.edu.cn
 </code></pre></div>
 
-
 <p>After connecting check …</p>
 				</p>
 				<a class="read-more" href="posts/ipv6-tsinghua-linux-isatapd.html">Continue reading »</a>
@@ -129,7 +128,7 @@ Now you want to add eth1 to a linux bridge so you can hookin VMs on a vlan trunk
 					<p>In order to access other containers from a container it's needed
 to get the private IP address of the other containers. The following
 command is able to get the private ip address of the container.</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$</span> docker inspect --format<span class="o">=</span><span class="s2">&quot;{{.NetworkSettings.IPAddress}}&quot;</span> <span class="nv">$CONTAINER_ID_OR_NAME</span>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>docker inspect --format<span class="o">=</span><span class="s2">&quot;{{.NetworkSettings.IPAddress}}&quot;</span> <span class="nv">$CONTAINER_ID_OR_NAME</span>
 <span class="go">172.17.0.15</span>
 </code></pre></div>
 				</p>
@@ -176,7 +175,6 @@ via this public server to the server behind a firewall.</p>
 /save
 </code></pre></div>
 
-
 <p>Read more about ignore <code>/help ignore</code></p>
 <p>Taken from Archwiki:
 <a href="https://wiki.archlinux.org/index.php/Irssi">https://wiki.archlinux.org/index.php/Irssi</a></p>
@@ -222,7 +220,7 @@ to installing lxml it will give the following error:</p>
 <p>gcc -pthread -fno-strict-aliasing -DNDEBUG -g -fwrapv -O2
 -Wall -Wstrict-prototypes -fPIC -I/usr/include/python2.7 -c
 src/lxml/lxml.etree.c -o
-build/temp.linux-x86_64-2.7/src/lxml/lxml …</p>
+build/temp.linux-x86_64-2.7/src …</p>
 				</p>
 				<a class="read-more" href="posts/trying-to-install-scrapy-with-pip-lxml-error-command-gcc-failed-with-exit-status-1.html">Continue reading »</a>
 			</div>

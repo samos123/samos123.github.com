@@ -88,13 +88,11 @@ welcomed.</p>
                         <span class="n">mimetype</span><span class="o">=</span><span class="s2">&quot;application/json&quot;</span><span class="p">)</span>
 </code></pre></div>
 
-
 <p>To use it in your view you just do it this way:  </p>
 <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">login</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>  
     <span class="k">return</span> <span class="n">json_response</span><span class="p">({</span><span class="s1">&#39;success&#39;</span> <span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;user&#39;</span> <span class="p">:</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Sam&#39;</span><span class="p">,</span>
                                                       <span class="s1">&#39;speciality&#39;</span><span class="p">:</span> <span class="s1">&#39;Django/Python&#39;</span><span class="p">}})</span>
 </code></pre></div>
-
 
 <p>You could also create a decorator to do this but I think using a simple function
 is more straight forward.</p>

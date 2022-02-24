@@ -119,19 +119,16 @@ ssh mesos-master-1 <span class="s2">&quot;cd /srv/ &amp;&amp; tar xzf tachyon-0.
 ssh mesos-slave-1 <span class="s2">&quot;cd /srv/ &amp;&amp; tar xzf tachyon-0.8.0-hadoop2.6-bin.tar.gz&quot;</span>
 </code></pre></div>
 
-
 <p>On both mesos-master-1 and mesos-slave-1, copy /srv/tachyon-0.8.0/conf/tachyon-env.sh.swift
 to /srv/tachyon-0.8.0/conf/tachyon-env.sh</p>
 <div class="highlight"><pre><span></span><code>mv /srv/tachyon-0.8.0/conf/tachyon-env.sh<span class="o">{</span>.swift,<span class="o">}</span>
 </code></pre></div>
-
 
 <p>Make minor modifications to /srv/tachyon-0.8.0/conf/tachyon-env.sh on both mesos-master-1 and
 mesos-slave-1:</p>
 <div class="highlight"><pre><span></span><code><span class="nb">export</span> <span class="nv">TACHYON_MASTER_ADDRESS</span><span class="o">=</span><span class="m">192</span>.168.111.54
 <span class="nb">export</span> <span class="nv">TACHYON_UNDERFS_ADDRESS</span><span class="o">=</span>swift://spark.swift1
 </code></pre></div>
-
 
 <p>The TACHYON_MASTER_ADDRESS is set to the use the external IP
 of the mesos-master node. The variable TACHYON_UNDERFS_ADDRESS
@@ -183,18 +180,15 @@ copied it to tachyon/conf/core-site.xml. The following changes were made:</p>
 &lt;/property&gt;
 </code></pre></div>
 
-
 <p>After all config changes are done we can start launching
 the Tachyon master process on the mesos-master-1 node.</p>
 <div class="highlight"><pre><span></span><code>/srv/tachyon-0.8.0/bin/tachyon-start.sh master -f
 </code></pre></div>
 
-
 <p>After successful start of the tachyon master, also start the tachyon worker
 on mesos-slave-1:</p>
 <div class="highlight"><pre><span></span><code>/srv/tachyon-0.8.0/bin/tachyon-start.sh worker SudoMount
 </code></pre></div>
-
 
 <p>You should now have Tachyon running and you can access it via
 http://192.168.111.54:19999</p>
@@ -203,68 +197,64 @@ http://192.168.111.54:19999</p>
 <div class="highlight"><pre><span></span><code>git clone https://github.com/apache/spark.git
 </code></pre></div>
 
-
 <p>Apply the following patches to core/pom.xml and make_distribution.sh
 to use tachyon 0.8.0 and to include hdfs as underfs dependency.
 Make sure to exclude mockito-all else the build will fail with</p>
-<div class="highlight"><pre><span></span><code><span class="gh">diff --git a/core/pom.xml b/core/pom.xml</span>
-<span class="gh">index 570a25c..98285a0 100644</span>
-<span class="gd">--- a/core/pom.xml</span>
-<span class="gi">+++ b/core/pom.xml</span>
-<span class="gu">@@ -262,7 +262,7 @@</span>
-     &lt;dependency&gt;
-       &lt;groupId&gt;org.tachyonproject&lt;/groupId&gt;
-       &lt;artifactId&gt;tachyon-client&lt;/artifactId&gt;
-<span class="gd">-      &lt;version&gt;0.8.1&lt;/version&gt;</span>
-<span class="gi">+      &lt;version&gt;0.8.0&lt;/version&gt;</span>
-       &lt;exclusions&gt;
-         &lt;exclusion&gt;
-           &lt;groupId&gt;org.apache.hadoop&lt;/groupId&gt;
-<span class="gu">@@ -287,6 +287,17 @@</span>
-       &lt;/exclusions&gt;
-     &lt;/dependency&gt;
-     &lt;dependency&gt;
-<span class="gi">+      &lt;groupId&gt;org.tachyonproject&lt;/groupId&gt;</span>
-<span class="gi">+      &lt;artifactId&gt;tachyon-underfs-swift&lt;/artifactId&gt;</span>
-<span class="gi">+      &lt;version&gt;0.8.0&lt;/version&gt;</span>
-<span class="gi">+      &lt;exclusions&gt;</span>
-<span class="gi">+        &lt;exclusion&gt;</span>
-<span class="gi">+          &lt;groupId&gt;org.mockito&lt;/groupId&gt;</span>
-<span class="gi">+          &lt;artifactId&gt;mockito-all&lt;/artifactId&gt;</span>
-<span class="gi">+        &lt;/exclusion&gt;</span>
-<span class="gi">+      &lt;/exclusions&gt;</span>
-<span class="gi">+    &lt;/dependency&gt;</span>
-<span class="gi">+    &lt;dependency&gt;</span>
-       &lt;groupId&gt;org.seleniumhq.selenium&lt;/groupId&gt;
-       &lt;artifactId&gt;selenium-java&lt;/artifactId&gt;
-       &lt;exclusions&gt;
+<div class="highlight"><pre><span></span><code><span class="gh">diff --git a/core/pom.xml b/core/pom.xml</span><span class="w"></span>
+<span class="gh">index 570a25c..98285a0 100644</span><span class="w"></span>
+<span class="gd">--- a/core/pom.xml</span><span class="w"></span>
+<span class="gi">+++ b/core/pom.xml</span><span class="w"></span>
+<span class="gu">@@ -262,7 +262,7 @@</span><span class="w"></span>
+<span class="w"> </span>    &lt;dependency&gt;<span class="w"></span>
+<span class="w"> </span>      &lt;groupId&gt;org.tachyonproject&lt;/groupId&gt;<span class="w"></span>
+<span class="w"> </span>      &lt;artifactId&gt;tachyon-client&lt;/artifactId&gt;<span class="w"></span>
+<span class="gd">-      &lt;version&gt;0.8.1&lt;/version&gt;</span><span class="w"></span>
+<span class="gi">+      &lt;version&gt;0.8.0&lt;/version&gt;</span><span class="w"></span>
+<span class="w"> </span>      &lt;exclusions&gt;<span class="w"></span>
+<span class="w"> </span>        &lt;exclusion&gt;<span class="w"></span>
+<span class="w"> </span>          &lt;groupId&gt;org.apache.hadoop&lt;/groupId&gt;<span class="w"></span>
+<span class="gu">@@ -287,6 +287,17 @@</span><span class="w"></span>
+<span class="w"> </span>      &lt;/exclusions&gt;<span class="w"></span>
+<span class="w"> </span>    &lt;/dependency&gt;<span class="w"></span>
+<span class="w"> </span>    &lt;dependency&gt;<span class="w"></span>
+<span class="gi">+      &lt;groupId&gt;org.tachyonproject&lt;/groupId&gt;</span><span class="w"></span>
+<span class="gi">+      &lt;artifactId&gt;tachyon-underfs-swift&lt;/artifactId&gt;</span><span class="w"></span>
+<span class="gi">+      &lt;version&gt;0.8.0&lt;/version&gt;</span><span class="w"></span>
+<span class="gi">+      &lt;exclusions&gt;</span><span class="w"></span>
+<span class="gi">+        &lt;exclusion&gt;</span><span class="w"></span>
+<span class="gi">+          &lt;groupId&gt;org.mockito&lt;/groupId&gt;</span><span class="w"></span>
+<span class="gi">+          &lt;artifactId&gt;mockito-all&lt;/artifactId&gt;</span><span class="w"></span>
+<span class="gi">+        &lt;/exclusion&gt;</span><span class="w"></span>
+<span class="gi">+      &lt;/exclusions&gt;</span><span class="w"></span>
+<span class="gi">+    &lt;/dependency&gt;</span><span class="w"></span>
+<span class="gi">+    &lt;dependency&gt;</span><span class="w"></span>
+<span class="w"> </span>      &lt;groupId&gt;org.seleniumhq.selenium&lt;/groupId&gt;<span class="w"></span>
+<span class="w"> </span>      &lt;artifactId&gt;selenium-java&lt;/artifactId&gt;<span class="w"></span>
+<span class="w"> </span>      &lt;exclusions&gt;<span class="w"></span>
 
-<span class="gh">diff --git a/make-distribution.sh b/make-distribution.sh</span>
-<span class="gh">index e1c2afd..f676678 100755</span>
-<span class="gd">--- a/make-distribution.sh</span>
-<span class="gi">+++ b/make-distribution.sh</span>
-<span class="gu">@@ -33,7 +33,7 @@ SPARK_HOME=&quot;$(cd &quot;`dirname &quot;$0&quot;`&quot;; pwd)&quot;</span>
- DISTDIR=&quot;$SPARK_HOME/dist&quot;
+<span class="gh">diff --git a/make-distribution.sh b/make-distribution.sh</span><span class="w"></span>
+<span class="gh">index e1c2afd..f676678 100755</span><span class="w"></span>
+<span class="gd">--- a/make-distribution.sh</span><span class="w"></span>
+<span class="gi">+++ b/make-distribution.sh</span><span class="w"></span>
+<span class="gu">@@ -33,7 +33,7 @@ SPARK_HOME=&quot;$(cd &quot;`dirname &quot;$0&quot;`&quot;; pwd)&quot;</span><span class="w"></span>
+<span class="w"> </span>DISTDIR=&quot;$SPARK_HOME/dist&quot;<span class="w"></span>
 
- SPARK_TACHYON=false
-<span class="gd">-TACHYON_VERSION=&quot;0.8.1&quot;</span>
-<span class="gi">+TACHYON_VERSION=&quot;0.8.0&quot;</span>
- TACHYON_TGZ=&quot;tachyon-${TACHYON_VERSION}-bin.tar.gz&quot;
- TACHYON_URL=&quot;http://tachyon-project.org/downloads/files/${TACHYON_VERSION}/${TACHYON_TGZ}&quot;
+<span class="w"> </span>SPARK_TACHYON=false<span class="w"></span>
+<span class="gd">-TACHYON_VERSION=&quot;0.8.1&quot;</span><span class="w"></span>
+<span class="gi">+TACHYON_VERSION=&quot;0.8.0&quot;</span><span class="w"></span>
+<span class="w"> </span>TACHYON_TGZ=&quot;tachyon-${TACHYON_VERSION}-bin.tar.gz&quot;<span class="w"></span>
+<span class="w"> </span>TACHYON_URL=&quot;http://tachyon-project.org/downloads/files/${TACHYON_VERSION}/${TACHYON_TGZ}&quot;<span class="w"></span>
 </code></pre></div>
-
 
 <p>Build Spark with Tachyon and Swift as underfs:</p>
 <div class="highlight"><pre><span></span><code>./make-distribution.sh --name spark-master-tachyon-0.8.0 --tgz --with-tachyon -Pyarn -Phadoop-2.6 -Dhadoop.version<span class="o">=</span><span class="m">2</span>.6.0 -DskipTests
 </code></pre></div>
-
 
 <p>Add core-site.xml which we used in Tachyon to the Spark tarball. </p>
 <div class="highlight"><pre><span></span><code>tar xzf spark-1.6.0-SNAPSHOT-bin-spark-master-tachyon-0.8.0.tgz
 cp /srv/tachyon-0.8.0/conf/core-site.xml spark-1.6.0*/conf/core-site.xml
 tar czf spark-1.6.0.tar.gz spark-1.6.0-SNAPSHOT-bin-spark-master-tachyon-0.8.0
 </code></pre></div>
-
 
 <p>For some reason Spark also needs core-site.xml with the Swift connection settings
 even though we already configured this in Tachyon.</p>
@@ -275,7 +265,6 @@ output.log we can now create a Spark shell session and use</p>
 val <span class="nv">textFile</span> <span class="o">=</span> sc.textFile<span class="o">(</span><span class="s2">&quot;tachyon://mesos-master-1:19998/output.log&quot;</span><span class="o">)</span>
 textFile.count<span class="o">()</span>
 </code></pre></div>
-
 
 <p>I've also verified that I could successfuly use sequenceFiles and Spark pickleFiles on
 Tachyon with Swift by running the Python spark jobs of my other project: 

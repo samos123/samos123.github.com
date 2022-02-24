@@ -68,7 +68,6 @@ In Linux you can use the &lt;a href="http://www.saschahlusiak.de/linux/isatap.ht
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;isatapd --router isatap.tsinghua.edu.cn
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;After connecting check …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Sam Stoelinga</dc:creator><pubDate>Thu, 08 Oct 2015 12:42:00 +0200</pubDate><guid isPermaLink="false">tag:samos-it.com,2015-10-08:/posts/ipv6-tsinghua-linux-isatapd.html</guid><category>Linux</category><category>archlinux</category><category>ipv6</category><category>linux</category><category>isatap</category><category>isatapd</category></item><item><title>Enable SRIOV on OpenStack Juno</title><link>https://samos-it.com/posts/sriov-openstack-juno-fuel-6-1.html</link><description>&lt;p&gt;Update: This blog post is deprecated by the official documentation. Please take a look at the official
 &lt;a href="http://docs.openstack.org/liberty/networking-guide/adv_config_sriov.html" target="_blank"&gt;
 Networking Guide: Using SRIOV functionality&lt;/a&gt;. Patch set that added the official documentation:
@@ -99,7 +98,7 @@ public routable IP addresses in a single subnet. For example I got access to the
 &lt;/ul&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Sam Stoelinga</dc:creator><pubDate>Fri, 29 Aug 2014 13:42:00 +0200</pubDate><guid isPermaLink="false">tag:samos-it.com,2014-08-29:/posts/openstack-networking-study-notes.html</guid><category>Openstack</category><category>openstack</category><category>networking</category><category>neutron</category><category>study</category></item><item><title>Docker get private ip address of container</title><link>https://samos-it.com/posts/docker-get-private-ip-address-of-container.html</link><description>&lt;p&gt;In order to access other containers from a container it's needed
 to get the private IP address of the other containers. The following
 command is able to get the private ip address of the container.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$&lt;/span&gt; docker inspect --format&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;{{.NetworkSettings.IPAddress}}&amp;quot;&lt;/span&gt; &lt;span class="nv"&gt;$CONTAINER_ID_OR_NAME&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="gp"&gt;$ &lt;/span&gt;docker inspect --format&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;{{.NetworkSettings.IPAddress}}&amp;quot;&lt;/span&gt; &lt;span class="nv"&gt;$CONTAINER_ID_OR_NAME&lt;/span&gt;
 &lt;span class="go"&gt;172.17.0.15&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Sam Stoelinga</dc:creator><pubDate>Tue, 08 Jul 2014 14:25:00 +0200</pubDate><guid isPermaLink="false">tag:samos-it.com,2014-07-08:/posts/docker-get-private-ip-address-of-container.html</guid><category>Linux</category><category>linux</category><category>docker</category><category>container</category></item><item><title>Docker Multiple websites/domains on single ip/host tutorial using a HAproxy as reverse proxy</title><link>https://samos-it.com/posts/docker-multi-website-single-ip-host-haproxy.html</link><description>&lt;p&gt;This post will describe how to expose multiple docker containers
 running websites on port 80 using HAproxy as a reverse proxy.
@@ -123,7 +122,6 @@ same ofcourse, and was unable to use the …&lt;/p&gt;</description><dc:creator 
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; -n &lt;span class="s2"&gt;&amp;quot;1&amp;quot;&lt;/span&gt; &amp;gt; /sys/bus/pci/devices/0000:02:00.0/remove
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;Where 0000:02:00.0 is related to your pci device address which can
 be obtained from the command &lt;code&gt;lspci&lt;/code&gt;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Related story:&lt;/strong&gt;&lt;br&gt;
@@ -139,7 +137,6 @@ install. So …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/
 /ignore &lt;span class="se"&gt;\*&lt;/span&gt; quits  
 /save
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
 
 &lt;p&gt;Read more about ignore &lt;code&gt;/help ignore&lt;/code&gt;&lt;/p&gt;
 &lt;p&gt;Taken from Archwiki:
@@ -161,11 +158,10 @@ but coudn't find it. You can get it in the following way:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;heroku config --long
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;Which will show the parameters:&lt;br&gt;
 SENDGRID_PASSWORD, SENDGRID_USERNAME&lt;/p&gt;
 &lt;p&gt;After you get your username don't forget to add it to django settings:  &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;EMAIL&lt;/span&gt;\&lt;span class="n"&gt;_HOST&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;smtp …&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Sam Stoelinga</dc:creator><pubDate>Wed, 11 Apr 2012 09:43:00 +0200</pubDate><guid isPermaLink="false">tag:samos-it.com,2012-04-11:/posts/using-sendgrid-with-django-on-heroku-how-to-find-your-sendgrid-password-on-heroku.html</guid><category>Python</category></item><item><title>Django Custom View Decorator with Arguments</title><link>https://samos-it.com/posts/django-custom-view-decorator-with-arguments.html</link><description>&lt;p&gt;To make my life easier I made a simple decorator which checks if the
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;EMAIL …&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Sam Stoelinga</dc:creator><pubDate>Wed, 11 Apr 2012 09:43:00 +0200</pubDate><guid isPermaLink="false">tag:samos-it.com,2012-04-11:/posts/using-sendgrid-with-django-on-heroku-how-to-find-your-sendgrid-password-on-heroku.html</guid><category>Python</category></item><item><title>Django Custom View Decorator with Arguments</title><link>https://samos-it.com/posts/django-custom-view-decorator-with-arguments.html</link><description>&lt;p&gt;To make my life easier I made a simple decorator which checks if the
 parameters are present in the request.POST or request.GET and returns a
 response if they are not.&lt;/p&gt;
 &lt;p&gt;It accepts a list of parameters in string format and will loop through
@@ -179,8 +175,7 @@ welcomed.&lt;/p&gt;
                         &lt;span class="n"&gt;mimetype&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;application/json&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
-&lt;p&gt;To use it in your view you just do it this …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Sam Stoelinga</dc:creator><pubDate>Wed, 22 Feb 2012 15:53:00 +0100</pubDate><guid isPermaLink="false">tag:samos-it.com,2012-02-22:/posts/simple-function-to-return-json-in-django.html</guid><category>Python</category><category>python</category><category>django</category><category>json</category></item><item><title>Chinese New Year 2012</title><link>https://samos-it.com/posts/chinese-new-year-2012.html</link><description>&lt;p&gt;The Chinese New Year aka Spring Festival is the most important festival
+&lt;p&gt;To use …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Sam Stoelinga</dc:creator><pubDate>Wed, 22 Feb 2012 15:53:00 +0100</pubDate><guid isPermaLink="false">tag:samos-it.com,2012-02-22:/posts/simple-function-to-return-json-in-django.html</guid><category>Python</category><category>python</category><category>django</category><category>json</category></item><item><title>Chinese New Year 2012</title><link>https://samos-it.com/posts/chinese-new-year-2012.html</link><description>&lt;p&gt;The Chinese New Year aka Spring Festival is the most important festival
 in Chinese culture. All the people travel back to their hometown,
 because most of them are working/studying in cities far from their own
 hometown. That means all train tickets are sold the day they get
@@ -190,14 +185,12 @@ share it:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;psql -d dbname -U username -f dumpfile.sql
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;This should also work with files created by pgdump.&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Sam Stoelinga</dc:creator><pubDate>Tue, 29 Nov 2011 13:46:00 +0100</pubDate><guid isPermaLink="false">tag:samos-it.com,2011-11-29:/posts/importing-a-sql-dump-in-postgres.html</guid><category>Linux</category></item><item><title>Installing fastboot for Ubuntu (Linux)</title><link>https://samos-it.com/posts/installing-fastboot-for-ubuntu-linux.html</link><description>&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;mkdir ~/fastboot  
 &lt;span class="nb"&gt;cd&lt;/span&gt; ~/fastboot  
 wget http://xt720.ru/Tools/fastboot  
 chmod +x fastboot  
 sudo ./fastboot --help
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
 
 &lt;p&gt;Reference: &lt;a href="http://forum.xda-developers.com/showthread.php?t=1121420"&gt;http://forum.xda-developers.com/showthread.php?t=1121420&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;I tested the above with Ubuntu 11.10, but it should work on any ubuntu
@@ -206,7 +199,7 @@ to installing lxml it will give the following error:&lt;/p&gt;
 &lt;p&gt;gcc -pthread -fno-strict-aliasing -DNDEBUG -g -fwrapv -O2
 -Wall -Wstrict-prototypes -fPIC -I/usr/include/python2.7 -c
 src/lxml/lxml.etree.c -o
-build/temp.linux-x86_64-2.7/src/lxml/lxml …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Sam Stoelinga</dc:creator><pubDate>Tue, 01 Nov 2011 14:31:00 +0100</pubDate><guid isPermaLink="false">tag:samos-it.com,2011-11-01:/posts/trying-to-install-scrapy-with-pip-lxml-error-command-gcc-failed-with-exit-status-1.html</guid><category>Python</category><category>python</category><category>linux</category><category>ubuntu</category></item><item><title>Ubuntu 11.10 error while loading shared libraries: libssl.so.0.9.8: cannot open shared object file: No such file or directory</title><link>https://samos-it.com/posts/ubuntu-11-10-error-while-loading-shared-libraries-libssl-so-0-9-8-cannot-open-shared-object-file-no-such-file-or-directory.html</link><description>&lt;p&gt;A quick solution is to install the libssl 0.9.8 package with the
+build/temp.linux-x86_64-2.7/src …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Sam Stoelinga</dc:creator><pubDate>Tue, 01 Nov 2011 14:31:00 +0100</pubDate><guid isPermaLink="false">tag:samos-it.com,2011-11-01:/posts/trying-to-install-scrapy-with-pip-lxml-error-command-gcc-failed-with-exit-status-1.html</guid><category>Python</category><category>python</category><category>linux</category><category>ubuntu</category></item><item><title>Ubuntu 11.10 error while loading shared libraries: libssl.so.0.9.8: cannot open shared object file: No such file or directory</title><link>https://samos-it.com/posts/ubuntu-11-10-error-while-loading-shared-libraries-libssl-so-0-9-8-cannot-open-shared-object-file-no-such-file-or-directory.html</link><description>&lt;p&gt;A quick solution is to install the libssl 0.9.8 package with the
 &lt;strong&gt;Following command&lt;/strong&gt;:&lt;br&gt;
 &lt;code&gt;sudo apt-get install libssl0.9.8&lt;/code&gt;&lt;/p&gt;
 &lt;p&gt;Thanks to Rob who commented below and provided an answer on
@@ -233,8 +226,7 @@ in Beijing. On the way to the hotel Bart found the traffic here a little rough
 and dangerous, but actually I found the driver today was driving quite peacefully …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Sam Stoelinga</dc:creator><pubDate>Thu, 11 Aug 2011 07:07:00 +0200</pubDate><guid isPermaLink="false">tag:samos-it.com,2011-08-11:/posts/a-new-start-in-beijing.html</guid><category>China</category></item><item><title>How to install Setuptools to a specific python version</title><link>https://samos-it.com/posts/how-to-install-setuptools-to-a-specific-python-version.html</link><description>&lt;p&gt;To install easy_install for a specific python version. I just installed
 from source and used the python version you want to install setuptools
 too. I used the following steps in Ubuntu 11.04 with Python 2.5 and
-Python 2.7 installed. The following commands will install setuptools to
-python …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Sam Stoelinga</dc:creator><pubDate>Mon, 18 Jul 2011 19:34:00 +0200</pubDate><guid isPermaLink="false">tag:samos-it.com,2011-07-18:/posts/how-to-install-setuptools-to-a-specific-python-version.html</guid><category>Python</category><category>python</category><category>ubuntu</category><category>linux</category></item><item><title>Sam the terrorist arrived in China</title><link>https://samos-it.com/posts/sam-the-terrorist-arrived-in-china.html</link><description>&lt;p&gt;It has been some days I guess since I have been away from Hollad. But it has been kind of hectic. I will start
+Python 2.7 installed. The following commands will install setuptools to …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Sam Stoelinga</dc:creator><pubDate>Mon, 18 Jul 2011 19:34:00 +0200</pubDate><guid isPermaLink="false">tag:samos-it.com,2011-07-18:/posts/how-to-install-setuptools-to-a-specific-python-version.html</guid><category>Python</category><category>python</category><category>ubuntu</category><category>linux</category></item><item><title>Sam the terrorist arrived in China</title><link>https://samos-it.com/posts/sam-the-terrorist-arrived-in-china.html</link><description>&lt;p&gt;It has been some days I guess since I have been away from Hollad. But it has been kind of hectic. I will start
 from the trip till today. &lt;/p&gt;
 &lt;p&gt;The trip started early at 6:30, train to Schiphol and than flight to
 London, wait in London for 5 hours …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Sam Stoelinga</dc:creator><pubDate>Sun, 13 Feb 2011 00:08:00 +0100</pubDate><guid isPermaLink="false">tag:samos-it.com,2011-02-13:/posts/sam-the-terrorist-arrived-in-china.html</guid><category>China</category><category>china</category></item></channel></rss>

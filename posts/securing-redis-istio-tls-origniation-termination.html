@@ -113,7 +113,6 @@ You might want to support the creators of Redis by using Redislabs.</p>
 <span class="nb">export</span> <span class="nv">REDIS_PORT</span><span class="o">=</span><span class="m">16222</span>
 </code></pre></div>
 
-
 <p>You will need to set these variables to your environment specifics.</p>
 <h3>2. Creating the Istio resources</h3>
 <p>In this section, you will create the following Istio resources:
@@ -125,7 +124,6 @@ You might want to support the creators of Redis by using Redislabs.</p>
 <span class="c1"># If you use kubectx</span>
 kubens redis 
 </code></pre></div>
-
 
 <p>Create the following ServiceEntry:</p>
 <div class="highlight"><pre><span></span><code>cat <span class="s">&lt;&lt;EOF | kubectl apply --namespace=redis -f -</span>
@@ -145,7 +143,6 @@ kubens redis
 <span class="s">EOF</span>
 </code></pre></div>
 
-
 <p>Create the DestinationRule:</p>
 <div class="highlight"><pre><span></span><code>cat <span class="s">&lt;&lt;EOF | kubectl apply -f -</span>
 <span class="s">apiVersion: networking.istio.io/v1beta1</span>
@@ -161,7 +158,6 @@ kubens redis
 <span class="s">      caCertificates: /etc/ssl/certs/ca-certificates.crt</span>
 <span class="s">EOF</span>
 </code></pre></div>
-
 
 <p>Note that Istio has a security issue that if you do not specify the
 caCertificates that it will not validate the cert at all. So in the
@@ -201,7 +197,6 @@ means that this is using standard TLS instead of mutual TLS.</p>
 <span class="s">EOF</span>
 </code></pre></div>
 
-
 <p>Wait for the pods to come up....</p>
 <p>Get a shell to the redis-client container:</p>
 <div class="highlight"><pre><span></span><code>kubectl <span class="nb">exec</span> -ti deploy/redis-client -c redis-client -- bash
@@ -209,7 +204,6 @@ redis-cli -h REPLACE_WITH_REDIS_HOST -p REPLACE_WITH_REDIS_PORT -a REPLACE_WITH_
 <span class="nb">set</span> <span class="s2">&quot;hello&quot;</span> <span class="s2">&quot;world&quot;</span>
 get <span class="s2">&quot;hello&quot;</span>
 </code></pre></div>
-
 
 <p>The above should return "world". The redis client is using standard TCP while the
 Istio sidecar upgraded the connection to TLS in the background.
@@ -221,7 +215,6 @@ connect to Redis anymore if your Redis is enforcing TLS.</p>
 the TLS connections.</p>
 <div class="highlight"><pre><span></span><code>kubectl logs deploy/redis-client -c istio-proxy
 </code></pre></div>
-
 
 <p>In my case the following logs could be seen in the Istio proxy logs:</p>
 <div class="highlight"><pre><span></span><code>2020-12-28T21:57:43.055354Z     debug   envoy connection        [C486] write flush complete
@@ -237,7 +230,6 @@ the TLS connections.</p>
 2020-12-28T21:57:45.050333Z     debug   envoy http      [C487] new stream
 2020-12-28T21:57:45.050424Z     debug   envoy http      [C487][S11853156146631931010] request headers complete (end_stream=true):
 </code></pre></div>
-
 
 <h3>Summary</h3>
 <p>You were able to use Istio to do TLS originiation using the sidecar instead

@@ -108,7 +108,6 @@ tar xf 256_ObjectCategories.tar
 ./upload-to-sequence-file.sh 256_ObjectCategories/ swift://spark.swift1/caltech-256.hseq
 </code></pre></div>
 
-
 <p>The dataset is also accessible through Tachyon as we configured it to use Swift as underFS.</p>
 <h3>Extract SIFT/SURF features using OpenCV on Spark</h3>
 <p>I've created a simple Spark application that uses OpenCV
@@ -170,13 +169,11 @@ to extract SURF or SIFT features from an image.</p>
     <span class="n">featuresSchema</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">parquet</span><span class="p">(</span><span class="n">feature_parquet_path</span><span class="p">)</span>
 </code></pre></div>
 
-
 <p>Using the above Spark application we can start to extract features from our image dataset in Swift.
 As input we provide the sequencefile containing <code>&lt;fileName: String, image: Bytes&gt;</code>. The extracted
 features we write out as parquet file. The following command extracts the sift features from our dataset:</p>
 <div class="highlight"><pre><span></span><code>spark-submit --executor-memory 8g feature_extraction.py sift swift://spark.swift1/caltech-256.hseq swift://spark.swift1/caltech-256-sift1.parquet <span class="m">100</span>
 </code></pre></div>
-
 
 <h3>K-Means Dictionary generation on SIFT features</h3>
 <p>We can now generate our dictionary of features through Spark's MLLib KMeans algorithm.
@@ -220,11 +217,9 @@ previous step as input dataset.</p>
     <span class="n">sc</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
 </code></pre></div>
 
-
 <p>Start the spark job with:</p>
 <div class="highlight"><pre><span></span><code>spark-submit --executor-memory 8g kmeans.py <span class="m">1000</span> swift://spark.swift1/caltech-256-sift1.parquet swift://spark.swift1/caltech-256-dictionary
 </code></pre></div>
-
 
 <h3>Feature coding and pooling with trained KMeans model</h3>
 <p>In this step we will use the KMeans dictionary that we trained
@@ -295,7 +290,6 @@ utilizing coding and pooling. For pooling we've implemented a simple max and sum
     <span class="n">featuresSchema</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">parquet</span><span class="p">(</span><span class="n">bow_parquet_path</span><span class="p">)</span>
     <span class="n">sc</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
 </code></pre></div>
-
 
 <p>Execute the spark applicaiton with:</p>
 <div class="highlight"><pre><span></span><code>spark-submit --executor-memory 8g feature_coding_pooling.py swift://spark.swift1/caltech-256-sift1.parquet swift://spark.swift1/caltech-256-dictionary swift://spark.swift1/caltech-256-bow.parquet sum

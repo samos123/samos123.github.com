@@ -108,11 +108,9 @@ documentation tells to do it this way:</p>
 <span class="n">generate_qr_codes</span><span class="o">.</span><span class="n">delay</span><span class="p">(</span><span class="n">product_id</span><span class="o">=</span><span class="n">product</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
 </code></pre></div>
 
-
 <p>The only problem is that this line actually does not work:</p>
 <div class="highlight"><pre><span></span><code><span class="n">app</span><span class="o">.</span><span class="n">processes</span><span class="p">[</span><span class="s1">&#39;celeryd&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 </code></pre></div>
-
 
 <p>It will give an KeyError exception, because the celeryd is not running
 which is kind of a bug, thats why I want to scale it to 1 in the first
@@ -126,7 +124,6 @@ wanted:  </p>
 <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;celeryd&#39;</span><span class="p">,</span> <span class="s1">&#39;qty&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">})</span>
 <span class="c1"># qty 0 is scale to 0 processes, if you want 1 process running change to qty 1</span>
 </code></pre></div>
-
 
 <p>I have created an issue in the github repo about not being able to scale
 a non running process: <a href="https://github.com/heroku/heroku.py/issues/10">https://github.com/heroku/heroku.py/issues/10</a></p>

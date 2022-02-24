@@ -41,7 +41,6 @@ gcloud compute instances create openstack-1 --zone us-central1-a &lt;span class=
               --machine-type n1-standard-32
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;Now verify that nested KVM is enabled:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;gcloud compute ssh openstack-1 --zone us-central1-a
 sudo -i
@@ -49,14 +48,12 @@ apt-get update &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; apt-get ins
 kvm-ok
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;The output of kvm-ok should show the following:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;kvm-ok&lt;/span&gt;
-&lt;span class="err"&gt;# Output should look like below&lt;/span&gt;
-&lt;span class="c"&gt;INFO: /dev/kvm exists&lt;/span&gt;
-&lt;span class="err"&gt;KVM acceleration can be used&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;kvm-ok
+# Output should look like below
+INFO: /dev/kvm exists
+KVM acceleration can be used
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
 
 &lt;h3&gt;2. Deploying OpenStack&lt;/h3&gt;
 &lt;p&gt;Now let's deploy OpenStack using OpenStack Ansible with all in one(aio) mode.
@@ -65,12 +62,10 @@ Ensure you're still SSHed into the &lt;code&gt;openstack-1&lt;/code&gt; VM, if n
 sudo -i
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;Start a screen or tmux session because deploying OpenStack can take 30 min to 
 2 hours. Run the following command:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;screen
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
 
 &lt;p&gt;Clone openstack-ansible repo to openstack-1:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;git clone https://opendev.org/openstack/openstack-ansible &lt;span class="se"&gt;\&lt;/span&gt;
@@ -79,17 +74,14 @@ sudo -i
 git checkout stable/ussuri
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;Install Ansible on the VM and install all the required Ansible roles:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;scripts/bootstrap-ansible.sh
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
 
 &lt;p&gt;Bootstrap the AIO configuration for openstack ansible&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nb"&gt;export&lt;/span&gt; &lt;span class="nv"&gt;SCENARIO&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;aio_lxc_barbican_octavia&amp;#39;&lt;/span&gt;
 scripts/bootstrap-aio.sh
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
 
 &lt;p&gt;Create the LXC containers that run the different OpenStack components
 and install OpenStack:&lt;/p&gt;
@@ -97,7 +89,6 @@ and install OpenStack:&lt;/p&gt;
     playbooks/setup-infrastructure.yml &lt;span class="se"&gt;\&lt;/span&gt;
     playbooks/setup-openstack.yml
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
 
 &lt;p&gt;Now OpenStack should have been succesfully deployed on the openstack-1 VM.&lt;/p&gt;
 &lt;h3&gt;3. Accessing the environment&lt;/h3&gt;
@@ -113,14 +104,12 @@ to setup the tunnel with sshuttle:&lt;/p&gt;
 sshuttle -r sam@&lt;span class="nv"&gt;$PUBLIC_IP&lt;/span&gt; &lt;span class="m"&gt;10&lt;/span&gt;.0.0.0/8 &lt;span class="m"&gt;172&lt;/span&gt;.16.0.0/12 &lt;span class="m"&gt;192&lt;/span&gt;.168.0.0/16
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;Now you should be able to access the web UI on the private VPC IP address
 of your VM. Get the private address of your &lt;code&gt;openstack-1&lt;/code&gt; VM with the
 following command:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;gcloud compute instances describe openstack-1 --zone us-central1-a &lt;span class="se"&gt;\&lt;/span&gt;
          --format&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;get(networkInterfaces[0].networkIP)&amp;#39;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
 
 &lt;p&gt;In your browser go to &lt;code&gt;https://$PRIVATE_IP&lt;/code&gt; and you should be able to
 see the Horizon UI. &lt;/p&gt;</content><category term="Google Cloud"></category><category term="google cloud"></category><category term="gcp"></category><category term="openstack"></category><category term="kvm"></category></entry><entry><title>Creating L2 connectivity between GCE VMs in GCP using VXLAN</title><link href="https://samos-it.com/posts/gce-vm-vxlan-l2-connectivity.html" rel="alternate"></link><published>2020-09-13T22:42:00+02:00</published><updated>2020-09-13T22:42:00+02:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2020-09-13:/posts/gce-vm-vxlan-l2-connectivity.html</id><summary type="html">&lt;p&gt;Cloud providers often prevent you from using L2 protocols such as ARP. These
@@ -152,7 +141,6 @@ be using the &lt;code&gt;10.200.0.0/24&lt;/code&gt; subnet.&lt;/p&gt;
           --machine-type n1-standard-2
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;Repeat the same command creating &lt;code&gt;vm-2&lt;/code&gt; this time:&lt;/p&gt;
@@ -166,14 +154,12 @@ be using the &lt;code&gt;10.200.0.0/24&lt;/code&gt; subnet.&lt;/p&gt;
           --machine-type n1-standard-2
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;Verify that SSH to both VMs is available and up. You might need o be patient.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;gcloud compute ssh root@vm-1 --zone us-central1-a --command &lt;span class="s2"&gt;&amp;quot;echo &amp;#39;SSH to vm-1 succeeded&amp;#39;&amp;quot;&lt;/span&gt;
 gcloud compute ssh root@vm-2 --zone us-central1-a --command &lt;span class="s2"&gt;&amp;quot;echo &amp;#39;SSH to vm-2 succeeded&amp;#39;&amp;quot;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
 
 &lt;/li&gt;
 &lt;/ol&gt;
@@ -191,7 +177,6 @@ that you just created.&lt;/p&gt;
 &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="nv"&gt;$VM2_VPC_IP&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;Create the VXLAN device and mesh on &lt;code&gt;vm-1&lt;/code&gt;&lt;/p&gt;
@@ -203,7 +188,6 @@ that you just created.&lt;/p&gt;
 &lt;span class="s"&gt;ip link set up dev vxlan0&lt;/span&gt;
 &lt;span class="s"&gt;EOF&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
 
 &lt;/li&gt;
 &lt;li&gt;
@@ -217,7 +201,6 @@ that you just created.&lt;/p&gt;
 &lt;span class="s"&gt;EOF&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;Start a tcpdump on vm-1&lt;/p&gt;
@@ -225,14 +208,12 @@ that you just created.&lt;/p&gt;
 tcpdump -i vxlan0 -n
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;In another session ping &lt;code&gt;vm-2&lt;/code&gt; from &lt;code&gt;vm-1&lt;/code&gt;  and take a look at tcpdump output. Notice the arp.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;gcloud compute ssh root@vm-1 --zone us-central1-a
 ping &lt;span class="m"&gt;10&lt;/span&gt;.200.0.3
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
 
 &lt;/li&gt;
 &lt;/ol&gt;
@@ -269,25 +250,23 @@ Container Registry.&lt;/p&gt;
 &lt;span class="nv"&gt;GCP_PROJECT_ID&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;your-project-ID
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;Now with your file editor of choice create a file named &lt;code&gt;Dockerfile&lt;/code&gt; with the
 following content:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;FROM&lt;/span&gt; &lt;span class="s"&gt;gcr.io/cloudshell-images/cloudshell:latest&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;FROM&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;gcr.io/cloudshell-images/cloudshell:latest&lt;/span&gt;
 
-&lt;span class="k"&gt;ENV&lt;/span&gt; &lt;span class="nv"&gt;TERRAFORM_VERSION&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;0.11.10&amp;quot;&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
+&lt;span class="k"&gt;ENV&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;TERRAFORM_VERSION&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;0.11.10&amp;quot;&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
     &lt;span class="nv"&gt;HELM_VERSION&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;v2.14.0&amp;quot;&lt;/span&gt;
 
-&lt;span class="k"&gt;WORKDIR&lt;/span&gt;&lt;span class="s"&gt; /tmp&lt;/span&gt;
+&lt;span class="k"&gt;WORKDIR&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;/tmp&lt;/span&gt;
 
-&lt;span class="k"&gt;RUN&lt;/span&gt; curl https://releases.hashicorp.com/terraform/&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;TERRAFORM_VERSION&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;/terraform_&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;TERRAFORM_VERSION&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;_linux_amd64.zip &amp;gt; terraform_&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;TERRAFORM_VERSION&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;_linux_amd64.zip &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
+&lt;span class="k"&gt;RUN&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;curl https://releases.hashicorp.com/terraform/&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;TERRAFORM_VERSION&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;/terraform_&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;TERRAFORM_VERSION&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;_linux_amd64.zip &amp;gt; terraform_&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;TERRAFORM_VERSION&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;_linux_amd64.zip &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
     unzip terraform_&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;TERRAFORM_VERSION&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;_linux_amd64.zip -d /bin &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
     wget -q https://storage.googleapis.com/kubernetes-helm/helm-&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;HELM_VERSION&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;-linux-amd64.tar.gz -O - &lt;span class="p"&gt;|&lt;/span&gt; tar -xzO linux-amd64/helm &amp;gt; /usr/local/bin/helm &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
     chmod +x /usr/local/bin/helm &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
     rm -f terraform_&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;TERRAFORM_VERSION&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;_linux_amd64.zip
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
 
 &lt;/li&gt;
 &lt;li&gt;

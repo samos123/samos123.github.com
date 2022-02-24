@@ -26,7 +26,6 @@ make install
 &lt;span class="nb"&gt;cd&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; rm -rf ~/.virtualenvs/myProject/build &lt;span class="c1"&gt;# Optional.&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;&lt;strong&gt;Issues I encountered&lt;/strong&gt;:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;Missing development headers for qt: &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;~/.virtualenvs/scrapy/build/PyQt# python configure.py --verbose  
@@ -40,7 +39,6 @@ qtdirs.cpp:1:28: fatal error: QCoreApplication: No such file or directory compil
 make: *** &lt;span class="o"&gt;[&lt;/span&gt;qtdirs.o&lt;span class="o"&gt;]&lt;/span&gt; Error &lt;span class="m"&gt;1&lt;/span&gt;  
 Error: Failed to determine the layout of your Qt installation. Try again using  the --verbose flag to see more detail about the problem.
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
 
 &lt;/li&gt;
 &lt;/ul&gt;
@@ -81,11 +79,9 @@ documentation tells to do it this way:&lt;/p&gt;
 &lt;span class="n"&gt;generate_qr_codes&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;delay&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;product_id&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;product&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;id&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;The only problem is that this line actually does not work:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;app&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;processes&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;celeryd&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;scale&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
 
 &lt;p&gt;It will give an KeyError exception, because the celeryd is not running
 which is kind of a bug, thats why I want to scale it to 1 in the first
@@ -99,7 +95,6 @@ wanted:  &lt;/p&gt;
 &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;type&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;celeryd&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;qty&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;})&lt;/span&gt;
 &lt;span class="c1"&gt;# qty 0 is scale to 0 processes, if you want 1 process running change to qty 1&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
 
 &lt;p&gt;I have created an issue in the github repo about not being able to scale
 a non running process: &lt;a href="https://github.com/heroku/heroku.py/issues/10"&gt;https://github.com/heroku/heroku.py/issues/10&lt;/a&gt;&lt;/p&gt;
@@ -127,15 +122,13 @@ but coudn't find it. You can get it in the following way:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;heroku config --long
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;Which will show the parameters:&lt;br&gt;
 SENDGRID_PASSWORD, SENDGRID_USERNAME&lt;/p&gt;
 &lt;p&gt;After you get your username don't forget to add it to django settings:  &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;EMAIL&lt;/span&gt;\&lt;span class="n"&gt;_HOST&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;smtp …&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;While setting up sentgrid I was searching for my password of sendgrid,
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;EMAIL …&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;While setting up sentgrid I was searching for my password of sendgrid,
 but coudn't find it. You can get it in the following way:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;heroku config --long
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
 
 &lt;p&gt;Which will show the parameters:&lt;br&gt;
 SENDGRID_PASSWORD, SENDGRID_USERNAME&lt;/p&gt;
@@ -146,7 +139,6 @@ SENDGRID_PASSWORD, SENDGRID_USERNAME&lt;/p&gt;
 &lt;span class="n"&gt;EMAIL&lt;/span&gt;\&lt;span class="n"&gt;_PORT&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;587&lt;/span&gt;  
 &lt;span class="n"&gt;EMAIL&lt;/span&gt;\&lt;span class="n"&gt;_USE&lt;/span&gt;\&lt;span class="n"&gt;_TLS&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="bp"&gt;True&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
 
 &lt;p&gt;Hope it helped somebody&lt;/p&gt;</content><category term="Python"></category></entry><entry><title>Django Custom View Decorator with Arguments</title><link href="https://samos-it.com/posts/django-custom-view-decorator-with-arguments.html" rel="alternate"></link><published>2012-02-23T17:52:00+01:00</published><updated>2012-02-23T17:52:00+01:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2012-02-23:/posts/django-custom-view-decorator-with-arguments.html</id><summary type="html">&lt;p&gt;To make my life easier I made a simple decorator which checks if the
 parameters are present in the request.POST or request.GET and returns a
@@ -181,7 +173,6 @@ decorators&lt;/a&gt;&lt;/p&gt;
     &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;python&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;An example of using it in your view:  &lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nd"&gt;@required_parameters&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;parameters&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;email&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;username&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;password&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;  
 &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;view_which_requires_email_username_and_password&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;request&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  
@@ -197,8 +188,7 @@ welcomed.&lt;/p&gt;
                         &lt;span class="n"&gt;mimetype&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;application/json&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
-&lt;p&gt;To use it in your view you just do it this …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Just a small code snippet I use when I need to return json, comments are
+&lt;p&gt;To use …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Just a small code snippet I use when I need to return json, comments are
 welcomed.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;django.http&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;HttpResponse&lt;/span&gt;  
 &lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;django.utils&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;simplejson&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="n"&gt;json&lt;/span&gt;
@@ -208,13 +198,11 @@ welcomed.&lt;/p&gt;
                         &lt;span class="n"&gt;mimetype&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;application/json&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;To use it in your view you just do it this way:  &lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;login&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;request&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;  
     &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;json_response&lt;/span&gt;&lt;span class="p"&gt;({&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;success&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kc"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;user&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;name&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;Sam&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
                                                       &lt;span class="s1"&gt;&amp;#39;speciality&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;Django/Python&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;}})&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
 
 &lt;p&gt;You could also create a decorator to do this but I think using a simple function
 is more straight forward.&lt;/p&gt;</content><category term="Python"></category><category term="python"></category><category term="django"></category><category term="json"></category></entry><entry><title>Trying to install scrapy with pip lxml error: command 'gcc' failed with exit status 1</title><link href="https://samos-it.com/posts/trying-to-install-scrapy-with-pip-lxml-error-command-gcc-failed-with-exit-status-1.html" rel="alternate"></link><published>2011-11-01T14:31:00+01:00</published><updated>2011-11-01T14:31:00+01:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2011-11-01:/posts/trying-to-install-scrapy-with-pip-lxml-error-command-gcc-failed-with-exit-status-1.html</id><summary type="html">&lt;p&gt;Just tried to install scrapy with pip / easy_install, but when it comes
@@ -222,7 +210,7 @@ to installing lxml it will give the following error:&lt;/p&gt;
 &lt;p&gt;gcc -pthread -fno-strict-aliasing -DNDEBUG -g -fwrapv -O2
 -Wall -Wstrict-prototypes -fPIC -I/usr/include/python2.7 -c
 src/lxml/lxml.etree.c -o
-build/temp.linux-x86_64-2.7/src/lxml/lxml …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Just tried to install scrapy with pip / easy_install, but when it comes
+build/temp.linux-x86_64-2.7/src …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Just tried to install scrapy with pip / easy_install, but when it comes
 to installing lxml it will give the following error:&lt;/p&gt;
 &lt;p&gt;gcc -pthread -fno-strict-aliasing -DNDEBUG -g -fwrapv -O2
 -Wall -Wstrict-prototypes -fPIC -I/usr/include/python2.7 -c
@@ -238,15 +226,13 @@ Install Python development package:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sudo apt-get install python-dev
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-
 &lt;p&gt;Install the development packages of libxml and libst  &lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sudo apt-get install libxml2-dev  
 sudo apt-get install libxslt1-dev&lt;span class="o"&gt;[&lt;/span&gt;/sourcecode&lt;span class="o"&gt;]&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content><category term="Python"></category><category term="python"></category><category term="linux"></category><category term="ubuntu"></category></entry><entry><title>How to install Setuptools to a specific python version</title><link href="https://samos-it.com/posts/how-to-install-setuptools-to-a-specific-python-version.html" rel="alternate"></link><published>2011-07-18T19:34:00+02:00</published><updated>2011-07-18T19:34:00+02:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2011-07-18:/posts/how-to-install-setuptools-to-a-specific-python-version.html</id><summary type="html">&lt;p&gt;To install easy_install for a specific python version. I just installed
 from source and used the python version you want to install setuptools
 too. I used the following steps in Ubuntu 11.04 with Python 2.5 and
-Python 2.7 installed. The following commands will install setuptools to
-python …&lt;/p&gt;</summary><content type="html">&lt;p&gt;To install easy_install for a specific python version. I just installed
+Python 2.7 installed. The following commands will install setuptools to …&lt;/p&gt;</summary><content type="html">&lt;p&gt;To install easy_install for a specific python version. I just installed
 from source and used the python version you want to install setuptools
 too. I used the following steps in Ubuntu 11.04 with Python 2.5 and
 Python 2.7 installed. The following commands will install setuptools to
@@ -256,7 +242,6 @@ http://pypi.python.org/packages/source/s/setuptools/setuptools-0.6c11.tar.gz#md5
 tar -zxvf setuptools-0.6c11.tar.gz &lt;span class="nb"&gt;cd&lt;/span&gt; setuptools-0.6c11/  
 sudo python2.5 setup.py install
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
 
 &lt;p&gt;The following command installs the pil module to 2.5: &lt;br&gt;
 &lt;code&gt;sudo easy_install-2.5 pil&lt;/code&gt;&lt;/p&gt;

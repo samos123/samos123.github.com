@@ -126,13 +126,11 @@ mkdir /mnt/home
 mount /dev/sda3 /mnt/home
 </code></pre></div>
 
-
 </li>
 <li>
 <p>Now go back to the old Archlinux laptop and copy all files to the newly created partitions:</p>
 <div class="highlight"><pre><span></span><code>rsync -azv --progress --exclude<span class="o">=</span>/dev --exclude<span class="o">=</span>/sys / root@192.168.1.111:/mnt/
 </code></pre></div>
-
 
 <p>This may take a while..................</p>
 </li>
@@ -144,7 +142,6 @@ change /etc/fstab to look as follows:</p>
 <span class="nv">LABEL</span><span class="o">=</span>home /home ext4 defaults,noatime <span class="m">0</span> <span class="m">2</span>
 <span class="nv">LABEL</span><span class="o">=</span>boot /boot ext2 defaults,noatime <span class="m">0</span> <span class="m">2</span>
 </code></pre></div>
-
 
 </li>
 <li>
@@ -172,7 +169,6 @@ driver:</p>
 <div class="highlight"><pre><span></span><code>yaourt -Rs xf86-video-ati
 yaourt -S xf86-video-nouveau
 </code></pre></div>
-
 
 <p>The reason I am switching: My current HP 625 laptop has served its
 purpose for nearly 2 years. The CPU seems to be nearly burnt out, when I

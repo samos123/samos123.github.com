@@ -141,13 +141,11 @@ enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
 </code></pre></div>
 
-
 </li>
 <li>
 <p>Now install the required packages from CentOS repo</p>
 <div class="highlight"><pre><span></span><code>yum install libvirt qemu-kvm kvm
 </code></pre></div>
-
 
 </li>
 </ol>
@@ -159,7 +157,6 @@ gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
    and change forwarding to none:</p>
 <div class="highlight"><pre><span></span><code>virsh net-edit default
 </code></pre></div>
-
 
 </li>
 <li>
@@ -192,7 +189,6 @@ brctl addif eth0 net0
 ip a add <span class="nv">$ETH0ADDR</span> dev eth0
 </code></pre></div>
 
-
 </li>
 <li>
 <p>Create a systemd service to launch the script after network was done.
@@ -210,11 +206,9 @@ ip a add <span class="nv">$ETH0ADDR</span> dev eth0
 <span class="nv">WantedBy</span><span class="o">=</span>multi-user.target
 </code></pre></div>
 
-
 <p>Now enable the service to be run on startup by executing the command:</p>
 <div class="highlight"><pre><span></span><code>systemctl <span class="nb">enable</span> create-eth0-bridge
 </code></pre></div>
-
 
 </li>
 <li>
@@ -228,7 +222,6 @@ with the following commands:</p>
 brctl addif br-eth2 eth2
 </code></pre></div>
 
-
 <p>To make the changes persistent accross reboots create
 the file <code>/etc/sysconfig/network-scripts/ifcfg-br-eth2</code> with the following content:</p>
 <div class="highlight"><pre><span></span><code>DEVICE=br-eth2
@@ -238,7 +231,6 @@ TYPE=Bridge
 NM_CONTROLLED=no
 DELAY=0
 </code></pre></div>
-
 
 <p>and the file <code>/etc/sysconfig/network-scripts/ifcfg-eth2</code> with the following content:</p>
 <div class="highlight"><pre><span></span><code>TYPE=Ethernet
@@ -251,7 +243,6 @@ NM_CONTROLLED=no
 BRIDGE=br-eth2
 </code></pre></div>
 
-
 </li>
 </ol>
 <h2>3. Create the KVM VM</h2>
@@ -263,7 +254,6 @@ enables us to use Fuel's PXE booting.</p>
 <p>First create the disk for our KVM VM with the following command:</p>
 <div class="highlight"><pre><span></span><code>qemu-img create -f qcow2 -o <span class="nv">preallocation</span><span class="o">=</span>metadata /var/lib/libvirt/images/monitoring-1.img 300G
 </code></pre></div>
-
 
 </li>
 <li>
@@ -304,7 +294,6 @@ enables us to use Fuel's PXE booting.</p>
 <span class="nt">&lt;/domain&gt;</span>
 </code></pre></div>
 
-
 <p>Note you may need to tweak the parameters such as vcpus, memory
 and bridges according to your actual environment.</p>
 </li>
@@ -313,7 +302,6 @@ and bridges according to your actual environment.</p>
 <div class="highlight"><pre><span></span><code>virsh define monitoring-1.xml
 virsh start monitoring-1
 </code></pre></div>
-
 
 </li>
 </ol>

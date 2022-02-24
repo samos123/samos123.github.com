@@ -82,7 +82,6 @@ ga('send', 'pageview');
 <div class="highlight"><pre><span></span><code><span class="nb">echo</span> -n <span class="s2">&quot;1&quot;</span> &gt; /sys/bus/pci/devices/0000:02:00.0/remove
 </code></pre></div>
 
-
 <p>Where 0000:02:00.0 is related to your pci device address which can
 be obtained from the command <code>lspci</code></p>
 <p><strong>Related story:</strong><br>
@@ -101,11 +100,11 @@ came up with. I have no idea if it will break your system or what it
 does exactly, but after removing the sound compatbile controller I was
 able to pass the nvidia Quadro 2000 card to my virtual machine :)</p>
 <p>Here is the code to remove the pci device using a simple linux command:  </p>
-<div class="highlight"><pre><span></span><code><span class="err">lspci -k | grep NVID -C3  </span>
-<span class="c">00:83.0 VGA compatible controller: Nvidia Quadro 2000.... (Dont have</span>
-<span class="err">the card anymore)  </span>
-<span class="c">00:83.1 Sound device: Nvidia Quadro Audo captabiel balbalbal. 2000 GP  </span>
-<span class="err">echo -n &quot;1&quot; &gt; /sys/bus/pci/devices/0000:02:00.1/remove</span>
+<div class="highlight"><pre><span></span><code>lspci -k | grep NVID -C3  
+00:83.0 VGA compatible controller: Nvidia Quadro 2000.... (Dont have
+the card anymore)  
+00:83.1 Sound device: Nvidia Quadro Audo captabiel balbalbal. 2000 GP  
+echo -n &quot;1&quot; &gt; /sys/bus/pci/devices/0000:02:00.1/remove
 </code></pre></div>
 <div id="disqus_thread"></div>
 <script type="text/javascript">

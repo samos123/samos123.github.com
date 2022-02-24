@@ -91,15 +91,14 @@ Ales Komarek. They have been slightly modified to get them working.</p>
 <p>Reclass model used in this blog:
 <a href="https://github.com/samos123/mk-lab-salt-model/tree/sam-vagrant-blog-post">gh:samos123/mk-lab-salt-model branch:sam-vagrant-blog-post</a>.
 The following commits have been created specifically for this post:</p>
-<div class="highlight"><pre><span></span><code><span class="err">fcea636 Remove Horizon contrail integration because of missing pkgs</span>
-<span class="err">60af84f Del Mirantis Horizon them because pkg unavailable</span>
-<span class="err">cc527df Remove non-used node definitions</span>
-<span class="err">f76eab0 Disable monitoring due to resources</span>
-<span class="err">e55d0fe Remove ens4 nic dhcp config</span>
-<span class="err">5d71986 Change repo to samos123 b/sam-vagrant-blog-post</span>
-<span class="err">6222ff5 Add Vagrant file for mk22-lab-basic</span>
+<div class="highlight"><pre><span></span><code><span class="nv">fcea636</span> <span class="nv">Remove</span> <span class="nv">Horizon</span> <span class="nv">contrail</span> <span class="nv">integration</span> <span class="nv">because</span> <span class="nv">of</span> <span class="nv">missing</span> <span class="nv">pkgs</span>
+<span class="mi">60</span><span class="nv">af84f</span> <span class="nv">Del</span> <span class="nv">Mirantis</span> <span class="nv">Horizon</span> <span class="nv">them</span> <span class="nv">because</span> <span class="nv">pkg</span> <span class="nv">unavailable</span>
+<span class="nv">cc527df</span> <span class="nv">Remove</span> <span class="nv">non</span><span class="o">-</span><span class="nv">used</span> <span class="nv">node</span> <span class="nv">definitions</span>
+<span class="nv">f76eab0</span> <span class="nv">Disable</span> <span class="nv">monitoring</span> <span class="nv">due</span> <span class="nv">to</span> <span class="nv">resources</span>
+<span class="nv">e55d0fe</span> <span class="nv">Remove</span> <span class="nv">ens4</span> <span class="nv">nic</span> <span class="nv">dhcp</span> <span class="nv">config</span>
+<span class="mi">5</span><span class="nv">d71986</span> <span class="nv">Change</span> <span class="nv">repo</span> <span class="nv">to</span> <span class="nv">samos123</span> <span class="nv">b</span><span class="o">/</span><span class="nv">sam</span><span class="o">-</span><span class="nv">vagrant</span><span class="o">-</span><span class="nv">blog</span><span class="o">-</span><span class="nv">post</span>
+<span class="mi">6222</span><span class="nv">ff5</span> <span class="nv">Add</span> <span class="nv">Vagrant</span> <span class="nv">file</span> <span class="k">for</span> <span class="nv">mk22</span><span class="o">-</span><span class="nv">lab</span><span class="o">-</span><span class="nv">basic</span>
 </code></pre></div>
-
 
 <p>The Vagrantfile defines and creates the following VMs:</p>
 <ul>
@@ -152,7 +151,7 @@ cat <span class="s">&lt;&lt; &#39;EOF&#39; &gt;&gt; /etc/reclass/reclass-config.
 
 git clone https://github.com/samos123/mk-lab-salt-model /srv/salt/reclass -b sam-vagrant-blog-post
 mkdir -p /srv/salt/reclass/classes/service
-<span class="k">for</span> i in /usr/share/salt-formulas/reclass/service/*<span class="p">;</span> <span class="k">do</span> ln -s <span class="nv">$i</span> /srv/salt/reclass/classes/service/<span class="p">;</span> <span class="k">done</span>
+<span class="k">for</span> i <span class="k">in</span> /usr/share/salt-formulas/reclass/service/*<span class="p">;</span> <span class="k">do</span> ln -s <span class="nv">$i</span> /srv/salt/reclass/classes/service/<span class="p">;</span> <span class="k">done</span>
 
 apt-get install -y salt-minion
 cat &lt;&lt; <span class="s2">&quot;EOF&quot;</span> &gt;&gt; /etc/salt/minion.d/minion.conf
@@ -311,7 +310,6 @@ keystone tenant-list
 nova flavor-create --is-public <span class="nb">true</span> m1.macro auto <span class="m">128</span> <span class="m">5</span> <span class="m">1</span>
 nova boot --nic net-id<span class="o">=</span><span class="nv">$netuuid</span> --image cirros --flavor m1.macro testvm1
 </code></pre></div>
-
 
 <p>Below is the Vagrantfile that is used in this blog post:</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># -*- mode: ruby -*-</span>

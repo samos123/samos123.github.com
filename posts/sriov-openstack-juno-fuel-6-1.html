@@ -110,14 +110,15 @@ We will create 7 VFs per PF.</p>
 <p>I have created an ansible playbook to automate the whole process.
 You can view this Ansible playbook here: <a href="https://github.com/samos123/fuel-ansible-sriov">Fuel Ansible SRIOV</a>
 Automated methods are recommended over manual configuring!</p>
-<p>The following steps have to be taken to enable SRIOV manually for reference:
+<p>The following steps have to be taken to enable SRIOV manually for reference:</p>
 <ol>
 <li>Enabling Virtual Functions in the host Operating System</li>
 <li>Whitelist which PCI devices should be used for SRIOV in nova.conf on computes</li>
 <li>Configuring Neutron server for SRIOV</li>
 <li>Enabling the PCIDeviceScheduler in nova-scheduler</li>
 <li>Creating your SRIOV instance</li>
-</ol></p>
+</ol>
+
 <h3>1. Enable Virtual Functions in Host OS</h3>
 <p>First we need to make sure SRIOV is enabled in BIOS, check for VT-d and make sure it's enabled.
 After enabling VT-d we also need enable IOMMU on Linux by adding intel_iommu=on to kernel parameters.</p>
@@ -126,22 +127,18 @@ change <span class="s2">&quot;GRUB_CMDLINE_LINUX_DEFAULT=&quot;</span>nomdmonddf
 <span class="s2">to &quot;</span><span class="nv">GRUB_CMDLINE_LINUX_DEFAULT</span><span class="o">=</span><span class="s2">&quot;nomdmonddf nomdmonisw intel_iommu=on&quot;</span>
 </code></pre></div>
 
-
 <p>If you added new parameters you need to run:</p>
 <div class="highlight"><pre><span></span><code>update-grub
 reboot
 </code></pre></div>
 
-
 <p>On each compute node we need to create the VFs via the PCI SYS interface.</p>
 <div class="highlight"><pre><span></span><code><span class="nb">echo</span> <span class="s1">&#39;7&#39;</span> &gt; /sys/class/net/eth3/device/sriov_numvfs
 </code></pre></div>
 
-
 <p>Now verify that the VFs have been created correctly</p>
 <div class="highlight"><pre><span></span><code>lspci <span class="p">|</span> grep Ethernet
 </code></pre></div>
-
 
 <p>We just created the VFs for this session. If we would reboot the node these changes would get lost.
 So we also add a line to /etc/rc.local to apply these settings on a reboot.
@@ -149,7 +146,6 @@ Note: The suggested way of making these settings persistent seems to be through 
 for some reason it did not work for me hence the rc.local workaround.</p>
 <div class="highlight"><pre><span></span><code><span class="nb">echo</span> <span class="s2">&quot;echo &#39;7&#39; &gt; /sys/class/net/eth3/device/sriov_numvfs&quot;</span> &gt;&gt; /etc/rc.local
 </code></pre></div>
-
 
 <p>Verify by rebooting your node that the settings persist.</p>
 <h3>2. Whitelist PCI devices nova.conf on computes</h3>
@@ -161,7 +157,6 @@ that all VFs belonging to eth3 are allowed to be passed through to VMs. Restart 
 <div class="highlight"><pre><span></span><code>sed -i <span class="s2">&quot;s/mechanism_drivers =openvswitch/mechanism_drivers =openvswitch,sriovnicswitch/g&quot;</span> /etc/neutron/plugins/ml2/ml2_conf.ini
 </code></pre></div>
 
-
 <p>Find out the vendor_id and product_id of your VFs. Please note this should be the VF not the PF</p>
 <div class="highlight"><pre><span></span><code>lspci -nn <span class="p">|</span> grep -i ethernet
 <span class="m">87</span>:00.0 Ethernet controller <span class="o">[</span><span class="m">0200</span><span class="o">]</span>: Intel Corporation <span class="m">82599</span> <span class="m">10</span> Gigabit Dual Port Backplane Connection <span class="o">[</span><span class="m">8086</span>:10f8<span class="o">]</span> <span class="o">(</span>rev <span class="m">01</span><span class="o">)</span>
@@ -169,18 +164,15 @@ that all VFs belonging to eth3 are allowed to be passed through to VMs. Restart 
 <span class="m">87</span>:10.3 Ethernet controller <span class="o">[</span><span class="m">0200</span><span class="o">]</span>: Intel Corporation <span class="m">82599</span> Ethernet Controller Virtual Function <span class="o">[</span><span class="m">8086</span>:10ed<span class="o">]</span> <span class="o">(</span>rev <span class="m">01</span><span class="o">)</span>
 </code></pre></div>
 
-
 <p>In our case the vendor_id is 8086 and the product_id is 10ed. We need to tell Neutron the vendor_id and product_id of
 the VFs that are supported.</p>
 <div class="highlight"><pre><span></span><code>sed -i <span class="s2">&quot;s/# supported_pci_vendor_devs.*=.*/supported_pci_vendor_devs = 8086:10ed/g&quot;</span> /etc/neutron/plugins/ml2/ml2_conf_sriov.ini
 </code></pre></div>
 
-
 <p>Neutron also has support for running a special sriov-agent which is able set the admin state. I didn't see
 any need for setting admin state, so to reduce complexity, we've disabled sriov-agent. </p>
 <div class="highlight"><pre><span></span><code>sed -i <span class="s2">&quot;s/# agent_required =.*/agent_required=false/g&quot;</span> /etc/neutron/plugins/ml2/ml2_conf_sriov.ini
 </code></pre></div>
-
 
 <p>We now need to add these new config files as parameter to the neutron-server daemon.</p>
 <div class="highlight"><pre><span></span><code>vim /etc/init/neutron-server.conf
@@ -188,11 +180,9 @@ change <span class="s2">&quot;--config-file /etc/neutron/neutron.conf&quot;</spa
 to <span class="s2">&quot;--config-file /etc/neutron/neutron.conf --config-file /etc/neutron/plugin.ini --config-file /etc/neutron/plugins/ml2/ml2_conf_sriov.ini&quot;</span>
 </code></pre></div>
 
-
 <p>Restart neutron-server on every controller</p>
 <div class="highlight"><pre><span></span><code>service neutron-server restart
 </code></pre></div>
-
 
 <h3>4. Enabling the PCIDeviceScheduler in nova-scheduler</h3>
 <p>On every controller node running nova-scheduler we need to add PCIDeviceScheduler to the filters.</p>
@@ -208,7 +198,6 @@ below the line: <span class="s2">&quot;scheduler_available_filters=nova.schedule
 service nova-scheduler restart
 </code></pre></div>
 
-
 <h3>5. Launching an Instance with SRIOV ports</h3>
 <p>After configuring all components we can start trying to launch an instance through the CLI or API.
 Horizon currently does not support creating SRIOV instances.</p>
@@ -216,16 +205,13 @@ Horizon currently does not support creating SRIOV instances.</p>
 <div class="highlight"><pre><span></span><code><span class="nv">net_id</span><span class="o">=</span><span class="sb">`</span>neutron net-show net04 <span class="p">|</span> grep <span class="s2">&quot;\ id\ &quot;</span> <span class="p">|</span> awk <span class="s1">&#39;{ print $4 }&#39;</span><span class="sb">`</span>
 </code></pre></div>
 
-
 <p>Create the SR-IOV port. We specify vnic_type direct, which means that this a SR-IOV port.</p>
 <div class="highlight"><pre><span></span><code><span class="nv">port_id</span><span class="o">=</span><span class="sb">`</span>neutron port-create <span class="nv">$net_id</span> --name sriov_port --binding:vnic_type direct <span class="p">|</span> grep <span class="s2">&quot;\ id\ &quot;</span> <span class="p">|</span> awk <span class="s1">&#39;{ print $4 }&#39;</span><span class="sb">`</span>
 </code></pre></div>
 
-
 <p>Create the VM specifying that as 1st nic we want to use the previously created sr-iov port.</p>
 <div class="highlight"><pre><span></span><code>nova boot --flavor m1.large --image ubuntu_14.04 --nic port-id<span class="o">=</span><span class="nv">$port_id</span> --key-name sam test-sriov
 </code></pre></div>
-
 
 <p>References which deserve credit:
 * <a href="https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/6/html/Virtualization_Host_Configuration_and_Guest_Installation_Guide/sect-Virtualization_Host_Configuration_and_Guest_Installation_Guide-SR_IOV-How_SR_IOV_Libvirt_Works.html">Red Hat Documentation on using SRIOV</a>

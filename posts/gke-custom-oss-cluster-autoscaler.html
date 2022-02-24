@@ -108,33 +108,30 @@ let's look at how this can be done.</p>
   --cluster-version  <span class="m">1</span>.17.17-gke.2800
 </code></pre></div>
 
-
 <h3>2. Deploy the K8s cluster autoscaler using helm</h3>
 <p>Create a file named <code>values.yaml</code> that contains the config for autoscaler:</p>
-<div class="highlight"><pre><span></span><code><span class="nt">autoscalingGroupsnamePrefix</span><span class="p">:</span>
-  <span class="c1"># The name prefix of of the GCE managed instance group</span>
-  <span class="c1"># this will be different in your case</span>
-  <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">gke-no-autoscaler</span>
-    <span class="nt">minSize</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
-    <span class="nt">maxSize</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">10</span>
+<div class="highlight"><pre><span></span><code><span class="nt">autoscalingGroupsnamePrefix</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="c1"># The name prefix of of the GCE managed instance group</span><span class="w"></span>
+<span class="w">  </span><span class="c1"># this will be different in your case</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gke-no-autoscaler</span><span class="w"></span>
+<span class="w">    </span><span class="nt">minSize</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span><span class="w"></span>
+<span class="w">    </span><span class="nt">maxSize</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span><span class="w"></span>
 
-<span class="nt">autoDiscovery</span><span class="p">:</span>
-  <span class="c1"># the cluster name of the GKE cluster, change to your cluster name</span>
-  <span class="nt">clusterName</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">no-autoscaler</span>
+<span class="nt">autoDiscovery</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="c1"># the cluster name of the GKE cluster, change to your cluster name</span><span class="w"></span>
+<span class="w">  </span><span class="nt">clusterName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">no-autoscaler</span><span class="w"></span>
 
-<span class="nt">cloudProvider</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">gce</span>
-<span class="nt">image</span><span class="p">:</span>
-  <span class="c1"># Change the image tag version to match the GKE version. So if running</span>
-  <span class="c1"># GKE 1.17 make sure this version also is 1.17</span>
-  <span class="nt">tag</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">v1.17.3</span>
+<span class="nt">cloudProvider</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gce</span><span class="w"></span>
+<span class="nt">image</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="c1"># Change the image tag version to match the GKE version. So if running</span><span class="w"></span>
+<span class="w">  </span><span class="c1"># GKE 1.17 make sure this version also is 1.17</span><span class="w"></span>
+<span class="w">  </span><span class="nt">tag</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1.17.3</span><span class="w"></span>
 </code></pre></div>
-
 
 <p>Deploy K8s cluster autoscaler with the just created <code>values.yaml</code>:</p>
 <div class="highlight"><pre><span></span><code>helm repo add autoscaler https://kubernetes.github.io/autoscaler
 helm install cluster-autoscaler autoscaler/cluster-autoscaler -f values.yaml
 </code></pre></div>
-
 
 <p>You should now have a K8s cluster autoscaler working. Try spinning up many
 pods with high resource requests and the cluster should automatically add

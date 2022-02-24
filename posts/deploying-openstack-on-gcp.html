@@ -116,7 +116,6 @@ gcloud compute instances create openstack-1 --zone us-central1-a <span class="se
               --machine-type n1-standard-32
 </code></pre></div>
 
-
 <p>Now verify that nested KVM is enabled:</p>
 <div class="highlight"><pre><span></span><code>gcloud compute ssh openstack-1 --zone us-central1-a
 sudo -i
@@ -124,14 +123,12 @@ apt-get update <span class="o">&amp;&amp;</span> apt-get install qemu-kvm -y
 kvm-ok
 </code></pre></div>
 
-
 <p>The output of kvm-ok should show the following:</p>
-<div class="highlight"><pre><span></span><code><span class="err">kvm-ok</span>
-<span class="err"># Output should look like below</span>
-<span class="c">INFO: /dev/kvm exists</span>
-<span class="err">KVM acceleration can be used</span>
+<div class="highlight"><pre><span></span><code>kvm-ok
+# Output should look like below
+INFO: /dev/kvm exists
+KVM acceleration can be used
 </code></pre></div>
-
 
 <h3>2. Deploying OpenStack</h3>
 <p>Now let's deploy OpenStack using OpenStack Ansible with all in one(aio) mode.
@@ -140,12 +137,10 @@ Ensure you're still SSHed into the <code>openstack-1</code> VM, if not run:</p>
 sudo -i
 </code></pre></div>
 
-
 <p>Start a screen or tmux session because deploying OpenStack can take 30 min to 
 2 hours. Run the following command:</p>
 <div class="highlight"><pre><span></span><code>screen
 </code></pre></div>
-
 
 <p>Clone openstack-ansible repo to openstack-1:</p>
 <div class="highlight"><pre><span></span><code>git clone https://opendev.org/openstack/openstack-ansible <span class="se">\</span>
@@ -154,17 +149,14 @@ sudo -i
 git checkout stable/ussuri
 </code></pre></div>
 
-
 <p>Install Ansible on the VM and install all the required Ansible roles:</p>
 <div class="highlight"><pre><span></span><code>scripts/bootstrap-ansible.sh
 </code></pre></div>
-
 
 <p>Bootstrap the AIO configuration for openstack ansible</p>
 <div class="highlight"><pre><span></span><code><span class="nb">export</span> <span class="nv">SCENARIO</span><span class="o">=</span><span class="s1">&#39;aio_lxc_barbican_octavia&#39;</span>
 scripts/bootstrap-aio.sh
 </code></pre></div>
-
 
 <p>Create the LXC containers that run the different OpenStack components
 and install OpenStack:</p>
@@ -172,7 +164,6 @@ and install OpenStack:</p>
     playbooks/setup-infrastructure.yml <span class="se">\</span>
     playbooks/setup-openstack.yml
 </code></pre></div>
-
 
 <p>Now OpenStack should have been succesfully deployed on the openstack-1 VM.</p>
 <h3>3. Accessing the environment</h3>
@@ -188,14 +179,12 @@ to setup the tunnel with sshuttle:</p>
 sshuttle -r sam@<span class="nv">$PUBLIC_IP</span> <span class="m">10</span>.0.0.0/8 <span class="m">172</span>.16.0.0/12 <span class="m">192</span>.168.0.0/16
 </code></pre></div>
 
-
 <p>Now you should be able to access the web UI on the private VPC IP address
 of your VM. Get the private address of your <code>openstack-1</code> VM with the
 following command:</p>
 <div class="highlight"><pre><span></span><code>gcloud compute instances describe openstack-1 --zone us-central1-a <span class="se">\</span>
          --format<span class="o">=</span><span class="s1">&#39;get(networkInterfaces[0].networkIP)&#39;</span>
 </code></pre></div>
-
 
 <p>In your browser go to <code>https://$PRIVATE_IP</code> and you should be able to
 see the Horizon UI. </p>

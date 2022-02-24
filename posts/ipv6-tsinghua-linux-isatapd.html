@@ -84,22 +84,18 @@ In Linux you can use the <a href="http://www.saschahlusiak.de/linux/isatap.htm">
 <div class="highlight"><pre><span></span><code>isatapd --router isatap.tsinghua.edu.cn
 </code></pre></div>
 
-
 <p>After connecting check that you have received an global IPv6 address with:</p>
 <div class="highlight"><pre><span></span><code>ip -6 a
 </code></pre></div>
-
 
 <p>As a last check you need to check your default ipv6 routes. In some cases 2 default routes may get added:</p>
 <div class="highlight"><pre><span></span><code>ip -6 route
 </code></pre></div>
 
-
 <p>If there are 2 default routes make sure to delete the route which goes out via your physical device e.g(eth0 or enp2u5). In my case I had to delete
 one of the default routes as follows:</p>
 <div class="highlight"><pre><span></span><code>ip -6 route del default via fe80::5efe:a66f:1501
 </code></pre></div>
-
 
 <h2>Archlinux</h2>
 <p>Archlinux provides an isatapd package, which you can install via <code>pacman -S isatapd</code>.

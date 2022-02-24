@@ -111,7 +111,7 @@ public routable IP addresses in a single subnet. For example I got access to the
 					<p>In order to access other containers from a container it's needed
 to get the private IP address of the other containers. The following
 command is able to get the private ip address of the container.</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$</span> docker inspect --format<span class="o">=</span><span class="s2">&quot;{{.NetworkSettings.IPAddress}}&quot;</span> <span class="nv">$CONTAINER_ID_OR_NAME</span>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>docker inspect --format<span class="o">=</span><span class="s2">&quot;{{.NetworkSettings.IPAddress}}&quot;</span> <span class="nv">$CONTAINER_ID_OR_NAME</span>
 <span class="go">172.17.0.15</span>
 </code></pre></div>
 				</p>
@@ -194,7 +194,6 @@ same ofcourse, and was unable to use the …</p>
 					<p><strong>Answer:</strong>  </p>
 <div class="highlight"><pre><span></span><code><span class="nb">echo</span> -n <span class="s2">&quot;1&quot;</span> &gt; /sys/bus/pci/devices/0000:02:00.0/remove
 </code></pre></div>
-
 
 <p>Where 0000:02:00.0 is related to your pci device address which can
 be obtained from the command <code>lspci</code></p>
