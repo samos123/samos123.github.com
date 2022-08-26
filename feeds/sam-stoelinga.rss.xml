@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <rss version="2.0"><channel><title>Sam Stoelinga - Sam Stoelinga</title><link>https://samos-it.com/</link><description></description><lastBuildDate>Fri, 26 Aug 2022 22:02:00 +0200</lastBuildDate><item><title>GKE GPU timesharing and resource quotas experiment</title><link>https://samos-it.com/posts/gke-gpu-timesharing-resource-quotas.html</link><description>&lt;p&gt;You only got a few GPUs and want to pretend to your end-users that you got
-many? Then GKE GPU timesharing might just be the feature for you. In this
+many? Then GKE GPU timesharing might just be the feature for you to save
+costs on GPUs that are underutilized. In this
 blog post you will learn:&lt;/p&gt;
 &lt;ol&gt;
-&lt;li&gt;Creating a GKE nodepool with timesharing enabled&lt;/li&gt;
-&lt;li&gt;Configure GPU based ResourseQuotas on multiple namespaces&lt;/li&gt;
-&lt;li&gt;How …&lt;/li&gt;&lt;/ol&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Sam Stoelinga</dc:creator><pubDate>Fri, 26 Aug 2022 22:02:00 +0200</pubDate><guid isPermaLink="false">tag:samos-it.com,2022-08-26:/posts/gke-gpu-timesharing-resource-quotas.html</guid><category>K8s</category><category>k8s</category><category>kubernetes</category><category>gke</category><category>gpu</category><category>timesharing</category></item><item><title>GKE move system services (kube-dns, calico) to dedicated nodepool</title><link>https://samos-it.com/posts/gke-system-services-kube-dns-dedicated-nodepool.html</link><description>&lt;p&gt;GKE by default deploys kube-dns and other system services to any of your
+&lt;li&gt;Creating a GKE nodepool with timesharing enabled …&lt;/li&gt;&lt;/ol&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Sam Stoelinga</dc:creator><pubDate>Fri, 26 Aug 2022 22:02:00 +0200</pubDate><guid isPermaLink="false">tag:samos-it.com,2022-08-26:/posts/gke-gpu-timesharing-resource-quotas.html</guid><category>K8s</category><category>k8s</category><category>kubernetes</category><category>gke</category><category>gpu</category><category>timesharing</category></item><item><title>GKE move system services (kube-dns, calico) to dedicated nodepool</title><link>https://samos-it.com/posts/gke-system-services-kube-dns-dedicated-nodepool.html</link><description>&lt;p&gt;GKE by default deploys kube-dns and other system services to any of your
 nodepools. This is probably fine for most cases, but certain use cases
 might require preventing system services from running on the same nodes as
 your where your applications are running. This blog post provides instructions

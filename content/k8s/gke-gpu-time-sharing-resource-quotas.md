@@ -6,7 +6,8 @@ Tags: k8s, kubernetes, gke, gpu, timesharing
 Slug: gke-gpu-timesharing-resource-quotas
 
 You only got a few GPUs and want to pretend to your end-users that you got
-many? Then GKE GPU timesharing might just be the feature for you. In this
+many? Then GKE GPU timesharing might just be the feature for you to save
+costs on GPUs that are underutilized. In this
 blog post you will learn:
 
 1. Creating a GKE nodepool with timesharing enabled
