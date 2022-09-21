@@ -125,7 +125,7 @@ but coudn't find it. You can get it in the following way:&lt;/p&gt;
 &lt;p&gt;Which will show the parameters:&lt;br&gt;
 SENDGRID_PASSWORD, SENDGRID_USERNAME&lt;/p&gt;
 &lt;p&gt;After you get your username don't forget to add it to django settings:  &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;EMAIL&lt;/span&gt;\&lt;span class="n"&gt;_HOST&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;smtp …&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;While setting up sentgrid I was searching for my password of sendgrid,
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;EMAIL …&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;While setting up sentgrid I was searching for my password of sendgrid,
 but coudn't find it. You can get it in the following way:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;heroku config --long
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
@@ -188,7 +188,7 @@ welcomed.&lt;/p&gt;
                         &lt;span class="n"&gt;mimetype&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;application/json&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;p&gt;To use it in your view you just do it this …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Just a small code snippet I use when I need to return json, comments are
+&lt;p&gt;To use …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Just a small code snippet I use when I need to return json, comments are
 welcomed.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;django.http&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;HttpResponse&lt;/span&gt;  
 &lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;django.utils&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;simplejson&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="n"&gt;json&lt;/span&gt;
@@ -210,7 +210,7 @@ to installing lxml it will give the following error:&lt;/p&gt;
 &lt;p&gt;gcc -pthread -fno-strict-aliasing -DNDEBUG -g -fwrapv -O2
 -Wall -Wstrict-prototypes -fPIC -I/usr/include/python2.7 -c
 src/lxml/lxml.etree.c -o
-build/temp.linux-x86_64-2.7/src/lxml/lxml …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Just tried to install scrapy with pip / easy_install, but when it comes
+build/temp.linux-x86_64-2.7/src …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Just tried to install scrapy with pip / easy_install, but when it comes
 to installing lxml it will give the following error:&lt;/p&gt;
 &lt;p&gt;gcc -pthread -fno-strict-aliasing -DNDEBUG -g -fwrapv -O2
 -Wall -Wstrict-prototypes -fPIC -I/usr/include/python2.7 -c
@@ -232,8 +232,7 @@ sudo apt-get install libxslt1-dev&lt;span class="o"&gt;[&lt;/span&gt;/sourcecode
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content><category term="Python"></category><category term="python"></category><category term="linux"></category><category term="ubuntu"></category></entry><entry><title>How to install Setuptools to a specific python version</title><link href="https://samos-it.com/posts/how-to-install-setuptools-to-a-specific-python-version.html" rel="alternate"></link><published>2011-07-18T19:34:00+02:00</published><updated>2011-07-18T19:34:00+02:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2011-07-18:/posts/how-to-install-setuptools-to-a-specific-python-version.html</id><summary type="html">&lt;p&gt;To install easy_install for a specific python version. I just installed
 from source and used the python version you want to install setuptools
 too. I used the following steps in Ubuntu 11.04 with Python 2.5 and
-Python 2.7 installed. The following commands will install setuptools to
-python …&lt;/p&gt;</summary><content type="html">&lt;p&gt;To install easy_install for a specific python version. I just installed
+Python 2.7 installed. The following commands will install setuptools to …&lt;/p&gt;</summary><content type="html">&lt;p&gt;To install easy_install for a specific python version. I just installed
 from source and used the python version you want to install setuptools
 too. I used the following steps in Ubuntu 11.04 with Python 2.5 and
 Python 2.7 installed. The following commands will install setuptools to

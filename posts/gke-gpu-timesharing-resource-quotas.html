@@ -61,6 +61,7 @@ ga('send', 'pageview');
 		</div>
 			<ul class="sidebar-nav">
 					<li><a href="https://samos-it.com/pages/about.html.html">About Me</a></li>
+					<li><a href="https://samos-it.com/pages/hire-me.html">Hire Me</a></li>
 			</ul>
 		<nav class="sidebar-social">
 					<a class="sidebar-social-item" href="https://www.linkedin.com/in/samstoelinga/" target="_blank">
@@ -205,15 +206,15 @@ and able to limit GPUs that are timeshared.</p>
 </code></pre></div>
 
 <p>Verify that pods in both tenant-a see the whole GPU being usable</p>
-<div class="highlight"><pre><span></span><code><span class="nv">kubectl</span><span class="w"> </span><span class="k">exec</span><span class="w"> </span><span class="o">-</span><span class="nv">n</span><span class="w"> </span><span class="nv">tenant</span><span class="o">-</span><span class="nv">a</span><span class="w"> </span><span class="nv">deploy</span><span class="o">/</span><span class="nv">cuda</span><span class="o">-</span><span class="nv">simple</span><span class="w"> </span><span class="o">-</span><span class="nv">ti</span><span class="w"> </span><span class="o">--</span><span class="w"> </span><span class="nv">sh</span><span class="w"></span>
-<span class="nv">nvidia</span><span class="o">-</span><span class="nv">smi</span><span class="w"></span>
-<span class="k">exit</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="nv">kubectl</span> <span class="k">exec</span> <span class="o">-</span><span class="nv">n</span> <span class="nv">tenant</span><span class="o">-</span><span class="nv">a</span> <span class="nv">deploy</span><span class="o">/</span><span class="nv">cuda</span><span class="o">-</span><span class="nv">simple</span> <span class="o">-</span><span class="nv">ti</span> <span class="o">--</span> <span class="nv">sh</span>
+<span class="nv">nvidia</span><span class="o">-</span><span class="nv">smi</span>
+<span class="k">exit</span>
 </code></pre></div>
 
 <p>Verify that pods in tenant-b  see the whole GPU being usable</p>
-<div class="highlight"><pre><span></span><code><span class="nv">kubectl</span><span class="w"> </span><span class="k">exec</span><span class="w"> </span><span class="o">-</span><span class="nv">n</span><span class="w"> </span><span class="nv">tenant</span><span class="o">-</span><span class="nv">b</span><span class="w"> </span><span class="nv">deploy</span><span class="o">/</span><span class="nv">cuda</span><span class="o">-</span><span class="nv">simple</span><span class="w"> </span><span class="o">-</span><span class="nv">ti</span><span class="w"> </span><span class="o">--</span><span class="w"> </span><span class="nv">sh</span><span class="w"></span>
-<span class="nv">nvidia</span><span class="o">-</span><span class="nv">smi</span><span class="w"></span>
-<span class="k">exit</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="nv">kubectl</span> <span class="k">exec</span> <span class="o">-</span><span class="nv">n</span> <span class="nv">tenant</span><span class="o">-</span><span class="nv">b</span> <span class="nv">deploy</span><span class="o">/</span><span class="nv">cuda</span><span class="o">-</span><span class="nv">simple</span> <span class="o">-</span><span class="nv">ti</span> <span class="o">--</span> <span class="nv">sh</span>
+<span class="nv">nvidia</span><span class="o">-</span><span class="nv">smi</span>
+<span class="k">exit</span>
 </code></pre></div>
 
 <p>You can also take a look at the GPU node to see that it will
