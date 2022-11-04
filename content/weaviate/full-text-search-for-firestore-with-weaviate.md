@@ -1,4 +1,4 @@
-Title: Full Text Search for Firestore with Weaviate
+Title: Full Text & Vector Search for Firestore with Weaviate
 Date: 2022-11-03 11:36
 Author: Sam Stoelinga
 Category: Weaviate
@@ -7,14 +7,14 @@ Slug: full-text-search-for-firestore-with-weaviate
 
 Many applications require searching through large text fields
 in your firestore database. For example, you might need to search
-through articles containing a specific word.
+through articles containing a specific word or searching for a
+concept.
 
 Cloud Firestore does not have support for indexing of text fields. So 3rd
-party solutions such as Weaviate or ElasticSearch are required for Full-Text
-Search.
+party solutions such as Weaviate or ElasticSearch are required for search.
 
 This blog post describes how to integrate Weaviate with Firestore to enable
-Full Text search for an example Note taking application. At a high-level 
+Full Text and Semantic search for an example Note taking application. At a high-level
 the following will be done:
 
 1. Deploy Weaviate and define the Schema in Weaviate

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0"><channel><title>Sam Stoelinga - Sam Stoelinga</title><link>https://samos-it.com/</link><description></description><lastBuildDate>Thu, 03 Nov 2022 11:36:00 +0100</lastBuildDate><item><title>Full Text Search for Firestore with Weaviate</title><link>https://samos-it.com/posts/full-text-search-for-firestore-with-weaviate.html</link><description>&lt;p&gt;Many applications require searching through large text fields
+<rss version="2.0"><channel><title>Sam Stoelinga - Sam Stoelinga</title><link>https://samos-it.com/</link><description></description><lastBuildDate>Thu, 03 Nov 2022 11:36:00 +0100</lastBuildDate><item><title>Full Text &amp; Vector Search for Firestore with Weaviate</title><link>https://samos-it.com/posts/full-text-search-for-firestore-with-weaviate.html</link><description>&lt;p&gt;Many applications require searching through large text fields
 in your firestore database. For example, you might need to search
-through articles containing a specific word.&lt;/p&gt;
+through articles containing a specific word or searching for a
+concept.&lt;/p&gt;
 &lt;p&gt;Cloud Firestore does not have support for indexing of text fields. So 3rd
-party solutions such as Weaviate or ElasticSearch are required for Full-Text
-Search …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Sam Stoelinga</dc:creator><pubDate>Thu, 03 Nov 2022 11:36:00 +0100</pubDate><guid isPermaLink="false">tag:samos-it.com,2022-11-03:/posts/full-text-search-for-firestore-with-weaviate.html</guid><category>Weaviate</category><category>weaviate</category><category>firestore</category><category>firebase</category><category>search</category></item><item><title>GKE GPU timesharing and resource quotas experiment</title><link>https://samos-it.com/posts/gke-gpu-timesharing-resource-quotas.html</link><description>&lt;p&gt;You only got a few GPUs and want to pretend to your end-users that you got
+party solutions such as Weaviate or ElasticSearch …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Sam Stoelinga</dc:creator><pubDate>Thu, 03 Nov 2022 11:36:00 +0100</pubDate><guid isPermaLink="false">tag:samos-it.com,2022-11-03:/posts/full-text-search-for-firestore-with-weaviate.html</guid><category>Weaviate</category><category>weaviate</category><category>firestore</category><category>firebase</category><category>search</category></item><item><title>GKE GPU timesharing and resource quotas experiment</title><link>https://samos-it.com/posts/gke-gpu-timesharing-resource-quotas.html</link><description>&lt;p&gt;You only got a few GPUs and want to pretend to your end-users that you got
 many? Then GKE GPU timesharing might just be the feature for you to save
 costs on GPUs that are underutilized. In this
 blog post you will learn:&lt;/p&gt;
