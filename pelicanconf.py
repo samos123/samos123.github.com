@@ -24,6 +24,7 @@ DEFAULT_LANG = 'en'
 
 # Blogroll
 LINKS = (('Websu (Web Speed Analysis)', 'https://websu.io'),
+         ('bgdestroyer.com (Remove background from image with AI)', 'https://www.bgdestroyer.com'),
          ('github.com/websu-io/websu', 'https://github.com/websu-io/websu'),)
 
 ## pelican-bootcamp3 settings
@@ -33,7 +34,7 @@ DISPLAY_TAGS_ON_SIDEBAR=False
 DISPLAY_CATEGORIES_ON_MENU=False
 DISPLAY_PAGES_ON_MENU=True
 
-BIO="Open source contributor and Cloud Architect. Creator of <a href='https://websu.io'>https://websu.io</a>"
+BIO="Open source contributor and Cloud Architect. Creator of websu.io and bgdestroyer.com"
 PROFILE_IMAGE="sam-young.jpg"
 
 
