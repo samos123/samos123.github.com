@@ -121,50 +121,57 @@ is stored in Firestore in the following way:</p>
 <div class="highlight"><pre><span></span><code><span class="k">const</span><span class="w"> </span><span class="n">weaviate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">require</span><span class="p">(</span><span class="s2">&quot;weaviate-client&quot;</span><span class="p">);</span><span class="w"></span>
 
 <span class="k">const</span><span class="w"> </span><span class="n">client</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">weaviate</span><span class="o">.</span><span class="n">client</span><span class="p">({</span><span class="w"></span>
-<span class="w">    </span><span class="n">scheme</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;http&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="o">//</span><span class="w"> </span><span class="n">IMPORTANT</span><span class="w"> </span><span class="n">replace</span><span class="w"> </span><span class="n">your</span><span class="o">-</span><span class="n">wcs</span><span class="o">-</span><span class="n">instance</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">your</span><span class="w"> </span><span class="n">actual</span><span class="w"> </span><span class="n">WCS</span><span class="w"> </span><span class="n">instance</span><span class="w"></span>
+<span class="w">    </span><span class="n">scheme</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https&quot;</span><span class="p">,</span><span class="w"></span>
 <span class="w">    </span><span class="n">host</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;your-wcs-instance.semi.network&quot;</span><span class="p">,</span><span class="w"></span>
 <span class="p">});</span><span class="w"></span>
 
 <span class="k">var</span><span class="w"> </span><span class="n">classObj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">  </span><span class="s2">&quot;class&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Note&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">  </span><span class="s2">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;An index for Full-Search of notes in Firestore&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">  </span><span class="s2">&quot;properties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
-<span class="w">      </span><span class="p">{</span><span class="w"></span>
-<span class="w">          </span><span class="s2">&quot;dataType&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
-<span class="w">              </span><span class="s2">&quot;string&quot;</span><span class="w"></span>
-<span class="w">          </span><span class="p">],</span><span class="w"></span>
-<span class="w">          </span><span class="s2">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;The ID of the note&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">          </span><span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;nid&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">      </span><span class="p">},</span><span class="w"></span>
-<span class="w">      </span><span class="p">{</span><span class="w"></span>
-<span class="w">          </span><span class="s2">&quot;dataType&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
-<span class="w">              </span><span class="s2">&quot;string&quot;</span><span class="w"></span>
-<span class="w">          </span><span class="p">],</span><span class="w"></span>
-<span class="w">          </span><span class="s2">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;The Firebase Authentication UID of the creator of the note&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">          </span><span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;uid&quot;</span><span class="w"></span>
-<span class="w">      </span><span class="p">},</span><span class="w"></span>
-<span class="w">      </span><span class="p">{</span><span class="w"></span>
-<span class="w">          </span><span class="s2">&quot;dataType&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
-<span class="w">              </span><span class="s2">&quot;text&quot;</span><span class="w"></span>
-<span class="w">          </span><span class="p">],</span><span class="w"></span>
-<span class="w">          </span><span class="s2">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;The content of the note&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">          </span><span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;text&quot;</span><span class="w"></span>
-<span class="w">      </span><span class="p">}</span><span class="w"></span>
-<span class="w">  </span><span class="p">]</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="k">class</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Note&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">description</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;An index for Full-Search of notes in Firestore&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">vectorizer</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;text2vec-openai&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">moduleConfig</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="s2">&quot;text2vec-openai&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="n">model</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;babbage&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="n">type</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;text&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="p">},</span><span class="w"></span>
+<span class="w">    </span><span class="p">},</span><span class="w"></span>
+<span class="w">    </span><span class="n">properties</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="w">        </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="n">dataType</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;string&quot;</span><span class="p">],</span><span class="w"></span>
+<span class="w">            </span><span class="n">description</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;The ID of the note&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="n">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;nid&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="p">},</span><span class="w"></span>
+<span class="w">        </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="n">dataType</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;string&quot;</span><span class="p">],</span><span class="w"></span>
+<span class="w">            </span><span class="n">description</span><span class="p">:</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;The Firebase Authentication UID of the creator of the note&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="n">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;uid&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="p">},</span><span class="w"></span>
+<span class="w">        </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="n">dataType</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">],</span><span class="w"></span>
+<span class="w">            </span><span class="n">description</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;The content of the note&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="n">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;text&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="n">moduleConfig</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;text2vec-openai&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">                    </span><span class="n">skip</span><span class="p">:</span><span class="w"> </span><span class="bp">false</span><span class="p">,</span><span class="w"></span>
+<span class="w">                    </span><span class="n">vectorizePropertyName</span><span class="p">:</span><span class="w"> </span><span class="bp">false</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="p">},</span><span class="w"></span>
+<span class="w">            </span><span class="p">},</span><span class="w"></span>
+<span class="w">        </span><span class="p">},</span><span class="w"></span>
+<span class="w">    </span><span class="p">],</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
 
-<span class="n">client</span><span class="w"></span>
-<span class="w">  </span><span class="o">.</span><span class="n">schema</span><span class="w"></span>
-<span class="w">  </span><span class="o">.</span><span class="n">classCreator</span><span class="p">()</span><span class="w"></span>
-<span class="w">  </span><span class="o">.</span><span class="n">withClass</span><span class="p">(</span><span class="n">classObj</span><span class="p">)</span><span class="w"></span>
-<span class="w">  </span><span class="o">.</span><span class="n">do</span><span class="p">()</span><span class="w"></span>
-<span class="w">  </span><span class="o">.</span><span class="n">then</span><span class="p">(</span><span class="n">res</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="n">console</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">res</span><span class="p">)</span><span class="w"></span>
-<span class="w">  </span><span class="p">})</span><span class="w"></span>
-<span class="w">  </span><span class="o">.</span><span class="n">catch</span><span class="p">(</span><span class="n">err</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="n">console</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">err</span><span class="p">)</span><span class="w"></span>
-<span class="w">  </span><span class="p">});</span><span class="w"></span>
+
+<span class="n">client</span><span class="o">.</span><span class="n">schema</span><span class="w"></span>
+<span class="w">    </span><span class="o">.</span><span class="n">classCreator</span><span class="p">()</span><span class="w"></span>
+<span class="w">    </span><span class="o">.</span><span class="n">withClass</span><span class="p">(</span><span class="n">classObj</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="o">.</span><span class="n">do</span><span class="p">()</span><span class="w"></span>
+<span class="w">    </span><span class="o">.</span><span class="n">then</span><span class="p">((</span><span class="n">res</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">console</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">res</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">})</span><span class="w"></span>
+<span class="w">    </span><span class="o">.</span><span class="n">catch</span><span class="p">((</span><span class="n">err</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">console</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">err</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">});</span><span class="w"></span>
 </code></pre></div>
 
 <p>Review the file and make sure you changed <code>your-wcs-instance</code> to your actual

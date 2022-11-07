@@ -57,50 +57,57 @@ Now let's define our Schema to index the Firestore Note. Create a file named
 const weaviate = require("weaviate-client");
 
 const client = weaviate.client({
-    scheme: "http",
-    // IMPORTANT replace your-wcs-instance with your actual WCS instance
+    scheme: "https",
     host: "your-wcs-instance.semi.network",
 });
 
 var classObj = {
-  "class": "Note",
-  "description": "An index for Full-Search of notes in Firestore",
-  "properties": [
-      {
-          "dataType": [
-              "string"
-          ],
-          "description": "The ID of the note",
-          "name": "nid",
-      },
-      {
-          "dataType": [
-              "string"
-          ],
-          "description": "The Firebase Authentication UID of the creator of the note",
-          "name": "uid"
-      },
-      {
-          "dataType": [
-              "text"
-          ],
-          "description": "The content of the note",
-          "name": "text"
-      }
-  ]
-}
+    class: "Note",
+    description: "An index for Full-Search of notes in Firestore",
+    vectorizer: "text2vec-openai",
+    moduleConfig: {
+        "text2vec-openai": {
+            model: "babbage",
+            type: "text",
+        },
+    },
+    properties: [
+        {
+            dataType: ["string"],
+            description: "The ID of the note",
+            name: "nid",
+        },
+        {
+            dataType: ["string"],
+            description:
+                "The Firebase Authentication UID of the creator of the note",
+            name: "uid",
+        },
+        {
+            dataType: ["text"],
+            description: "The content of the note",
+            name: "text",
+            moduleConfig: {
+                "text2vec-openai": {
+                    skip: false,
+                    vectorizePropertyName: false,
+                },
+            },
+        },
+    ],
+};
 
-client
-  .schema
-  .classCreator()
-  .withClass(classObj)
-  .do()
-  .then(res => {
-    console.log(res)
-  })
-  .catch(err => {
-    console.error(err)
-  });
+
+client.schema
+    .classCreator()
+    .withClass(classObj)
+    .do()
+    .then((res) => {
+        console.log(res);
+    })
+    .catch((err) => {
+        console.error(err);
+    });
 ```
 Review the file and make sure you changed `your-wcs-instance` to your actual
 instance name. Alternatively, change the connection section to connect to
