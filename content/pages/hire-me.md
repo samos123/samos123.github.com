@@ -17,6 +17,6 @@ Example of services provided:
 - K8s Controller/Operator development
 - Containerization of existing applications
 - Migration to K8s
-- Write Terraform scripts
+- Write Terraform scripts for any cloud
 - GCP Cloud Architecture review
 - K8s Security Best Practices Review
