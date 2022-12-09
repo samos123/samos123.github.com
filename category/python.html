@@ -120,7 +120,7 @@ but coudn't find it. You can get it in the following way:</p>
 <p>Which will show the parameters:<br>
 SENDGRID_PASSWORD, SENDGRID_USERNAME</p>
 <p>After you get your username don't forget to add it to django settings:  </p>
-<div class="highlight"><pre><span></span><code><span class="n">EMAIL …</span></code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">EMAIL</span>\<span class="n">_HOST</span> <span class="o">=</span> <span class="s1">&#39;smtp …</span></code></pre></div>
 				</p>
 				<a class="read-more" href="posts/using-sendgrid-with-django-on-heroku-how-to-find-your-sendgrid-password-on-heroku.html">Continue reading »</a>
 			</div>
@@ -154,7 +154,7 @@ welcomed.</p>
                         <span class="n">mimetype</span><span class="o">=</span><span class="s2">&quot;application/json&quot;</span><span class="p">)</span>
 </code></pre></div>
 
-<p>To use …</p>
+<p>To use it in your view you just do it this …</p>
 				</p>
 				<a class="read-more" href="posts/simple-function-to-return-json-in-django.html">Continue reading »</a>
 			</div>
@@ -169,7 +169,7 @@ to installing lxml it will give the following error:</p>
 <p>gcc -pthread -fno-strict-aliasing -DNDEBUG -g -fwrapv -O2
 -Wall -Wstrict-prototypes -fPIC -I/usr/include/python2.7 -c
 src/lxml/lxml.etree.c -o
-build/temp.linux-x86_64-2.7/src …</p>
+build/temp.linux-x86_64-2.7/src/lxml/lxml …</p>
 				</p>
 				<a class="read-more" href="posts/trying-to-install-scrapy-with-pip-lxml-error-command-gcc-failed-with-exit-status-1.html">Continue reading »</a>
 			</div>
@@ -182,7 +182,8 @@ build/temp.linux-x86_64-2.7/src …</p>
 					<p>To install easy_install for a specific python version. I just installed
 from source and used the python version you want to install setuptools
 too. I used the following steps in Ubuntu 11.04 with Python 2.5 and
-Python 2.7 installed. The following commands will install setuptools to …</p>
+Python 2.7 installed. The following commands will install setuptools to
+python …</p>
 				</p>
 				<a class="read-more" href="posts/how-to-install-setuptools-to-a-specific-python-version.html">Continue reading »</a>
 			</div>

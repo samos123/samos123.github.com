@@ -1,5 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Sam Stoelinga - K8s</title><link href="https://samos-it.com/" rel="alternate"></link><link href="https://samos-it.com/feeds/k8s.atom.xml" rel="self"></link><id>https://samos-it.com/</id><updated>2022-08-26T22:02:00+02:00</updated><entry><title>GKE GPU timesharing and resource quotas experiment</title><link href="https://samos-it.com/posts/gke-gpu-timesharing-resource-quotas.html" rel="alternate"></link><published>2022-08-26T22:02:00+02:00</published><updated>2022-08-26T22:02:00+02:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2022-08-26:/posts/gke-gpu-timesharing-resource-quotas.html</id><summary type="html">&lt;p&gt;You only got a few GPUs and want to pretend to your end-users that you got
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Sam Stoelinga - K8s</title><link href="https://samos-it.com/" rel="alternate"></link><link href="https://samos-it.com/feeds/k8s.atom.xml" rel="self"></link><id>https://samos-it.com/</id><updated>2022-12-09T08:44:00+01:00</updated><entry><title>Deploying K8s on your laptop with minikube</title><link href="https://samos-it.com/posts/deploying-k8s-on-laptop-with-minikube.html" rel="alternate"></link><published>2022-12-09T08:44:00+01:00</published><updated>2022-12-09T08:44:00+01:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2022-12-09:/posts/deploying-k8s-on-laptop-with-minikube.html</id><summary type="html">&lt;iframe width="560" height="315" src="https://www.youtube.com/embed/AJVoHzb9KeQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen&gt;&lt;/iframe&gt;
+
+&lt;p&gt;K8s on your laptop is helpful for initial development and testing environment. Minikube
+makes it easy to get K8s deployed on your laptop. Let's get K8s installed by doing
+the following:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Installing required tools: docker, minikube and kubectl&lt;/li&gt;
+&lt;li&gt;Deploying the minikube cluster with minikube start&lt;/li&gt;
+&lt;li&gt;Verifying you can deploy an …&lt;/li&gt;&lt;/ol&gt;</summary><content type="html">&lt;iframe width="560" height="315" src="https://www.youtube.com/embed/AJVoHzb9KeQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen&gt;&lt;/iframe&gt;
+
+&lt;p&gt;K8s on your laptop is helpful for initial development and testing environment. Minikube
+makes it easy to get K8s deployed on your laptop. Let's get K8s installed by doing
+the following:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Installing required tools: docker, minikube and kubectl&lt;/li&gt;
+&lt;li&gt;Deploying the minikube cluster with minikube start&lt;/li&gt;
+&lt;li&gt;Verifying you can deploy an application to your minikube cluster&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;Installing required tools&lt;/h2&gt;
+&lt;p&gt;Install docker by following the steps outlined &lt;a href="https://docs.docker.com/engine/install/ubuntu/#install-using-the-convenience-script"&gt;here&lt;/a&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# These steps are for ubuntu, you can follow steps for another distro if needed&lt;/span&gt;
+curl -fsSL https://get.docker.com -o get-docker.sh
+sudo sh get-docker.sh
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Verify docker was installed succesfully by running:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;docker run hello-world
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Note if you get permission denied then you might need to add yourself to the docker
+group. You can do this by running:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sudo usermod -a -G docker &lt;span class="nv"&gt;$USER&lt;/span&gt;
+&lt;span class="c1"&gt;# make the change effective in current shell&lt;/span&gt;
+newgrp docker
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Install kubectl by following the steps outlined &lt;a href="https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/"&gt;here&lt;/a&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;curl -LO &lt;span class="s2"&gt;&amp;quot;https://dl.k8s.io/release/&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;curl -L -s https://dl.k8s.io/release/stable.txt&lt;span class="k"&gt;)&lt;/span&gt;&lt;span class="s2"&gt;/bin/linux/amd64/kubectl&amp;quot;&lt;/span&gt;
+sudo install -o root -g root -m &lt;span class="m"&gt;0755&lt;/span&gt; kubectl /usr/local/bin/kubectl
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Install minikube by following the steps outlined &lt;a href="https://minikube.sigs.k8s.io/docs/start/"&gt;here&lt;/a&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+sudo install minikube-linux-amd64 /usr/local/bin/minikube
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;All required tools have now been installed.&lt;/p&gt;
+&lt;h2&gt;Deploying K8s on your laptop&lt;/h2&gt;
+&lt;p&gt;Follow steps of the "Start your cluster" section outlined &lt;a href="https://minikube.sigs.k8s.io/docs/start/"&gt;here&lt;/a&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;minikube start
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Verify that you can access your cluster by running:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;kubectl get nodes
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2&gt;Deploying an application to your K8s cluster&lt;/h2&gt;
+&lt;p&gt;Let's deploy a simple web application by running:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;kubectl create deployment hello-minikube &lt;span class="se"&gt;\&lt;/span&gt;
+  --image&lt;span class="o"&gt;=&lt;/span&gt;kicbase/echo-server:1.0
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;You can expose the application on port 8080 by running:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;kubectl expose deployment hello-minikube --type&lt;span class="o"&gt;=&lt;/span&gt;NodePort --port&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;8080&lt;/span&gt;
+minikube service hello-minikube
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The &lt;code&gt;minikube service&lt;/code&gt; command should have setup port forwarding for you and opened
+a browser so you can access the application.&lt;/p&gt;</content><category term="K8s"></category><category term="k8s"></category><category term="kubernetes"></category><category term="minikube"></category></entry><entry><title>GKE GPU timesharing and resource quotas experiment</title><link href="https://samos-it.com/posts/gke-gpu-timesharing-resource-quotas.html" rel="alternate"></link><published>2022-08-26T22:02:00+02:00</published><updated>2022-08-26T22:02:00+02:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2022-08-26:/posts/gke-gpu-timesharing-resource-quotas.html</id><summary type="html">&lt;p&gt;You only got a few GPUs and want to pretend to your end-users that you got
 many? Then GKE GPU timesharing might just be the feature for you to save
 costs on GPUs that are underutilized. In this
 blog post you will learn:&lt;/p&gt;
@@ -131,15 +199,15 @@ and able to limit GPUs that are timeshared.&lt;/p&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Verify that pods in both tenant-a see the whole GPU being usable&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nv"&gt;kubectl&lt;/span&gt; &lt;span class="k"&gt;exec&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nv"&gt;n&lt;/span&gt; &lt;span class="nv"&gt;tenant&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nv"&gt;a&lt;/span&gt; &lt;span class="nv"&gt;deploy&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nv"&gt;cuda&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nv"&gt;simple&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nv"&gt;ti&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt; &lt;span class="nv"&gt;sh&lt;/span&gt;
-&lt;span class="nv"&gt;nvidia&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nv"&gt;smi&lt;/span&gt;
-&lt;span class="k"&gt;exit&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nv"&gt;kubectl&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;exec&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nv"&gt;n&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;tenant&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nv"&gt;a&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;deploy&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nv"&gt;cuda&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nv"&gt;simple&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nv"&gt;ti&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;sh&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="nv"&gt;nvidia&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nv"&gt;smi&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="k"&gt;exit&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Verify that pods in tenant-b  see the whole GPU being usable&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nv"&gt;kubectl&lt;/span&gt; &lt;span class="k"&gt;exec&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nv"&gt;n&lt;/span&gt; &lt;span class="nv"&gt;tenant&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nv"&gt;b&lt;/span&gt; &lt;span class="nv"&gt;deploy&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nv"&gt;cuda&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nv"&gt;simple&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nv"&gt;ti&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt; &lt;span class="nv"&gt;sh&lt;/span&gt;
-&lt;span class="nv"&gt;nvidia&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nv"&gt;smi&lt;/span&gt;
-&lt;span class="k"&gt;exit&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nv"&gt;kubectl&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;exec&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nv"&gt;n&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;tenant&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nv"&gt;b&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;deploy&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nv"&gt;cuda&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nv"&gt;simple&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nv"&gt;ti&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;sh&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="nv"&gt;nvidia&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nv"&gt;smi&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="k"&gt;exit&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;You can also take a look at the GPU node to see that it will

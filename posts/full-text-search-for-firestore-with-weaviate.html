@@ -248,35 +248,35 @@ command but replace the values to match your environment:</p>
 
 <p>Let's try creating many notes (7k+) in Firestore to test the function. Create a file
 named <code>create-notes.js</code> with the following content:</p>
-<div class="highlight"><pre><span></span><code><span class="kd">const</span> <span class="p">{</span>
-    <span class="nx">initializeApp</span><span class="p">,</span>
-    <span class="nx">applicationDefault</span><span class="p">,</span>
-    <span class="nx">cert</span><span class="p">,</span>
-<span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;firebase-admin/app&quot;</span><span class="p">);</span>
-<span class="kd">const</span> <span class="p">{</span>
-    <span class="nx">getFirestore</span><span class="p">,</span>
-    <span class="nx">Timestamp</span><span class="p">,</span>
-    <span class="nx">FieldValue</span><span class="p">,</span>
-<span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;firebase-admin/firestore&quot;</span><span class="p">);</span>
-<span class="kd">const</span> <span class="nx">fs</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;fs&quot;</span><span class="p">);</span>
-<span class="kd">const</span> <span class="p">{</span> <span class="nx">parse</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;csv-parse&quot;</span><span class="p">);</span>
+<div class="highlight"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nx">initializeApp</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="nx">applicationDefault</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="nx">cert</span><span class="p">,</span><span class="w"></span>
+<span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s2">&quot;firebase-admin/app&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="kd">const</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nx">getFirestore</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="nx">Timestamp</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="nx">FieldValue</span><span class="p">,</span><span class="w"></span>
+<span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s2">&quot;firebase-admin/firestore&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">fs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s2">&quot;fs&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="kd">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">parse</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s2">&quot;csv-parse&quot;</span><span class="p">);</span><span class="w"></span>
 
-<span class="nx">initializeApp</span><span class="p">({</span>
-    <span class="nx">credential</span><span class="o">:</span> <span class="nx">applicationDefault</span><span class="p">(),</span>
-<span class="p">});</span>
+<span class="nx">initializeApp</span><span class="p">({</span><span class="w"></span>
+<span class="w">    </span><span class="nx">credential</span><span class="o">:</span><span class="w"> </span><span class="nx">applicationDefault</span><span class="p">(),</span><span class="w"></span>
+<span class="p">});</span><span class="w"></span>
 
-<span class="kd">const</span> <span class="nx">db</span> <span class="o">=</span> <span class="nx">getFirestore</span><span class="p">();</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">db</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">getFirestore</span><span class="p">();</span><span class="w"></span>
 
-<span class="kd">var</span> <span class="nx">parser</span> <span class="o">=</span> <span class="nx">parse</span><span class="p">({</span> <span class="nx">columns</span><span class="o">:</span> <span class="kc">true</span> <span class="p">},</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">records</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nx">records</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="k">async</span> <span class="p">(</span><span class="nx">record</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
-        <span class="kd">const</span> <span class="nx">docRef</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">db</span><span class="p">.</span><span class="nx">collection</span><span class="p">(</span><span class="s2">&quot;notes&quot;</span><span class="p">).</span><span class="nx">add</span><span class="p">({</span>
-            <span class="nx">uid</span><span class="o">:</span> <span class="s2">&quot;same&quot;</span><span class="p">,</span>
-            <span class="nx">text</span><span class="o">:</span> <span class="nx">record</span><span class="p">.</span><span class="nx">description</span><span class="p">,</span>
-        <span class="p">});</span>
-    <span class="p">});</span>
-<span class="p">});</span>
+<span class="kd">var</span><span class="w"> </span><span class="nx">parser</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">parse</span><span class="p">({</span><span class="w"> </span><span class="nx">columns</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="p">(</span><span class="nx">err</span><span class="p">,</span><span class="w"> </span><span class="nx">records</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nx">records</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="k">async</span><span class="w"> </span><span class="p">(</span><span class="nx">record</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="kd">const</span><span class="w"> </span><span class="nx">docRef</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">db</span><span class="p">.</span><span class="nx">collection</span><span class="p">(</span><span class="s2">&quot;notes&quot;</span><span class="p">).</span><span class="nx">add</span><span class="p">({</span><span class="w"></span>
+<span class="w">            </span><span class="nx">uid</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;same&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="nx">text</span><span class="o">:</span><span class="w"> </span><span class="nx">record</span><span class="p">.</span><span class="nx">description</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="p">});</span><span class="w"></span>
+<span class="w">    </span><span class="p">});</span><span class="w"></span>
+<span class="p">});</span><span class="w"></span>
 
-<span class="nx">fs</span><span class="p">.</span><span class="nx">createReadStream</span><span class="p">(</span><span class="nx">__dirname</span> <span class="o">+</span> <span class="s2">&quot;/wine_reviews.csv&quot;</span><span class="p">).</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">parser</span><span class="p">);</span>
+<span class="nx">fs</span><span class="p">.</span><span class="nx">createReadStream</span><span class="p">(</span><span class="nx">__dirname</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s2">&quot;/wine_reviews.csv&quot;</span><span class="p">).</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">parser</span><span class="p">);</span><span class="w"></span>
 </code></pre></div>
 
 <p>Download a demo dataset that contains wine reviews. We'll use the content
@@ -311,22 +311,22 @@ query in Weaviate:</p>
 
 <h3>Creating a Firebase Function to search using Weaviate</h3>
 <p>Let's add another firebase function by adding the following code at the bottom of <code>index.js</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="nx">exports</span><span class="p">.</span><span class="nx">searchNotes</span> <span class="o">=</span> <span class="nx">functions</span><span class="p">.</span><span class="nx">https</span><span class="p">.</span><span class="nx">onCall</span><span class="p">(</span><span class="k">async</span> <span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="nx">context</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
-    <span class="kd">const</span> <span class="nx">concepts</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">concepts</span><span class="p">;</span>
+<div class="highlight"><pre><span></span><code><span class="nx">exports</span><span class="p">.</span><span class="nx">searchNotes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">functions</span><span class="p">.</span><span class="nx">https</span><span class="p">.</span><span class="nx">onCall</span><span class="p">(</span><span class="k">async</span><span class="w"> </span><span class="p">(</span><span class="nx">data</span><span class="p">,</span><span class="w"> </span><span class="nx">context</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">concepts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">data</span><span class="p">.</span><span class="nx">concepts</span><span class="p">;</span><span class="w"></span>
 
-    <span class="kd">const</span> <span class="nx">notes</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">client</span><span class="p">.</span><span class="nx">graphql</span>
-        <span class="p">.</span><span class="nx">get</span><span class="p">()</span>
-        <span class="p">.</span><span class="nx">withClassName</span><span class="p">(</span><span class="s2">&quot;Note&quot;</span><span class="p">)</span>
-        <span class="p">.</span><span class="nx">withFields</span><span class="p">(</span><span class="s2">&quot;nid uid text&quot;</span><span class="p">)</span>
-        <span class="p">.</span><span class="nx">withNearText</span><span class="p">({</span>
-            <span class="nx">concepts</span><span class="o">:</span> <span class="nx">concepts</span><span class="p">,</span>
-            <span class="nx">distance</span><span class="o">:</span> <span class="mf">0.6</span><span class="p">,</span>
-        <span class="p">})</span>
-        <span class="p">.</span><span class="k">do</span><span class="p">();</span>
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">notes</span><span class="p">)</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">notes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">client</span><span class="p">.</span><span class="nx">graphql</span><span class="w"></span>
+<span class="w">        </span><span class="p">.</span><span class="nx">get</span><span class="p">()</span><span class="w"></span>
+<span class="w">        </span><span class="p">.</span><span class="nx">withClassName</span><span class="p">(</span><span class="s2">&quot;Note&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="p">.</span><span class="nx">withFields</span><span class="p">(</span><span class="s2">&quot;nid uid text&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="p">.</span><span class="nx">withNearText</span><span class="p">({</span><span class="w"></span>
+<span class="w">            </span><span class="nx">concepts</span><span class="o">:</span><span class="w"> </span><span class="nx">concepts</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="nx">distance</span><span class="o">:</span><span class="w"> </span><span class="mf">0.6</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="p">})</span><span class="w"></span>
+<span class="w">        </span><span class="p">.</span><span class="k">do</span><span class="p">();</span><span class="w"></span>
+<span class="w">    </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">notes</span><span class="p">)</span><span class="w"></span>
 
-    <span class="k">return</span> <span class="p">{</span><span class="nx">notes</span><span class="o">:</span> <span class="nx">notes</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">Get</span><span class="p">.</span><span class="nx">Note</span><span class="p">};</span>
-<span class="p">});</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="p">{</span><span class="nx">notes</span><span class="o">:</span><span class="w"> </span><span class="nx">notes</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">Get</span><span class="p">.</span><span class="nx">Note</span><span class="p">};</span><span class="w"></span>
+<span class="p">});</span><span class="w"></span>
 </code></pre></div>
 
 <p>Deploy the updated functions to Firebase by running:</p>
@@ -335,11 +335,11 @@ query in Weaviate:</p>
 
 <p>Afterwards, you can use the firebase callable function in your Firebase
 app like this:</p>
-<div class="highlight"><pre><span></span><code><span class="kd">var</span> <span class="nx">searchNotes</span> <span class="o">=</span> <span class="nx">firebase</span><span class="p">.</span><span class="nx">functions</span><span class="p">().</span><span class="nx">httpsCallable</span><span class="p">(</span><span class="s1">&#39;searchNotes&#39;</span><span class="p">);</span>
-<span class="nx">searchNotes</span><span class="p">({</span><span class="nx">concepts</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;light fruity wine&quot;</span><span class="p">]}).</span><span class="nx">then</span><span class="p">(</span> <span class="p">(</span><span class="nx">result</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
-    <span class="kd">const</span> <span class="nx">notes</span> <span class="o">=</span> <span class="nx">result</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">notes</span><span class="p">;</span>
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">notes</span><span class="p">[</span><span class="mf">0</span><span class="p">]);</span> <span class="c1">// print the 1st result</span>
-<span class="p">});</span>
+<div class="highlight"><pre><span></span><code><span class="kd">var</span><span class="w"> </span><span class="nx">searchNotes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">firebase</span><span class="p">.</span><span class="nx">functions</span><span class="p">().</span><span class="nx">httpsCallable</span><span class="p">(</span><span class="s1">&#39;searchNotes&#39;</span><span class="p">);</span><span class="w"></span>
+<span class="nx">searchNotes</span><span class="p">({</span><span class="nx">concepts</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;light fruity wine&quot;</span><span class="p">]}).</span><span class="nx">then</span><span class="p">(</span><span class="w"> </span><span class="p">(</span><span class="nx">result</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">notes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">result</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">notes</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">notes</span><span class="p">[</span><span class="mf">0</span><span class="p">]);</span><span class="w"> </span><span class="c1">// print the 1st result</span><span class="w"></span>
+<span class="p">});</span><span class="w"></span>
 </code></pre></div>
 
 <h3>Conclusion</h3>
