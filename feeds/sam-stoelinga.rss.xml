@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0"><channel><title>Sam Stoelinga - Sam Stoelinga</title><link>https://samos-it.com/</link><description></description><lastBuildDate>Fri, 09 Dec 2022 08:44:00 +0100</lastBuildDate><item><title>Deploying K8s on your laptop with minikube</title><link>https://samos-it.com/posts/deploying-k8s-on-laptop-with-minikube.html</link><description>&lt;iframe width="560" height="315" src="https://www.youtube.com/embed/AJVoHzb9KeQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen&gt;&lt;/iframe&gt;
+<rss version="2.0"><channel><title>Sam Stoelinga - Sam Stoelinga</title><link>https://samos-it.com/</link><description></description><lastBuildDate>Wed, 14 Dec 2022 22:44:00 +0100</lastBuildDate><item><title>Trying ValidationAdmissionPolicy aka CEL Admission in K8s 1.26</title><link>https://samos-it.com/posts/trying-cel-admission-control-validation-admission-policy.html</link><description>&lt;p&gt;CEL for admission control is a new 1.26 feature. With the feature, define
+ValidationAdmissionPolicy to express your desired policy
+and ValidationAdmissionPolicyBinding to assign the policy to e.g. a namespace.&lt;/p&gt;
+&lt;p&gt;This post has the following sections:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Creating a 1.26 cluster with ValidationAdmissionPolicy / CEL Admission enabled&lt;/li&gt;
+&lt;li&gt;Configure the policies …&lt;/li&gt;&lt;/ol&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Sam Stoelinga</dc:creator><pubDate>Wed, 14 Dec 2022 22:44:00 +0100</pubDate><guid isPermaLink="false">tag:samos-it.com,2022-12-14:/posts/trying-cel-admission-control-validation-admission-policy.html</guid><category>K8s</category><category>k8s</category><category>kubernetes</category><category>security</category></item><item><title>Deploying K8s on your laptop with minikube</title><link>https://samos-it.com/posts/deploying-k8s-on-laptop-with-minikube.html</link><description>&lt;iframe width="560" height="315" src="https://www.youtube.com/embed/AJVoHzb9KeQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen&gt;&lt;/iframe&gt;
 
 &lt;p&gt;K8s on your laptop is helpful for initial development and testing environment. Minikube
 makes it easy to get K8s deployed on your laptop. Let's get K8s installed by doing
