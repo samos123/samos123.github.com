@@ -5,6 +5,8 @@ Category: K8s
 Tags: k8s, kubernetes, security
 Slug: trying-cel-admission-control-validation-admission-policy
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/OaXgy6BmV-k" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 CEL for admission control is a new 1.26 feature. With the feature, define
 ValidationAdmissionPolicy to express your desired policy
 and ValidationAdmissionPolicyBinding to assign the policy to e.g. a namespace.

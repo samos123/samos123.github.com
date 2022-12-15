@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Sam Stoelinga</title><link href="https://samos-it.com/" rel="alternate"></link><link href="https://samos-it.com/feeds/all.atom.xml" rel="self"></link><id>https://samos-it.com/</id><updated>2022-12-14T22:44:00+01:00</updated><entry><title>Trying ValidationAdmissionPolicy aka CEL Admission in K8s 1.26</title><link href="https://samos-it.com/posts/trying-cel-admission-control-validation-admission-policy.html" rel="alternate"></link><published>2022-12-14T22:44:00+01:00</published><updated>2022-12-14T22:44:00+01:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2022-12-14:/posts/trying-cel-admission-control-validation-admission-policy.html</id><summary type="html">&lt;p&gt;CEL for admission control is a new 1.26 feature. With the feature, define
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Sam Stoelinga</title><link href="https://samos-it.com/" rel="alternate"></link><link href="https://samos-it.com/feeds/all.atom.xml" rel="self"></link><id>https://samos-it.com/</id><updated>2022-12-14T22:44:00+01:00</updated><entry><title>Trying ValidationAdmissionPolicy aka CEL Admission in K8s 1.26</title><link href="https://samos-it.com/posts/trying-cel-admission-control-validation-admission-policy.html" rel="alternate"></link><published>2022-12-14T22:44:00+01:00</published><updated>2022-12-14T22:44:00+01:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2022-12-14:/posts/trying-cel-admission-control-validation-admission-policy.html</id><summary type="html">&lt;iframe width="560" height="315" src="https://www.youtube.com/embed/OaXgy6BmV-k" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen&gt;&lt;/iframe&gt;
+
+&lt;p&gt;CEL for admission control is a new 1.26 feature. With the feature, define
 ValidationAdmissionPolicy to express your desired policy
 and ValidationAdmissionPolicyBinding to assign the policy to e.g. a namespace.&lt;/p&gt;
 &lt;p&gt;This post has the following sections:&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;Creating a 1.26 cluster with ValidationAdmissionPolicy / CEL Admission enabled&lt;/li&gt;
-&lt;li&gt;Configure the policies …&lt;/li&gt;&lt;/ol&gt;</summary><content type="html">&lt;p&gt;CEL for admission control is a new 1.26 feature. With the feature, define
+&lt;li&gt;Configure the policies …&lt;/li&gt;&lt;/ol&gt;</summary><content type="html">&lt;iframe width="560" height="315" src="https://www.youtube.com/embed/OaXgy6BmV-k" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen&gt;&lt;/iframe&gt;
+
+&lt;p&gt;CEL for admission control is a new 1.26 feature. With the feature, define
 ValidationAdmissionPolicy to express your desired policy
 and ValidationAdmissionPolicyBinding to assign the policy to e.g. a namespace.&lt;/p&gt;
 &lt;p&gt;This post has the following sections:&lt;/p&gt;

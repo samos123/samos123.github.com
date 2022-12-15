@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0"><channel><title>Sam Stoelinga - Sam Stoelinga</title><link>https://samos-it.com/</link><description></description><lastBuildDate>Wed, 14 Dec 2022 22:44:00 +0100</lastBuildDate><item><title>Trying ValidationAdmissionPolicy aka CEL Admission in K8s 1.26</title><link>https://samos-it.com/posts/trying-cel-admission-control-validation-admission-policy.html</link><description>&lt;p&gt;CEL for admission control is a new 1.26 feature. With the feature, define
+<rss version="2.0"><channel><title>Sam Stoelinga - Sam Stoelinga</title><link>https://samos-it.com/</link><description></description><lastBuildDate>Wed, 14 Dec 2022 22:44:00 +0100</lastBuildDate><item><title>Trying ValidationAdmissionPolicy aka CEL Admission in K8s 1.26</title><link>https://samos-it.com/posts/trying-cel-admission-control-validation-admission-policy.html</link><description>&lt;iframe width="560" height="315" src="https://www.youtube.com/embed/OaXgy6BmV-k" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen&gt;&lt;/iframe&gt;
+
+&lt;p&gt;CEL for admission control is a new 1.26 feature. With the feature, define
 ValidationAdmissionPolicy to express your desired policy
 and ValidationAdmissionPolicyBinding to assign the policy to e.g. a namespace.&lt;/p&gt;
 &lt;p&gt;This post has the following sections:&lt;/p&gt;
