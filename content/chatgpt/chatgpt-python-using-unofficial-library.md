@@ -6,6 +6,8 @@ Tags: chatgpt, python
 Slug: chatgpt-python-using-an-unofficial-library
 
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/Im6mh2ZFWx8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 ChatGPT at the time of writing this blog does not have an official API nor
 libraries published. Luckily, many folks have inspected the API calls made
 when using the ChatGPT web UI and created unofficial Python clients.
