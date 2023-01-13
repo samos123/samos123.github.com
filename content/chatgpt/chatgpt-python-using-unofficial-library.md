@@ -34,7 +34,7 @@ Install revChatGPT using pip:
 pip3 install --upgrade revChatGPT
 ```
 
-## Configuring authentication
+## 2. Configuring authentication
 The unofficial library requires a session token to authenticate to ChatGPT.
 
 Here are the steps to get the session token:

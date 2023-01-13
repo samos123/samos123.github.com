@@ -25,7 +25,7 @@ python3 -m venv .venv
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;pip3 install --upgrade revChatGPT
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;h2&gt;Configuring authentication&lt;/h2&gt;
+&lt;h2&gt;2. Configuring authentication&lt;/h2&gt;
 &lt;p&gt;The unofficial library requires a session token to authenticate to ChatGPT.&lt;/p&gt;
 &lt;p&gt;Here are the steps to get the session token:
 1. Go to https://chat.openai.com and login with your OpenAI account
