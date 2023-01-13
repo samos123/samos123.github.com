@@ -7,11 +7,13 @@ libraries published. Luckily, many folks have inspected the API calls made
 when using the ChatGPT web UI and created unofficial Python clients.&lt;/p&gt;
 &lt;p&gt;This blog post, will show you how to use the unofficial chatGPT python library
 by &lt;a href="https://github.com/acheong08/ChatGPT"&gt;acheong08&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;The blog post contains the following sections:
-1. Installing ChatGPT python library
-2. Configuring authentication
-3. Creating a small Python application that uses the library&lt;/p&gt;
-&lt;h2&gt;Installing the ChatGPT Python Library&lt;/h2&gt;
+&lt;p&gt;The blog post contains the following sections:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Installing ChatGPT python library&lt;/li&gt;
+&lt;li&gt;Configuring authentication&lt;/li&gt;
+&lt;li&gt;Creating a small Python application that uses the library&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;1. Installing the ChatGPT Python Library&lt;/h2&gt;
 &lt;p&gt;Create a new directory named &lt;code&gt;chatgpt-python&lt;/code&gt; and create a virtualenv in &lt;code&gt;.venv&lt;/code&gt; directory:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;mkdir chatgpt-python
 &lt;span class="nb"&gt;cd&lt;/span&gt; chatgpt-python
@@ -38,7 +40,7 @@ python3 -m venv .venv
 &lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;h2&gt;Using the ChatGPT python library&lt;/h2&gt;
+&lt;h2&gt;3. Using the ChatGPT python library&lt;/h2&gt;
 &lt;p&gt;Create a chatbot instance:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;json&lt;/span&gt;
 &lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;revChatGPT.ChatGPT&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Chatbot&lt;/span&gt;

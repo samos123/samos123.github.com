@@ -83,11 +83,13 @@ libraries published. Luckily, many folks have inspected the API calls made
 when using the ChatGPT web UI and created unofficial Python clients.</p>
 <p>This blog post, will show you how to use the unofficial chatGPT python library
 by <a href="https://github.com/acheong08/ChatGPT">acheong08</a>.</p>
-<p>The blog post contains the following sections:
-1. Installing ChatGPT python library
-2. Configuring authentication
-3. Creating a small Python application that uses the library</p>
-<h2>Installing the ChatGPT Python Library</h2>
+<p>The blog post contains the following sections:</p>
+<ol>
+<li>Installing ChatGPT python library</li>
+<li>Configuring authentication</li>
+<li>Creating a small Python application that uses the library</li>
+</ol>
+<h2>1. Installing the ChatGPT Python Library</h2>
 <p>Create a new directory named <code>chatgpt-python</code> and create a virtualenv in <code>.venv</code> directory:</p>
 <div class="highlight"><pre><span></span><code>mkdir chatgpt-python
 <span class="nb">cd</span> chatgpt-python
@@ -114,7 +116,7 @@ python3 -m venv .venv
 <span class="p">}</span><span class="w"></span>
 </code></pre></div>
 
-<h2>Using the ChatGPT python library</h2>
+<h2>3. Using the ChatGPT python library</h2>
 <p>Create a chatbot instance:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">from</span> <span class="nn">revChatGPT.ChatGPT</span> <span class="kn">import</span> <span class="n">Chatbot</span>

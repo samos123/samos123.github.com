@@ -14,11 +14,12 @@ This blog post, will show you how to use the unofficial chatGPT python library
 by [acheong08](https://github.com/acheong08/ChatGPT).
 
 The blog post contains the following sections:
+
 1. Installing ChatGPT python library
 2. Configuring authentication
 3. Creating a small Python application that uses the library
 
-## Installing the ChatGPT Python Library
+## 1. Installing the ChatGPT Python Library
 
 Create a new directory named `chatgpt-python` and create a virtualenv in `.venv` directory:
 ```sh
@@ -52,7 +53,7 @@ Create a file named `chatgpt.json` with the following content
 }
 ```
 
-## Using the ChatGPT python library
+## 3. Using the ChatGPT python library
 Create a chatbot instance:
 ```python
 import json
