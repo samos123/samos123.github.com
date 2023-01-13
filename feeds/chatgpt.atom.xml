@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Sam Stoelinga - ChatGPT</title><link href="https://samos-it.com/" rel="alternate"></link><link href="https://samos-it.com/feeds/chatgpt.atom.xml" rel="self"></link><id>https://samos-it.com/</id><updated>2023-01-12T22:44:00+01:00</updated><entry><title>ChatGPT Python: using an unofficial library</title><link href="https://samos-it.com/posts/chatgpt-python-using-an-unofficial-library.html" rel="alternate"></link><published>2023-01-12T22:44:00+01:00</published><updated>2023-01-12T22:44:00+01:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2023-01-12:/posts/chatgpt-python-using-an-unofficial-library.html</id><summary type="html">&lt;p&gt;ChatGPT at the time of writing this blog does not have an official API nor
+libraries published. Luckily, many folks have inspected the API calls made
+when using the ChatGPT web UI and created unofficial Python clients.&lt;/p&gt;
+&lt;p&gt;This blog post, will show you how to use the unofficial chatGPT python …&lt;/p&gt;</summary><content type="html">&lt;p&gt;ChatGPT at the time of writing this blog does not have an official API nor
+libraries published. Luckily, many folks have inspected the API calls made
+when using the ChatGPT web UI and created unofficial Python clients.&lt;/p&gt;
+&lt;p&gt;This blog post, will show you how to use the unofficial chatGPT python library
+by &lt;a href="https://github.com/acheong08/ChatGPT"&gt;acheong08&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;The blog post contains the following sections:
+1. Installing ChatGPT python library
+2. Configuring authentication
+3. Creating a small Python application that uses the library&lt;/p&gt;
+&lt;h2&gt;Installing the ChatGPT Python Library&lt;/h2&gt;
+&lt;p&gt;Create a new directory named &lt;code&gt;chatgpt-python&lt;/code&gt; and create a virtualenv in &lt;code&gt;.venv&lt;/code&gt; directory:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;mkdir chatgpt-python
+&lt;span class="nb"&gt;cd&lt;/span&gt; chatgpt-python
+python3 -m venv .venv
+&lt;span class="nb"&gt;source&lt;/span&gt; .venv/bin/activate
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Install revChatGPT using pip:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;pip3 install --upgrade revChatGPT
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2&gt;Configuring authentication&lt;/h2&gt;
+&lt;p&gt;The unofficial library requires a session token to authenticate to ChatGPT.&lt;/p&gt;
+&lt;p&gt;Here are the steps to get the session token:
+1. Go to https://chat.openai.com and login with your OpenAI account
+2. Open the Chrome Developer Tools e.g. by pressing Ctrl + Shift + I
+3. Click on the application tab
+4. Copy the value for the &lt;code&gt;__Secure-next-auth.session-token&lt;/code&gt; cookie&lt;/p&gt;
+&lt;p&gt;You should now have the session token in your clipboard.&lt;/p&gt;
+&lt;p&gt;Create a file named &lt;code&gt;chatgpt.json&lt;/code&gt; with the following content
+(don't forget to paste your session token):&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;&amp;quot;session_token&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&amp;lt;COPY_PASTE_YOUR_SESSION_TOKEN_HERE&amp;gt;&amp;quot;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2&gt;Using the ChatGPT python library&lt;/h2&gt;
+&lt;p&gt;Create a chatbot instance:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;json&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;revChatGPT.ChatGPT&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Chatbot&lt;/span&gt;
+
+&lt;span class="n"&gt;conf&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;json&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;load&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;open&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;chatgpt.json&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+
+&lt;span class="n"&gt;chatbot&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Chatbot&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;conf&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;conversation_id&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;None&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;parent_id&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;None&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Let's ask the ChatGPT something using Python:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;response&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;chatbot&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ask&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;How to use ChatGPT using python&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="nb"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;response&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;You should see something like this:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="s1"&gt;&amp;#39;message&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;You can use the OpenAI Python SDK to interact with the ChatGPT model. Here is an example of how you might use the SDK to generate text using the model:&lt;/span&gt;&lt;span class="se"&gt;\n\n&lt;/span&gt;&lt;span class="s1"&gt;1. First, you will need to install the SDK by running `pip install openai`.&lt;/span&gt;&lt;span class="se"&gt;\n\n&lt;/span&gt;&lt;span class="s1"&gt;2. Next, you will need to import the `openai` module and set up an API key. You can get an API key from the OpenAI website.&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s1"&gt;```&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s1"&gt;import openai&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s1"&gt;openai.api_key = &amp;quot;YOUR_API_KEY&amp;quot;&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s1"&gt;```&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s1"&gt;3. To generate text using the model, you can use the `openai.Completion.create()` function. &lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s1"&gt;This function takes several parameters, including the `prompt` (the text you want the model to complete), the `model` (the name of the model you want to use), and the `max_tokens` (the maximum number of tokens the model should generate).&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s1"&gt;```&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s1"&gt;response = openai.Completion.create(&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s1"&gt;    prompt=&lt;/span&gt;&lt;span class="se"&gt;\&amp;#39;&lt;/span&gt;&lt;span class="s1"&gt;What is the meaning of&lt;/span&gt;&lt;span class="se"&gt;\&amp;#39;&lt;/span&gt;&lt;span class="s1"&gt;,&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s1"&gt;    model=&lt;/span&gt;&lt;span class="se"&gt;\&amp;#39;&lt;/span&gt;&lt;span class="s1"&gt;text-davinci-002&lt;/span&gt;&lt;span class="se"&gt;\&amp;#39;&lt;/span&gt;&lt;span class="s1"&gt;,&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s1"&gt;    max_tokens=2048,&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s1"&gt;)&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s1"&gt;print(response.choices[0].text)&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s1"&gt;```&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s1"&gt;This will output the generated text from the model.&lt;/span&gt;&lt;span class="se"&gt;\n\n&lt;/span&gt;&lt;span class="s1"&gt;You can also use GPT-3 fine-tuning and retrain the model with your own dataset using Hugging face&lt;/span&gt;&lt;span class="se"&gt;\&amp;#39;&lt;/span&gt;&lt;span class="s1"&gt;s transformers library.&lt;/span&gt;&lt;span class="se"&gt;\n\n&lt;/span&gt;&lt;span class="s1"&gt;You can also find more information on the OpenAI website, which has documentation and examples for using the SDK.&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+  &lt;span class="s1"&gt;&amp;#39;conversation_id&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;&amp;lt;SNIP&amp;gt;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+  &lt;span class="s1"&gt;&amp;#39;parent_id&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;&amp;lt;SNIP&amp;gt;&amp;#39;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content><category term="ChatGPT"></category><category term="chatgpt"></category><category term="python"></category></entry></feed>
