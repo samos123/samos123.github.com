@@ -76,6 +76,19 @@ ga('send', 'pageview');
 </div>		<div class="content container">
 	<div class="posts">
 			<div class="post">
+				<h1 class="post-title" href="https://samos-it.com/posts/create-tar-archive-of-changedadded-files-in-a-git-commit.html">
+					<a href="https://samos-it.com/posts/create-tar-archive-of-changedadded-files-in-a-git-commit.html">Create tar archive of changed/added files in a git commit</a>
+				</h1>
+				<span class="post-date">Thu 02 May 2013</span>
+				<p>
+					<p>The following command first gets the changed and added files of a git
+commit and then creates a tar archive of those changed files.</p>
+<div class="highlight"><pre><span></span><code>git show <span class="o">{{</span>COMMIT_ID<span class="o">}}</span> --name-status <span class="p">|</span> grep -Ew <span class="s1">&#39;^M|A&#39;</span> <span class="p">|</span> awk <span class="s1">&#39;{ print $2 }&#39;</span> <span class="p">|</span> xargs tar czf usb-passthrough.tar.gz
+</code></pre></div>
+				</p>
+				<a class="read-more" href="posts/create-tar-archive-of-changedadded-files-in-a-git-commit.html">Continue reading »</a>
+			</div>
+			<div class="post">
 				<h1 class="post-title" href="https://samos-it.com/posts/full-migration-of-archlinux-installation-to-a-new-system.html">
 					<a href="https://samos-it.com/posts/full-migration-of-archlinux-installation-to-a-new-system.html">Full migration/clone of linux installation to a new system(Without reinstalling)</a>
 				</h1>
@@ -220,22 +233,6 @@ src/lxml/lxml.etree.c -o
 build/temp.linux-x86_64-2.7/src/lxml/lxml …</p>
 				</p>
 				<a class="read-more" href="posts/trying-to-install-scrapy-with-pip-lxml-error-command-gcc-failed-with-exit-status-1.html">Continue reading »</a>
-			</div>
-			<div class="post">
-				<h1 class="post-title" href="https://samos-it.com/posts/ubuntu-11-10-error-while-loading-shared-libraries-libssl-so-0-9-8-cannot-open-shared-object-file-no-such-file-or-directory.html">
-					<a href="https://samos-it.com/posts/ubuntu-11-10-error-while-loading-shared-libraries-libssl-so-0-9-8-cannot-open-shared-object-file-no-such-file-or-directory.html">Ubuntu 11.10 error while loading shared libraries: libssl.so.0.9.8: cannot open shared object file: No such file or directory</a>
-				</h1>
-				<span class="post-date">Sat 29 October 2011</span>
-				<p>
-					<p>A quick solution is to install the libssl 0.9.8 package with the
-<strong>Following command</strong>:<br>
-<code>sudo apt-get install libssl0.9.8</code></p>
-<p>Thanks to Rob who commented below and provided an answer on
-<a href="http://stackoverflow.com/questions/7937225/django-runserver-error-while-loading-shared-libraries-libssl-so-0-9-8-cannot-o">Stackoverflow</a></p>
-<p>I just upgraded from ubuntu 11.04 to 11.10 with a fresh install, by
-keeping …</p>
-				</p>
-				<a class="read-more" href="posts/ubuntu-11-10-error-while-loading-shared-libraries-libssl-so-0-9-8-cannot-open-shared-object-file-no-such-file-or-directory.html">Continue reading »</a>
 			</div>
 	</div>
 	<div class="pagination">
