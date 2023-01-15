@@ -21,9 +21,9 @@ Policy has been deprecated in 1.23 and removed in 1.25.
 K8s comes with three predefined Pod Security Standards (PSS):
 
 * Privileged: No restrictions at all, which is the same as having no PSS applied at all.
-* Baseline: Minimally restrive and prevents known high security risk
+* Baseline: Minimally restrictive and prevents known high security risk
   configurations such as **privileged pods**
-* Restricted: Most restrictive following secururity hardening best practices 
+* Restricted: Most restrictive following security hardening best practices 
 
 
 K8s offers a built-in Pod Security Admission (PSA) controller that to enforce Pod
