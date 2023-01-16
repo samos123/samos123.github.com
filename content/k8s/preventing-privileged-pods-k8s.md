@@ -5,13 +5,16 @@ Category: K8s
 Tags: k8s, kubernetes, security
 Slug: Preventing-Privileged-pods-using-Pod-Security-Admission-Standards
 
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/D4Tw1blsQog" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 In a Kubernetes cluster, a privileged pod is a pod that has been given
 extended permissions beyond the default set of permissions. These extended
 permissions can include the ability to access the host's network, devices,
 and other sensitive resources. While privileged pods can be useful in
 certain situations, they also present a significant security risk.
 
-In this blog post, you will learn how to prevent privileged pods using Pod
+In this blog post, you will learn how to prevent privileged pods/containers using Pod
 Security Admission and applying Pod Security Standards. Note that using Pod Security
 Policy has been deprecated in 1.23 and removed in 1.25.
 

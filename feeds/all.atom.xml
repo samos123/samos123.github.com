@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Sam Stoelinga</title><link href="https://samos-it.com/" rel="alternate"></link><link href="https://samos-it.com/feeds/all.atom.xml" rel="self"></link><id>https://samos-it.com/</id><updated>2023-01-14T18:38:00+01:00</updated><entry><title>Preventing Privileged pods using Pod Security Admission / Standards</title><link href="https://samos-it.com/posts/Preventing-Privileged-pods-using-Pod-Security-Admission-Standards.html" rel="alternate"></link><published>2023-01-14T18:38:00+01:00</published><updated>2023-01-14T18:38:00+01:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2023-01-14:/posts/Preventing-Privileged-pods-using-Pod-Security-Admission-Standards.html</id><summary type="html">&lt;p&gt;In a Kubernetes cluster, a privileged pod is a pod that has been given
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Sam Stoelinga</title><link href="https://samos-it.com/" rel="alternate"></link><link href="https://samos-it.com/feeds/all.atom.xml" rel="self"></link><id>https://samos-it.com/</id><updated>2023-01-14T18:38:00+01:00</updated><entry><title>Preventing Privileged pods using Pod Security Admission / Standards</title><link href="https://samos-it.com/posts/Preventing-Privileged-pods-using-Pod-Security-Admission-Standards.html" rel="alternate"></link><published>2023-01-14T18:38:00+01:00</published><updated>2023-01-14T18:38:00+01:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2023-01-14:/posts/Preventing-Privileged-pods-using-Pod-Security-Admission-Standards.html</id><summary type="html">&lt;iframe width="560" height="315" src="https://www.youtube.com/embed/D4Tw1blsQog" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen&gt;&lt;/iframe&gt;
+
+&lt;p&gt;In a Kubernetes cluster, a privileged pod is a pod that has been given
 extended permissions beyond the default set of permissions. These extended
 permissions can include the ability to access the host's network, devices,
 and other sensitive resources. While privileged pods can be useful in
-certain situations, they also …&lt;/p&gt;</summary><content type="html">&lt;p&gt;In a Kubernetes cluster, a privileged pod is a pod that has been given
+certain situations, they also …&lt;/p&gt;</summary><content type="html">&lt;iframe width="560" height="315" src="https://www.youtube.com/embed/D4Tw1blsQog" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen&gt;&lt;/iframe&gt;
+
+&lt;p&gt;In a Kubernetes cluster, a privileged pod is a pod that has been given
 extended permissions beyond the default set of permissions. These extended
 permissions can include the ability to access the host's network, devices,
 and other sensitive resources. While privileged pods can be useful in
 certain situations, they also present a significant security risk.&lt;/p&gt;
-&lt;p&gt;In this blog post, you will learn how to prevent privileged pods using Pod
+&lt;p&gt;In this blog post, you will learn how to prevent privileged pods/containers using Pod
 Security Admission and applying Pod Security Standards. Note that using Pod Security
 Policy has been deprecated in 1.23 and removed in 1.25.&lt;/p&gt;
 &lt;h2&gt;Introduction to Pod Security Standards and Pod Security Admission Controller&lt;/h2&gt;

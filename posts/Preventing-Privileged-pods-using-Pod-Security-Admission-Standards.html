@@ -6,6 +6,7 @@
 		<meta http-equiv="content-type" content="text/html; charset=utf-8">
 
 		<!-- Metadata -->
+    <title>Preventing Privileged pods using Pod Security Admission / Standards</title>
 	<meta name="description" content="Open source contributor and Cloud Architect. Creator of websu.io and bgdestroyer.com">
 	<meta property="og:description" content="Open source contributor and Cloud Architect. Creator of websu.io and bgdestroyer.com">
 	<meta property="og:title" content="Preventing Privileged pods using Pod Security Admission / Standards" />
@@ -78,12 +79,14 @@ ga('send', 'pageview');
 <div class="post">
 	<h1 class="post-title">Preventing Privileged pods using Pod Security Admission / Standards</h1>
 	<span class="post-date">Sat 14 January 2023</span>
-	<p>In a Kubernetes cluster, a privileged pod is a pod that has been given
+	<iframe width="560" height="315" src="https://www.youtube.com/embed/D4Tw1blsQog" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
+<p>In a Kubernetes cluster, a privileged pod is a pod that has been given
 extended permissions beyond the default set of permissions. These extended
 permissions can include the ability to access the host's network, devices,
 and other sensitive resources. While privileged pods can be useful in
 certain situations, they also present a significant security risk.</p>
-<p>In this blog post, you will learn how to prevent privileged pods using Pod
+<p>In this blog post, you will learn how to prevent privileged pods/containers using Pod
 Security Admission and applying Pod Security Standards. Note that using Pod Security
 Policy has been deprecated in 1.23 and removed in 1.25.</p>
 <h2>Introduction to Pod Security Standards and Pod Security Admission Controller</h2>
