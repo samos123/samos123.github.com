@@ -78,6 +78,31 @@ ga('send', 'pageview');
 </div>		<div class="content container">
 	<div class="posts">
 			<div class="post">
+				<h1 class="post-title" href="https://samos-it.com/posts/python-create-uuid-from-integer.html">
+					<a href="https://samos-it.com/posts/python-create-uuid-from-integer.html">Python</a>
+				</h1>
+				<span class="post-date">Mon 06 February 2023</span>
+				<p>
+					<p>Code:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">uuid</span>
+<span class="n">my_uuid</span> <span class="o">=</span> <span class="n">uuid</span><span class="o">.</span><span class="n">UUID</span><span class="p">(</span><span class="nb">int</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">my_uuid</span><span class="p">)</span>
+</code></pre></div>
+
+<p>That should show the following string:</p>
+<div class="highlight"><pre><span></span><code><span class="mf">00000000</span><span class="o">-</span><span class="mf">0000</span><span class="o">-</span><span class="mf">0000</span><span class="o">-</span><span class="mf">0000</span><span class="o">-</span><span class="mf">000000000001</span><span class="w"></span>
+</code></pre></div>
+
+<p>You can also convert back to integer by doing:</p>
+<div class="highlight"><pre><span></span><code><span class="n">my_uuid</span><span class="o">.</span><span class="n">int</span><span class="p">()</span>
+</code></pre></div>
+
+<p>For my use case this was needed because my source database
+has integer based IDs, however the destination …</p>
+				</p>
+				<a class="read-more" href="posts/python-create-uuid-from-integer.html">Continue reading »</a>
+			</div>
+			<div class="post">
 				<h1 class="post-title" href="https://samos-it.com/posts/chatgpt-python-using-an-unofficial-library.html">
 					<a href="https://samos-it.com/posts/chatgpt-python-using-an-unofficial-library.html">ChatGPT Python: using an unofficial library</a>
 				</h1>

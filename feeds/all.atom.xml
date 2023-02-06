@@ -1,5 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Sam Stoelinga</title><link href="https://samos-it.com/" rel="alternate"></link><link href="https://samos-it.com/feeds/all.atom.xml" rel="self"></link><id>https://samos-it.com/</id><updated>2023-01-14T18:38:00+01:00</updated><entry><title>Preventing Privileged pods using Pod Security Admission / Standards</title><link href="https://samos-it.com/posts/Preventing-Privileged-pods-using-Pod-Security-Admission-Standards.html" rel="alternate"></link><published>2023-01-14T18:38:00+01:00</published><updated>2023-01-14T18:38:00+01:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2023-01-14:/posts/Preventing-Privileged-pods-using-Pod-Security-Admission-Standards.html</id><summary type="html">&lt;iframe width="560" height="315" src="https://www.youtube.com/embed/D4Tw1blsQog" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen&gt;&lt;/iframe&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Sam Stoelinga</title><link href="https://samos-it.com/" rel="alternate"></link><link href="https://samos-it.com/feeds/all.atom.xml" rel="self"></link><id>https://samos-it.com/</id><updated>2023-02-06T11:16:00+01:00</updated><entry><title>Python</title><link href="https://samos-it.com/posts/python-create-uuid-from-integer.html" rel="alternate"></link><published>2023-02-06T11:16:00+01:00</published><updated>2023-02-06T11:16:00+01:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2023-02-06:/posts/python-create-uuid-from-integer.html</id><summary type="html">&lt;p&gt;Code:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;uuid&lt;/span&gt;
+&lt;span class="n"&gt;my_uuid&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;uuid&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;UUID&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;int&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="nb"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;my_uuid&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;That should show the following string:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="mf"&gt;00000000&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;0000&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;0000&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;0000&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;000000000001&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;You can also convert back to integer by doing:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;my_uuid&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;int&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;For my use case this was needed because my source database
+has integer based IDs, however the destination …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Code:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;uuid&lt;/span&gt;
+&lt;span class="n"&gt;my_uuid&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;uuid&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;UUID&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;int&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="nb"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;my_uuid&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;That should show the following string:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="mf"&gt;00000000&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;0000&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;0000&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;0000&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;000000000001&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;You can also convert back to integer by doing:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;my_uuid&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;int&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;For my use case this was needed because my source database
+has integer based IDs, however the destination database was using
+UUID based IDs. So converting from integer to UUID was helpful to
+ensure data can easily be deduplicated.&lt;/p&gt;
+&lt;p&gt;Review the Python UUID docs for more detailed explanation:
+&lt;a href="https://docs.python.org/3/library/uuid.html#uuid.UUID"&gt;Python official docs UUID&lt;/a&gt;&lt;/p&gt;</content><category term="Python"></category><category term="python"></category><category term="uuid"></category></entry><entry><title>Preventing Privileged pods using Pod Security Admission / Standards</title><link href="https://samos-it.com/posts/Preventing-Privileged-pods-using-Pod-Security-Admission-Standards.html" rel="alternate"></link><published>2023-01-14T18:38:00+01:00</published><updated>2023-01-14T18:38:00+01:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2023-01-14:/posts/Preventing-Privileged-pods-using-Pod-Security-Admission-Standards.html</id><summary type="html">&lt;iframe width="560" height="315" src="https://www.youtube.com/embed/D4Tw1blsQog" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen&gt;&lt;/iframe&gt;
 
 &lt;p&gt;In a Kubernetes cluster, a privileged pod is a pod that has been given
 extended permissions beyond the default set of permissions. These extended

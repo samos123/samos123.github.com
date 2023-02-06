@@ -6,17 +6,18 @@
 		<meta http-equiv="content-type" content="text/html; charset=utf-8">
 
 		<!-- Metadata -->
-			<meta name="description" content="Open source contributor and Cloud Architect. Creator of websu.io and bgdestroyer.com" />
-			<meta property="og:description" content="Open source contributor and Cloud Architect. Creator of websu.io and bgdestroyer.com" />
-			<meta property="og:title" content="Sam Stoelinga" />
-			<meta property="og:type" content="website" />
-			<meta property="og:url" content="https://samos-it.com" />
+    <title>Python</title>
+	<meta name="description" content="Open source contributor and Cloud Architect. Creator of websu.io and bgdestroyer.com">
+	<meta property="og:description" content="Open source contributor and Cloud Architect. Creator of websu.io and bgdestroyer.com">
+	<meta property="og:title" content="Python" />
+	<meta property="og:type" content="article" />
+	<meta property="og:url" content="https://samos-it.com/posts/python-create-uuid-from-integer.html" />
 		<meta property="og:image" content="https://samos-it.com/images/sam-young.jpg" />
 
 		<!-- Enable responsiveness on mobile devices-->
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 
-		<title>Sam Stoelinga - Categories</title>
+		<title>Sam Stoelinga</title>
 
 		<!-- CSS -->
 		<link href="//fonts.googleapis.com/" rel="dns-prefetch">
@@ -29,6 +30,7 @@
 
 		<!-- Feeds -->
 <link href="https://samos-it.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Sam Stoelinga Full Atom Feed" />
+<link href="https://samos-it.com/feeds/python.atom.xml" type="application/atom+xml" rel="alternate" title="Sam Stoelinga Categories Atom Feed" />
 
 		<!-- Analytics -->
 <script type="text/javascript">
@@ -76,21 +78,41 @@ ga('send', 'pageview');
 		</nav>
 	</div>
 </div>		<div class="content container">
-    <h1>Categories on Sam Stoelinga</h1>
-    <ul>
-        <li><a href="https://samos-it.com/category/algorithms.html">Algorithms</a> (1)</li>
-        <li><a href="https://samos-it.com/category/bandwidth.html">Bandwidth</a> (3)</li>
-        <li><a href="https://samos-it.com/category/big-data.html">Big Data</a> (2)</li>
-        <li><a href="https://samos-it.com/category/chatgpt.html">ChatGPT</a> (1)</li>
-        <li><a href="https://samos-it.com/category/china.html">China</a> (7)</li>
-        <li><a href="https://samos-it.com/category/google-cloud.html">Google Cloud</a> (3)</li>
-        <li><a href="https://samos-it.com/category/istio.html">Istio</a> (1)</li>
-        <li><a href="https://samos-it.com/category/k8s.html">K8s</a> (10)</li>
-        <li><a href="https://samos-it.com/category/linux.html">Linux</a> (15)</li>
-        <li><a href="https://samos-it.com/category/openstack.html">Openstack</a> (7)</li>
-        <li><a href="https://samos-it.com/category/python.html">Python</a> (8)</li>
-        <li><a href="https://samos-it.com/category/weaviate.html">Weaviate</a> (1)</li>
-    </ul>
+<div class="post">
+	<h1 class="post-title">Python</h1>
+	<span class="post-date">Mon 06 February 2023</span>
+	<p>Code:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">uuid</span>
+<span class="n">my_uuid</span> <span class="o">=</span> <span class="n">uuid</span><span class="o">.</span><span class="n">UUID</span><span class="p">(</span><span class="nb">int</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">my_uuid</span><span class="p">)</span>
+</code></pre></div>
+
+<p>That should show the following string:</p>
+<div class="highlight"><pre><span></span><code><span class="mf">00000000</span><span class="o">-</span><span class="mf">0000</span><span class="o">-</span><span class="mf">0000</span><span class="o">-</span><span class="mf">0000</span><span class="o">-</span><span class="mf">000000000001</span><span class="w"></span>
+</code></pre></div>
+
+<p>You can also convert back to integer by doing:</p>
+<div class="highlight"><pre><span></span><code><span class="n">my_uuid</span><span class="o">.</span><span class="n">int</span><span class="p">()</span>
+</code></pre></div>
+
+<p>For my use case this was needed because my source database
+has integer based IDs, however the destination database was using
+UUID based IDs. So converting from integer to UUID was helpful to
+ensure data can easily be deduplicated.</p>
+<p>Review the Python UUID docs for more detailed explanation:
+<a href="https://docs.python.org/3/library/uuid.html#uuid.UUID">Python official docs UUID</a></p>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+	var disqus_shortname = 'samosit';
+	(function() {
+		var d = document, s = d.createElement('script'); s.type = 'text/javascript'; s.async = true;
+		s.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+		s.setAttribute('data-timestamp', +new Date());
+		(d.head || d.body).appendChild(s);
+	})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+</div>
 		</div>
 	</body>
 </html>
