@@ -1,5 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Sam Stoelinga - Weaviate</title><link href="https://samos-it.com/" rel="alternate"></link><link href="https://samos-it.com/feeds/weaviate.atom.xml" rel="self"></link><id>https://samos-it.com/</id><updated>2022-11-03T11:36:00+01:00</updated><entry><title>Full Text &amp; Vector Search for Firestore with Weaviate</title><link href="https://samos-it.com/posts/full-text-search-for-firestore-with-weaviate.html" rel="alternate"></link><published>2022-11-03T11:36:00+01:00</published><updated>2022-11-03T11:36:00+01:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2022-11-03:/posts/full-text-search-for-firestore-with-weaviate.html</id><summary type="html">&lt;p&gt;Many applications require searching through large text fields
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Sam Stoelinga - Weaviate</title><link href="https://samos-it.com/" rel="alternate"></link><link href="https://samos-it.com/feeds/weaviate.atom.xml" rel="self"></link><id>https://samos-it.com/</id><updated>2023-02-07T12:14:00+01:00</updated><entry><title>Deploying a Weaviate cluster on GKE</title><link href="https://samos-it.com/posts/weaviate-on-gke.html" rel="alternate"></link><published>2023-02-07T12:14:00+01:00</published><updated>2023-02-07T12:14:00+01:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2023-02-07:/posts/weaviate-on-gke.html</id><summary type="html">&lt;p&gt;Weaviate has great docs on how to deploy on K8s using Helm, however
+this guide is specifically focused on an end-to-end deployment of
+Weaviate on GKE with replication turned on. The following topics will be covered:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Creating and configuring your GKE cluster&lt;/li&gt;
+&lt;li&gt;Deploying Weaviate with Helm&lt;/li&gt;
+&lt;li&gt;Tweaking the Weaviate helm …&lt;/li&gt;&lt;/ul&gt;</summary><content type="html">&lt;p&gt;Weaviate has great docs on how to deploy on K8s using Helm, however
+this guide is specifically focused on an end-to-end deployment of
+Weaviate on GKE with replication turned on. The following topics will be covered:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Creating and configuring your GKE cluster&lt;/li&gt;
+&lt;li&gt;Deploying Weaviate with Helm&lt;/li&gt;
+&lt;li&gt;Tweaking the Weaviate helm values.yml&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The Weaviate cluster deployed won't have authentication enabled and will
+only allow you to run smaller datasets. A follow up blog post for production
+ready Weaviate cluster that can host larger datasets will be posted later.&lt;/p&gt;
+&lt;h2&gt;1. Creating and configuring the GKE cluster&lt;/h2&gt;
+&lt;p&gt;For this sandbox environment, smaller nodes will be used to optimize for costs.
+The e2-highmem-2 machine type is a great shape to get started with and comes
+with 2 CPUs and 16 GB of memory but not recommended for production. &lt;/p&gt;
+&lt;p&gt;For production with large datasets, you likely will need more memory, because Weaviate stores
+the vectors in memory. For sandbox however the e2-highmem-2 should suffice.&lt;/p&gt;
+&lt;p&gt;Create a 3 node e2-highmem-2 GKE cluster by running:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;gcloud container clusters create weaviate &lt;span class="se"&gt;\&lt;/span&gt;
+  --disk-size 500GB --disk-type pd-ssd &lt;span class="se"&gt;\&lt;/span&gt;
+  --enable-shielded-nodes --shielded-integrity-monitoring &lt;span class="se"&gt;\&lt;/span&gt;
+  --shielded-secure-boot --image-type COS_CONTAINERD &lt;span class="se"&gt;\&lt;/span&gt;
+  --machine-type e2-highmem-2 --num-nodes &lt;span class="m"&gt;3&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
+  --region us-central1 --node-locations&lt;span class="o"&gt;=&lt;/span&gt;us-central1-a &lt;span class="se"&gt;\&lt;/span&gt;
+  --release-channel stable
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2&gt;2. Deploying Weaviate with Helm&lt;/h2&gt;
+&lt;p&gt;Verify you have access to the GKE cluster and that helm is installed:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;kubectl get nodes
+helm ls
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Get the helm chart&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;helm repo add weaviate https://weaviate.github.io/weaviate-helm
+helm show values weaviate/weaviate &amp;gt; values.yml
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Modify &lt;code&gt;values.yaml&lt;/code&gt; to utilize PD-SSD instead of default balanced disk by running:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sed -i &lt;span class="s1"&gt;&amp;#39;s/storageClassName: &amp;quot;&amp;quot;/storageClassName: &amp;quot;premium-rwo&amp;quot;/g&amp;#39;&lt;/span&gt; values.yml
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Modify &lt;code&gt;values.yaml&lt;/code&gt; to set Weaviate replication factor from 1 to 3 by running:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sed -i &lt;span class="s1"&gt;&amp;#39;s/^replicas:.*/replicas: 3/g&amp;#39;&lt;/span&gt; values.yml
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Install using the helm chart:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;helm install my-weaviate weaviate/weaviate --values values.yml
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Verify that the statefulset has been created:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;kubectl get statefulset
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;After a while, you should see that the statefulset will have 3 pods running.&lt;/p&gt;
+&lt;p&gt;You should now be able to access your website cluster on the LoadBalancer
+external IP address. Run the following command to see the external IP:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;kubectl get svc weaviate
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;You can access weaviate on the following URL: &lt;code&gt;http://$LB_EXTERNAL_IP&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Follow the &lt;a href="https://weaviate.io/developers/weaviate/quickstart/end-to-end"&gt;official Weaviate docs&lt;/a&gt;
+for a quickstart tutorial on how to use your deployed cluster.&lt;/p&gt;
+&lt;p&gt;Note that anyone on the internet by default can access that IP address&lt;/p&gt;
+&lt;h2&gt;(Optional) Restricting access to K8s cluster only&lt;/h2&gt;
+&lt;p&gt;You have 2 choices if you do not want anyone on the internet to be able to access your cluster:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Change the K8s Service Type from LoadBalancer to Cluster IP, which we cover in this section&lt;/li&gt;
+&lt;li&gt;Enable Authentication for Weaviate which requires configuring an OIDC provider, which will be
+   covered in another blog post&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Changing the K8s Service Type of the Weaviate service to ClusterIP requires changing the
+&lt;code&gt;values.yml&lt;/code&gt; that was used during &lt;code&gt;helm install&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Modify the &lt;code&gt;values.yml&lt;/code&gt; by running the following command:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sed -i &lt;span class="s1"&gt;&amp;#39;s/type: LoadBalancer/type: ClusterIP/g&amp;#39;&lt;/span&gt; values.yml
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Apply the change by executing &lt;code&gt;helm upgrade&lt;/code&gt; with our updated &lt;code&gt;values.yml&lt;/code&gt; file:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;helm upgrade -f values.yml my-weaviate weaviate/weaviate
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Verify the external-ip for the weaviate service is now gone by running:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;kubectl get svc weaviate
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Leave a comment if you have any other topics you want me to cover or if you
+enjoyed this post.&lt;/p&gt;</content><category term="Weaviate"></category><category term="weaviate"></category><category term="gke"></category></entry><entry><title>Full Text &amp; Vector Search for Firestore with Weaviate</title><link href="https://samos-it.com/posts/full-text-search-for-firestore-with-weaviate.html" rel="alternate"></link><published>2022-11-03T11:36:00+01:00</published><updated>2022-11-03T11:36:00+01:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2022-11-03:/posts/full-text-search-for-firestore-with-weaviate.html</id><summary type="html">&lt;p&gt;Many applications require searching through large text fields
 in your firestore database. For example, you might need to search
 through articles containing a specific word or searching for a
 concept.&lt;/p&gt;
