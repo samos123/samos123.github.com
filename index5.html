@@ -78,6 +78,24 @@ ga('send', 'pageview');
 </div>		<div class="content container">
 	<div class="posts">
 			<div class="post">
+				<h1 class="post-title" href="https://samos-it.com/posts/removedetach-a-pci-device-linux-kvm-vga-passthrgough-nvidia-quadro-2000.html">
+					<a href="https://samos-it.com/posts/removedetach-a-pci-device-linux-kvm-vga-passthrgough-nvidia-quadro-2000.html">Remove/detach a PCI device linux (kvm VGA passthrgough Nvidia Quadro 2000)</a>
+				</h1>
+				<span class="post-date">Sun 09 June 2013</span>
+				<p>
+					<p><strong>Answer:</strong>  </p>
+<div class="highlight"><pre><span></span><code><span class="nb">echo</span> -n <span class="s2">&quot;1&quot;</span> &gt; /sys/bus/pci/devices/0000:02:00.0/remove
+</code></pre></div>
+
+<p>Where 0000:02:00.0 is related to your pci device address which can
+be obtained from the command <code>lspci</code></p>
+<p><strong>Related story:</strong><br>
+Was working on KVM vga passthrough and encountered problems with the
+graphics card nvidia Quadro …</p>
+				</p>
+				<a class="read-more" href="posts/removedetach-a-pci-device-linux-kvm-vga-passthrgough-nvidia-quadro-2000.html">Continue reading »</a>
+			</div>
+			<div class="post">
 				<h1 class="post-title" href="https://samos-it.com/posts/install-pyqt-in-a-virtualenv-with-pip.html">
 					<a href="https://samos-it.com/posts/install-pyqt-in-a-virtualenv-with-pip.html">Install PyQt in a virtualenv with Pip</a>
 				</h1>
@@ -219,22 +237,6 @@ hometown. That means all train tickets are sold the day they get
 available and …</p>
 				</p>
 				<a class="read-more" href="posts/chinese-new-year-2012.html">Continue reading »</a>
-			</div>
-			<div class="post">
-				<h1 class="post-title" href="https://samos-it.com/posts/importing-a-sql-dump-in-postgres.html">
-					<a href="https://samos-it.com/posts/importing-a-sql-dump-in-postgres.html">Importing a SQL dump in postgres</a>
-				</h1>
-				<span class="post-date">Tue 29 November 2011</span>
-				<p>
-					<p>I always keep forgetting how to import a SQL dump into postgres and
-found it always hard to find the right documentation. So I thought lets
-share it:</p>
-<div class="highlight"><pre><span></span><code>psql -d dbname -U username -f dumpfile.sql
-</code></pre></div>
-
-<p>This should also work with files created by pgdump.</p>
-				</p>
-				<a class="read-more" href="posts/importing-a-sql-dump-in-postgres.html">Continue reading »</a>
 			</div>
 	</div>
 	<div class="pagination">

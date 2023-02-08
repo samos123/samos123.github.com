@@ -5,21 +5,28 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://samos-it.com/</loc>
-<lastmod>2023-02-07T22:31:45-00:00</lastmod>
+<lastmod>2023-02-08T10:30:07-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/pages/about.html</loc>
-<lastmod>2023-02-07T22:31:45-00:00</lastmod>
+<lastmod>2023-02-08T10:30:07-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/pages/hire-me.html</loc>
-<lastmod>2023-02-07T22:31:45-00:00</lastmod>
+<lastmod>2023-02-08T10:30:07-00:00</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://samos-it.com/posts/python-create-uuid-from-random-string-of-words.html</loc>
+<lastmod>2023-02-08T10:18:00+01:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
@@ -516,7 +523,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://samos-it.com/category/python.html</loc>
-<lastmod>2023-02-06T11:16:00+00:09</lastmod>
+<lastmod>2023-02-08T10:18:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -524,6 +531,20 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
 <loc>https://samos-it.com/category/weaviate.html</loc>
 <lastmod>2023-02-07T12:14:00+00:09</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://samos-it.com/tag/python.html</loc>
+<lastmod>2023-02-08T10:18:00+00:09</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://samos-it.com/tag/uuid.html</loc>
+<lastmod>2023-02-08T10:18:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -538,20 +559,6 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
 <loc>https://samos-it.com/tag/gke.html</loc>
 <lastmod>2023-02-07T12:14:00+00:09</lastmod>
-<changefreq>daily</changefreq>
-<priority>0.5</priority>
-</url>
-
-<url>
-<loc>https://samos-it.com/tag/python.html</loc>
-<lastmod>2023-02-06T11:16:00+00:09</lastmod>
-<changefreq>daily</changefreq>
-<priority>0.5</priority>
-</url>
-
-<url>
-<loc>https://samos-it.com/tag/uuid.html</loc>
-<lastmod>2023-02-06T11:16:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -1118,7 +1125,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://samos-it.com/author/sam-stoelinga.html</loc>
-<lastmod>2023-02-07T12:14:00+00:09</lastmod>
+<lastmod>2023-02-08T10:18:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>

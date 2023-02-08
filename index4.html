@@ -78,6 +78,18 @@ ga('send', 'pageview');
 </div>		<div class="content container">
 	<div class="posts">
 			<div class="post">
+				<h1 class="post-title" href="https://samos-it.com/posts/create-linux-bridge-without-losing-connection.html">
+					<a href="https://samos-it.com/posts/create-linux-bridge-without-losing-connection.html">Create Linux bridge without losing existing connection</a>
+				</h1>
+				<span class="post-date">Fri 19 June 2015</span>
+				<p>
+					<p>The dillemma: You're accessing your server via SSH through interface eth1.102 with the ip 10.20.0.2/24 and gateway 10.20.0.1.
+Now you want to add eth1 to a linux bridge so you can hookin VMs on a vlan trunk.</p>
+<p>Solution: Create a script which …</p>
+				</p>
+				<a class="read-more" href="posts/create-linux-bridge-without-losing-connection.html">Continue reading »</a>
+			</div>
+			<div class="post">
 				<h1 class="post-title" href="https://samos-it.com/posts/hadoop-on-demand-with-openstack-cloudinit-salt.html">
 					<a href="https://samos-it.com/posts/hadoop-on-demand-with-openstack-cloudinit-salt.html">Hadoop on demand with Openstack, Cloudinit and Salt</a>
 				</h1>
@@ -200,24 +212,6 @@ with what I was looking at at home. I forgot that the keys would be the
 same ofcourse, and was unable to use the …</p>
 				</p>
 				<a class="read-more" href="posts/using-nested-tmux-over-ssh-and-how-to-detach-a-nested-tmux.html">Continue reading »</a>
-			</div>
-			<div class="post">
-				<h1 class="post-title" href="https://samos-it.com/posts/removedetach-a-pci-device-linux-kvm-vga-passthrgough-nvidia-quadro-2000.html">
-					<a href="https://samos-it.com/posts/removedetach-a-pci-device-linux-kvm-vga-passthrgough-nvidia-quadro-2000.html">Remove/detach a PCI device linux (kvm VGA passthrgough Nvidia Quadro 2000)</a>
-				</h1>
-				<span class="post-date">Sun 09 June 2013</span>
-				<p>
-					<p><strong>Answer:</strong>  </p>
-<div class="highlight"><pre><span></span><code><span class="nb">echo</span> -n <span class="s2">&quot;1&quot;</span> &gt; /sys/bus/pci/devices/0000:02:00.0/remove
-</code></pre></div>
-
-<p>Where 0000:02:00.0 is related to your pci device address which can
-be obtained from the command <code>lspci</code></p>
-<p><strong>Related story:</strong><br>
-Was working on KVM vga passthrough and encountered problems with the
-graphics card nvidia Quadro …</p>
-				</p>
-				<a class="read-more" href="posts/removedetach-a-pci-device-linux-kvm-vga-passthrgough-nvidia-quadro-2000.html">Continue reading »</a>
 			</div>
 	</div>
 	<div class="pagination">
