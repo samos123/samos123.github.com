@@ -42,8 +42,6 @@ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 ga('create', 'UA-20975967-1', 'auto');
 ga('send', 'pageview');
 </script>
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5428887338428046"
-     crossorigin="anonymous"></script>
 	</head>
 
 	<body class="theme-base-0d">
@@ -81,8 +79,11 @@ ga('send', 'pageview');
 </div>		<div class="content container">
 <div class="post">
 	<h1 class="post-title">Find files with ack and replace string with sed</h1>
-	<span class="post-date">Fri 10 February 2023</span>
-	<p>ack is a nice to tool to search in files in your current directory and subdirectores, but
+    <!-- Ezoic - under_page_title - under_page_title -->
+    <div id="ezoic-pub-ad-placeholder-103"> </div>
+    <!-- End Ezoic - under_page_title - under_page_title -->
+    <span class="post-date">Fri 10 February 2023</span>
+    <p>ack is a nice to tool to search in files in your current directory and subdirectores, but
 ack won't do search and replace. Luckily, we can easily combine ack and sed using xargs.</p>
 <div class="highlight"><pre><span></span><code>ack -l <span class="s2">&quot;app.kubernetes.io/name: myapp&quot;</span> <span class="p">|</span> xargs sed -i <span class="s1">&#39;s|app.kubernetes.io/name: myapp|app.kubernetes.io/name: &quot;{{ .Release.name }}&quot;|g&#39;</span>
 </code></pre></div>
@@ -90,6 +91,9 @@ ack won't do search and replace. Luckily, we can easily combine ack and sed usin
 <p>This example searches for the string <code>app.kubernetes.io/name: myapp</code> through all files
 and subdirs from current directory and tell ack to only output file names with the <code>-l</code> option.
 Then we use xargs to append the filename to the end of the sed command.</p>
+    <!-- Ezoic - bottom_of_page - bottom_of_page -->
+    <div id="ezoic-pub-ad-placeholder-104"> </div>
+    <!-- End Ezoic - bottom_of_page - bottom_of_page -->
 <div id="disqus_thread"></div>
 <script type="text/javascript">
 	var disqus_shortname = 'samosit';
@@ -103,5 +107,8 @@ Then we use xargs to append the filename to the end of the sed command.</p>
 <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
 </div>
 		</div>
+        <!-- Ezoic - sidebar_floating_1 - sidebar_floating_1 -->
+        <div id="ezoic-pub-ad-placeholder-105"> </div>
+        <!-- End Ezoic - sidebar_floating_1 - sidebar_floating_1 -->
 	</body>
 </html>
