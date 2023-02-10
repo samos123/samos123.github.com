@@ -12,9 +12,15 @@
 {% block content %}
 <div class="post">
 	<h1 class="post-title">{{ article.title }}</h1>
-	<span class="post-date">{{ article.locale_date }}</span>
-	{{ article.content }}
-	{% include 'fragments/disqus.html' %}
+    <!-- Ezoic - under_page_title - under_page_title -->
+    <div id="ezoic-pub-ad-placeholder-103"> </div>
+    <!-- End Ezoic - under_page_title - under_page_title -->
+    <span class="post-date">{{ article.locale_date }}</span>
+    {{ article.content }}
+    <!-- Ezoic - bottom_of_page - bottom_of_page -->
+    <div id="ezoic-pub-ad-placeholder-104"> </div>
+    <!-- End Ezoic - bottom_of_page - bottom_of_page -->
+    {% include 'fragments/disqus.html' %}
 </div>
 {% endblock %}
 
