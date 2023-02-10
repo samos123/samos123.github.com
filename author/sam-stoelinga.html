@@ -79,6 +79,18 @@ ga('send', 'pageview');
 </div>		<div class="content container">
 	<div class="posts">
 			<div class="post">
+				<h1 class="post-title" href="https://samos-it.com/posts/find-files-with-ack-and-replace-string-with-sed.html">
+					<a href="https://samos-it.com/posts/find-files-with-ack-and-replace-string-with-sed.html">Find files with ack and replace string with sed</a>
+				</h1>
+				<span class="post-date">Fri 10 February 2023</span>
+				<p>
+					<p>ack is a nice to tool to search in files in your current directory and subdirectores, but
+ack won't do search and replace. Luckily, we can easily combine ack and sed using xargs.</p>
+<div class="highlight"><pre><span></span><code>ack -l <span class="s2">&quot;app.kubernetes.io/name: myapp&quot;</span> <span class="p">|</span> xargs sed -i <span class="s1">&#39;s|app.kubernetes.io/name: myapp|app …</span></code></pre></div>
+				</p>
+				<a class="read-more" href="posts/find-files-with-ack-and-replace-string-with-sed.html">Continue reading »</a>
+			</div>
+			<div class="post">
 				<h1 class="post-title" href="https://samos-it.com/posts/python-create-uuid-from-random-string-of-words.html">
 					<a href="https://samos-it.com/posts/python-create-uuid-from-random-string-of-words.html">Python Create UUID from random string of words</a>
 				</h1>
@@ -229,20 +241,6 @@ blog post you will learn:</p>
 <li>Creating a GKE nodepool with timesharing enabled …</li></ol>
 				</p>
 				<a class="read-more" href="posts/gke-gpu-timesharing-resource-quotas.html">Continue reading »</a>
-			</div>
-			<div class="post">
-				<h1 class="post-title" href="https://samos-it.com/posts/gke-system-services-kube-dns-dedicated-nodepool.html">
-					<a href="https://samos-it.com/posts/gke-system-services-kube-dns-dedicated-nodepool.html">GKE move system services (kube-dns, calico) to dedicated nodepool</a>
-				</h1>
-				<span class="post-date">Mon 11 October 2021</span>
-				<p>
-					<p>GKE by default deploys kube-dns and other system services to any of your
-nodepools. This is probably fine for most cases, but certain use cases
-might require preventing system services from running on the same nodes as
-your where your applications are running. This blog post provides instructions
-on how …</p>
-				</p>
-				<a class="read-more" href="posts/gke-system-services-kube-dns-dedicated-nodepool.html">Continue reading »</a>
 			</div>
 	</div>
 	<div class="pagination">

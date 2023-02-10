@@ -6,11 +6,12 @@
 		<meta http-equiv="content-type" content="text/html; charset=utf-8">
 
 		<!-- Metadata -->
-			<meta name="description" content="Open source contributor and Cloud Architect. Creator of websu.io and bgdestroyer.com" />
-			<meta property="og:description" content="Open source contributor and Cloud Architect. Creator of websu.io and bgdestroyer.com" />
-			<meta property="og:title" content="Sam Stoelinga" />
-			<meta property="og:type" content="website" />
-			<meta property="og:url" content="https://samos-it.com" />
+    <title>Find files with ack and replace string with sed</title>
+	<meta name="description" content="Open source contributor and Cloud Architect. Creator of websu.io and bgdestroyer.com">
+	<meta property="og:description" content="Open source contributor and Cloud Architect. Creator of websu.io and bgdestroyer.com">
+	<meta property="og:title" content="Find files with ack and replace string with sed" />
+	<meta property="og:type" content="article" />
+	<meta property="og:url" content="https://samos-it.com/posts/find-files-with-ack-and-replace-string-with-sed.html" />
 		<meta property="og:image" content="https://samos-it.com/images/sam-young.jpg" />
 
 		<!-- Enable responsiveness on mobile devices-->
@@ -29,6 +30,7 @@
 
 		<!-- Feeds -->
 <link href="https://samos-it.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Sam Stoelinga Full Atom Feed" />
+<link href="https://samos-it.com/feeds/linux.atom.xml" type="application/atom+xml" rel="alternate" title="Sam Stoelinga Categories Atom Feed" />
 
 		<!-- Analytics -->
 <script type="text/javascript">
@@ -77,41 +79,29 @@ ga('send', 'pageview');
 		</nav>
 	</div>
 </div>		<div class="content container">
-	<div class="posts">
-			<div class="post">
-				<h1 class="post-title" href="https://samos-it.com/posts/how-to-install-setuptools-to-a-specific-python-version.html">
-					<a href="https://samos-it.com/posts/how-to-install-setuptools-to-a-specific-python-version.html">How to install Setuptools to a specific python version</a>
-				</h1>
-				<span class="post-date">Mon 18 July 2011</span>
-				<p>
-					<p>To install easy_install for a specific python version. I just installed
-from source and used the python version you want to install setuptools
-too. I used the following steps in Ubuntu 11.04 with Python 2.5 and
-Python 2.7 installed. The following commands will install setuptools to
-python …</p>
-				</p>
-				<a class="read-more" href="posts/how-to-install-setuptools-to-a-specific-python-version.html">Continue reading »</a>
-			</div>
-			<div class="post">
-				<h1 class="post-title" href="https://samos-it.com/posts/sam-the-terrorist-arrived-in-china.html">
-					<a href="https://samos-it.com/posts/sam-the-terrorist-arrived-in-china.html">Sam the terrorist arrived in China</a>
-				</h1>
-				<span class="post-date">Sun 13 February 2011</span>
-				<p>
-					<p>It has been some days I guess since I have been away from Hollad. But it has been kind of hectic. I will start
-from the trip till today. </p>
-<p>The trip started early at 6:30, train to Schiphol and than flight to
-London, wait in London for 5 hours …</p>
-				</p>
-				<a class="read-more" href="posts/sam-the-terrorist-arrived-in-china.html">Continue reading »</a>
-			</div>
-	</div>
-	<div class="pagination">
+<div class="post">
+	<h1 class="post-title">Find files with ack and replace string with sed</h1>
+	<span class="post-date">Fri 10 February 2023</span>
+	<p>ack is a nice to tool to search in files in your current directory and subdirectores, but
+ack won't do search and replace. Luckily, we can easily combine ack and sed using xargs.</p>
+<div class="highlight"><pre><span></span><code>ack -l <span class="s2">&quot;app.kubernetes.io/name: myapp&quot;</span> <span class="p">|</span> xargs sed -i <span class="s1">&#39;s|app.kubernetes.io/name: myapp|app.kubernetes.io/name: &quot;{{ .Release.name }}&quot;|g&#39;</span>
+</code></pre></div>
 
-		<span class="pagination-item older"><a href="https://samos-it.com/index6.html">Newer</a></span>
-
-		<span class="pagination-item newer">Older</span>
-	</div>
+<p>This example searches for the string <code>app.kubernetes.io/name: myapp</code> through all files
+and subdirs from current directory and tell ack to only output file names with the <code>-l</code> option.
+Then we use xargs to append the filename to the end of the sed command.</p>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+	var disqus_shortname = 'samosit';
+	(function() {
+		var d = document, s = d.createElement('script'); s.type = 'text/javascript'; s.async = true;
+		s.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+		s.setAttribute('data-timestamp', +new Date());
+		(d.head || d.body).appendChild(s);
+	})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+</div>
 		</div>
 	</body>
 </html>

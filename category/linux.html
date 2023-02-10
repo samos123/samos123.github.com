@@ -80,6 +80,18 @@ ga('send', 'pageview');
 </div>		<div class="content container">
 	<div class="posts">
 			<div class="post">
+				<h1 class="post-title" href="https://samos-it.com/posts/find-files-with-ack-and-replace-string-with-sed.html">
+					<a href="https://samos-it.com/posts/find-files-with-ack-and-replace-string-with-sed.html">Find files with ack and replace string with sed</a>
+				</h1>
+				<span class="post-date">Fri 10 February 2023</span>
+				<p>
+					<p>ack is a nice to tool to search in files in your current directory and subdirectores, but
+ack won't do search and replace. Luckily, we can easily combine ack and sed using xargs.</p>
+<div class="highlight"><pre><span></span><code>ack -l <span class="s2">&quot;app.kubernetes.io/name: myapp&quot;</span> <span class="p">|</span> xargs sed -i <span class="s1">&#39;s|app.kubernetes.io/name: myapp|app …</span></code></pre></div>
+				</p>
+				<a class="read-more" href="posts/find-files-with-ack-and-replace-string-with-sed.html">Continue reading »</a>
+			</div>
+			<div class="post">
 				<h1 class="post-title" href="https://samos-it.com/posts/openwrt-speedtest-bandwidth.html">
 					<a href="https://samos-it.com/posts/openwrt-speedtest-bandwidth.html">OpenWRT hourly speedtest maximum bandwidth delivered by ISP</a>
 				</h1>
@@ -209,25 +221,6 @@ Was working on KVM vga passthrough and encountered problems with the
 graphics card nvidia Quadro …</p>
 				</p>
 				<a class="read-more" href="posts/removedetach-a-pci-device-linux-kvm-vga-passthrgough-nvidia-quadro-2000.html">Continue reading »</a>
-			</div>
-			<div class="post">
-				<h1 class="post-title" href="https://samos-it.com/posts/ignoring-every-channels-joinpartquit-messages-in-irssi.html">
-					<a href="https://samos-it.com/posts/ignoring-every-channels-joinpartquit-messages-in-irssi.html">Ignoring every channels join/part/quit messages in IRSSI</a>
-				</h1>
-				<span class="post-date">Sat 11 May 2013</span>
-				<p>
-					<p>Tired of all those join part messages?</p>
-<div class="highlight"><pre><span></span><code>/ignore <span class="se">\*</span> joins  
-/ignore <span class="se">\*</span> parts  
-/ignore <span class="se">\*</span> quits  
-/save
-</code></pre></div>
-
-<p>Read more about ignore <code>/help ignore</code></p>
-<p>Taken from Archwiki:
-<a href="https://wiki.archlinux.org/index.php/Irssi">https://wiki.archlinux.org/index.php/Irssi</a></p>
-				</p>
-				<a class="read-more" href="posts/ignoring-every-channels-joinpartquit-messages-in-irssi.html">Continue reading »</a>
 			</div>
 	</div>
 	<div class="pagination">
