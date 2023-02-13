@@ -5,28 +5,35 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://samos-it.com/</loc>
-<lastmod>2023-02-11T21:34:22-00:00</lastmod>
+<lastmod>2023-02-12T21:45:10-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/pages/about.html</loc>
-<lastmod>2023-02-11T21:34:22-00:00</lastmod>
+<lastmod>2023-02-12T21:45:10-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/pages/hire-me.html</loc>
-<lastmod>2023-02-11T21:34:22-00:00</lastmod>
+<lastmod>2023-02-12T21:45:10-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/pages/privacy-policy.html</loc>
-<lastmod>2023-02-11T21:34:22-00:00</lastmod>
+<lastmod>2023-02-12T21:45:10-00:00</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://samos-it.com/posts/removing-sidebar-storefront-theme.html</loc>
+<lastmod>2023-02-12T21:32:00+01:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
@@ -558,35 +565,35 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://samos-it.com/category/woocommerce.html</loc>
-<lastmod>2023-02-11T09:34:00+00:09</lastmod>
+<lastmod>2023-02-12T21:32:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/wordpress.html</loc>
-<lastmod>2023-02-11T09:34:00+00:09</lastmod>
+<lastmod>2023-02-12T21:32:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/woocommerce.html</loc>
-<lastmod>2023-02-11T09:34:00+00:09</lastmod>
+<lastmod>2023-02-12T21:32:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/storefront.html</loc>
-<lastmod>2023-02-11T09:34:00+00:09</lastmod>
+<lastmod>2023-02-12T21:32:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/theme.html</loc>
-<lastmod>2023-02-11T09:34:00+00:09</lastmod>
+<lastmod>2023-02-12T21:32:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -1181,7 +1188,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://samos-it.com/author/sam-stoelinga.html</loc>
-<lastmod>2023-02-11T09:34:00+00:09</lastmod>
+<lastmod>2023-02-12T21:32:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>

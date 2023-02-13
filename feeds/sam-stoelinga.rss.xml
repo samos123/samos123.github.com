@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0"><channel><title>Sam Stoelinga - Sam Stoelinga</title><link>https://samos-it.com/</link><description></description><lastBuildDate>Sat, 11 Feb 2023 09:34:00 +0100</lastBuildDate><item><title>Creating a woocommerce storefront child theme</title><link>https://samos-it.com/posts/creating-woocommere-storefront-child-theme.html</link><description>&lt;p&gt;The free storefront theme has a lot of features but it
+<rss version="2.0"><channel><title>Sam Stoelinga - Sam Stoelinga</title><link>https://samos-it.com/</link><description></description><lastBuildDate>Sun, 12 Feb 2023 21:32:00 +0100</lastBuildDate><item><title>Removing sidebar from storefront theme</title><link>https://samos-it.com/posts/removing-sidebar-storefront-theme.html</link><description>&lt;p&gt;By default, storefront comes with a large sidebar that isn't really
+useful for ecommerce websites. This post shows you how to remove the
+sidebar by creating a &lt;code&gt;functions.php&lt;/code&gt; file in
+your storefront child theme.&lt;/p&gt;
+&lt;p&gt;See my previous post on &lt;a href="https://samos-it.com/posts/creating-woocommere-storefront-child-theme.html"&gt;creating a storefront child theme&lt;/a&gt;
+if you don't have a …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Sam Stoelinga</dc:creator><pubDate>Sun, 12 Feb 2023 21:32:00 +0100</pubDate><guid isPermaLink="false">tag:samos-it.com,2023-02-12:/posts/removing-sidebar-storefront-theme.html</guid><category>WooCommerce</category><category>wordpress</category><category>woocommerce</category><category>storefront</category><category>theme</category></item><item><title>Creating a woocommerce storefront child theme</title><link>https://samos-it.com/posts/creating-woocommere-storefront-child-theme.html</link><description>&lt;p&gt;The free storefront theme has a lot of features but it
 doesn't look great by default. Luckily, it's quite easy to create a child
 theme to make it more attractive. For example, using a child theme
 you can remove the sidebar and remove the footer credits.

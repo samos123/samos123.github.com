@@ -1,5 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Sam Stoelinga</title><link href="https://samos-it.com/" rel="alternate"></link><link href="https://samos-it.com/feeds/all.atom.xml" rel="self"></link><id>https://samos-it.com/</id><updated>2023-02-11T09:34:00+01:00</updated><entry><title>Creating a woocommerce storefront child theme</title><link href="https://samos-it.com/posts/creating-woocommere-storefront-child-theme.html" rel="alternate"></link><published>2023-02-11T09:34:00+01:00</published><updated>2023-02-11T09:34:00+01:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2023-02-11:/posts/creating-woocommere-storefront-child-theme.html</id><summary type="html">&lt;p&gt;The free storefront theme has a lot of features but it
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Sam Stoelinga</title><link href="https://samos-it.com/" rel="alternate"></link><link href="https://samos-it.com/feeds/all.atom.xml" rel="self"></link><id>https://samos-it.com/</id><updated>2023-02-12T21:32:00+01:00</updated><entry><title>Removing sidebar from storefront theme</title><link href="https://samos-it.com/posts/removing-sidebar-storefront-theme.html" rel="alternate"></link><published>2023-02-12T21:32:00+01:00</published><updated>2023-02-12T21:32:00+01:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2023-02-12:/posts/removing-sidebar-storefront-theme.html</id><summary type="html">&lt;p&gt;By default, storefront comes with a large sidebar that isn't really
+useful for ecommerce websites. This post shows you how to remove the
+sidebar by creating a &lt;code&gt;functions.php&lt;/code&gt; file in
+your storefront child theme.&lt;/p&gt;
+&lt;p&gt;See my previous post on &lt;a href="https://samos-it.com/posts/creating-woocommere-storefront-child-theme.html"&gt;creating a storefront child theme&lt;/a&gt;
+if you don't have a …&lt;/p&gt;</summary><content type="html">&lt;p&gt;By default, storefront comes with a large sidebar that isn't really
+useful for ecommerce websites. This post shows you how to remove the
+sidebar by creating a &lt;code&gt;functions.php&lt;/code&gt; file in
+your storefront child theme.&lt;/p&gt;
+&lt;p&gt;See my previous post on &lt;a href="https://samos-it.com/posts/creating-woocommere-storefront-child-theme.html"&gt;creating a storefront child theme&lt;/a&gt;
+if you don't have a child theme yet.&lt;/p&gt;
+&lt;p&gt;Inside your child theme directory, create a file &lt;code&gt;functions.php&lt;/code&gt; that
+has the following content:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="cp"&gt;&amp;lt;?php&lt;/span&gt;
+&lt;span class="k"&gt;function&lt;/span&gt; &lt;span class="nf"&gt;remove_storefront_sidebar&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="nx"&gt;remove_action&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;storefront_sidebar&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;storefront_get_sidebar&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+
+&lt;span class="nx"&gt;add_action&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;get_header&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;remove_storefront_sidebar&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="cp"&gt;?&amp;gt;&lt;/span&gt;&lt;span class="x"&gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Note if you already have a &lt;code&gt;functions.php&lt;/code&gt; file then simply append the content
+above.&lt;/p&gt;
+&lt;p&gt;Afterwards, upload your new version of your theme with the updated
+&lt;code&gt;functions.php&lt;/code&gt; and you should now see the sidebar removed.&lt;/p&gt;
+&lt;p&gt;You might also need to update your &lt;code&gt;style.css&lt;/code&gt; such that the content
+is able to utilize the space where the sidebar was before.&lt;/p&gt;</content><category term="WooCommerce"></category><category term="wordpress"></category><category term="woocommerce"></category><category term="storefront"></category><category term="theme"></category></entry><entry><title>Creating a woocommerce storefront child theme</title><link href="https://samos-it.com/posts/creating-woocommere-storefront-child-theme.html" rel="alternate"></link><published>2023-02-11T09:34:00+01:00</published><updated>2023-02-11T09:34:00+01:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2023-02-11:/posts/creating-woocommere-storefront-child-theme.html</id><summary type="html">&lt;p&gt;The free storefront theme has a lot of features but it
 doesn't look great by default. Luckily, it's quite easy to create a child
 theme to make it more attractive. For example, using a child theme
 you can remove the sidebar and remove the footer credits.

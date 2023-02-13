@@ -6,17 +6,18 @@
 		<meta http-equiv="content-type" content="text/html; charset=utf-8">
 
 		<!-- Metadata -->
-			<meta name="description" content="Open source contributor and Cloud Architect. Creator of websu.io and bgdestroyer.com" />
-			<meta property="og:description" content="Open source contributor and Cloud Architect. Creator of websu.io and bgdestroyer.com" />
-			<meta property="og:title" content="Sam Stoelinga" />
-			<meta property="og:type" content="website" />
-			<meta property="og:url" content="https://samos-it.com" />
+    <title>Removing sidebar from storefront theme</title>
+	<meta name="description" content="Open source contributor and Cloud Architect. Creator of websu.io and bgdestroyer.com">
+	<meta property="og:description" content="Open source contributor and Cloud Architect. Creator of websu.io and bgdestroyer.com">
+	<meta property="og:title" content="Removing sidebar from storefront theme" />
+	<meta property="og:type" content="article" />
+	<meta property="og:url" content="https://samos-it.com/posts/removing-sidebar-storefront-theme.html" />
 		<meta property="og:image" content="https://samos-it.com/images/sam-young.jpg" />
 
 		<!-- Enable responsiveness on mobile devices-->
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 
-		<title>Sam Stoelinga - wordpress tag</title>
+		<title>Sam Stoelinga</title>
 
 		<!-- CSS -->
 		<link href="//fonts.googleapis.com/" rel="dns-prefetch">
@@ -29,6 +30,7 @@
 
 		<!-- Feeds -->
 <link href="https://samos-it.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Sam Stoelinga Full Atom Feed" />
+<link href="https://samos-it.com/feeds/woocommerce.atom.xml" type="application/atom+xml" rel="alternate" title="Sam Stoelinga Categories Atom Feed" />
 
 		<!-- Analytics -->
 <script type="text/javascript">
@@ -75,43 +77,53 @@ ga('send', 'pageview');
 		</nav>
 	</div>
 </div>		<div class="content container">
-	<div class="posts">
-			<div class="post">
-				<h1 class="post-title" href="https://samos-it.com/posts/removing-sidebar-storefront-theme.html">
-					<a href="https://samos-it.com/posts/removing-sidebar-storefront-theme.html">Removing sidebar from storefront theme</a>
-				</h1>
-				<span class="post-date">Sun 12 February 2023</span>
-				<p>
-					<p>By default, storefront comes with a large sidebar that isn't really
+<div class="post">
+    <!-- Ezoic - top_of_page - top_of_page -->
+    <div id="ezoic-pub-ad-placeholder-106"> </div>
+    <!-- End Ezoic - top_of_page - top_of_page -->
+    <h1 class="post-title">Removing sidebar from storefront theme</h1>
+    <!-- Ezoic - under_page_title - under_page_title -->
+    <div id="ezoic-pub-ad-placeholder-103"> </div>
+    <!-- End Ezoic - under_page_title - under_page_title -->
+    <span class="post-date">Sun 12 February 2023</span>
+    <p>By default, storefront comes with a large sidebar that isn't really
 useful for ecommerce websites. This post shows you how to remove the
 sidebar by creating a <code>functions.php</code> file in
 your storefront child theme.</p>
 <p>See my previous post on <a href="https://samos-it.com/posts/creating-woocommere-storefront-child-theme.html">creating a storefront child theme</a>
-if you don't have a …</p>
-				</p>
-				<a class="read-more" href="posts/removing-sidebar-storefront-theme.html">Continue reading »</a>
-			</div>
-			<div class="post">
-				<h1 class="post-title" href="https://samos-it.com/posts/creating-woocommere-storefront-child-theme.html">
-					<a href="https://samos-it.com/posts/creating-woocommere-storefront-child-theme.html">Creating a woocommerce storefront child theme</a>
-				</h1>
-				<span class="post-date">Sat 11 February 2023</span>
-				<p>
-					<p>The free storefront theme has a lot of features but it
-doesn't look great by default. Luckily, it's quite easy to create a child
-theme to make it more attractive. For example, using a child theme
-you can remove the sidebar and remove the footer credits.
-This blog post will …</p>
-				</p>
-				<a class="read-more" href="posts/creating-woocommere-storefront-child-theme.html">Continue reading »</a>
-			</div>
-	</div>
-	<div class="pagination">
+if you don't have a child theme yet.</p>
+<p>Inside your child theme directory, create a file <code>functions.php</code> that
+has the following content:</p>
+<div class="highlight"><pre><span></span><code><span class="cp">&lt;?php</span>
+<span class="k">function</span> <span class="nf">remove_storefront_sidebar</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">remove_action</span><span class="p">(</span><span class="s1">&#39;storefront_sidebar&#39;</span><span class="p">,</span> <span class="s1">&#39;storefront_get_sidebar&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+<span class="p">}</span>
 
-		<span class="pagination-item older">Newer</span>
+<span class="nx">add_action</span><span class="p">(</span><span class="s1">&#39;get_header&#39;</span><span class="p">,</span> <span class="s1">&#39;remove_storefront_sidebar&#39;</span><span class="p">);</span>
+<span class="cp">?&gt;</span><span class="x"></span>
+</code></pre></div>
 
-		<span class="pagination-item newer">Older</span>
-	</div>
+<p>Note if you already have a <code>functions.php</code> file then simply append the content
+above.</p>
+<p>Afterwards, upload your new version of your theme with the updated
+<code>functions.php</code> and you should now see the sidebar removed.</p>
+<p>You might also need to update your <code>style.css</code> such that the content
+is able to utilize the space where the sidebar was before.</p>
+    <!-- Ezoic - bottom_of_page - bottom_of_page -->
+    <div id="ezoic-pub-ad-placeholder-104"> </div>
+    <!-- End Ezoic - bottom_of_page - bottom_of_page -->
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+	var disqus_shortname = 'samosit';
+	(function() {
+		var d = document, s = d.createElement('script'); s.type = 'text/javascript'; s.async = true;
+		s.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+		s.setAttribute('data-timestamp', +new Date());
+		(d.head || d.body).appendChild(s);
+	})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+</div>
             <!-- Ezoic - sidebar_floating_2 - sidebar_floating_2 -->
             <div id="ezoic-pub-ad-placeholder-107"> </div>
             <!-- End Ezoic - sidebar_floating_2 - sidebar_floating_2 -->
