@@ -5,1190 +5,1190 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://samos-it.com/</loc>
-<lastmod>2023-02-12T21:45:10-00:00</lastmod>
+<lastmod>2023-02-12T22:41:26-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/pages/about.html</loc>
-<lastmod>2023-02-12T21:45:10-00:00</lastmod>
+<lastmod>2022-12-09T09:22:50+01:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/pages/hire-me.html</loc>
-<lastmod>2023-02-12T21:45:10-00:00</lastmod>
+<lastmod>2023-02-08T22:12:52+01:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/pages/privacy-policy.html</loc>
-<lastmod>2023-02-12T21:45:10-00:00</lastmod>
+<lastmod>2023-02-08T22:12:50+01:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/posts/removing-sidebar-storefront-theme.html</loc>
-<lastmod>2023-02-12T21:32:00+01:00</lastmod>
+<lastmod>2023-02-12T21:45:06+01:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/posts/creating-woocommere-storefront-child-theme.html</loc>
-<lastmod>2023-02-11T09:34:00+01:00</lastmod>
+<lastmod>2023-02-12T22:17:00+01:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/posts/find-files-with-ack-and-replace-string-with-sed.html</loc>
-<lastmod>2023-02-10T12:10:00+01:00</lastmod>
+<lastmod>2023-02-10T12:10:11+01:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/posts/python-create-uuid-from-random-string-of-words.html</loc>
-<lastmod>2023-02-08T10:18:00+01:00</lastmod>
+<lastmod>2023-02-08T10:29:44+01:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/posts/weaviate-on-gke.html</loc>
-<lastmod>2023-02-07T12:14:00+01:00</lastmod>
+<lastmod>2023-02-07T22:31:33+01:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/posts/python-create-uuid-from-integer.html</loc>
-<lastmod>2023-02-06T11:16:00+01:00</lastmod>
+<lastmod>2023-02-06T11:29:35+01:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/posts/Preventing-Privileged-pods-using-Pod-Security-Admission-Standards.html</loc>
-<lastmod>2023-01-14T18:38:00+01:00</lastmod>
+<lastmod>2023-01-15T23:33:19+01:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/posts/chatgpt-python-using-an-unofficial-library.html</loc>
-<lastmod>2023-01-12T22:44:00+01:00</lastmod>
+<lastmod>2023-01-13T10:56:52+01:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/posts/trying-cel-admission-control-validation-admission-policy.html</loc>
-<lastmod>2022-12-14T22:44:00+01:00</lastmod>
+<lastmod>2022-12-14T22:23:22+01:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/posts/deploying-k8s-on-laptop-with-minikube.html</loc>
-<lastmod>2022-12-09T08:44:00+01:00</lastmod>
+<lastmod>2022-12-09T09:06:40+01:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/posts/full-text-search-for-firestore-with-weaviate.html</loc>
-<lastmod>2022-11-03T11:36:00+01:00</lastmod>
+<lastmod>2022-12-06T14:44:00+01:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/posts/gke-gpu-timesharing-resource-quotas.html</loc>
-<lastmod>2022-08-26T22:02:00+02:00</lastmod>
+<lastmod>2022-12-06T14:44:00+01:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/posts/gke-system-services-kube-dns-dedicated-nodepool.html</loc>
-<lastmod>2021-10-11T14:32:00+02:00</lastmod>
+<lastmod>2022-12-06T14:44:00+01:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/posts/gke-docker-registry-http-proxy.html</loc>
-<lastmod>2021-05-21T10:52:00+02:00</lastmod>
+<lastmod>2022-12-06T14:44:00+01:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/posts/gke-custom-oss-cluster-autoscaler.html</loc>
-<lastmod>2021-03-12T22:02:00+01:00</lastmod>
+<lastmod>2022-12-06T14:44:00+01:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/posts/custom-dns-entry-kube-dns-stubdomain-coredns.html</loc>
-<lastmod>2021-03-11T22:02:00+01:00</lastmod>
+<lastmod>2022-12-06T14:44:00+01:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/posts/mounting-fuse-without-privileges-on-k8s-gke.html</loc>
-<lastmod>2021-03-02T10:02:00+01:00</lastmod>
+<lastmod>2022-12-06T14:44:00+01:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/posts/securing-redis-istio-tls-origniation-termination.html</loc>
-<lastmod>2020-12-28T10:42:00+01:00</lastmod>
+<lastmod>2022-12-06T14:44:00+01:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/posts/deploying-openstack-on-gcp.html</loc>
-<lastmod>2020-11-07T22:42:00+01:00</lastmod>
+<lastmod>2022-12-06T14:44:00+01:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/posts/gce-vm-vxlan-l2-connectivity.html</loc>
-<lastmod>2020-09-13T22:42:00+02:00</lastmod>
+<lastmod>2022-12-06T14:44:00+01:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/posts/enter-namespace-of-other-containers-from-a-pod.html</loc>
-<lastmod>2019-12-30T10:02:00+01:00</lastmod>
+<lastmod>2022-12-06T14:44:00+01:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/posts/custom-GCP-Cloud-Shell-image-with-Terraform-Helm.html</loc>
-<lastmod>2019-06-10T13:01:00+02:00</lastmod>
+<lastmod>2022-12-06T14:44:00+01:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/posts/openstack-salt-mk22-vagrant-lab.html</loc>
-<lastmod>2016-11-08T13:15:00+01:00</lastmod>
+<lastmod>2022-12-06T14:44:00+01:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/posts/openwrt-speedtest-bandwidth.html</loc>
-<lastmod>2016-10-11T14:25:00+02:00</lastmod>
+<lastmod>2022-12-06T14:44:00+01:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/posts/robotrouter-bandwidth-test-result-2016-10-11.html</loc>
-<lastmod>2016-10-11T00:00:00+02:00</lastmod>
+<lastmod>2022-12-06T14:44:00+01:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/posts/robotrouter-bandwidth-test-result-2016-10-10.html</loc>
-<lastmod>2016-10-10T00:00:00+02:00</lastmod>
+<lastmod>2022-12-06T14:44:00+01:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/posts/robotrouter-bandwidth-test-result-2016-10-09.html</loc>
-<lastmod>2016-10-09T00:00:00+02:00</lastmod>
+<lastmod>2022-12-06T14:44:00+01:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/posts/fuel-separate-ceph-public-from-management.html</loc>
-<lastmod>2016-08-27T14:01:00+02:00</lastmod>
+<lastmod>2022-12-06T14:44:00+01:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/posts/creating-vm-on-fuel-8.0-master.html</loc>
-<lastmod>2016-06-01T09:31:00+02:00</lastmod>
+<lastmod>2022-12-06T14:44:00+01:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/posts/computer-vision-opencv-sift-surf-kmeans-on-spark.html</loc>
-<lastmod>2016-01-22T16:31:00+01:00</lastmod>
+<lastmod>2022-12-06T14:44:00+01:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/posts/spark-tachyon-swift-openstack-mesos-elastic-data-processing.html</loc>
-<lastmod>2015-11-09T16:31:00+01:00</lastmod>
+<lastmod>2022-12-06T14:44:00+01:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/posts/ipv6-tsinghua-linux-isatapd.html</loc>
-<lastmod>2015-10-08T12:42:00+02:00</lastmod>
+<lastmod>2022-12-06T14:44:00+01:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/posts/sriov-openstack-juno-fuel-6-1.html</loc>
-<lastmod>2015-07-15T16:31:00+02:00</lastmod>
+<lastmod>2022-12-06T14:44:00+01:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/posts/create-linux-bridge-without-losing-connection.html</loc>
-<lastmod>2015-06-19T14:25:00+02:00</lastmod>
+<lastmod>2022-12-06T14:44:00+01:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/posts/hadoop-on-demand-with-openstack-cloudinit-salt.html</loc>
-<lastmod>2014-11-27T13:12:00+01:00</lastmod>
+<lastmod>2022-12-06T14:44:00+01:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/posts/neutron-multiple-allocation-pools-single-subnet.html</loc>
-<lastmod>2014-11-24T12:01:00+01:00</lastmod>
+<lastmod>2022-12-06T14:44:00+01:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/posts/openstack-networking-study-notes.html</loc>
-<lastmod>2014-08-29T13:42:00+02:00</lastmod>
+<lastmod>2022-12-06T14:44:00+01:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/posts/docker-get-private-ip-address-of-container.html</loc>
-<lastmod>2014-07-08T14:25:00+02:00</lastmod>
+<lastmod>2022-12-06T14:44:00+01:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/posts/docker-multi-website-single-ip-host-haproxy.html</loc>
-<lastmod>2014-07-07T10:15:00+02:00</lastmod>
+<lastmod>2022-12-06T14:44:00+01:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/posts/move-first-word-to-end-of-line-linux-awk.html</loc>
-<lastmod>2014-06-08T20:29:00+02:00</lastmod>
+<lastmod>2022-12-06T14:44:00+01:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/posts/ssh-to-server-behind-firewall-via-ssh-tunnel.html</loc>
-<lastmod>2014-05-10T00:00:00+02:00</lastmod>
+<lastmod>2022-12-06T14:44:00+01:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/posts/recursive-karatsuba-multiplication-python.html</loc>
-<lastmod>2014-05-04T00:00:00+02:00</lastmod>
+<lastmod>2022-12-06T14:44:00+01:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/posts/using-nested-tmux-over-ssh-and-how-to-detach-a-nested-tmux.html</loc>
-<lastmod>2013-08-15T02:08:00+02:00</lastmod>
+<lastmod>2022-12-06T14:44:00+01:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/posts/removedetach-a-pci-device-linux-kvm-vga-passthrgough-nvidia-quadro-2000.html</loc>
-<lastmod>2013-06-09T08:55:00+02:00</lastmod>
+<lastmod>2022-12-06T14:44:00+01:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/posts/install-pyqt-in-a-virtualenv-with-pip.html</loc>
-<lastmod>2013-05-30T15:48:00+02:00</lastmod>
+<lastmod>2022-12-06T14:44:00+01:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/posts/ignoring-every-channels-joinpartquit-messages-in-irssi.html</loc>
-<lastmod>2013-05-11T02:00:00+02:00</lastmod>
+<lastmod>2022-12-06T14:44:00+01:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/posts/create-tar-archive-of-changedadded-files-in-a-git-commit.html</loc>
-<lastmod>2013-05-02T02:12:00+02:00</lastmod>
+<lastmod>2022-12-06T14:44:00+01:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/posts/full-migration-of-archlinux-installation-to-a-new-system.html</loc>
-<lastmod>2012-11-14T13:26:00+01:00</lastmod>
+<lastmod>2022-12-06T14:44:00+01:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/posts/only-use-worker-when-required-on-heroku-with-djangopython.html</loc>
-<lastmod>2012-04-13T09:42:00+02:00</lastmod>
+<lastmod>2022-12-06T14:44:00+01:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/posts/using-sendgrid-with-django-on-heroku-how-to-find-your-sendgrid-password-on-heroku.html</loc>
-<lastmod>2012-04-11T09:43:00+02:00</lastmod>
+<lastmod>2022-12-06T14:44:00+01:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/posts/django-custom-view-decorator-with-arguments.html</loc>
-<lastmod>2012-02-23T17:52:00+01:00</lastmod>
+<lastmod>2022-12-06T14:44:00+01:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/posts/simple-function-to-return-json-in-django.html</loc>
-<lastmod>2012-02-22T15:53:00+01:00</lastmod>
+<lastmod>2022-12-06T14:44:00+01:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/posts/chinese-new-year-2012.html</loc>
-<lastmod>2012-01-22T03:24:00+01:00</lastmod>
+<lastmod>2022-12-06T14:44:00+01:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/posts/importing-a-sql-dump-in-postgres.html</loc>
-<lastmod>2011-11-29T13:46:00+01:00</lastmod>
+<lastmod>2022-12-06T14:44:00+01:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/posts/installing-fastboot-for-ubuntu-linux.html</loc>
-<lastmod>2011-11-22T14:11:00+01:00</lastmod>
+<lastmod>2022-12-06T14:44:00+01:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/posts/trying-to-install-scrapy-with-pip-lxml-error-command-gcc-failed-with-exit-status-1.html</loc>
-<lastmod>2011-11-01T14:31:00+01:00</lastmod>
+<lastmod>2022-12-06T14:44:00+01:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/posts/ubuntu-11-10-error-while-loading-shared-libraries-libssl-so-0-9-8-cannot-open-shared-object-file-no-such-file-or-directory.html</loc>
-<lastmod>2011-10-29T06:15:00+02:00</lastmod>
+<lastmod>2022-12-06T14:44:00+01:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/posts/samwich-sams-tasty-sandwiches.html</loc>
-<lastmod>2011-09-12T15:35:00+02:00</lastmod>
+<lastmod>2022-12-06T14:44:00+01:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/posts/the-beijing-bike-tour-and-china-belly-problems.html</loc>
-<lastmod>2011-08-20T14:23:00+02:00</lastmod>
+<lastmod>2022-12-06T14:44:00+01:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/posts/the-watercube-and-its-big-waterpark.html</loc>
-<lastmod>2011-08-18T04:53:00+02:00</lastmod>
+<lastmod>2022-12-06T14:44:00+01:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/posts/bart-and-his-lost-bike.html</loc>
-<lastmod>2011-08-11T15:00:00+02:00</lastmod>
+<lastmod>2022-12-06T14:44:00+01:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/posts/a-new-start-in-beijing.html</loc>
-<lastmod>2011-08-11T07:07:00+02:00</lastmod>
+<lastmod>2022-12-06T14:44:00+01:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/posts/how-to-install-setuptools-to-a-specific-python-version.html</loc>
-<lastmod>2011-07-18T19:34:00+02:00</lastmod>
+<lastmod>2022-12-06T14:44:00+01:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/posts/sam-the-terrorist-arrived-in-china.html</loc>
-<lastmod>2011-02-13T00:08:00+01:00</lastmod>
+<lastmod>2022-12-06T14:44:00+01:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/category/algorithms.html</loc>
-<lastmod>2014-05-04T00:00:00+00:09</lastmod>
+<lastmod>2022-12-06T14:44:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/category/bandwidth.html</loc>
-<lastmod>2016-10-11T00:00:00+00:09</lastmod>
+<lastmod>2022-12-06T14:44:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/category/big-data.html</loc>
-<lastmod>2016-01-22T16:31:00+00:09</lastmod>
+<lastmod>2022-12-06T14:44:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/category/chatgpt.html</loc>
-<lastmod>2023-01-12T22:44:00+00:09</lastmod>
+<lastmod>2023-01-13T10:56:52+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/category/china.html</loc>
-<lastmod>2012-01-22T03:24:00+00:09</lastmod>
+<lastmod>2022-12-06T14:44:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/category/google-cloud.html</loc>
-<lastmod>2020-11-07T22:42:00+00:09</lastmod>
+<lastmod>2022-12-06T14:44:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/category/istio.html</loc>
-<lastmod>2020-12-28T10:42:00+00:09</lastmod>
+<lastmod>2022-12-06T14:44:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/category/k8s.html</loc>
-<lastmod>2023-01-14T18:38:00+00:09</lastmod>
+<lastmod>2023-01-15T23:33:19+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/category/linux.html</loc>
-<lastmod>2023-02-10T12:10:00+00:09</lastmod>
+<lastmod>2023-02-10T12:10:11+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/category/openstack.html</loc>
-<lastmod>2016-11-08T13:15:00+00:09</lastmod>
+<lastmod>2022-12-06T14:44:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/category/python.html</loc>
-<lastmod>2023-02-08T10:18:00+00:09</lastmod>
+<lastmod>2023-02-08T10:29:44+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/category/weaviate.html</loc>
-<lastmod>2023-02-07T12:14:00+00:09</lastmod>
+<lastmod>2023-02-07T22:31:33+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/category/woocommerce.html</loc>
-<lastmod>2023-02-12T21:32:00+00:09</lastmod>
+<lastmod>2023-02-12T22:17:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/wordpress.html</loc>
-<lastmod>2023-02-12T21:32:00+00:09</lastmod>
+<lastmod>2023-02-12T22:17:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/woocommerce.html</loc>
-<lastmod>2023-02-12T21:32:00+00:09</lastmod>
+<lastmod>2023-02-12T22:17:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/storefront.html</loc>
-<lastmod>2023-02-12T21:32:00+00:09</lastmod>
+<lastmod>2023-02-12T22:17:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/theme.html</loc>
-<lastmod>2023-02-12T21:32:00+00:09</lastmod>
+<lastmod>2023-02-12T22:17:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/python.html</loc>
-<lastmod>2023-02-08T10:18:00+00:09</lastmod>
+<lastmod>2023-02-08T10:29:44+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/uuid.html</loc>
-<lastmod>2023-02-08T10:18:00+00:09</lastmod>
+<lastmod>2023-02-08T10:29:44+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/weaviate.html</loc>
-<lastmod>2023-02-07T12:14:00+00:09</lastmod>
+<lastmod>2023-02-07T22:31:33+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/gke.html</loc>
-<lastmod>2023-02-07T12:14:00+00:09</lastmod>
+<lastmod>2023-02-07T22:31:33+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/k8s.html</loc>
-<lastmod>2023-01-14T18:38:00+00:09</lastmod>
+<lastmod>2023-01-15T23:33:19+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/kubernetes.html</loc>
-<lastmod>2023-01-14T18:38:00+00:09</lastmod>
+<lastmod>2023-01-15T23:33:19+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/security.html</loc>
-<lastmod>2023-01-14T18:38:00+00:09</lastmod>
+<lastmod>2023-01-15T23:33:19+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/chatgpt.html</loc>
-<lastmod>2023-01-12T22:44:00+00:09</lastmod>
+<lastmod>2023-01-13T10:56:52+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/minikube.html</loc>
-<lastmod>2022-12-09T08:44:00+00:09</lastmod>
+<lastmod>2022-12-09T09:06:40+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/firestore.html</loc>
-<lastmod>2022-11-03T11:36:00+00:09</lastmod>
+<lastmod>2022-12-06T14:44:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/firebase.html</loc>
-<lastmod>2022-11-03T11:36:00+00:09</lastmod>
+<lastmod>2022-12-06T14:44:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/search.html</loc>
-<lastmod>2022-11-03T11:36:00+00:09</lastmod>
+<lastmod>2022-12-06T14:44:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/gpu.html</loc>
-<lastmod>2022-08-26T22:02:00+00:09</lastmod>
+<lastmod>2022-12-06T14:44:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/timesharing.html</loc>
-<lastmod>2022-08-26T22:02:00+00:09</lastmod>
+<lastmod>2022-12-06T14:44:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/dns.html</loc>
-<lastmod>2021-10-11T14:32:00+00:09</lastmod>
+<lastmod>2022-12-06T14:44:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/proxy.html</loc>
-<lastmod>2021-05-21T10:52:00+00:09</lastmod>
+<lastmod>2022-12-06T14:44:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/registry.html</loc>
-<lastmod>2021-05-21T10:52:00+00:09</lastmod>
+<lastmod>2022-12-06T14:44:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/autoscaler.html</loc>
-<lastmod>2021-03-12T22:02:00+00:09</lastmod>
+<lastmod>2022-12-06T14:44:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/fuse.html</loc>
-<lastmod>2021-03-02T10:02:00+00:09</lastmod>
+<lastmod>2022-12-06T14:44:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/anthos.html</loc>
-<lastmod>2020-12-28T10:42:00+00:09</lastmod>
+<lastmod>2022-12-06T14:44:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/istio.html</loc>
-<lastmod>2020-12-28T10:42:00+00:09</lastmod>
+<lastmod>2022-12-06T14:44:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/networking.html</loc>
-<lastmod>2020-12-28T10:42:00+00:09</lastmod>
+<lastmod>2022-12-06T14:44:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/google-cloud.html</loc>
-<lastmod>2020-11-07T22:42:00+00:09</lastmod>
+<lastmod>2022-12-06T14:44:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/gcp.html</loc>
-<lastmod>2020-11-07T22:42:00+00:09</lastmod>
+<lastmod>2022-12-06T14:44:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/openstack.html</loc>
-<lastmod>2020-11-07T22:42:00+00:09</lastmod>
+<lastmod>2022-12-06T14:44:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/kvm.html</loc>
-<lastmod>2020-11-07T22:42:00+00:09</lastmod>
+<lastmod>2022-12-06T14:44:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/vxlan.html</loc>
-<lastmod>2020-09-13T22:42:00+00:09</lastmod>
+<lastmod>2022-12-06T14:44:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/gce.html</loc>
-<lastmod>2020-09-13T22:42:00+00:09</lastmod>
+<lastmod>2022-12-06T14:44:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/network.html</loc>
-<lastmod>2019-12-30T10:02:00+00:09</lastmod>
+<lastmod>2022-12-06T14:44:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/namespace.html</loc>
-<lastmod>2019-12-30T10:02:00+00:09</lastmod>
+<lastmod>2022-12-06T14:44:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/cloudshell.html</loc>
-<lastmod>2019-06-10T13:01:00+00:09</lastmod>
+<lastmod>2022-12-06T14:44:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/terraform.html</loc>
-<lastmod>2019-06-10T13:01:00+00:09</lastmod>
+<lastmod>2022-12-06T14:44:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/helm.html</loc>
-<lastmod>2019-06-10T13:01:00+00:09</lastmod>
+<lastmod>2022-12-06T14:44:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/salt.html</loc>
-<lastmod>2016-11-08T13:15:00+00:09</lastmod>
+<lastmod>2022-12-06T14:44:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/linux.html</loc>
-<lastmod>2016-10-11T14:25:00+00:09</lastmod>
+<lastmod>2022-12-06T14:44:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/openwrt.html</loc>
-<lastmod>2016-10-11T14:25:00+00:09</lastmod>
+<lastmod>2022-12-06T14:44:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/speedtest.html</loc>
-<lastmod>2016-10-11T14:25:00+00:09</lastmod>
+<lastmod>2022-12-06T14:44:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/bandwidth.html</loc>
-<lastmod>2016-10-11T00:00:00+00:09</lastmod>
+<lastmod>2022-12-06T14:44:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/fuel.html</loc>
-<lastmod>2016-08-27T14:01:00+00:09</lastmod>
+<lastmod>2022-12-06T14:44:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/ceph.html</loc>
-<lastmod>2016-08-27T14:01:00+00:09</lastmod>
+<lastmod>2022-12-06T14:44:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/mirantis.html</loc>
-<lastmod>2016-08-27T14:01:00+00:09</lastmod>
+<lastmod>2022-12-06T14:44:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/centos.html</loc>
-<lastmod>2016-06-01T09:31:00+00:09</lastmod>
+<lastmod>2022-12-06T14:44:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/opencv.html</loc>
-<lastmod>2016-01-22T16:31:00+00:09</lastmod>
+<lastmod>2022-12-06T14:44:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/spark.html</loc>
-<lastmod>2016-01-22T16:31:00+00:09</lastmod>
+<lastmod>2022-12-06T14:44:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/tachyon.html</loc>
-<lastmod>2016-01-22T16:31:00+00:09</lastmod>
+<lastmod>2022-12-06T14:44:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/swift.html</loc>
-<lastmod>2016-01-22T16:31:00+00:09</lastmod>
+<lastmod>2022-12-06T14:44:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/hadoop.html</loc>
-<lastmod>2016-01-22T16:31:00+00:09</lastmod>
+<lastmod>2022-12-06T14:44:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/big-data.html</loc>
-<lastmod>2016-01-22T16:31:00+00:09</lastmod>
+<lastmod>2022-12-06T14:44:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/archlinux.html</loc>
-<lastmod>2015-10-08T12:42:00+00:09</lastmod>
+<lastmod>2022-12-06T14:44:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/ipv6.html</loc>
-<lastmod>2015-10-08T12:42:00+00:09</lastmod>
+<lastmod>2022-12-06T14:44:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/isatap.html</loc>
-<lastmod>2015-10-08T12:42:00+00:09</lastmod>
+<lastmod>2022-12-06T14:44:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/isatapd.html</loc>
-<lastmod>2015-10-08T12:42:00+00:09</lastmod>
+<lastmod>2022-12-06T14:44:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/sriov.html</loc>
-<lastmod>2015-07-15T16:31:00+00:09</lastmod>
+<lastmod>2022-12-06T14:44:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/sr-iov.html</loc>
-<lastmod>2015-07-15T16:31:00+00:09</lastmod>
+<lastmod>2022-12-06T14:44:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/mirantis-openstack.html</loc>
-<lastmod>2015-07-15T16:31:00+00:09</lastmod>
+<lastmod>2022-12-06T14:44:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/bridge.html</loc>
-<lastmod>2015-06-19T14:25:00+00:09</lastmod>
+<lastmod>2022-12-06T14:44:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/cloudinit.html</loc>
-<lastmod>2014-11-27T13:12:00+00:09</lastmod>
+<lastmod>2022-12-06T14:44:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/cloudconfig.html</loc>
-<lastmod>2014-11-27T13:12:00+00:09</lastmod>
+<lastmod>2022-12-06T14:44:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/devops.html</loc>
-<lastmod>2014-11-27T13:12:00+00:09</lastmod>
+<lastmod>2022-12-06T14:44:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/neutron.html</loc>
-<lastmod>2014-11-24T12:01:00+00:09</lastmod>
+<lastmod>2022-12-06T14:44:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/study.html</loc>
-<lastmod>2014-08-29T13:42:00+00:09</lastmod>
+<lastmod>2022-12-06T14:44:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/docker.html</loc>
-<lastmod>2014-07-08T14:25:00+00:09</lastmod>
+<lastmod>2022-12-06T14:44:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/container.html</loc>
-<lastmod>2014-07-08T14:25:00+00:09</lastmod>
+<lastmod>2022-12-06T14:44:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/ssh.html</loc>
-<lastmod>2014-05-10T00:00:00+00:09</lastmod>
+<lastmod>2022-12-06T14:44:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/firewall.html</loc>
-<lastmod>2014-05-10T00:00:00+00:09</lastmod>
+<lastmod>2022-12-06T14:44:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/tunnel.html</loc>
-<lastmod>2014-05-10T00:00:00+00:09</lastmod>
+<lastmod>2022-12-06T14:44:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/coding.html</loc>
-<lastmod>2014-05-04T00:00:00+00:09</lastmod>
+<lastmod>2022-12-06T14:44:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/programming.html</loc>
-<lastmod>2014-05-04T00:00:00+00:09</lastmod>
+<lastmod>2022-12-06T14:44:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/algorithms.html</loc>
-<lastmod>2014-05-04T00:00:00+00:09</lastmod>
+<lastmod>2022-12-06T14:44:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/pyqt.html</loc>
-<lastmod>2013-05-30T15:48:00+00:09</lastmod>
+<lastmod>2022-12-06T14:44:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/pip.html</loc>
-<lastmod>2013-05-30T15:48:00+00:09</lastmod>
+<lastmod>2022-12-06T14:44:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/irssi.html</loc>
-<lastmod>2013-05-11T02:00:00+00:09</lastmod>
+<lastmod>2022-12-06T14:44:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/git.html</loc>
-<lastmod>2013-05-02T02:12:00+00:09</lastmod>
+<lastmod>2022-12-06T14:44:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/shell.html</loc>
-<lastmod>2013-05-02T02:12:00+00:09</lastmod>
+<lastmod>2022-12-06T14:44:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/bash.html</loc>
-<lastmod>2013-05-02T02:12:00+00:09</lastmod>
+<lastmod>2022-12-06T14:44:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/geek.html</loc>
-<lastmod>2012-11-14T13:26:00+00:09</lastmod>
+<lastmod>2022-12-06T14:44:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/migration.html</loc>
-<lastmod>2012-11-14T13:26:00+00:09</lastmod>
+<lastmod>2022-12-06T14:44:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/django.html</loc>
-<lastmod>2012-04-13T09:42:00+00:09</lastmod>
+<lastmod>2022-12-06T14:44:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/heroku.html</loc>
-<lastmod>2012-04-13T09:42:00+00:09</lastmod>
+<lastmod>2022-12-06T14:44:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/decorators.html</loc>
-<lastmod>2012-02-23T17:52:00+00:09</lastmod>
+<lastmod>2022-12-06T14:44:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/json.html</loc>
-<lastmod>2012-02-22T15:53:00+00:09</lastmod>
+<lastmod>2022-12-06T14:44:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/ubuntu.html</loc>
-<lastmod>2011-11-01T14:31:00+00:09</lastmod>
+<lastmod>2022-12-06T14:44:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/china.html</loc>
-<lastmod>2011-02-13T00:08:00+00:09</lastmod>
+<lastmod>2022-12-06T14:44:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/author/robot-router.html</loc>
-<lastmod>2016-10-11T00:00:00+00:09</lastmod>
+<lastmod>2022-12-06T14:44:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/author/sam-stoelinga.html</loc>
-<lastmod>2023-02-12T21:32:00+00:09</lastmod>
+<lastmod>2023-02-12T22:17:00+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>

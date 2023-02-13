@@ -1,6 +1,7 @@
 Title: Creating a woocommerce storefront child theme
-Date: 2023-02-11 09:34
 Author: Sam Stoelinga
+Date: 2023-02-11 09:34
+Modified: 2023-02-12 22:17
 Category: WooCommerce
 Tags: wordpress, woocommerce, storefront, theme
 Slug: creating-woocommere-storefront-child-theme
@@ -87,3 +88,8 @@ Steps to upload theme as zip:
 
 You should now see your new child theme and be able to preview and activate it.
 Notice that any product titles are now pink due to our rule in `style.css`.
+
+Interested in all the cool stuff you can do with a child theme? Then check out
+these blog posts:
+
+- [Removing the sidebar in the WooCommerce storefront theme using a child theme](https://samos-it.com/posts/removing-sidebar-storefront-theme.html)

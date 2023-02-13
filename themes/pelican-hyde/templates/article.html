@@ -18,7 +18,12 @@
     <!-- Ezoic - under_page_title - under_page_title -->
     <div id="ezoic-pub-ad-placeholder-103"> </div>
     <!-- End Ezoic - under_page_title - under_page_title -->
-    <span class="post-date">{{ article.locale_date }}</span>
+    <span class="post-date">
+        {{ article.locale_date }}
+        {% if article.locale_date != article.locale_modified -%}
+        | Last updated on {{ article.locale_modified }}
+        {% endif %}
+    </span>
     {{ article.content }}
     <!-- Ezoic - bottom_of_page - bottom_of_page -->
     <div id="ezoic-pub-ad-placeholder-104"> </div>

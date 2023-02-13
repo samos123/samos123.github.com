@@ -41,6 +41,7 @@ PROFILE_IMAGE="sam-young.jpg"
 
 
 DEFAULT_PAGINATION = 10
+DEFAULT_DATE = "fs"
 
 
 # Uncomment following line if you want document-relative URLs when developing
