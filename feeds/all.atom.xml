@@ -1,5 +1,137 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Sam Stoelinga</title><link href="https://samos-it.com/" rel="alternate"></link><link href="https://samos-it.com/feeds/all.atom.xml" rel="self"></link><id>https://samos-it.com/</id><updated>2023-02-12T22:17:00+01:00</updated><entry><title>Removing sidebar from storefront theme</title><link href="https://samos-it.com/posts/removing-sidebar-storefront-theme.html" rel="alternate"></link><published>2023-02-12T21:32:00+01:00</published><updated>2023-02-12T21:45:06+01:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2023-02-12:/posts/removing-sidebar-storefront-theme.html</id><summary type="html">&lt;p&gt;By default, storefront comes with a large sidebar that isn't really
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Sam Stoelinga</title><link href="https://samos-it.com/" rel="alternate"></link><link href="https://samos-it.com/feeds/all.atom.xml" rel="self"></link><id>https://samos-it.com/</id><updated>2023-03-04T14:06:48+01:00</updated><entry><title>GKE Safely Drain a Nodepool without pod disruptions</title><link href="https://samos-it.com/posts/gke-safe-nodepool-drain.html" rel="alternate"></link><published>2023-03-04T14:06:00+01:00</published><updated>2023-03-04T14:06:48+01:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2023-03-04:/posts/gke-safe-nodepool-drain.html</id><summary type="html">&lt;p&gt;GKE/K8s wasn't originally designed for workloads that spin up single pods
+and want those pods to stay up and running on the same node
+for very time. That doesn't mean those kind of workloads
+aren't running on GKE. In fact, there are large GKE ML/batch platform workloads
+running …&lt;/p&gt;</summary><content type="html">&lt;p&gt;GKE/K8s wasn't originally designed for workloads that spin up single pods
+and want those pods to stay up and running on the same node
+for very time. That doesn't mean those kind of workloads
+aren't running on GKE. In fact, there are large GKE ML/batch platform workloads
+running in production that have these characteristics.&lt;/p&gt;
+&lt;p&gt;This post will show how to decomission / destroy / decomission a nodepool
+that's running pods that should not be disrupted. The requirements for our
+decomission of nodepool is as follows:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Any node that's running a batch job pod should stay up for as long
+  as the batch job is running&lt;/li&gt;
+&lt;li&gt;The max lifetime of batch job pod is 16 days&lt;/li&gt;
+&lt;li&gt;The nodepool should automatically scale back to 0 after all batch job pods
+  have finished running&lt;/li&gt;
+&lt;li&gt;New pods should not trigger the nodepool that's being decomissioned to scale
+  up again&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;How to safely drain the node without pod disruptions?&lt;/h2&gt;
+&lt;p&gt;The approach we will be taking is using the new GKE nodepool taint feature.
+This feature allows us to taint all existing nodes in the nodepool and
+also apply the taint on any newly added nodes.&lt;/p&gt;
+&lt;p&gt;Let's try this feature on the nodepool named &lt;code&gt;default-pool&lt;/code&gt; in the cluster &lt;code&gt;test-drain&lt;/code&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nb"&gt;export&lt;/span&gt; &lt;span class="nv"&gt;POOL&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;default-pool
+&lt;span class="nb"&gt;export&lt;/span&gt; &lt;span class="nv"&gt;CLUSTER&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;test-np-upgrades
+gcloud container nodepools update &lt;span class="nv"&gt;$POOL&lt;/span&gt; --cluster &lt;span class="nv"&gt;$CLUSTER&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
+  --node-taints &lt;span class="nv"&gt;upgrade&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;true:NoSchedule
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Note: You might have to set a zone or region using &lt;code&gt;gcloud config set compute/region us-central1&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;You would get the following error if cluster autoscaler is enabled on the nodepool:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nv"&gt;ERROR&lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="ss"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;gcloud&lt;/span&gt;.&lt;span class="nv"&gt;container&lt;/span&gt;.&lt;span class="nv"&gt;node&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nv"&gt;pools&lt;/span&gt;.&lt;span class="nv"&gt;update&lt;/span&gt;&lt;span class="ss"&gt;)&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;ResponseError&lt;/span&gt;:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;code&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;400&lt;/span&gt;,&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;message&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;Updates&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;for&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;taints&amp;#39;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;are&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;not&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;supported&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;in&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;node&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;pools&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;with&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;autoscaling&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;enabled&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="ss"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;as&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;a&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;workaround&lt;/span&gt;,&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;consider&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;temporarily&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;disabling&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;autoscaling&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;or&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;recreating&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;the&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;node&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;pool&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;with&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;the&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;updated&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;values&lt;/span&gt;.&lt;span class="ss"&gt;)&lt;/span&gt;.&lt;span class="w"&gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;In our case the nodepools all have cluster autoscaler enabled since this is a ML/batch
+platform. So disabling autoscaler isn't an option.&lt;/p&gt;
+&lt;p&gt;You might be about to give up but do not! Let's carefully read the error
+message. It says as a workaround consider &lt;strong&gt;temporarily&lt;/strong&gt; disabling autoscaling.&lt;/p&gt;
+&lt;p&gt;Let's give that a try, disable autoscaler, apply taints, enable autoscaler again.
+Run the following commands:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;gcloud container node-pools update &lt;span class="nv"&gt;$POOL&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
+  --cluster &lt;span class="nv"&gt;$CLUSTER&lt;/span&gt; --no-enable-autoscaling 
+gcloud container node-pools update &lt;span class="nv"&gt;$POOL&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
+  --cluster &lt;span class="nv"&gt;$CLUSTER&lt;/span&gt; --node-taints &lt;span class="nv"&gt;upgrade&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;true:NoSchedule
+gcloud container node-pools update &lt;span class="nv"&gt;$POOL&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
+  --cluster &lt;span class="nv"&gt;$CLUSTER&lt;/span&gt; --enable-autoscaling --max-nodes &lt;span class="m"&gt;1000&lt;/span&gt; --min-nodes &lt;span class="m"&gt;0&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The &lt;code&gt;--max-nodes&lt;/code&gt; value doesn't matter because the nodepool got tainted so it will never scale up again.&lt;/p&gt;
+&lt;p&gt;So looks like this workaround is working well to taint all nodes in a nodepool&lt;/p&gt;
+&lt;h2&gt;Why not use kubectl cordon or taint?&lt;/h2&gt;
+&lt;p&gt;The issue with that approach is that it will cause the nodepool to scale
+back up again from 0 to 1 because of cluster autoscaler. The cluster
+autoscaler does not try to scale up again if the taint is set using
+the GKE API. This is likely an implementation detail of how the
+cluster autoscaler behaves on GKE.&lt;/p&gt;
+&lt;h2&gt;Verifying this meets our requirements&lt;/h2&gt;
+&lt;p&gt;The test scenario is as follows. Before applying the taints, 4 pods were scheduled
+and running that caused 4 nodes to be scaled up. So right now I still expect those 4 nodes
+to be there. &lt;/p&gt;
+&lt;p&gt;Verify the pods and nodes are still running:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;kubectl get pods -o wide
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Returns the following:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;NAME   READY   STATUS   NODE
+pod1   1/1     Running  gke-test-np-upgrades-default-pool-f9fd8128-cd6h
+pod2   1/1     Running  gke-test-np-upgrades-default-pool-f9fd8128-tdsf
+pod3   1/1     Running  gke-test-np-upgrades-default-pool-a6056569-c577
+pod4   1/1     Running  gke-test-np-upgrades-default-pool-a6056569-dqff
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;So that looks good.&lt;/p&gt;
+&lt;p&gt;Let's try spinning up another pod that's targeting this tainted
+nodepool.&lt;/p&gt;
+&lt;p&gt;Create a file named &lt;code&gt;pod5.yaml&lt;/code&gt; with the following content:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nt"&gt;apiVersion&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;v1&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="nt"&gt;kind&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;Pod&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="nt"&gt;metadata&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;pod5&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="nt"&gt;spec&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;nodeSelector&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;cloud.google.com/gke-nodepool&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;default-pool&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;containers&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;sleepy&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;image&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;gcr.io/google_containers/pause-amd64:3.2&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;resources&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="nt"&gt;requests&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;memory&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;2000Mi&amp;quot;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Create the pod:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;kubectl apply -f pod5.yaml
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Check to ensure cluster autoscaler won't scale up the nodepool. Run the following:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;kubectl describe pod pod5
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;You should see this included in the output:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;Status: Pending
+..
+Warning  FailedScheduling   default-scheduler   &lt;span class="m"&gt;0&lt;/span&gt;/4 nodes are available: &lt;span class="m"&gt;4&lt;/span&gt; node&lt;span class="o"&gt;(&lt;/span&gt;s&lt;span class="o"&gt;)&lt;/span&gt; had taint &lt;span class="o"&gt;{&lt;/span&gt;upgrade: true&lt;span class="o"&gt;}&lt;/span&gt;, that the pod didn&lt;span class="s1"&gt;&amp;#39;t tolerate.&lt;/span&gt;
+&lt;span class="s1"&gt;Normal   NotTriggerScaleUp  cluster-autoscaler  pod didn&amp;#39;&lt;/span&gt;t trigger scale-up: &lt;span class="m"&gt;2&lt;/span&gt; max node group size reached
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;This shows that the pod is pending and not triggering a scale up event. This is
+great and exactly what was desired.&lt;/p&gt;
+&lt;p&gt;Now, let's verify the nodepool scales down automatically all the way to 0 when all
+pods are deleted.&lt;/p&gt;
+&lt;p&gt;Delete all the batch jobs:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;kubectl delete pod pod1 pod2 pod3 pod4
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Note that in a normal situation you would wait for the pods to finish execution
+instead of having to delete them. Once finished, the pod automatically is deleted
+and autoscaler does the same scale down logic.&lt;/p&gt;
+&lt;p&gt;Wait for 10 to 15 minutes and then run:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;kubectl get nodes
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;In my case, there seems to be 1 node still running. You might wonder why that is?
+It turns out that kube-dns and other GKE system services are still running on
+one of the nodes and are preventing the cluster autoscaling from scaling down.
+You can solve this by following my blog post on &lt;a href="https://samos-it.com/posts/gke-system-services-kube-dns-dedicated-nodepool.html"&gt;moving GKE
+system services to a dedicated nodepool&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;If you already moved your GKE system services then you would have seen 0 nodes left.&lt;/p&gt;
+&lt;p&gt;So this concludes that the GKE nodepool tainting feature is an effective way to
+safely decomission nodepools without disrupting existing pods.&lt;/p&gt;
+&lt;p&gt;This was tested on GKE 1.21 and behavior is not guaranteed to stay the same in future releases&lt;/p&gt;</content><category term="K8s"></category><category term="k8s"></category><category term="kubernetes"></category><category term="gke"></category></entry><entry><title>Removing sidebar from storefront theme</title><link href="https://samos-it.com/posts/removing-sidebar-storefront-theme.html" rel="alternate"></link><published>2023-02-12T21:32:00+01:00</published><updated>2023-02-12T21:45:06+01:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2023-02-12:/posts/removing-sidebar-storefront-theme.html</id><summary type="html">&lt;p&gt;By default, storefront comes with a large sidebar that isn't really
 useful for ecommerce websites. This post shows you how to remove the
 sidebar by creating a &lt;code&gt;functions.php&lt;/code&gt; file in
 your storefront child theme.&lt;/p&gt;

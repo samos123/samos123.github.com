@@ -5,7 +5,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://samos-it.com/</loc>
-<lastmod>2023-02-12T22:41:26-00:00</lastmod>
+<lastmod>2023-03-04T14:07:05-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -27,6 +27,13 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
 <loc>https://samos-it.com/pages/privacy-policy.html</loc>
 <lastmod>2023-02-08T22:12:50+01:00</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://samos-it.com/posts/gke-safe-nodepool-drain.html</loc>
+<lastmod>2023-03-04T14:06:48+01:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
@@ -530,7 +537,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://samos-it.com/category/k8s.html</loc>
-<lastmod>2023-01-15T23:33:19+00:09</lastmod>
+<lastmod>2023-03-04T14:06:48+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -566,6 +573,27 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
 <loc>https://samos-it.com/category/woocommerce.html</loc>
 <lastmod>2023-02-12T22:17:00+00:09</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://samos-it.com/tag/k8s.html</loc>
+<lastmod>2023-03-04T14:06:48+00:09</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://samos-it.com/tag/kubernetes.html</loc>
+<lastmod>2023-03-04T14:06:48+00:09</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://samos-it.com/tag/gke.html</loc>
+<lastmod>2023-03-04T14:06:48+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -615,27 +643,6 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
 <loc>https://samos-it.com/tag/weaviate.html</loc>
 <lastmod>2023-02-07T22:31:33+00:09</lastmod>
-<changefreq>daily</changefreq>
-<priority>0.5</priority>
-</url>
-
-<url>
-<loc>https://samos-it.com/tag/gke.html</loc>
-<lastmod>2023-02-07T22:31:33+00:09</lastmod>
-<changefreq>daily</changefreq>
-<priority>0.5</priority>
-</url>
-
-<url>
-<loc>https://samos-it.com/tag/k8s.html</loc>
-<lastmod>2023-01-15T23:33:19+00:09</lastmod>
-<changefreq>daily</changefreq>
-<priority>0.5</priority>
-</url>
-
-<url>
-<loc>https://samos-it.com/tag/kubernetes.html</loc>
-<lastmod>2023-01-15T23:33:19+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -1188,7 +1195,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://samos-it.com/author/sam-stoelinga.html</loc>
-<lastmod>2023-02-12T22:17:00+00:09</lastmod>
+<lastmod>2023-03-04T14:06:48+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>

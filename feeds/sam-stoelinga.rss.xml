@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0"><channel><title>Sam Stoelinga - Sam Stoelinga</title><link>https://samos-it.com/</link><description></description><lastBuildDate>Sun, 12 Feb 2023 22:17:00 +0100</lastBuildDate><item><title>Removing sidebar from storefront theme</title><link>https://samos-it.com/posts/removing-sidebar-storefront-theme.html</link><description>&lt;p&gt;By default, storefront comes with a large sidebar that isn't really
+<rss version="2.0"><channel><title>Sam Stoelinga - Sam Stoelinga</title><link>https://samos-it.com/</link><description></description><lastBuildDate>Sat, 04 Mar 2023 14:06:48 +0100</lastBuildDate><item><title>GKE Safely Drain a Nodepool without pod disruptions</title><link>https://samos-it.com/posts/gke-safe-nodepool-drain.html</link><description>&lt;p&gt;GKE/K8s wasn't originally designed for workloads that spin up single pods
+and want those pods to stay up and running on the same node
+for very time. That doesn't mean those kind of workloads
+aren't running on GKE. In fact, there are large GKE ML/batch platform workloads
+running …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Sam Stoelinga</dc:creator><pubDate>Sat, 04 Mar 2023 14:06:00 +0100</pubDate><guid isPermaLink="false">tag:samos-it.com,2023-03-04:/posts/gke-safe-nodepool-drain.html</guid><category>K8s</category><category>k8s</category><category>kubernetes</category><category>gke</category></item><item><title>Removing sidebar from storefront theme</title><link>https://samos-it.com/posts/removing-sidebar-storefront-theme.html</link><description>&lt;p&gt;By default, storefront comes with a large sidebar that isn't really
 useful for ecommerce websites. This post shows you how to remove the
 sidebar by creating a &lt;code&gt;functions.php&lt;/code&gt; file in
 your storefront child theme.&lt;/p&gt;
