@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0"><channel><title>Sam Stoelinga - Sam Stoelinga</title><link>https://samos-it.com/</link><description></description><lastBuildDate>Sat, 04 Mar 2023 14:06:48 +0100</lastBuildDate><item><title>GKE Safely Drain a Nodepool without pod disruptions</title><link>https://samos-it.com/posts/gke-safe-nodepool-drain.html</link><description>&lt;p&gt;GKE/K8s wasn't originally designed for workloads that spin up single pods
+<rss version="2.0"><channel><title>Sam Stoelinga - Sam Stoelinga</title><link>https://samos-it.com/</link><description></description><lastBuildDate>Sun, 05 Mar 2023 14:59:00 +0100</lastBuildDate><item><title>GKE Safely Drain a Nodepool without pod disruptions</title><link>https://samos-it.com/posts/gke-safe-nodepool-drain.html</link><description>&lt;p&gt;GKE/K8s wasn't originally designed for workloads that spin up single pods
 and want those pods to stay up and running on the same node
 for very time. That doesn't mean those kind of workloads
 aren't running on GKE. In fact, there are large GKE ML/batch platform workloads

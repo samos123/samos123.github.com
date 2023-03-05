@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Sam Stoelinga - Sam Stoelinga</title><link href="https://samos-it.com/" rel="alternate"></link><link href="https://samos-it.com/feeds/sam-stoelinga.atom.xml" rel="self"></link><id>https://samos-it.com/</id><updated>2023-03-04T14:06:48+01:00</updated><entry><title>GKE Safely Drain a Nodepool without pod disruptions</title><link href="https://samos-it.com/posts/gke-safe-nodepool-drain.html" rel="alternate"></link><published>2023-03-04T14:06:00+01:00</published><updated>2023-03-04T14:06:48+01:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2023-03-04:/posts/gke-safe-nodepool-drain.html</id><summary type="html">&lt;p&gt;GKE/K8s wasn't originally designed for workloads that spin up single pods
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Sam Stoelinga - Sam Stoelinga</title><link href="https://samos-it.com/" rel="alternate"></link><link href="https://samos-it.com/feeds/sam-stoelinga.atom.xml" rel="self"></link><id>https://samos-it.com/</id><updated>2023-03-05T14:59:00+01:00</updated><entry><title>GKE Safely Drain a Nodepool without pod disruptions</title><link href="https://samos-it.com/posts/gke-safe-nodepool-drain.html" rel="alternate"></link><published>2023-03-04T14:06:00+01:00</published><updated>2023-03-05T14:59:00+01:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2023-03-04:/posts/gke-safe-nodepool-drain.html</id><summary type="html">&lt;p&gt;GKE/K8s wasn't originally designed for workloads that spin up single pods
 and want those pods to stay up and running on the same node
 for very time. That doesn't mean those kind of workloads
 aren't running on GKE. In fact, there are large GKE ML/batch platform workloads
@@ -8,16 +8,16 @@ and want those pods to stay up and running on the same node
 for very time. That doesn't mean those kind of workloads
 aren't running on GKE. In fact, there are large GKE ML/batch platform workloads
 running in production that have these characteristics.&lt;/p&gt;
-&lt;p&gt;This post will show how to decomission / destroy / decomission a nodepool
+&lt;p&gt;This post will show how to destroy / decommission a nodepool
 that's running pods that should not be disrupted. The requirements for our
-decomission of nodepool is as follows:&lt;/p&gt;
+decommission of nodepool is as follows:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;Any node that's running a batch job pod should stay up for as long
   as the batch job is running&lt;/li&gt;
 &lt;li&gt;The max lifetime of batch job pod is 16 days&lt;/li&gt;
 &lt;li&gt;The nodepool should automatically scale back to 0 after all batch job pods
   have finished running&lt;/li&gt;
-&lt;li&gt;New pods should not trigger the nodepool that's being decomissioned to scale
+&lt;li&gt;New pods should not trigger the nodepool that's being decommissioned to scale
   up again&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2&gt;How to safely drain the node without pod disruptions?&lt;/h2&gt;
@@ -130,7 +130,7 @@ You can solve this by following my blog post on &lt;a href="https://samos-it.com
 system services to a dedicated nodepool&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;If you already moved your GKE system services then you would have seen 0 nodes left.&lt;/p&gt;
 &lt;p&gt;So this concludes that the GKE nodepool tainting feature is an effective way to
-safely decomission nodepools without disrupting existing pods.&lt;/p&gt;
+safely decommission nodepools without disrupting existing pods.&lt;/p&gt;
 &lt;p&gt;This was tested on GKE 1.21 and behavior is not guaranteed to stay the same in future releases&lt;/p&gt;</content><category term="K8s"></category><category term="k8s"></category><category term="kubernetes"></category><category term="gke"></category></entry><entry><title>Removing sidebar from storefront theme</title><link href="https://samos-it.com/posts/removing-sidebar-storefront-theme.html" rel="alternate"></link><published>2023-02-12T21:32:00+01:00</published><updated>2023-02-12T21:45:06+01:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2023-02-12:/posts/removing-sidebar-storefront-theme.html</id><summary type="html">&lt;p&gt;By default, storefront comes with a large sidebar that isn't really
 useful for ecommerce websites. This post shows you how to remove the
 sidebar by creating a &lt;code&gt;functions.php&lt;/code&gt; file in

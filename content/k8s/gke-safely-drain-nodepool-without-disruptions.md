@@ -1,5 +1,6 @@
 Title: GKE Safely Drain a Nodepool without pod disruptions
 Date: 2023-03-04 14:06
+Modified: 2023-03-05 14:59
 Author: Sam Stoelinga
 Category: K8s
 Tags: k8s, kubernetes, gke
@@ -11,16 +12,16 @@ for very time. That doesn't mean those kind of workloads
 aren't running on GKE. In fact, there are large GKE ML/batch platform workloads
 running in production that have these characteristics.
 
-This post will show how to decomission / destroy / decomission a nodepool
+This post will show how to destroy / decommission a nodepool
 that's running pods that should not be disrupted. The requirements for our
-decomission of nodepool is as follows:
+decommission of nodepool is as follows:
 
 * Any node that's running a batch job pod should stay up for as long
   as the batch job is running
 * The max lifetime of batch job pod is 16 days
 * The nodepool should automatically scale back to 0 after all batch job pods
   have finished running
-* New pods should not trigger the nodepool that's being decomissioned to scale
+* New pods should not trigger the nodepool that's being decommissioned to scale
   up again
 
 ## How to safely drain the node without pod disruptions?
@@ -154,6 +155,6 @@ https://samos-it.com/posts/gke-system-services-kube-dns-dedicated-nodepool.html)
 If you already moved your GKE system services then you would have seen 0 nodes left.
 
 So this concludes that the GKE nodepool tainting feature is an effective way to
-safely decomission nodepools without disrupting existing pods.
+safely decommission nodepools without disrupting existing pods.
 
 This was tested on GKE 1.21 and behavior is not guaranteed to stay the same in future releases
