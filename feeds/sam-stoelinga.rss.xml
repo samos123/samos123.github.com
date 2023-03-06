@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0"><channel><title>Sam Stoelinga - Sam Stoelinga</title><link>https://samos-it.com/</link><description></description><lastBuildDate>Sun, 05 Mar 2023 14:59:00 +0100</lastBuildDate><item><title>GKE Safely Drain a Nodepool without pod disruptions</title><link>https://samos-it.com/posts/gke-safe-nodepool-drain.html</link><description>&lt;p&gt;GKE/K8s wasn't originally designed for workloads that spin up single pods
+<rss version="2.0"><channel><title>Sam Stoelinga - Sam Stoelinga</title><link>https://samos-it.com/</link><description></description><lastBuildDate>Sun, 05 Mar 2023 19:44:27 +0100</lastBuildDate><item><title>3 tips for GKE ML/batch workloads</title><link>https://samos-it.com/posts/3-tips-gke-ml-batch-workloads.html</link><description>&lt;p&gt;There has been an influx of large batch and ML training workloads on GKE. I've personally
+had the please of working with one of those workloads. The things that
+batch and ML workload often require from GKE are the following:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Minimize pod disruptions since pods often can't simply be restarted …&lt;/li&gt;&lt;/ul&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Sam Stoelinga</dc:creator><pubDate>Sun, 05 Mar 2023 19:36:00 +0100</pubDate><guid isPermaLink="false">tag:samos-it.com,2023-03-05:/posts/3-tips-gke-ml-batch-workloads.html</guid><category>K8s</category><category>k8s</category><category>kubernetes</category><category>gke</category></item><item><title>GKE Safely Drain a Nodepool without pod disruptions</title><link>https://samos-it.com/posts/gke-safe-nodepool-drain.html</link><description>&lt;p&gt;GKE/K8s wasn't originally designed for workloads that spin up single pods
 and want those pods to stay up and running on the same node
 for very time. That doesn't mean those kind of workloads
 aren't running on GKE. In fact, there are large GKE ML/batch platform workloads

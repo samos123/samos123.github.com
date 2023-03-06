@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en" prefix="og: http://ogp.me/ns#">
+	<head>
+		<link href="http://gmpg.org/xfn/11" rel="profile">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+		<!-- Metadata -->
+    <title>3 tips for GKE ML/batch workloads</title>
+	<meta name="description" content="Open source contributor and Cloud Architect. Creator of websu.io and bgdestroyer.com">
+	<meta property="og:description" content="Open source contributor and Cloud Architect. Creator of websu.io and bgdestroyer.com">
+	<meta property="og:title" content="3 tips for GKE ML/batch workloads" />
+	<meta property="og:type" content="article" />
+	<meta property="og:url" content="https://samos-it.com/posts/3-tips-gke-ml-batch-workloads.html" />
+		<meta property="og:image" content="https://samos-it.com/images/sam-young.jpg" />
+
+		<!-- Enable responsiveness on mobile devices-->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+		<title>Sam Stoelinga</title>
+
+		<!-- CSS -->
+		<link href="//fonts.googleapis.com/" rel="dns-prefetch">
+		<link href="//fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic|Abril+Fatface|PT+Sans:400,400italic,700&amp;subset=latin,latin-ext" rel="stylesheet">
+
+		<link rel="stylesheet" href="https://samos-it.com/theme/css/poole.css" />
+		<link rel="stylesheet" href="https://samos-it.com/theme/css/hyde.css" />
+		<link rel="stylesheet" href="https://samos-it.com/theme/css/syntax.css" />
+			<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.1.7/css/fork-awesome.min.css" crossorigin="anonymous">
+
+		<!-- Feeds -->
+<link href="https://samos-it.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Sam Stoelinga Full Atom Feed" />
+<link href="https://samos-it.com/feeds/k8s.atom.xml" type="application/atom+xml" rel="alternate" title="Sam Stoelinga Categories Atom Feed" />
+
+		<!-- Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-20975967-1', 'auto');
+ga('send', 'pageview');
+</script>
+	</head>
+
+	<body class="theme-base-0d">
+<div class="sidebar">
+	<div class="container sidebar-sticky">
+		<div class="sidebar-about">
+
+			<h1>
+				<a href="/">
+					<img class="profile-picture" src="https://samos-it.com/images/sam-young.jpg">
+					Sam Stoelinga
+				</a>
+			</h1>
+			<p class="lead"></p>
+			<p class="lead">Open source contributor and Cloud Architect. Creator of websu.io and bgdestroyer.com </p>
+			<p></p>
+		</div>
+			<ul class="sidebar-nav">
+					<li><a href="https://samos-it.com/pages/about.html">About Me</a></li>
+					<li><a href="https://samos-it.com/pages/hire-me.html">Hire Me</a></li>
+					<li><a href="https://samos-it.com/pages/privacy-policy.html">Privacy Policy</a></li>
+			</ul>
+		<nav class="sidebar-social">
+					<a class="sidebar-social-item" href="https://www.linkedin.com/in/samstoelinga/" target="_blank">
+						<i class="fa fa-linkedin"></i>
+					</a>
+					<a class="sidebar-social-item" href="http://github.com/samos123/" target="_blank">
+						<i class="fa fa-github"></i>
+					</a>
+			<a class="sidebar-social-item" href="https://samos-it.com/feeds/all.atom.xml">
+				<i class="fa fa-rss"></i>
+			</a>
+		</nav>
+	</div>
+</div>		<div class="content container">
+<div class="post">
+    <!-- Ezoic - top_of_page - top_of_page -->
+    <div id="ezoic-pub-ad-placeholder-106"> </div>
+    <!-- End Ezoic - top_of_page - top_of_page -->
+    <h1 class="post-title">3 tips for GKE ML/batch workloads</h1>
+    <!-- Ezoic - under_page_title - under_page_title -->
+    <div id="ezoic-pub-ad-placeholder-103"> </div>
+    <!-- End Ezoic - under_page_title - under_page_title -->
+    <span class="post-date">
+        Sun 05 March 2023
+    </span>
+    <p>There has been an influx of large batch and ML training workloads on GKE. I've personally
+had the please of working with one of those workloads. The things that
+batch and ML workload often require from GKE are the following:</p>
+<ul>
+<li>Minimize pod disruptions since pods often can't simply be restarted on another node</li>
+<li>A single pod might need to stay running for many days</li>
+<li>Only spin up VM resources when a large job is launched and scale to 0 when job is done -&gt; Cluster Autoscaler</li>
+</ul>
+<h2>Top 3 tips for Batch ML workloads</h2>
+<ol>
+<li>
+<p>Move your GKE system services to a separate nodepool</p>
+<p>You should create a separate nodepool for system services and run your batch/ML job
+in it's own nodepool. The largest benefit is this will allow you to 
+scale down your most expensive GPU/large VM nodepool back to 0. Otherwise, there might
+be a teeny-tiny kube-dns pod on your very expensive n2-highmem-128 VM preventing it to be removed
+by the autoscaler.</p>
+<p>Read my blog post on <a href="https://samos-it.com/posts/gke-system-services-kube-dns-dedicated-nodepool.html">how to move your GKE system services to a separate nodepool</a></p>
+</li>
+<li>
+<p>Utilize release channels but prevent upgrades to the nodepools and minor release upgrades to control plane</p>
+<p>You can continiously set up a new 180 day maintenance exclusion using the
+<code>no_minor_or_node_upgrades</code> scope. This will prevent the control
+plane from going through a minor version upgrade and also prevent
+nodepools from being upgraded. (Unverified, planning to verify soon and write
+a blog post on this)</p>
+</li>
+<li>
+<p>Create new nodepools instead of upgrading</p>
+<p>Do not rely on GKE upgrades instead create a new nodepool and safely decommission the old nodepool.</p>
+<p>GKE upgrades will forcefully drain your nodes causing pod disruptions. GKE only respects your
+pod disruption budget for up to 1 hour, however Batch/ML pods often require it be respected
+multiple days.</p>
+<p>So instead it's better to
+create a new nodepool with the new version and taint the old nodepool so no new pods get scheduled
+to the old nodepool. Eventually the old nodepool will get to 0 and then it's safe to delete it.</p>
+<p>View this <a href="https://samos-it.com/posts/gke-safe-nodepool-drain.html">blog post to learn how to safely decommission a nodepool without pod disruptions</a></p>
+</li>
+</ol>
+    <!-- Ezoic - bottom_of_page - bottom_of_page -->
+    <div id="ezoic-pub-ad-placeholder-104"> </div>
+    <!-- End Ezoic - bottom_of_page - bottom_of_page -->
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+	var disqus_shortname = 'samosit';
+	(function() {
+		var d = document, s = d.createElement('script'); s.type = 'text/javascript'; s.async = true;
+		s.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+		s.setAttribute('data-timestamp', +new Date());
+		(d.head || d.body).appendChild(s);
+	})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+</div>
+            <!-- Ezoic - sidebar_floating_2 - sidebar_floating_2 -->
+            <div id="ezoic-pub-ad-placeholder-107"> </div>
+            <!-- End Ezoic - sidebar_floating_2 - sidebar_floating_2 -->
+		</div>
+        <!-- Ezoic - sidebar_floating_1 - sidebar_floating_1 -->
+        <div id="ezoic-pub-ad-placeholder-105"> </div>
+        <!-- End Ezoic - sidebar_floating_1 - sidebar_floating_1 -->
+	</body>
+</html>
