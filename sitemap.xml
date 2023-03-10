@@ -5,7 +5,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://samos-it.com/</loc>
-<lastmod>2023-03-05T19:44:43-00:00</lastmod>
+<lastmod>2023-03-09T19:54:05-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -27,6 +27,13 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
 <loc>https://samos-it.com/pages/privacy-policy.html</loc>
 <lastmod>2023-02-08T22:12:50+01:00</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://samos-it.com/posts/gke-list-tainted-nodepools-with-a-specific-taint.html</loc>
+<lastmod>2023-03-09T19:53:53+01:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
@@ -544,7 +551,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://samos-it.com/category/k8s.html</loc>
-<lastmod>2023-03-05T19:44:27+00:09</lastmod>
+<lastmod>2023-03-09T19:53:53+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -586,21 +593,21 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://samos-it.com/tag/k8s.html</loc>
-<lastmod>2023-03-05T19:44:27+00:09</lastmod>
+<lastmod>2023-03-09T19:53:53+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/kubernetes.html</loc>
-<lastmod>2023-03-05T19:44:27+00:09</lastmod>
+<lastmod>2023-03-09T19:53:53+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/gke.html</loc>
-<lastmod>2023-03-05T19:44:27+00:09</lastmod>
+<lastmod>2023-03-09T19:53:53+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -1202,7 +1209,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://samos-it.com/author/sam-stoelinga.html</loc>
-<lastmod>2023-03-05T19:44:27+00:09</lastmod>
+<lastmod>2023-03-09T19:53:53+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>

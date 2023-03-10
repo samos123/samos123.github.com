@@ -1,5 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Sam Stoelinga - Sam Stoelinga</title><link href="https://samos-it.com/" rel="alternate"></link><link href="https://samos-it.com/feeds/sam-stoelinga.atom.xml" rel="self"></link><id>https://samos-it.com/</id><updated>2023-03-05T19:44:27+01:00</updated><entry><title>3 tips for GKE ML/batch workloads</title><link href="https://samos-it.com/posts/3-tips-gke-ml-batch-workloads.html" rel="alternate"></link><published>2023-03-05T19:36:00+01:00</published><updated>2023-03-05T19:44:27+01:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2023-03-05:/posts/3-tips-gke-ml-batch-workloads.html</id><summary type="html">&lt;p&gt;There has been an influx of large batch and ML training workloads on GKE. I've personally
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Sam Stoelinga - Sam Stoelinga</title><link href="https://samos-it.com/" rel="alternate"></link><link href="https://samos-it.com/feeds/sam-stoelinga.atom.xml" rel="self"></link><id>https://samos-it.com/</id><updated>2023-03-09T19:53:53+01:00</updated><entry><title>GKE list tainted nodepools with a specific taint</title><link href="https://samos-it.com/posts/gke-list-tainted-nodepools-with-a-specific-taint.html" rel="alternate"></link><published>2023-03-09T19:47:00+01:00</published><updated>2023-03-09T19:53:53+01:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2023-03-09:/posts/gke-list-tainted-nodepools-with-a-specific-taint.html</id><summary type="html">&lt;p&gt;A use case for upgrades involved being able to list all the node pools
+that have scaled down back to 0 and have a specific taint. This blog post
+shows the commands you can use to get this information.&lt;/p&gt;
+&lt;p&gt;List the GKE nodepools that have been tainted with key=upgrade …&lt;/p&gt;</summary><content type="html">&lt;p&gt;A use case for upgrades involved being able to list all the node pools
+that have scaled down back to 0 and have a specific taint. This blog post
+shows the commands you can use to get this information.&lt;/p&gt;
+&lt;p&gt;List the GKE nodepools that have been tainted with key=upgrade using GKE nodepool:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;gcloud container node-pools list --cluster test-np-upgrades --flatten \
+  --filter &amp;quot;config.taints.key=upgrade&amp;quot; --format &amp;#39;value(name)&amp;#39;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;For example in my case that returns:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;default-pool
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Now if you want to get the number of nodes in that nodepool you could run:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;kubectl get nodes -l cloud.google.com/gke-nodepool&lt;span class="o"&gt;=&lt;/span&gt;default-pool &lt;span class="se"&gt;\&lt;/span&gt;
+  --output name --no-headers &lt;span class="p"&gt;|&lt;/span&gt; wc -l
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content><category term="K8s"></category><category term="k8s"></category><category term="kubernetes"></category><category term="gke"></category></entry><entry><title>3 tips for GKE ML/batch workloads</title><link href="https://samos-it.com/posts/3-tips-gke-ml-batch-workloads.html" rel="alternate"></link><published>2023-03-05T19:36:00+01:00</published><updated>2023-03-05T19:44:27+01:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2023-03-05:/posts/3-tips-gke-ml-batch-workloads.html</id><summary type="html">&lt;p&gt;There has been an influx of large batch and ML training workloads on GKE. I've personally
 had the please of working with one of those workloads. The things that
 batch and ML workload often require from GKE are the following:&lt;/p&gt;
 &lt;ul&gt;
