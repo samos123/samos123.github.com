@@ -84,7 +84,7 @@ ga('send', 'pageview');
 				<p>
 					<p>The following command first gets the changed and added files of a git
 commit and then creates a tar archive of those changed files.</p>
-<div class="highlight"><pre><span></span><code>git show <span class="o">{{</span>COMMIT_ID<span class="o">}}</span> --name-status <span class="p">|</span> grep -Ew <span class="s1">&#39;^M|A&#39;</span> <span class="p">|</span> awk <span class="s1">&#39;{ print $2 }&#39;</span> <span class="p">|</span> xargs tar czf usb-passthrough.tar.gz
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>show<span class="w"> </span><span class="o">{{</span>COMMIT_ID<span class="o">}}</span><span class="w"> </span>--name-status<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-Ew<span class="w"> </span><span class="s1">&#39;^M|A&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>awk<span class="w"> </span><span class="s1">&#39;{ print $2 }&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>xargs<span class="w"> </span>tar<span class="w"> </span>czf<span class="w"> </span>usb-passthrough.tar.gz
 </code></pre></div>
 				</p>
 				<a class="read-more" href="posts/create-tar-archive-of-changedadded-files-in-a-git-commit.html">Continue reading »</a>

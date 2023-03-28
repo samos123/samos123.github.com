@@ -154,7 +154,7 @@ This blog post will …</p>
 				<p>
 					<p>ack is a nice to tool to search in files in your current directory and subdirectores, but
 ack won't do search and replace. Luckily, we can easily combine ack and sed using xargs.</p>
-<div class="highlight"><pre><span></span><code>ack -l <span class="s2">&quot;app.kubernetes.io/name: myapp&quot;</span> <span class="p">|</span> xargs sed -i <span class="s1">&#39;s|app.kubernetes.io/name: myapp|app …</span></code></pre></div>
+<div class="highlight"><pre><span></span><code>ack<span class="w"> </span>-l<span class="w"> </span><span class="s2">&quot;app.kubernetes.io/name: myapp&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>xargs<span class="w"> </span>sed<span class="w"> </span>-i<span class="w"> </span><span class="s1">&#39;s|app.kubernetes.io/name: myapp|app …</span></code></pre></div>
 				</p>
 				<a class="read-more" href="posts/find-files-with-ack-and-replace-string-with-sed.html">Continue reading »</a>
 			</div>
@@ -201,7 +201,7 @@ Weaviate on GKE with replication turned on. The following topics will be covered
 </code></pre></div>
 
 <p>That should show the following string:</p>
-<div class="highlight"><pre><span></span><code><span class="mf">00000000</span><span class="o">-</span><span class="mf">0000</span><span class="o">-</span><span class="mf">0000</span><span class="o">-</span><span class="mf">0000</span><span class="o">-</span><span class="mf">000000000001</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="mf">00000000</span><span class="o">-</span><span class="mf">0000</span><span class="o">-</span><span class="mf">0000</span><span class="o">-</span><span class="mf">0000</span><span class="o">-</span><span class="mf">000000000001</span>
 </code></pre></div>
 
 <p>You can also convert back to integer by doing:</p>

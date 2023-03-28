@@ -87,7 +87,7 @@ ga('send', 'pageview');
     <!-- End Ezoic - under_page_title - under_page_title -->
     <span class="post-date">
         Mon 10 June 2019
-| Last updated on Tue 06 December 2022
+| Last updated on Sun 13 September 2020
     </span>
     <p>Inpatient people who just want the end-result, please go to:
 <a href="https://github.com/samos123/gcp-terraform-cloud-shell">GitHub: GCP Cloud Shell image with Terraform and Helm</a></p>
@@ -108,8 +108,8 @@ Container Registry.</p>
 <ol>
 <li>
 <p>Let's start by creating a new repo and setting the project ID where the Docker image should be published:</p>
-<div class="highlight"><pre><span></span><code>mkdir gcp-cloud-shell-custom-image
-<span class="nb">cd</span> gcp-cloud-shell-custom-image
+<div class="highlight"><pre><span></span><code>mkdir<span class="w"> </span>gcp-cloud-shell-custom-image
+<span class="nb">cd</span><span class="w"> </span>gcp-cloud-shell-custom-image
 <span class="nv">GCP_PROJECT_ID</span><span class="o">=</span>your-project-ID
 </code></pre></div>
 
@@ -119,16 +119,16 @@ Container Registry.</p>
 following content:</p>
 <div class="highlight"><pre><span></span><code><span class="k">FROM</span><span class="w"> </span><span class="s">gcr.io/cloudshell-images/cloudshell:latest</span>
 
-<span class="k">ENV</span><span class="w"> </span><span class="nv">TERRAFORM_VERSION</span><span class="o">=</span><span class="s2">&quot;0.11.10&quot;</span> <span class="se">\</span>
-    <span class="nv">HELM_VERSION</span><span class="o">=</span><span class="s2">&quot;v2.14.0&quot;</span>
+<span class="k">ENV</span><span class="w"> </span><span class="nv">TERRAFORM_VERSION</span><span class="o">=</span><span class="s2">&quot;0.11.10&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span><span class="nv">HELM_VERSION</span><span class="o">=</span><span class="s2">&quot;v2.14.0&quot;</span>
 
 <span class="k">WORKDIR</span><span class="w"> </span><span class="s">/tmp</span>
 
-<span class="k">RUN</span><span class="w"> </span>curl https://releases.hashicorp.com/terraform/<span class="si">${</span><span class="nv">TERRAFORM_VERSION</span><span class="si">}</span>/terraform_<span class="si">${</span><span class="nv">TERRAFORM_VERSION</span><span class="si">}</span>_linux_amd64.zip &gt; terraform_<span class="si">${</span><span class="nv">TERRAFORM_VERSION</span><span class="si">}</span>_linux_amd64.zip <span class="o">&amp;&amp;</span> <span class="se">\</span>
-    unzip terraform_<span class="si">${</span><span class="nv">TERRAFORM_VERSION</span><span class="si">}</span>_linux_amd64.zip -d /bin <span class="o">&amp;&amp;</span> <span class="se">\</span>
-    wget -q https://storage.googleapis.com/kubernetes-helm/helm-<span class="si">${</span><span class="nv">HELM_VERSION</span><span class="si">}</span>-linux-amd64.tar.gz -O - <span class="p">|</span> tar -xzO linux-amd64/helm &gt; /usr/local/bin/helm <span class="o">&amp;&amp;</span> <span class="se">\</span>
-    chmod +x /usr/local/bin/helm <span class="o">&amp;&amp;</span> <span class="se">\</span>
-    rm -f terraform_<span class="si">${</span><span class="nv">TERRAFORM_VERSION</span><span class="si">}</span>_linux_amd64.zip
+<span class="k">RUN</span><span class="w"> </span>curl<span class="w"> </span>https://releases.hashicorp.com/terraform/<span class="si">${</span><span class="nv">TERRAFORM_VERSION</span><span class="si">}</span>/terraform_<span class="si">${</span><span class="nv">TERRAFORM_VERSION</span><span class="si">}</span>_linux_amd64.zip<span class="w"> </span>&gt;<span class="w"> </span>terraform_<span class="si">${</span><span class="nv">TERRAFORM_VERSION</span><span class="si">}</span>_linux_amd64.zip<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>unzip<span class="w"> </span>terraform_<span class="si">${</span><span class="nv">TERRAFORM_VERSION</span><span class="si">}</span>_linux_amd64.zip<span class="w"> </span>-d<span class="w"> </span>/bin<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>wget<span class="w"> </span>-q<span class="w"> </span>https://storage.googleapis.com/kubernetes-helm/helm-<span class="si">${</span><span class="nv">HELM_VERSION</span><span class="si">}</span>-linux-amd64.tar.gz<span class="w"> </span>-O<span class="w"> </span>-<span class="w"> </span><span class="p">|</span><span class="w"> </span>tar<span class="w"> </span>-xzO<span class="w"> </span>linux-amd64/helm<span class="w"> </span>&gt;<span class="w"> </span>/usr/local/bin/helm<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>chmod<span class="w"> </span>+x<span class="w"> </span>/usr/local/bin/helm<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>rm<span class="w"> </span>-f<span class="w"> </span>terraform_<span class="si">${</span><span class="nv">TERRAFORM_VERSION</span><span class="si">}</span>_linux_amd64.zip
 </code></pre></div>
 
 </li>

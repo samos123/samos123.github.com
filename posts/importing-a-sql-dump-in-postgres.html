@@ -87,12 +87,12 @@ ga('send', 'pageview');
     <!-- End Ezoic - under_page_title - under_page_title -->
     <span class="post-date">
         Tue 29 November 2011
-| Last updated on Tue 06 December 2022
+| Last updated on Sun 13 September 2020
     </span>
     <p>I always keep forgetting how to import a SQL dump into postgres and
 found it always hard to find the right documentation. So I thought lets
 share it:</p>
-<div class="highlight"><pre><span></span><code>psql -d dbname -U username -f dumpfile.sql
+<div class="highlight"><pre><span></span><code>psql<span class="w"> </span>-d<span class="w"> </span>dbname<span class="w"> </span>-U<span class="w"> </span>username<span class="w"> </span>-f<span class="w"> </span>dumpfile.sql
 </code></pre></div>
 
 <p>This should also work with files created by pgdump.</p>

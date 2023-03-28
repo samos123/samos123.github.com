@@ -87,7 +87,6 @@ ga('send', 'pageview');
     <!-- End Ezoic - under_page_title - under_page_title -->
     <span class="post-date">
         Sun 13 September 2020
-| Last updated on Tue 06 December 2022
     </span>
     <p>Cloud providers often prevent you from using L2 protocols such as ARP. These
 protocols however are heavily used in existing software such as keepalived.
@@ -104,34 +103,34 @@ be using the <code>10.200.0.0/24</code> subnet.</p>
 <ol>
 <li>
 <p>Let's start by creating <code>vm-1</code></p>
-<div class="highlight"><pre><span></span><code>gcloud compute instances create vm-1 <span class="se">\</span>
-          --image-family<span class="o">=</span>ubuntu-2004-lts --image-project<span class="o">=</span>ubuntu-os-cloud <span class="se">\</span>
-          --zone<span class="o">=</span>us-central1-a <span class="se">\</span>
-          --boot-disk-size 20G <span class="se">\</span>
-          --boot-disk-type pd-ssd <span class="se">\</span>
-          --can-ip-forward <span class="se">\</span>
-          --network default <span class="se">\</span>
-          --machine-type n1-standard-2
+<div class="highlight"><pre><span></span><code>gcloud<span class="w"> </span>compute<span class="w"> </span>instances<span class="w"> </span>create<span class="w"> </span>vm-1<span class="w"> </span><span class="se">\</span>
+<span class="w">          </span>--image-family<span class="o">=</span>ubuntu-2004-lts<span class="w"> </span>--image-project<span class="o">=</span>ubuntu-os-cloud<span class="w"> </span><span class="se">\</span>
+<span class="w">          </span>--zone<span class="o">=</span>us-central1-a<span class="w"> </span><span class="se">\</span>
+<span class="w">          </span>--boot-disk-size<span class="w"> </span>20G<span class="w"> </span><span class="se">\</span>
+<span class="w">          </span>--boot-disk-type<span class="w"> </span>pd-ssd<span class="w"> </span><span class="se">\</span>
+<span class="w">          </span>--can-ip-forward<span class="w"> </span><span class="se">\</span>
+<span class="w">          </span>--network<span class="w"> </span>default<span class="w"> </span><span class="se">\</span>
+<span class="w">          </span>--machine-type<span class="w"> </span>n1-standard-2
 </code></pre></div>
 
 </li>
 <li>
 <p>Repeat the same command creating <code>vm-2</code> this time:</p>
-<div class="highlight"><pre><span></span><code>gcloud compute instances create vm-2 <span class="se">\</span>
-          --image-family<span class="o">=</span>ubuntu-2004-lts --image-project<span class="o">=</span>ubuntu-os-cloud <span class="se">\</span>
-          --zone<span class="o">=</span>us-central1-a <span class="se">\</span>
-          --boot-disk-size 20G <span class="se">\</span>
-          --boot-disk-type pd-ssd <span class="se">\</span>
-          --can-ip-forward <span class="se">\</span>
-          --network default <span class="se">\</span>
-          --machine-type n1-standard-2
+<div class="highlight"><pre><span></span><code>gcloud<span class="w"> </span>compute<span class="w"> </span>instances<span class="w"> </span>create<span class="w"> </span>vm-2<span class="w"> </span><span class="se">\</span>
+<span class="w">          </span>--image-family<span class="o">=</span>ubuntu-2004-lts<span class="w"> </span>--image-project<span class="o">=</span>ubuntu-os-cloud<span class="w"> </span><span class="se">\</span>
+<span class="w">          </span>--zone<span class="o">=</span>us-central1-a<span class="w"> </span><span class="se">\</span>
+<span class="w">          </span>--boot-disk-size<span class="w"> </span>20G<span class="w"> </span><span class="se">\</span>
+<span class="w">          </span>--boot-disk-type<span class="w"> </span>pd-ssd<span class="w"> </span><span class="se">\</span>
+<span class="w">          </span>--can-ip-forward<span class="w"> </span><span class="se">\</span>
+<span class="w">          </span>--network<span class="w"> </span>default<span class="w"> </span><span class="se">\</span>
+<span class="w">          </span>--machine-type<span class="w"> </span>n1-standard-2
 </code></pre></div>
 
 </li>
 <li>
 <p>Verify that SSH to both VMs is available and up. You might need o be patient.</p>
-<div class="highlight"><pre><span></span><code>gcloud compute ssh root@vm-1 --zone us-central1-a --command <span class="s2">&quot;echo &#39;SSH to vm-1 succeeded&#39;&quot;</span>
-gcloud compute ssh root@vm-2 --zone us-central1-a --command <span class="s2">&quot;echo &#39;SSH to vm-2 succeeded&#39;&quot;</span>
+<div class="highlight"><pre><span></span><code>gcloud<span class="w"> </span>compute<span class="w"> </span>ssh<span class="w"> </span>root@vm-1<span class="w"> </span>--zone<span class="w"> </span>us-central1-a<span class="w"> </span>--command<span class="w"> </span><span class="s2">&quot;echo &#39;SSH to vm-1 succeeded&#39;&quot;</span>
+gcloud<span class="w"> </span>compute<span class="w"> </span>ssh<span class="w"> </span>root@vm-2<span class="w"> </span>--zone<span class="w"> </span>us-central1-a<span class="w"> </span>--command<span class="w"> </span><span class="s2">&quot;echo &#39;SSH to vm-2 succeeded&#39;&quot;</span>
 </code></pre></div>
 
 </li>
@@ -142,18 +141,18 @@ that you just created.</p>
 <ol>
 <li>
 <p>Create bash variables that will be used for setting up the VXLAN mesh</p>
-<div class="highlight"><pre><span></span><code><span class="nv">VM1_VPC_IP</span><span class="o">=</span><span class="k">$(</span>gcloud compute instances describe vm-1 <span class="se">\</span>
-               --format<span class="o">=</span><span class="s1">&#39;get(networkInterfaces[0].networkIP)&#39;</span><span class="k">)</span>
-<span class="nv">VM2_VPC_IP</span><span class="o">=</span><span class="k">$(</span>gcloud compute instances describe vm-2 <span class="se">\</span>
-               --format<span class="o">=</span><span class="s1">&#39;get(networkInterfaces[0].networkIP)&#39;</span><span class="k">)</span>
-<span class="nb">echo</span> <span class="nv">$VM1_VPC_IP</span>
-<span class="nb">echo</span> <span class="nv">$VM2_VPC_IP</span>
+<div class="highlight"><pre><span></span><code><span class="nv">VM1_VPC_IP</span><span class="o">=</span><span class="k">$(</span>gcloud<span class="w"> </span>compute<span class="w"> </span>instances<span class="w"> </span>describe<span class="w"> </span>vm-1<span class="w"> </span><span class="se">\</span>
+<span class="w">               </span>--format<span class="o">=</span><span class="s1">&#39;get(networkInterfaces[0].networkIP)&#39;</span><span class="k">)</span>
+<span class="nv">VM2_VPC_IP</span><span class="o">=</span><span class="k">$(</span>gcloud<span class="w"> </span>compute<span class="w"> </span>instances<span class="w"> </span>describe<span class="w"> </span>vm-2<span class="w"> </span><span class="se">\</span>
+<span class="w">               </span>--format<span class="o">=</span><span class="s1">&#39;get(networkInterfaces[0].networkIP)&#39;</span><span class="k">)</span>
+<span class="nb">echo</span><span class="w"> </span><span class="nv">$VM1_VPC_IP</span>
+<span class="nb">echo</span><span class="w"> </span><span class="nv">$VM2_VPC_IP</span>
 </code></pre></div>
 
 </li>
 <li>
 <p>Create the VXLAN device and mesh on <code>vm-1</code></p>
-<div class="highlight"><pre><span></span><code>gcloud compute ssh root@vm-1 --zone us-central1-a  <span class="s">&lt;&lt; EOF</span>
+<div class="highlight"><pre><span></span><code>gcloud<span class="w"> </span>compute<span class="w"> </span>ssh<span class="w"> </span>root@vm-1<span class="w"> </span>--zone<span class="w"> </span>us-central1-a<span class="w">  </span><span class="s">&lt;&lt; EOF</span>
 <span class="s">set -x</span>
 <span class="s">ip link add vxlan0 type vxlan id 42 dev ens4 dstport 0</span>
 <span class="s">bridge fdb append to 00:00:00:00:00:00 dst $VM2_VPC_IP dev vxlan0</span>
@@ -165,7 +164,7 @@ that you just created.</p>
 </li>
 <li>
 <p>Create the VXLAN device and mesh on <code>vm-2</code></p>
-<div class="highlight"><pre><span></span><code>gcloud compute ssh root@vm-2 --zone us-central1-a  <span class="s">&lt;&lt; EOF</span>
+<div class="highlight"><pre><span></span><code>gcloud<span class="w"> </span>compute<span class="w"> </span>ssh<span class="w"> </span>root@vm-2<span class="w"> </span>--zone<span class="w"> </span>us-central1-a<span class="w">  </span><span class="s">&lt;&lt; EOF</span>
 <span class="s">set -x</span>
 <span class="s">ip link add vxlan0 type vxlan id 42 dev ens4 dstport 0</span>
 <span class="s">bridge fdb append to 00:00:00:00:00:00 dst $VM1_VPC_IP dev vxlan0</span>
@@ -177,15 +176,15 @@ that you just created.</p>
 </li>
 <li>
 <p>Start a tcpdump on vm-1</p>
-<div class="highlight"><pre><span></span><code>gcloud compute ssh root@vm-1 --zone us-central1-a
-tcpdump -i vxlan0 -n
+<div class="highlight"><pre><span></span><code>gcloud<span class="w"> </span>compute<span class="w"> </span>ssh<span class="w"> </span>root@vm-1<span class="w"> </span>--zone<span class="w"> </span>us-central1-a
+tcpdump<span class="w"> </span>-i<span class="w"> </span>vxlan0<span class="w"> </span>-n
 </code></pre></div>
 
 </li>
 <li>
 <p>In another session ping <code>vm-2</code> from <code>vm-1</code>  and take a look at tcpdump output. Notice the arp.</p>
-<div class="highlight"><pre><span></span><code>gcloud compute ssh root@vm-1 --zone us-central1-a
-ping <span class="m">10</span>.200.0.3
+<div class="highlight"><pre><span></span><code>gcloud<span class="w"> </span>compute<span class="w"> </span>ssh<span class="w"> </span>root@vm-1<span class="w"> </span>--zone<span class="w"> </span>us-central1-a
+ping<span class="w"> </span><span class="m">10</span>.200.0.3
 </code></pre></div>
 
 </li>

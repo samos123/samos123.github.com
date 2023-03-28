@@ -87,7 +87,7 @@ ga('send', 'pageview');
     <!-- End Ezoic - under_page_title - under_page_title -->
     <span class="post-date">
         Wed 14 November 2012
-| Last updated on Tue 06 December 2022
+| Last updated on Sun 13 September 2020
     </span>
     <p>I'm switching to a new laptop, but don't want to have to install
 Archlinux again. So instead of re-installing I will try to copy all
@@ -130,17 +130,17 @@ IP: 192.168.1.111</p>
 </li>
 <li>
 <p>After you have created the partitions successfully, mount all partitions to /mnt</p>
-<div class="highlight"><pre><span></span><code>mount /dev/sda2 /mnt
-mkdir /mnt/boot
-mount /dev/sda1 /mnt/boot
-mkdir /mnt/home
-mount /dev/sda3 /mnt/home
+<div class="highlight"><pre><span></span><code>mount<span class="w"> </span>/dev/sda2<span class="w"> </span>/mnt
+mkdir<span class="w"> </span>/mnt/boot
+mount<span class="w"> </span>/dev/sda1<span class="w"> </span>/mnt/boot
+mkdir<span class="w"> </span>/mnt/home
+mount<span class="w"> </span>/dev/sda3<span class="w"> </span>/mnt/home
 </code></pre></div>
 
 </li>
 <li>
 <p>Now go back to the old Archlinux laptop and copy all files to the newly created partitions:</p>
-<div class="highlight"><pre><span></span><code>rsync -azv --progress --exclude<span class="o">=</span>/dev --exclude<span class="o">=</span>/sys / root@192.168.1.111:/mnt/
+<div class="highlight"><pre><span></span><code>rsync<span class="w"> </span>-azv<span class="w"> </span>--progress<span class="w"> </span>--exclude<span class="o">=</span>/dev<span class="w"> </span>--exclude<span class="o">=</span>/sys<span class="w"> </span>/<span class="w"> </span>root@192.168.1.111:/mnt/
 </code></pre></div>
 
 <p>This may take a while..................</p>
@@ -148,10 +148,10 @@ mount /dev/sda3 /mnt/home
 <li>
 <p>After everything is copied over to the new laptop, we will have to
 change /etc/fstab to look as follows:</p>
-<div class="highlight"><pre><span></span><code>tmpfs /tmp tmpfs nodev,nosuid <span class="m">0</span> <span class="m">0</span>
-<span class="nv">LABEL</span><span class="o">=</span>root / ext4 defaults,noatime <span class="m">0</span> <span class="m">1</span>
-<span class="nv">LABEL</span><span class="o">=</span>home /home ext4 defaults,noatime <span class="m">0</span> <span class="m">2</span>
-<span class="nv">LABEL</span><span class="o">=</span>boot /boot ext2 defaults,noatime <span class="m">0</span> <span class="m">2</span>
+<div class="highlight"><pre><span></span><code>tmpfs<span class="w"> </span>/tmp<span class="w"> </span>tmpfs<span class="w"> </span>nodev,nosuid<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="m">0</span>
+<span class="nv">LABEL</span><span class="o">=</span>root<span class="w"> </span>/<span class="w"> </span>ext4<span class="w"> </span>defaults,noatime<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="m">1</span>
+<span class="nv">LABEL</span><span class="o">=</span>home<span class="w"> </span>/home<span class="w"> </span>ext4<span class="w"> </span>defaults,noatime<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="m">2</span>
+<span class="nv">LABEL</span><span class="o">=</span>boot<span class="w"> </span>/boot<span class="w"> </span>ext2<span class="w"> </span>defaults,noatime<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="m">2</span>
 </code></pre></div>
 
 </li>
@@ -177,8 +177,8 @@ blocklists archlinux so after reading the wiki it said I could fix this by using
 <p>I also had to update my modules.d/xxx to not load some specific AMD modules for laptop-mode tools as the new laptop has an intel processor.
 Also has to remove the ati driver and change to intel open source
 driver:</p>
-<div class="highlight"><pre><span></span><code>yaourt -Rs xf86-video-ati
-yaourt -S xf86-video-nouveau
+<div class="highlight"><pre><span></span><code>yaourt<span class="w"> </span>-Rs<span class="w"> </span>xf86-video-ati
+yaourt<span class="w"> </span>-S<span class="w"> </span>xf86-video-nouveau
 </code></pre></div>
 
 <p>The reason I am switching: My current HP 625 laptop has served its

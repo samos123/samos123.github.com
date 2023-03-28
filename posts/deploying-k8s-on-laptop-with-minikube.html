@@ -87,6 +87,7 @@ ga('send', 'pageview');
     <!-- End Ezoic - under_page_title - under_page_title -->
     <span class="post-date">
         Fri 09 December 2022
+| Last updated on Mon 27 March 2023
     </span>
     <iframe width="560" height="315" src="https://www.youtube.com/embed/AJVoHzb9KeQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
@@ -101,50 +102,50 @@ the following:</p>
 <h2>Installing required tools</h2>
 <p>Install docker by following the steps outlined <a href="https://docs.docker.com/engine/install/ubuntu/#install-using-the-convenience-script">here</a>:</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># These steps are for ubuntu, you can follow steps for another distro if needed</span>
-curl -fsSL https://get.docker.com -o get-docker.sh
-sudo sh get-docker.sh
+curl<span class="w"> </span>-fsSL<span class="w"> </span>https://get.docker.com<span class="w"> </span>-o<span class="w"> </span>get-docker.sh
+sudo<span class="w"> </span>sh<span class="w"> </span>get-docker.sh
 </code></pre></div>
 
 <p>Verify docker was installed succesfully by running:</p>
-<div class="highlight"><pre><span></span><code>docker run hello-world
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span>hello-world
 </code></pre></div>
 
 <p>Note if you get permission denied then you might need to add yourself to the docker
 group. You can do this by running:</p>
-<div class="highlight"><pre><span></span><code>sudo usermod -a -G docker <span class="nv">$USER</span>
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>usermod<span class="w"> </span>-a<span class="w"> </span>-G<span class="w"> </span>docker<span class="w"> </span><span class="nv">$USER</span>
 <span class="c1"># make the change effective in current shell</span>
-newgrp docker
+newgrp<span class="w"> </span>docker
 </code></pre></div>
 
 <p>Install kubectl by following the steps outlined <a href="https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/">here</a>:</p>
-<div class="highlight"><pre><span></span><code>curl -LO <span class="s2">&quot;https://dl.k8s.io/release/</span><span class="k">$(</span>curl -L -s https://dl.k8s.io/release/stable.txt<span class="k">)</span><span class="s2">/bin/linux/amd64/kubectl&quot;</span>
-sudo install -o root -g root -m <span class="m">0755</span> kubectl /usr/local/bin/kubectl
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-LO<span class="w"> </span><span class="s2">&quot;https://dl.k8s.io/release/</span><span class="k">$(</span>curl<span class="w"> </span>-L<span class="w"> </span>-s<span class="w"> </span>https://dl.k8s.io/release/stable.txt<span class="k">)</span><span class="s2">/bin/linux/amd64/kubectl&quot;</span>
+sudo<span class="w"> </span>install<span class="w"> </span>-o<span class="w"> </span>root<span class="w"> </span>-g<span class="w"> </span>root<span class="w"> </span>-m<span class="w"> </span><span class="m">0755</span><span class="w"> </span>kubectl<span class="w"> </span>/usr/local/bin/kubectl
 </code></pre></div>
 
 <p>Install minikube by following the steps outlined <a href="https://minikube.sigs.k8s.io/docs/start/">here</a>:</p>
-<div class="highlight"><pre><span></span><code>curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
-sudo install minikube-linux-amd64 /usr/local/bin/minikube
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-LO<span class="w"> </span>https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+sudo<span class="w"> </span>install<span class="w"> </span>minikube-linux-amd64<span class="w"> </span>/usr/local/bin/minikube
 </code></pre></div>
 
 <p>All required tools have now been installed.</p>
 <h2>Deploying K8s on your laptop</h2>
 <p>Follow steps of the "Start your cluster" section outlined <a href="https://minikube.sigs.k8s.io/docs/start/">here</a>:</p>
-<div class="highlight"><pre><span></span><code>minikube start
+<div class="highlight"><pre><span></span><code>minikube<span class="w"> </span>start
 </code></pre></div>
 
 <p>Verify that you can access your cluster by running:</p>
-<div class="highlight"><pre><span></span><code>kubectl get nodes
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>nodes
 </code></pre></div>
 
 <h2>Deploying an application to your K8s cluster</h2>
 <p>Let's deploy a simple web application by running:</p>
-<div class="highlight"><pre><span></span><code>kubectl create deployment hello-minikube <span class="se">\</span>
-  --image<span class="o">=</span>kicbase/echo-server:1.0
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>create<span class="w"> </span>deployment<span class="w"> </span>hello-minikube<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--image<span class="o">=</span>kicbase/echo-server:1.0
 </code></pre></div>
 
 <p>You can expose the application on port 8080 by running:</p>
-<div class="highlight"><pre><span></span><code>kubectl expose deployment hello-minikube --type<span class="o">=</span>NodePort --port<span class="o">=</span><span class="m">8080</span>
-minikube service hello-minikube
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>expose<span class="w"> </span>deployment<span class="w"> </span>hello-minikube<span class="w"> </span>--type<span class="o">=</span>NodePort<span class="w"> </span>--port<span class="o">=</span><span class="m">8080</span>
+minikube<span class="w"> </span>service<span class="w"> </span>hello-minikube
 </code></pre></div>
 
 <p>The <code>minikube service</code> command should have setup port forwarding for you and opened

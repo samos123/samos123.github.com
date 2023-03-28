@@ -87,7 +87,6 @@ ga('send', 'pageview');
     <!-- End Ezoic - under_page_title - under_page_title -->
     <span class="post-date">
         Mon 11 October 2021
-| Last updated on Tue 06 December 2022
     </span>
     <p>GKE by default deploys kube-dns and other system services to any of your
 nodepools. This is probably fine for most cases, but certain use cases
@@ -107,11 +106,11 @@ of the system services nodepool. Let's take a look at how to modify the
 deployments in the <code>kube-system</code> namespace and add a <code>nodeSelector</code>.</p>
 <p>First, create the patch to add a nodeSelector by creating a file named
 <code>nodeSelector-patch.yaml</code> with the following content:</p>
-<div class="highlight"><pre><span></span><code><span class="nt">spec</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="nt">template</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">spec</span><span class="p">:</span><span class="w"></span>
-<span class="w">      </span><span class="nt">nodeSelector</span><span class="p">:</span><span class="w"></span>
-<span class="w">        </span><span class="nt">cloud.google.com/gke-nodepool</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">system</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">template</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">spec</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">nodeSelector</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">cloud.google.com/gke-nodepool</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">system</span>
 </code></pre></div>
 
 <p>Note: this assumes you have a nodepool named <code>system</code> where all your system
@@ -138,7 +137,7 @@ metrics-server-v0.3.6                1/1     1            1           342d
 <p>That looks fine in my case, but your output may differ so make sure to review
 before you add a nodeSelector to all these deployments.</p>
 <p>Let's add the nodeSelector by patching all the deployments in <code>kube-system</code>:</p>
-<div class="highlight"><pre><span></span><code>kubectl get deployment -o NAME -n kube-system <span class="p">|</span> xargs -n <span class="m">1</span> -I <span class="o">{}</span> kubectl patch <span class="o">{}</span> -n kube-system --patch <span class="s2">&quot;</span><span class="k">$(</span>cat nodeSelector-patch.yaml<span class="k">)</span><span class="s2">&quot;</span>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>deployment<span class="w"> </span>-o<span class="w"> </span>NAME<span class="w"> </span>-n<span class="w"> </span>kube-system<span class="w"> </span><span class="p">|</span><span class="w"> </span>xargs<span class="w"> </span>-n<span class="w"> </span><span class="m">1</span><span class="w"> </span>-I<span class="w"> </span><span class="o">{}</span><span class="w"> </span>kubectl<span class="w"> </span>patch<span class="w"> </span><span class="o">{}</span><span class="w"> </span>-n<span class="w"> </span>kube-system<span class="w"> </span>--patch<span class="w"> </span><span class="s2">&quot;</span><span class="k">$(</span>cat<span class="w"> </span>nodeSelector-patch.yaml<span class="k">)</span><span class="s2">&quot;</span>
 </code></pre></div>
 
 <p>In my case this was the output:</p>
@@ -158,10 +157,10 @@ deployment.apps/metrics-server-v0.3.6 patched
 <p>Now the pods belonging to those deployment should be terminated in the old
 nodepool and be running in the nodepool named <code>system</code>. You can verify this
 by checking for example on which node the kube-dns pods are running:</p>
-<div class="highlight"><pre><span></span><code>kubectl get pods -n kube-system -l k8s-app<span class="o">=</span>kube-dns -o wide
-NAME                       READY   STATUS    RESTARTS   AGE   IP         NODE                                 NOMINATED NODE   READINESS GATES
-kube-dns-848bb8c5d-fzh7h   <span class="m">4</span>/4     Running   <span class="m">0</span>          28m   <span class="m">10</span>.4.3.3   gke-cluster-1-system-2db0a54b-jx6s   &lt;none&gt;           &lt;none&gt;
-kube-dns-848bb8c5d-l72fh   <span class="m">4</span>/4     Running   <span class="m">0</span>          28m   <span class="m">10</span>.4.4.3   gke-cluster-1-system-2db0a54b-ll3p   &lt;none&gt;           &lt;none&gt;
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>-n<span class="w"> </span>kube-system<span class="w"> </span>-l<span class="w"> </span>k8s-app<span class="o">=</span>kube-dns<span class="w"> </span>-o<span class="w"> </span>wide
+NAME<span class="w">                       </span>READY<span class="w">   </span>STATUS<span class="w">    </span>RESTARTS<span class="w">   </span>AGE<span class="w">   </span>IP<span class="w">         </span>NODE<span class="w">                                 </span>NOMINATED<span class="w"> </span>NODE<span class="w">   </span>READINESS<span class="w"> </span>GATES
+kube-dns-848bb8c5d-fzh7h<span class="w">   </span><span class="m">4</span>/4<span class="w">     </span>Running<span class="w">   </span><span class="m">0</span><span class="w">          </span>28m<span class="w">   </span><span class="m">10</span>.4.3.3<span class="w">   </span>gke-cluster-1-system-2db0a54b-jx6s<span class="w">   </span>&lt;none&gt;<span class="w">           </span>&lt;none&gt;
+kube-dns-848bb8c5d-l72fh<span class="w">   </span><span class="m">4</span>/4<span class="w">     </span>Running<span class="w">   </span><span class="m">0</span><span class="w">          </span>28m<span class="w">   </span><span class="m">10</span>.4.4.3<span class="w">   </span>gke-cluster-1-system-2db0a54b-ll3p<span class="w">   </span>&lt;none&gt;<span class="w">           </span>&lt;none&gt;
 </code></pre></div>
     <!-- Ezoic - bottom_of_page - bottom_of_page -->
     <div id="ezoic-pub-ad-placeholder-104"> </div>

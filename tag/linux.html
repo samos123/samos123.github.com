@@ -101,7 +101,7 @@ opkg install python3-codecs</p>
 					<p>Tsinghua university uses <a href="https://en.wikipedia.org/wiki/ISATAP">ISATAP</a> to provide IPv6 connectivity to students.
 In Linux you can use the <a href="http://www.saschahlusiak.de/linux/isatap.htm">isatapd</a> program to create an ISATAP tunnel based on an IPv4 device.</p>
 <p>You can use the isatapd command as follows to establish an ISATAPD tunnel:</p>
-<div class="highlight"><pre><span></span><code>isatapd --router isatap.tsinghua.edu.cn
+<div class="highlight"><pre><span></span><code>isatapd<span class="w"> </span>--router<span class="w"> </span>isatap.tsinghua.edu.cn
 </code></pre></div>
 
 <p>After connecting check …</p>
@@ -129,7 +129,7 @@ Now you want to add eth1 to a linux bridge so you can hookin VMs on a vlan trunk
 					<p>In order to access other containers from a container it's needed
 to get the private IP address of the other containers. The following
 command is able to get the private ip address of the container.</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>docker inspect --format<span class="o">=</span><span class="s2">&quot;{{.NetworkSettings.IPAddress}}&quot;</span> <span class="nv">$CONTAINER_ID_OR_NAME</span>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>docker<span class="w"> </span>inspect<span class="w"> </span>--format<span class="o">=</span><span class="s2">&quot;{{.NetworkSettings.IPAddress}}&quot;</span><span class="w"> </span><span class="nv">$CONTAINER_ID_OR_NAME</span>
 <span class="go">172.17.0.15</span>
 </code></pre></div>
 				</p>
@@ -170,9 +170,9 @@ via this public server to the server behind a firewall.</p>
 				<span class="post-date">Sat 11 May 2013</span>
 				<p>
 					<p>Tired of all those join part messages?</p>
-<div class="highlight"><pre><span></span><code>/ignore <span class="se">\*</span> joins  
-/ignore <span class="se">\*</span> parts  
-/ignore <span class="se">\*</span> quits  
+<div class="highlight"><pre><span></span><code>/ignore<span class="w"> </span><span class="se">\*</span><span class="w"> </span>joins<span class="w">  </span>
+/ignore<span class="w"> </span><span class="se">\*</span><span class="w"> </span>parts<span class="w">  </span>
+/ignore<span class="w"> </span><span class="se">\*</span><span class="w"> </span>quits<span class="w">  </span>
 /save
 </code></pre></div>
 
@@ -190,7 +190,7 @@ via this public server to the server behind a firewall.</p>
 				<p>
 					<p>The following command first gets the changed and added files of a git
 commit and then creates a tar archive of those changed files.</p>
-<div class="highlight"><pre><span></span><code>git show <span class="o">{{</span>COMMIT_ID<span class="o">}}</span> --name-status <span class="p">|</span> grep -Ew <span class="s1">&#39;^M|A&#39;</span> <span class="p">|</span> awk <span class="s1">&#39;{ print $2 }&#39;</span> <span class="p">|</span> xargs tar czf usb-passthrough.tar.gz
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>show<span class="w"> </span><span class="o">{{</span>COMMIT_ID<span class="o">}}</span><span class="w"> </span>--name-status<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-Ew<span class="w"> </span><span class="s1">&#39;^M|A&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>awk<span class="w"> </span><span class="s1">&#39;{ print $2 }&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>xargs<span class="w"> </span>tar<span class="w"> </span>czf<span class="w"> </span>usb-passthrough.tar.gz
 </code></pre></div>
 				</p>
 				<a class="read-more" href="posts/create-tar-archive-of-changedadded-files-in-a-git-commit.html">Continue reading »</a>

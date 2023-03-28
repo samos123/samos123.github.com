@@ -87,6 +87,7 @@ ga('send', 'pageview');
     <!-- End Ezoic - under_page_title - under_page_title -->
     <span class="post-date">
         Tue 07 February 2023
+| Last updated on Mon 27 March 2023
     </span>
     <p>Weaviate has great docs on how to deploy on K8s using Helm, however
 this guide is specifically focused on an end-to-end deployment of
@@ -106,36 +107,36 @@ with 2 CPUs and 16 GB of memory but not recommended for production. </p>
 <p>For production with large datasets, you likely will need more memory, because Weaviate stores
 the vectors in memory. For sandbox however the e2-highmem-2 should suffice.</p>
 <p>Create a 3 node e2-highmem-2 GKE cluster by running:</p>
-<div class="highlight"><pre><span></span><code>gcloud container clusters create weaviate <span class="se">\</span>
-  --disk-size 500GB --disk-type pd-ssd <span class="se">\</span>
-  --enable-shielded-nodes --shielded-integrity-monitoring <span class="se">\</span>
-  --shielded-secure-boot --image-type COS_CONTAINERD <span class="se">\</span>
-  --machine-type e2-highmem-2 --num-nodes <span class="m">3</span> <span class="se">\</span>
-  --region us-central1 --node-locations<span class="o">=</span>us-central1-a <span class="se">\</span>
-  --release-channel stable
+<div class="highlight"><pre><span></span><code>gcloud<span class="w"> </span>container<span class="w"> </span>clusters<span class="w"> </span>create<span class="w"> </span>weaviate<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--disk-size<span class="w"> </span>500GB<span class="w"> </span>--disk-type<span class="w"> </span>pd-ssd<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--enable-shielded-nodes<span class="w"> </span>--shielded-integrity-monitoring<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--shielded-secure-boot<span class="w"> </span>--image-type<span class="w"> </span>COS_CONTAINERD<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--machine-type<span class="w"> </span>e2-highmem-2<span class="w"> </span>--num-nodes<span class="w"> </span><span class="m">3</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--region<span class="w"> </span>us-central1<span class="w"> </span>--node-locations<span class="o">=</span>us-central1-a<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--release-channel<span class="w"> </span>stable
 </code></pre></div>
 
 <h2>2. Deploying Weaviate with Helm</h2>
 <p>Verify you have access to the GKE cluster and that helm is installed:</p>
-<div class="highlight"><pre><span></span><code>kubectl get nodes
-helm ls
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>nodes
+helm<span class="w"> </span>ls
 </code></pre></div>
 
 <p>Get the helm chart</p>
-<div class="highlight"><pre><span></span><code>helm repo add weaviate https://weaviate.github.io/weaviate-helm
-helm show values weaviate/weaviate &gt; values.yml
+<div class="highlight"><pre><span></span><code>helm<span class="w"> </span>repo<span class="w"> </span>add<span class="w"> </span>weaviate<span class="w"> </span>https://weaviate.github.io/weaviate-helm
+helm<span class="w"> </span>show<span class="w"> </span>values<span class="w"> </span>weaviate/weaviate<span class="w"> </span>&gt;<span class="w"> </span>values.yml
 </code></pre></div>
 
 <p>Modify <code>values.yaml</code> to utilize PD-SSD instead of default balanced disk by running:</p>
-<div class="highlight"><pre><span></span><code>sed -i <span class="s1">&#39;s/storageClassName: &quot;&quot;/storageClassName: &quot;premium-rwo&quot;/g&#39;</span> values.yml
+<div class="highlight"><pre><span></span><code>sed<span class="w"> </span>-i<span class="w"> </span><span class="s1">&#39;s/storageClassName: &quot;&quot;/storageClassName: &quot;premium-rwo&quot;/g&#39;</span><span class="w"> </span>values.yml
 </code></pre></div>
 
 <p>Modify <code>values.yaml</code> to set Weaviate replication factor from 1 to 3 by running:</p>
-<div class="highlight"><pre><span></span><code>sed -i <span class="s1">&#39;s/^replicas:.*/replicas: 3/g&#39;</span> values.yml
+<div class="highlight"><pre><span></span><code>sed<span class="w"> </span>-i<span class="w"> </span><span class="s1">&#39;s/^replicas:.*/replicas: 3/g&#39;</span><span class="w"> </span>values.yml
 </code></pre></div>
 
 <p>Install using the helm chart:</p>
-<div class="highlight"><pre><span></span><code>helm install my-weaviate weaviate/weaviate --values values.yml
+<div class="highlight"><pre><span></span><code>helm<span class="w"> </span>install<span class="w"> </span>my-weaviate<span class="w"> </span>weaviate/weaviate<span class="w"> </span>--values<span class="w"> </span>values.yml
 </code></pre></div>
 
 <p>Verify that the statefulset has been created:</p>
@@ -145,7 +146,7 @@ helm show values weaviate/weaviate &gt; values.yml
 <p>After a while, you should see that the statefulset will have 3 pods running.</p>
 <p>You should now be able to access your website cluster on the LoadBalancer
 external IP address. Run the following command to see the external IP:</p>
-<div class="highlight"><pre><span></span><code>kubectl get svc weaviate
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>svc<span class="w"> </span>weaviate
 </code></pre></div>
 
 <p>You can access weaviate on the following URL: <code>http://$LB_EXTERNAL_IP</code></p>
@@ -162,15 +163,15 @@ for a quickstart tutorial on how to use your deployed cluster.</p>
 <p>Changing the K8s Service Type of the Weaviate service to ClusterIP requires changing the
 <code>values.yml</code> that was used during <code>helm install</code>.</p>
 <p>Modify the <code>values.yml</code> by running the following command:</p>
-<div class="highlight"><pre><span></span><code>sed -i <span class="s1">&#39;s/type: LoadBalancer/type: ClusterIP/g&#39;</span> values.yml
+<div class="highlight"><pre><span></span><code>sed<span class="w"> </span>-i<span class="w"> </span><span class="s1">&#39;s/type: LoadBalancer/type: ClusterIP/g&#39;</span><span class="w"> </span>values.yml
 </code></pre></div>
 
 <p>Apply the change by executing <code>helm upgrade</code> with our updated <code>values.yml</code> file:</p>
-<div class="highlight"><pre><span></span><code>helm upgrade -f values.yml my-weaviate weaviate/weaviate
+<div class="highlight"><pre><span></span><code>helm<span class="w"> </span>upgrade<span class="w"> </span>-f<span class="w"> </span>values.yml<span class="w"> </span>my-weaviate<span class="w"> </span>weaviate/weaviate
 </code></pre></div>
 
 <p>Verify the external-ip for the weaviate service is now gone by running:</p>
-<div class="highlight"><pre><span></span><code>kubectl get svc weaviate
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>svc<span class="w"> </span>weaviate
 </code></pre></div>
 
 <p>Leave a comment if you have any other topics you want me to cover or if you
