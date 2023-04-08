@@ -23,12 +23,11 @@ I'm trying to become a better public speaker by publicly speaking. See some appe
 
 Highlights of my recent open source contributions:
 
+* [Created the Weaviate Spark Connector](https://github.com/semi-technologies/weaviate-spark-connector)
 * [Kaniko: Move from Google internal CI to Public CI and various other Prs](https://github.com/GoogleContainerTools/kaniko/pulls?q=is%3Apr+author%3Asamos123+is%3Aclosed)
 * [Updating the Weaviate OpenAI module to use embedding API](https://github.com/semi-technologies/weaviate/pull/2306)
 * [K8s Cluster Autoscaler: Fix GCE so OSS autoscaler works on GKE](https://github.com/kubernetes/autoscaler/pull/3907)
 * [K8s DaemonSet to load CA onto GKE nodes so you can pull down images from self-signed certs](https://github.com/samos123/gke-node-ca-importer)
 * [Terraform GCP provider support for Filestore attribute](https://github.com/GoogleCloudPlatform/magic-modules/pull/5161)
 * [CVE-2013-2059: OpenStack Security vulnerability where tokens weren't invalidated when user is deleted](https://bugzilla.redhat.com/show_bug.cgi?id=CVE-2013-2059)
-* [Created the Weaviate Spark Connector](https://github.com/semi-technologies/weaviate-spark-connector)
-* [Updated Weaviate OpenAI module](https://github.com/semi-technologies/weaviate/pull/2306)
 
