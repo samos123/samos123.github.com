@@ -116,63 +116,63 @@ cluster autoscaler? The short answer is you shouldn't unless you:</p>
 <p>You're stubborn and persistent and still believe you have to do this then
 let's look at how this can be done.</p>
 <h3>1. Create a GKE cluster without cluster autoscaler enabled</h3>
-<div class="highlight"><pre><span></span><code><span class="nv">PROJECT_ID</span><span class="o">=</span><span class="k">$(</span>gcloud<span class="w"> </span>config<span class="w"> </span>get-value<span class="w"> </span>project<span class="k">)</span>
+<div class="highlight"><pre><span></span><code><span class="nv">PROJECT_ID</span><span class="o">=</span><span class="k">$(</span>gcloud config get-value project<span class="k">)</span>
 <span class="nv">GKE_VERSION</span><span class="o">=</span><span class="s2">&quot;1.25.6-gke.1000&quot;</span>
-gcloud<span class="w"> </span>container<span class="w"> </span>clusters<span class="w"> </span>create<span class="w"> </span>no-autoscaler<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--no-enable-autoscaling<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--region<span class="w"> </span>us-central1<span class="w"> </span>--node-locations<span class="w"> </span>us-central1-a<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--release-channel<span class="w"> </span>None<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--cluster-version<span class="w"> </span><span class="nv">$GKE_VERSION</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--workload-pool<span class="w"> </span><span class="nv">$PROJECT_ID</span>.svc.id.goog
+gcloud container clusters create no-autoscaler <span class="se">\</span>
+  --no-enable-autoscaling <span class="se">\</span>
+  --region us-central1 --node-locations us-central1-a <span class="se">\</span>
+  --release-channel None <span class="se">\</span>
+  --cluster-version <span class="nv">$GKE_VERSION</span> <span class="se">\</span>
+  --workload-pool <span class="nv">$PROJECT_ID</span>.svc.id.goog
 </code></pre></div>
 
 <h2>2. Configure Workload Identity</h2>
 <p>Create a serviceAccount to be used for cluster autoscaler:</p>
-<div class="highlight"><pre><span></span><code>gcloud<span class="w"> </span>iam<span class="w"> </span>service-accounts<span class="w"> </span>create<span class="w"> </span>k8s-cluster-autoscaler
+<div class="highlight"><pre><span></span><code>gcloud iam service-accounts create k8s-cluster-autoscaler
 </code></pre></div>
 
 <p>Grant permission to the service account:</p>
-<div class="highlight"><pre><span></span><code>gcloud<span class="w"> </span>projects<span class="w"> </span>add-iam-policy-binding<span class="w"> </span><span class="nv">$PROJECT_ID</span><span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>--member<span class="w"> </span><span class="s2">&quot;serviceAccount:k8s-cluster-autoscaler@</span><span class="nv">$PROJECT_ID</span><span class="s2">.iam.gserviceaccount.com&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>--role<span class="w"> </span><span class="s2">&quot;roles/compute.instanceAdmin.v1&quot;</span>
+<div class="highlight"><pre><span></span><code>gcloud projects add-iam-policy-binding <span class="nv">$PROJECT_ID</span> <span class="se">\</span>
+    --member <span class="s2">&quot;serviceAccount:k8s-cluster-autoscaler@</span><span class="nv">$PROJECT_ID</span><span class="s2">.iam.gserviceaccount.com&quot;</span> <span class="se">\</span>
+    --role <span class="s2">&quot;roles/compute.instanceAdmin.v1&quot;</span>
 </code></pre></div>
 
 <p>Allow K8s Service Account to use the Google Service Account:</p>
-<div class="highlight"><pre><span></span><code>gcloud<span class="w"> </span>iam<span class="w"> </span>service-accounts<span class="w"> </span>add-iam-policy-binding<span class="w"> </span>k8s-cluster-autoscaler@<span class="nv">$PROJECT_ID</span>.iam.gserviceaccount.com<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>--role<span class="w"> </span>roles/iam.workloadIdentityUser<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>--member<span class="w"> </span><span class="s2">&quot;serviceAccount:</span><span class="nv">$PROJECT_ID</span><span class="s2">.svc.id.goog[kube-system/cluster-autoscaler-gce-cluster-autoscaler]&quot;</span>
+<div class="highlight"><pre><span></span><code>gcloud iam service-accounts add-iam-policy-binding k8s-cluster-autoscaler@<span class="nv">$PROJECT_ID</span>.iam.gserviceaccount.com <span class="se">\</span>
+    --role roles/iam.workloadIdentityUser <span class="se">\</span>
+    --member <span class="s2">&quot;serviceAccount:</span><span class="nv">$PROJECT_ID</span><span class="s2">.svc.id.goog[kube-system/cluster-autoscaler-gce-cluster-autoscaler]&quot;</span>
 </code></pre></div>
 
 <h3>3. Deploy the K8s cluster autoscaler using helm</h3>
 <p>Create a file named <code>values.yaml</code> that contains the config for autoscaler:</p>
-<div class="highlight"><pre><span></span><code><span class="nt">autoscalingGroupsnamePrefix</span><span class="p">:</span>
-<span class="w">  </span><span class="c1"># The name prefix of of the GCE managed instance groups</span>
-<span class="w">  </span><span class="c1"># this will be different in your case and in general follows this pattern</span>
-<span class="w">  </span><span class="c1"># gke-$CLUSTER_NAME (in my case cluster name is no-autoscaler)</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gke-no-autoscaler</span>
-<span class="w">    </span><span class="nt">minSize</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
-<span class="w">    </span><span class="nt">maxSize</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
+<div class="highlight"><pre><span></span><code><span class="nt">autoscalingGroupsnamePrefix</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="c1"># The name prefix of of the GCE managed instance groups</span><span class="w"></span>
+<span class="w">  </span><span class="c1"># this will be different in your case and in general follows this pattern</span><span class="w"></span>
+<span class="w">  </span><span class="c1"># gke-$CLUSTER_NAME (in my case cluster name is no-autoscaler)</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gke-no-autoscaler</span><span class="w"></span>
+<span class="w">    </span><span class="nt">minSize</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span><span class="w"></span>
+<span class="w">    </span><span class="nt">maxSize</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span><span class="w"></span>
 
-<span class="nt">autoDiscovery</span><span class="p">:</span>
-<span class="w">  </span><span class="c1"># the cluster name of the GKE cluster, change to your cluster name</span>
-<span class="w">  </span><span class="nt">clusterName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">no-autoscaler</span>
+<span class="nt">autoDiscovery</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="c1"># the cluster name of the GKE cluster, change to your cluster name</span><span class="w"></span>
+<span class="w">  </span><span class="nt">clusterName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">no-autoscaler</span><span class="w"></span>
 
-<span class="nt">extraArgs</span><span class="p">:</span>
-<span class="w">  </span><span class="c1"># I had to do this to prevent this error:</span>
-<span class="w">  </span><span class="c1"># lock is held by gke-2ff9d20265d64621837d-14fa-96a3-vm and has not yet expired</span>
-<span class="w">  </span><span class="c1"># failed to acquire lease kube-system/cluster-autoscaler</span>
-<span class="w">  </span><span class="nt">leader-elect</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="nt">extraArgs</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="c1"># I had to do this to prevent this error:</span><span class="w"></span>
+<span class="w">  </span><span class="c1"># lock is held by gke-2ff9d20265d64621837d-14fa-96a3-vm and has not yet expired</span><span class="w"></span>
+<span class="w">  </span><span class="c1"># failed to acquire lease kube-system/cluster-autoscaler</span><span class="w"></span>
+<span class="w">  </span><span class="nt">leader-elect</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w"></span>
 
-<span class="nt">cloudProvider</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gce</span>
-<span class="nt">image</span><span class="p">:</span>
-<span class="w">  </span><span class="c1"># Change the image tag version to match the GKE version. So if running</span>
-<span class="w">  </span><span class="c1"># GKE 1.25.6 make sure this version also is 1.25.0. there is no 1.25.6 image</span>
-<span class="w">  </span><span class="nt">tag</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1.25.0</span>
+<span class="nt">cloudProvider</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gce</span><span class="w"></span>
+<span class="nt">image</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="c1"># Change the image tag version to match the GKE version. So if running</span><span class="w"></span>
+<span class="w">  </span><span class="c1"># GKE 1.25.6 make sure this version also is 1.25.0. there is no 1.25.6 image</span><span class="w"></span>
+<span class="w">  </span><span class="nt">tag</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1.25.0</span><span class="w"></span>
 </code></pre></div>
 
 <p>Deploy K8s cluster autoscaler with the just created <code>values.yaml</code>:</p>
-<div class="highlight"><pre><span></span><code>helm<span class="w"> </span>repo<span class="w"> </span>add<span class="w"> </span>autoscaler<span class="w"> </span>https://kubernetes.github.io/autoscaler
-helm<span class="w"> </span>install<span class="w"> </span>cluster-autoscaler<span class="w"> </span>autoscaler/cluster-autoscaler<span class="w"> </span>-f<span class="w"> </span>values.yaml<span class="w"> </span>--namespace<span class="w"> </span>kube-system
+<div class="highlight"><pre><span></span><code>helm repo add autoscaler https://kubernetes.github.io/autoscaler
+helm install cluster-autoscaler autoscaler/cluster-autoscaler -f values.yaml --namespace kube-system
 </code></pre></div>
 
 <p>You should now have a K8s cluster autoscaler working. Try spinning up many

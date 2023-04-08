@@ -87,7 +87,7 @@ ga('send', 'pageview');
     <!-- End Ezoic - under_page_title - under_page_title -->
     <span class="post-date">
         Mon 30 December 2019
-| Last updated on Sun 13 September 2020
+| Last updated on Tue 06 December 2022
     </span>
     <p>You might be in a situation where you need to troubleshoot the networking
 stack on a container where you don't have the tools necessary. Or you might
@@ -110,39 +110,39 @@ concern.</p>
 <p>The image that we'll be using is <code>samos123/docker-toolbox</code>, which can be found
 on <a href="https://github.com/samos123/docker-toolbox">GitHub:samos123/docker-toolbox</a>.</p>
 <p>Create the file <code>debug-pod.yaml</code> with the following contents:</p>
-<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span>
-<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Pod</span>
-<span class="nt">metadata</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">debug-pod</span>
-<span class="w">  </span><span class="nt">labels</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">debug</span>
-<span class="nt">spec</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">hostNetwork</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">  </span><span class="nt">hostPID</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">  </span><span class="nt">containers</span><span class="p">:</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">debug-pod</span>
-<span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">samos123/docker-toolbox:latest</span>
-<span class="w">    </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="w"> </span><span class="s">&quot;/bin/bash&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;-c&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;--&quot;</span><span class="w"> </span><span class="p p-Indicator">]</span>
-<span class="w">    </span><span class="nt">args</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="w"> </span><span class="s">&quot;while</span><span class="nv"> </span><span class="s">true;</span><span class="nv"> </span><span class="s">do</span><span class="nv"> </span><span class="s">sleep</span><span class="nv"> </span><span class="s">30;</span><span class="nv"> </span><span class="s">done;&quot;</span><span class="w"> </span><span class="p p-Indicator">]</span>
-<span class="w">    </span><span class="nt">volumeMounts</span><span class="p">:</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dockersock</span>
-<span class="w">        </span><span class="nt">mountPath</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;/var/run/docker.sock&quot;</span>
-<span class="w">    </span><span class="nt">securityContext</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">privileged</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">      </span><span class="nt">capabilities</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">add</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;NET_ADMIN&quot;</span><span class="p p-Indicator">]</span>
-<span class="w">  </span><span class="nt">volumes</span><span class="p">:</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dockersock</span>
-<span class="w">    </span><span class="nt">hostPath</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/var/run/docker.sock</span>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span><span class="w"></span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Pod</span><span class="w"></span>
+<span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">debug-pod</span><span class="w"></span>
+<span class="w">  </span><span class="nt">labels</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">debug</span><span class="w"></span>
+<span class="nt">spec</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">hostNetwork</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
+<span class="w">  </span><span class="nt">hostPID</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
+<span class="w">  </span><span class="nt">containers</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">debug-pod</span><span class="w"></span>
+<span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">samos123/docker-toolbox:latest</span><span class="w"></span>
+<span class="w">    </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="w"> </span><span class="s">&quot;/bin/bash&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;-c&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;--&quot;</span><span class="w"> </span><span class="p p-Indicator">]</span><span class="w"></span>
+<span class="w">    </span><span class="nt">args</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="w"> </span><span class="s">&quot;while</span><span class="nv"> </span><span class="s">true;</span><span class="nv"> </span><span class="s">do</span><span class="nv"> </span><span class="s">sleep</span><span class="nv"> </span><span class="s">30;</span><span class="nv"> </span><span class="s">done;&quot;</span><span class="w"> </span><span class="p p-Indicator">]</span><span class="w"></span>
+<span class="w">    </span><span class="nt">volumeMounts</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dockersock</span><span class="w"></span>
+<span class="w">        </span><span class="nt">mountPath</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;/var/run/docker.sock&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">securityContext</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">privileged</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
+<span class="w">      </span><span class="nt">capabilities</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">add</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;NET_ADMIN&quot;</span><span class="p p-Indicator">]</span><span class="w"></span>
+<span class="w">  </span><span class="nt">volumes</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dockersock</span><span class="w"></span>
+<span class="w">    </span><span class="nt">hostPath</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/var/run/docker.sock</span><span class="w"></span>
 </code></pre></div>
 
 <p>Create the pod by running:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>debug-pod.yaml
+<div class="highlight"><pre><span></span><code>kubectl apply -f debug-pod.yaml
 </code></pre></div>
 
 <p>Verify you can access docker of the host:</p>
-<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>ps
+<div class="highlight"><pre><span></span><code>docker ps
 </code></pre></div>
 
 <h2>2. Find the PID of the target container</h2>
@@ -150,21 +150,21 @@ on <a href="https://github.com/samos123/docker-toolbox">GitHub:samos123/docker-t
 and corresponding interface. You can use <code>docker ps --filter name=nginx</code> to
 list all containers that have the nginx in their name.</p>
 <p>Now use the container ID to get the PID of the container:</p>
-<div class="highlight"><pre><span></span><code><span class="nv">pid</span><span class="o">=</span><span class="k">$(</span>docker<span class="w"> </span>inspect<span class="w"> </span>--format<span class="w"> </span><span class="s1">&#39;{{.State.Pid}}&#39;</span><span class="w"> </span><span class="nv">$containerID</span><span class="k">)</span>
+<div class="highlight"><pre><span></span><code><span class="nv">pid</span><span class="o">=</span><span class="k">$(</span>docker inspect --format <span class="s1">&#39;{{.State.Pid}}&#39;</span> <span class="nv">$containerID</span><span class="k">)</span>
 </code></pre></div>
 
 <h2>3. Enter the container network namespace</h2>
 <p><code>nsenter</code> can be used to enter the namespace using the PID:</p>
-<div class="highlight"><pre><span></span><code>nsenter<span class="w"> </span>-t<span class="w"> </span><span class="nv">$pid</span><span class="w"> </span>-n<span class="w"> </span>ip<span class="w"> </span>a
+<div class="highlight"><pre><span></span><code>nsenter -t <span class="nv">$pid</span> -n ip a
 </code></pre></div>
 
 <p>You will notice that there is an <code>eth0@ifX</code> interface inside the container
 network namespace. The <code>X</code> tells you the interface index on the host network.
 This index can then be used to figure out which veth belongs to the container.</p>
 <p>Run the following commands to find the veth interface:</p>
-<div class="highlight"><pre><span></span><code><span class="nv">ifindex</span><span class="o">=</span><span class="k">$(</span>nsenter<span class="w"> </span>-t<span class="w"> </span><span class="nv">$pid</span><span class="w"> </span>-n<span class="w"> </span>ip<span class="w"> </span>link<span class="w"> </span><span class="p">|</span><span class="w"> </span>sed<span class="w"> </span>-n<span class="w"> </span>-e<span class="w"> </span><span class="s1">&#39;s/.*eth0@if\([0-9]*\):.*/\1/p&#39;</span><span class="k">)</span>
-<span class="nv">veth</span><span class="o">=</span><span class="k">$(</span>ip<span class="w"> </span>-o<span class="w"> </span>link<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>^<span class="nv">$ifindex</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sed<span class="w"> </span>-n<span class="w"> </span>-e<span class="w"> </span><span class="s1">&#39;s/.*\(veth[[:alnum:]]*@if[[:digit:]]*\).*/\1/p&#39;</span><span class="k">)</span>
-<span class="nb">echo</span><span class="w"> </span><span class="nv">$veth</span>
+<div class="highlight"><pre><span></span><code><span class="nv">ifindex</span><span class="o">=</span><span class="k">$(</span>nsenter -t <span class="nv">$pid</span> -n ip link <span class="p">|</span> sed -n -e <span class="s1">&#39;s/.*eth0@if\([0-9]*\):.*/\1/p&#39;</span><span class="k">)</span>
+<span class="nv">veth</span><span class="o">=</span><span class="k">$(</span>ip -o link <span class="p">|</span> grep ^<span class="nv">$ifindex</span> <span class="p">|</span> sed -n -e <span class="s1">&#39;s/.*\(veth[[:alnum:]]*@if[[:digit:]]*\).*/\1/p&#39;</span><span class="k">)</span>
+<span class="nb">echo</span> <span class="nv">$veth</span>
 </code></pre></div>
 
 <p>I've created a script in the following repo: <a href="https://github.com/samos123/docker-veth">samos123/docker-veth</a></p>

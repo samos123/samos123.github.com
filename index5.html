@@ -100,7 +100,7 @@ ga('send', 'pageview');
 					<p>In order to access other containers from a container it's needed
 to get the private IP address of the other containers. The following
 command is able to get the private ip address of the container.</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>docker<span class="w"> </span>inspect<span class="w"> </span>--format<span class="o">=</span><span class="s2">&quot;{{.NetworkSettings.IPAddress}}&quot;</span><span class="w"> </span><span class="nv">$CONTAINER_ID_OR_NAME</span>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>docker inspect --format<span class="o">=</span><span class="s2">&quot;{{.NetworkSettings.IPAddress}}&quot;</span> <span class="nv">$CONTAINER_ID_OR_NAME</span>
 <span class="go">172.17.0.15</span>
 </code></pre></div>
 				</p>
@@ -181,7 +181,7 @@ same ofcourse, and was unable to use the …</p>
 				<span class="post-date">Sun 09 June 2013</span>
 				<p>
 					<p><strong>Answer:</strong>  </p>
-<div class="highlight"><pre><span></span><code><span class="nb">echo</span><span class="w"> </span>-n<span class="w"> </span><span class="s2">&quot;1&quot;</span><span class="w"> </span>&gt;<span class="w"> </span>/sys/bus/pci/devices/0000:02:00.0/remove
+<div class="highlight"><pre><span></span><code><span class="nb">echo</span> -n <span class="s2">&quot;1&quot;</span> &gt; /sys/bus/pci/devices/0000:02:00.0/remove
 </code></pre></div>
 
 <p>Where 0000:02:00.0 is related to your pci device address which can
@@ -214,9 +214,9 @@ install. So …</p>
 				<span class="post-date">Sat 11 May 2013</span>
 				<p>
 					<p>Tired of all those join part messages?</p>
-<div class="highlight"><pre><span></span><code>/ignore<span class="w"> </span><span class="se">\*</span><span class="w"> </span>joins<span class="w">  </span>
-/ignore<span class="w"> </span><span class="se">\*</span><span class="w"> </span>parts<span class="w">  </span>
-/ignore<span class="w"> </span><span class="se">\*</span><span class="w"> </span>quits<span class="w">  </span>
+<div class="highlight"><pre><span></span><code>/ignore <span class="se">\*</span> joins  
+/ignore <span class="se">\*</span> parts  
+/ignore <span class="se">\*</span> quits  
 /save
 </code></pre></div>
 

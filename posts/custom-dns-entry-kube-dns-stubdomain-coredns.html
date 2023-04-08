@@ -87,7 +87,7 @@ ga('send', 'pageview');
     <!-- End Ezoic - under_page_title - under_page_title -->
     <span class="post-date">
         Thu 11 March 2021
-| Last updated on Fri 12 March 2021
+| Last updated on Tue 06 December 2022
     </span>
     <p>An example use case that I've seen is where you have a K8s service exposed
 on the ClusterIP and you want to make that service accessible over a domain
@@ -99,147 +99,147 @@ name that you don't control.</p>
 </ol>
 <h2>1. Deploying CoreDNS with custom DNS entries</h2>
 <p>Create the namespace for coredns k8s resources:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>create<span class="w"> </span>ns<span class="w"> </span>coredns
+<div class="highlight"><pre><span></span><code>kubectl create ns coredns
 </code></pre></div>
 
 <p>Create a file called <code>core-dns-cm.yaml</code> with the following content:</p>
-<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span>
-<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ConfigMap</span>
-<span class="nt">metadata</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coredns</span>
-<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coredns</span>
-<span class="nt">data</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">Corefile</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
-<span class="w">    </span><span class="no">.:53 {</span>
-<span class="w">        </span><span class="no">errors</span>
-<span class="w">        </span><span class="no">health {</span>
-<span class="w">          </span><span class="no">lameduck 5s</span>
-<span class="w">        </span><span class="no">}</span>
-<span class="w">        </span><span class="no">ready</span>
-<span class="w">        </span><span class="no">cache 30</span>
-<span class="w">        </span><span class="no">log</span>
-<span class="w">        </span><span class="no">reload</span>
-<span class="w">        </span><span class="no">loadbalance</span>
-<span class="w">        </span><span class="no">file /etc/coredns/example.db example.org</span>
-<span class="w">    </span><span class="no">}</span>
-<span class="w">  </span><span class="nt">example.db</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
-<span class="w">    </span><span class="no">; example.org test file</span>
-<span class="w">    </span><span class="no">example.org.            IN      SOA     sns.dns.icann.org. noc.dns.icann.org. 2015082541 7200 3600 1209600 3600</span>
-<span class="w">    </span><span class="no">example.org.            IN      NS      b.iana-servers.net.</span>
-<span class="w">    </span><span class="no">example.org.            IN      NS      a.iana-servers.net.</span>
-<span class="w">    </span><span class="no">example.org.            IN      A       10.200.0.1</span>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span><span class="w"></span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ConfigMap</span><span class="w"></span>
+<span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coredns</span><span class="w"></span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coredns</span><span class="w"></span>
+<span class="nt">data</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">Corefile</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span><span class="w"></span>
+<span class="w">    </span><span class="no">.:53 {</span><span class="w"></span>
+<span class="w">        </span><span class="no">errors</span><span class="w"></span>
+<span class="w">        </span><span class="no">health {</span><span class="w"></span>
+<span class="w">          </span><span class="no">lameduck 5s</span><span class="w"></span>
+<span class="w">        </span><span class="no">}</span><span class="w"></span>
+<span class="w">        </span><span class="no">ready</span><span class="w"></span>
+<span class="w">        </span><span class="no">cache 30</span><span class="w"></span>
+<span class="w">        </span><span class="no">log</span><span class="w"></span>
+<span class="w">        </span><span class="no">reload</span><span class="w"></span>
+<span class="w">        </span><span class="no">loadbalance</span><span class="w"></span>
+<span class="w">        </span><span class="no">file /etc/coredns/example.db example.org</span><span class="w"></span>
+<span class="w">    </span><span class="no">}</span><span class="w"></span>
+<span class="w">  </span><span class="nt">example.db</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span><span class="w"></span>
+<span class="w">    </span><span class="no">; example.org test file</span><span class="w"></span>
+<span class="w">    </span><span class="no">example.org.            IN      SOA     sns.dns.icann.org. noc.dns.icann.org. 2015082541 7200 3600 1209600 3600</span><span class="w"></span>
+<span class="w">    </span><span class="no">example.org.            IN      NS      b.iana-servers.net.</span><span class="w"></span>
+<span class="w">    </span><span class="no">example.org.            IN      NS      a.iana-servers.net.</span><span class="w"></span>
+<span class="w">    </span><span class="no">example.org.            IN      A       10.200.0.1</span><span class="w"></span>
 </code></pre></div>
 
 <p>In the configmap you definte the custom dns entries. In the example, the A
 record for example.org has been overriden to point to 10.200.0.1. You would
 change example.org and the specific DNS entries depending on your needs.</p>
 <p>Create the configmap:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>core-dns-cm.yaml
+<div class="highlight"><pre><span></span><code>kubectl apply -f core-dns-cm.yaml
 </code></pre></div>
 
 <p>Create a file named <code>core-dns-deployment.yaml</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="n">apiVersion</span><span class="o">:</span><span class="w"> </span><span class="n">apps</span><span class="o">/</span><span class="n">v1</span>
-<span class="n">kind</span><span class="o">:</span><span class="w"> </span><span class="n">Deployment</span>
-<span class="n">metadata</span><span class="o">:</span>
-<span class="w">  </span><span class="n">name</span><span class="o">:</span><span class="w"> </span><span class="n">coredns</span>
-<span class="w">  </span><span class="kd">namespace</span><span class="o">:</span><span class="w"> </span><span class="n">coredns</span>
-<span class="w">  </span><span class="n">labels</span><span class="o">:</span>
-<span class="w">    </span><span class="n">k8s</span><span class="o">-</span><span class="n">app</span><span class="o">:</span><span class="w"> </span><span class="n">coredns</span>
-<span class="w">    </span><span class="n">kubernetes</span><span class="o">.</span><span class="na">io</span><span class="o">/</span><span class="n">name</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;CoreDNS&quot;</span>
-<span class="n">spec</span><span class="o">:</span>
-<span class="w">  </span><span class="n">strategy</span><span class="o">:</span>
-<span class="w">    </span><span class="n">type</span><span class="o">:</span><span class="w"> </span><span class="n">RollingUpdate</span>
-<span class="w">    </span><span class="n">rollingUpdate</span><span class="o">:</span>
-<span class="w">      </span><span class="n">maxUnavailable</span><span class="o">:</span><span class="w"> </span><span class="mi">1</span>
-<span class="w">  </span><span class="n">selector</span><span class="o">:</span>
-<span class="w">    </span><span class="n">matchLabels</span><span class="o">:</span>
-<span class="w">      </span><span class="n">k8s</span><span class="o">-</span><span class="n">app</span><span class="o">:</span><span class="w"> </span><span class="n">coredns</span>
-<span class="w">  </span><span class="n">template</span><span class="o">:</span>
-<span class="w">    </span><span class="n">metadata</span><span class="o">:</span>
-<span class="w">      </span><span class="n">labels</span><span class="o">:</span>
-<span class="w">        </span><span class="n">k8s</span><span class="o">-</span><span class="n">app</span><span class="o">:</span><span class="w"> </span><span class="n">coredns</span>
-<span class="w">    </span><span class="n">spec</span><span class="o">:</span>
-<span class="w">      </span><span class="n">containers</span><span class="o">:</span>
-<span class="w">      </span><span class="o">-</span><span class="w"> </span><span class="n">name</span><span class="o">:</span><span class="w"> </span><span class="n">coredns</span>
-<span class="w">        </span><span class="n">image</span><span class="o">:</span><span class="w"> </span><span class="n">coredns</span><span class="o">/</span><span class="n">coredns</span><span class="o">:</span><span class="mf">1.8</span><span class="o">.</span><span class="mi">3</span>
-<span class="w">        </span><span class="n">imagePullPolicy</span><span class="o">:</span><span class="w"> </span><span class="n">IfNotPresent</span>
-<span class="w">        </span><span class="n">resources</span><span class="o">:</span>
-<span class="w">          </span><span class="n">limits</span><span class="o">:</span>
-<span class="w">            </span><span class="n">memory</span><span class="o">:</span><span class="w"> </span><span class="mi">170</span><span class="n">Mi</span>
-<span class="w">          </span><span class="n">requests</span><span class="o">:</span>
-<span class="w">            </span><span class="n">cpu</span><span class="o">:</span><span class="w"> </span><span class="mi">100</span><span class="n">m</span>
-<span class="w">            </span><span class="n">memory</span><span class="o">:</span><span class="w"> </span><span class="mi">70</span><span class="n">Mi</span>
-<span class="w">        </span><span class="n">args</span><span class="o">:</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="s2">&quot;-conf&quot;</span><span class="o">,</span><span class="w"> </span><span class="s2">&quot;/etc/coredns/Corefile&quot;</span><span class="w"> </span><span class="o">]</span>
-<span class="w">        </span><span class="n">volumeMounts</span><span class="o">:</span>
-<span class="w">        </span><span class="o">-</span><span class="w"> </span><span class="n">name</span><span class="o">:</span><span class="w"> </span><span class="n">config</span><span class="o">-</span><span class="n">volume</span>
-<span class="w">          </span><span class="n">mountPath</span><span class="o">:</span><span class="w"> </span><span class="sr">/etc/</span><span class="n">coredns</span>
-<span class="w">          </span><span class="n">readOnly</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span>
-<span class="w">        </span><span class="n">ports</span><span class="o">:</span>
-<span class="w">        </span><span class="o">-</span><span class="w"> </span><span class="n">containerPort</span><span class="o">:</span><span class="w"> </span><span class="mi">53</span>
-<span class="w">          </span><span class="n">name</span><span class="o">:</span><span class="w"> </span><span class="n">dns</span>
-<span class="w">          </span><span class="n">protocol</span><span class="o">:</span><span class="w"> </span><span class="n">UDP</span>
-<span class="w">        </span><span class="o">-</span><span class="w"> </span><span class="n">containerPort</span><span class="o">:</span><span class="w"> </span><span class="mi">53</span>
-<span class="w">          </span><span class="n">name</span><span class="o">:</span><span class="w"> </span><span class="n">dns</span><span class="o">-</span><span class="n">tcp</span>
-<span class="w">          </span><span class="n">protocol</span><span class="o">:</span><span class="w"> </span><span class="n">TCP</span>
-<span class="w">        </span><span class="n">securityContext</span><span class="o">:</span>
-<span class="w">          </span><span class="n">allowPrivilegeEscalation</span><span class="o">:</span><span class="w"> </span><span class="kc">false</span>
-<span class="w">          </span><span class="n">capabilities</span><span class="o">:</span>
-<span class="w">            </span><span class="n">add</span><span class="o">:</span>
-<span class="w">            </span><span class="o">-</span><span class="w"> </span><span class="n">NET_BIND_SERVICE</span>
-<span class="w">            </span><span class="n">drop</span><span class="o">:</span>
-<span class="w">            </span><span class="o">-</span><span class="w"> </span><span class="n">all</span>
-<span class="w">          </span><span class="n">readOnlyRootFilesystem</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span>
-<span class="w">        </span><span class="n">livenessProbe</span><span class="o">:</span>
-<span class="w">          </span><span class="n">httpGet</span><span class="o">:</span>
-<span class="w">            </span><span class="n">path</span><span class="o">:</span><span class="w"> </span><span class="o">/</span><span class="n">health</span>
-<span class="w">            </span><span class="n">port</span><span class="o">:</span><span class="w"> </span><span class="mi">8080</span>
-<span class="w">            </span><span class="n">scheme</span><span class="o">:</span><span class="w"> </span><span class="n">HTTP</span>
-<span class="w">          </span><span class="n">initialDelaySeconds</span><span class="o">:</span><span class="w"> </span><span class="mi">60</span>
-<span class="w">          </span><span class="n">timeoutSeconds</span><span class="o">:</span><span class="w"> </span><span class="mi">5</span>
-<span class="w">          </span><span class="n">successThreshold</span><span class="o">:</span><span class="w"> </span><span class="mi">1</span>
-<span class="w">          </span><span class="n">failureThreshold</span><span class="o">:</span><span class="w"> </span><span class="mi">5</span>
-<span class="w">        </span><span class="n">readinessProbe</span><span class="o">:</span>
-<span class="w">          </span><span class="n">httpGet</span><span class="o">:</span>
-<span class="w">            </span><span class="n">path</span><span class="o">:</span><span class="w"> </span><span class="o">/</span><span class="n">ready</span>
-<span class="w">            </span><span class="n">port</span><span class="o">:</span><span class="w"> </span><span class="mi">8181</span>
-<span class="w">            </span><span class="n">scheme</span><span class="o">:</span><span class="w"> </span><span class="n">HTTP</span>
-<span class="w">      </span><span class="n">dnsPolicy</span><span class="o">:</span><span class="w"> </span><span class="n">Default</span>
-<span class="w">      </span><span class="n">volumes</span><span class="o">:</span>
-<span class="w">        </span><span class="o">-</span><span class="w"> </span><span class="n">name</span><span class="o">:</span><span class="w"> </span><span class="n">config</span><span class="o">-</span><span class="n">volume</span>
-<span class="w">          </span><span class="n">configMap</span><span class="o">:</span>
-<span class="w">            </span><span class="n">name</span><span class="o">:</span><span class="w"> </span><span class="n">coredns</span>
-<span class="w">            </span><span class="n">items</span><span class="o">:</span>
-<span class="w">            </span><span class="o">-</span><span class="w"> </span><span class="n">key</span><span class="o">:</span><span class="w"> </span><span class="n">Corefile</span>
-<span class="w">              </span><span class="n">path</span><span class="o">:</span><span class="w"> </span><span class="n">Corefile</span>
-<span class="w">            </span><span class="o">-</span><span class="w"> </span><span class="n">key</span><span class="o">:</span><span class="w"> </span><span class="n">example</span><span class="o">.</span><span class="na">db</span>
-<span class="w">              </span><span class="n">path</span><span class="o">:</span><span class="w"> </span><span class="n">example</span><span class="o">.</span><span class="na">db</span>
+<div class="highlight"><pre><span></span><code><span class="n">apiVersion</span><span class="o">:</span><span class="w"> </span><span class="n">apps</span><span class="o">/</span><span class="n">v1</span><span class="w"></span>
+<span class="n">kind</span><span class="o">:</span><span class="w"> </span><span class="n">Deployment</span><span class="w"></span>
+<span class="n">metadata</span><span class="o">:</span><span class="w"></span>
+<span class="w">  </span><span class="n">name</span><span class="o">:</span><span class="w"> </span><span class="n">coredns</span><span class="w"></span>
+<span class="w">  </span><span class="kd">namespace</span><span class="o">:</span><span class="w"> </span><span class="n">coredns</span><span class="w"></span>
+<span class="w">  </span><span class="n">labels</span><span class="o">:</span><span class="w"></span>
+<span class="w">    </span><span class="n">k8s</span><span class="o">-</span><span class="n">app</span><span class="o">:</span><span class="w"> </span><span class="n">coredns</span><span class="w"></span>
+<span class="w">    </span><span class="n">kubernetes</span><span class="o">.</span><span class="na">io</span><span class="o">/</span><span class="n">name</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;CoreDNS&quot;</span><span class="w"></span>
+<span class="n">spec</span><span class="o">:</span><span class="w"></span>
+<span class="w">  </span><span class="n">strategy</span><span class="o">:</span><span class="w"></span>
+<span class="w">    </span><span class="n">type</span><span class="o">:</span><span class="w"> </span><span class="n">RollingUpdate</span><span class="w"></span>
+<span class="w">    </span><span class="n">rollingUpdate</span><span class="o">:</span><span class="w"></span>
+<span class="w">      </span><span class="n">maxUnavailable</span><span class="o">:</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
+<span class="w">  </span><span class="n">selector</span><span class="o">:</span><span class="w"></span>
+<span class="w">    </span><span class="n">matchLabels</span><span class="o">:</span><span class="w"></span>
+<span class="w">      </span><span class="n">k8s</span><span class="o">-</span><span class="n">app</span><span class="o">:</span><span class="w"> </span><span class="n">coredns</span><span class="w"></span>
+<span class="w">  </span><span class="n">template</span><span class="o">:</span><span class="w"></span>
+<span class="w">    </span><span class="n">metadata</span><span class="o">:</span><span class="w"></span>
+<span class="w">      </span><span class="n">labels</span><span class="o">:</span><span class="w"></span>
+<span class="w">        </span><span class="n">k8s</span><span class="o">-</span><span class="n">app</span><span class="o">:</span><span class="w"> </span><span class="n">coredns</span><span class="w"></span>
+<span class="w">    </span><span class="n">spec</span><span class="o">:</span><span class="w"></span>
+<span class="w">      </span><span class="n">containers</span><span class="o">:</span><span class="w"></span>
+<span class="w">      </span><span class="o">-</span><span class="w"> </span><span class="n">name</span><span class="o">:</span><span class="w"> </span><span class="n">coredns</span><span class="w"></span>
+<span class="w">        </span><span class="n">image</span><span class="o">:</span><span class="w"> </span><span class="n">coredns</span><span class="o">/</span><span class="n">coredns</span><span class="o">:</span><span class="mf">1.8</span><span class="o">.</span><span class="mi">3</span><span class="w"></span>
+<span class="w">        </span><span class="n">imagePullPolicy</span><span class="o">:</span><span class="w"> </span><span class="n">IfNotPresent</span><span class="w"></span>
+<span class="w">        </span><span class="n">resources</span><span class="o">:</span><span class="w"></span>
+<span class="w">          </span><span class="n">limits</span><span class="o">:</span><span class="w"></span>
+<span class="w">            </span><span class="n">memory</span><span class="o">:</span><span class="w"> </span><span class="mi">170</span><span class="n">Mi</span><span class="w"></span>
+<span class="w">          </span><span class="n">requests</span><span class="o">:</span><span class="w"></span>
+<span class="w">            </span><span class="n">cpu</span><span class="o">:</span><span class="w"> </span><span class="mi">100</span><span class="n">m</span><span class="w"></span>
+<span class="w">            </span><span class="n">memory</span><span class="o">:</span><span class="w"> </span><span class="mi">70</span><span class="n">Mi</span><span class="w"></span>
+<span class="w">        </span><span class="n">args</span><span class="o">:</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="s2">&quot;-conf&quot;</span><span class="o">,</span><span class="w"> </span><span class="s2">&quot;/etc/coredns/Corefile&quot;</span><span class="w"> </span><span class="o">]</span><span class="w"></span>
+<span class="w">        </span><span class="n">volumeMounts</span><span class="o">:</span><span class="w"></span>
+<span class="w">        </span><span class="o">-</span><span class="w"> </span><span class="n">name</span><span class="o">:</span><span class="w"> </span><span class="n">config</span><span class="o">-</span><span class="n">volume</span><span class="w"></span>
+<span class="w">          </span><span class="n">mountPath</span><span class="o">:</span><span class="w"> </span><span class="sr">/etc/</span><span class="n">coredns</span><span class="w"></span>
+<span class="w">          </span><span class="n">readOnly</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="w"></span>
+<span class="w">        </span><span class="n">ports</span><span class="o">:</span><span class="w"></span>
+<span class="w">        </span><span class="o">-</span><span class="w"> </span><span class="n">containerPort</span><span class="o">:</span><span class="w"> </span><span class="mi">53</span><span class="w"></span>
+<span class="w">          </span><span class="n">name</span><span class="o">:</span><span class="w"> </span><span class="n">dns</span><span class="w"></span>
+<span class="w">          </span><span class="n">protocol</span><span class="o">:</span><span class="w"> </span><span class="n">UDP</span><span class="w"></span>
+<span class="w">        </span><span class="o">-</span><span class="w"> </span><span class="n">containerPort</span><span class="o">:</span><span class="w"> </span><span class="mi">53</span><span class="w"></span>
+<span class="w">          </span><span class="n">name</span><span class="o">:</span><span class="w"> </span><span class="n">dns</span><span class="o">-</span><span class="n">tcp</span><span class="w"></span>
+<span class="w">          </span><span class="n">protocol</span><span class="o">:</span><span class="w"> </span><span class="n">TCP</span><span class="w"></span>
+<span class="w">        </span><span class="n">securityContext</span><span class="o">:</span><span class="w"></span>
+<span class="w">          </span><span class="n">allowPrivilegeEscalation</span><span class="o">:</span><span class="w"> </span><span class="kc">false</span><span class="w"></span>
+<span class="w">          </span><span class="n">capabilities</span><span class="o">:</span><span class="w"></span>
+<span class="w">            </span><span class="n">add</span><span class="o">:</span><span class="w"></span>
+<span class="w">            </span><span class="o">-</span><span class="w"> </span><span class="n">NET_BIND_SERVICE</span><span class="w"></span>
+<span class="w">            </span><span class="n">drop</span><span class="o">:</span><span class="w"></span>
+<span class="w">            </span><span class="o">-</span><span class="w"> </span><span class="n">all</span><span class="w"></span>
+<span class="w">          </span><span class="n">readOnlyRootFilesystem</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="w"></span>
+<span class="w">        </span><span class="n">livenessProbe</span><span class="o">:</span><span class="w"></span>
+<span class="w">          </span><span class="n">httpGet</span><span class="o">:</span><span class="w"></span>
+<span class="w">            </span><span class="n">path</span><span class="o">:</span><span class="w"> </span><span class="o">/</span><span class="n">health</span><span class="w"></span>
+<span class="w">            </span><span class="n">port</span><span class="o">:</span><span class="w"> </span><span class="mi">8080</span><span class="w"></span>
+<span class="w">            </span><span class="n">scheme</span><span class="o">:</span><span class="w"> </span><span class="n">HTTP</span><span class="w"></span>
+<span class="w">          </span><span class="n">initialDelaySeconds</span><span class="o">:</span><span class="w"> </span><span class="mi">60</span><span class="w"></span>
+<span class="w">          </span><span class="n">timeoutSeconds</span><span class="o">:</span><span class="w"> </span><span class="mi">5</span><span class="w"></span>
+<span class="w">          </span><span class="n">successThreshold</span><span class="o">:</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
+<span class="w">          </span><span class="n">failureThreshold</span><span class="o">:</span><span class="w"> </span><span class="mi">5</span><span class="w"></span>
+<span class="w">        </span><span class="n">readinessProbe</span><span class="o">:</span><span class="w"></span>
+<span class="w">          </span><span class="n">httpGet</span><span class="o">:</span><span class="w"></span>
+<span class="w">            </span><span class="n">path</span><span class="o">:</span><span class="w"> </span><span class="o">/</span><span class="n">ready</span><span class="w"></span>
+<span class="w">            </span><span class="n">port</span><span class="o">:</span><span class="w"> </span><span class="mi">8181</span><span class="w"></span>
+<span class="w">            </span><span class="n">scheme</span><span class="o">:</span><span class="w"> </span><span class="n">HTTP</span><span class="w"></span>
+<span class="w">      </span><span class="n">dnsPolicy</span><span class="o">:</span><span class="w"> </span><span class="n">Default</span><span class="w"></span>
+<span class="w">      </span><span class="n">volumes</span><span class="o">:</span><span class="w"></span>
+<span class="w">        </span><span class="o">-</span><span class="w"> </span><span class="n">name</span><span class="o">:</span><span class="w"> </span><span class="n">config</span><span class="o">-</span><span class="n">volume</span><span class="w"></span>
+<span class="w">          </span><span class="n">configMap</span><span class="o">:</span><span class="w"></span>
+<span class="w">            </span><span class="n">name</span><span class="o">:</span><span class="w"> </span><span class="n">coredns</span><span class="w"></span>
+<span class="w">            </span><span class="n">items</span><span class="o">:</span><span class="w"></span>
+<span class="w">            </span><span class="o">-</span><span class="w"> </span><span class="n">key</span><span class="o">:</span><span class="w"> </span><span class="n">Corefile</span><span class="w"></span>
+<span class="w">              </span><span class="n">path</span><span class="o">:</span><span class="w"> </span><span class="n">Corefile</span><span class="w"></span>
+<span class="w">            </span><span class="o">-</span><span class="w"> </span><span class="n">key</span><span class="o">:</span><span class="w"> </span><span class="n">example</span><span class="o">.</span><span class="na">db</span><span class="w"></span>
+<span class="w">              </span><span class="n">path</span><span class="o">:</span><span class="w"> </span><span class="n">example</span><span class="o">.</span><span class="na">db</span><span class="w"></span>
 </code></pre></div>
 
 <p>Create the deployment that uses the configmap:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>core-dns-deployment.yaml
+<div class="highlight"><pre><span></span><code>kubectl apply -f core-dns-deployment.yaml
 </code></pre></div>
 
 <p>Create a file named <code>core-dns-svc.yaml</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span>
-<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Service</span>
-<span class="nt">metadata</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coredns</span>
-<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coredns</span>
-<span class="w">  </span><span class="nt">labels</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">k8s-app</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coredns</span>
-<span class="w">    </span><span class="nt">kubernetes.io/cluster-service</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;true&quot;</span>
-<span class="w">    </span><span class="nt">kubernetes.io/name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;CoreDNS&quot;</span>
-<span class="nt">spec</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">clusterIP</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.0.6.177</span>
-<span class="w">  </span><span class="nt">selector</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">k8s-app</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coredns</span>
-<span class="w">  </span><span class="nt">ports</span><span class="p">:</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dns</span>
-<span class="w">    </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">53</span>
-<span class="w">    </span><span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">UDP</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dns-tcp</span>
-<span class="w">    </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">53</span>
-<span class="w">    </span><span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TCP</span>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span><span class="w"></span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Service</span><span class="w"></span>
+<span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coredns</span><span class="w"></span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coredns</span><span class="w"></span>
+<span class="w">  </span><span class="nt">labels</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">k8s-app</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coredns</span><span class="w"></span>
+<span class="w">    </span><span class="nt">kubernetes.io/cluster-service</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;true&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">kubernetes.io/name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;CoreDNS&quot;</span><span class="w"></span>
+<span class="nt">spec</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">clusterIP</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.0.6.177</span><span class="w"></span>
+<span class="w">  </span><span class="nt">selector</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">k8s-app</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coredns</span><span class="w"></span>
+<span class="w">  </span><span class="nt">ports</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dns</span><span class="w"></span>
+<span class="w">    </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">53</span><span class="w"></span>
+<span class="w">    </span><span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">UDP</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dns-tcp</span><span class="w"></span>
+<span class="w">    </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">53</span><span class="w"></span>
+<span class="w">    </span><span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TCP</span><span class="w"></span>
 </code></pre></div>
 
 <p>Notice that we set a static cluster IP so this blog post is easier to follow.
@@ -247,7 +247,7 @@ You will probably want to remove <code>clusterIP: 10.0.6.177</code> and let K8s 
 random clusterIP, afterwards note note down the cluster IP. You will need the
 CoreDNS cluster IP in the next step during configuring kube-dns.</p>
 <p>Create the coredns k8s service:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>core-dns-svc.yaml
+<div class="highlight"><pre><span></span><code>kubectl apply -f core-dns-svc.yaml
 </code></pre></div>
 
 <h2>2.  Configure kube-dns to use stubDomain that points to CoreDNS</h2>
@@ -255,18 +255,18 @@ CoreDNS cluster IP in the next step during configuring kube-dns.</p>
 that holds the custom DNS entries. This is done by configuring a stubDomain
 that for e.g. <code>example.org</code> that points to the coreDNS clusterIP.</p>
 <p>Create a file named <code>kube-dns-cm.yaml</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span>
-<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ConfigMap</span>
-<span class="nt">metadata</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kube-dns</span>
-<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kube-system</span>
-<span class="nt">data</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">stubDomains</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
-<span class="w">        </span><span class="no">{&quot;example.org&quot; : [&quot;10.0.6.177&quot;]}</span>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span><span class="w"></span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ConfigMap</span><span class="w"></span>
+<span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kube-dns</span><span class="w"></span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kube-system</span><span class="w"></span>
+<span class="nt">data</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">stubDomains</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span><span class="w"></span>
+<span class="w">        </span><span class="no">{&quot;example.org&quot; : [&quot;10.0.6.177&quot;]}</span><span class="w"></span>
 </code></pre></div>
 
 <p>Apply the config map:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>kube-dns-cm.yaml
+<div class="highlight"><pre><span></span><code>kubectl apply -f kube-dns-cm.yaml
 </code></pre></div>
 
 <h2>Summary</h2>

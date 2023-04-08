@@ -87,7 +87,7 @@ ga('send', 'pageview');
     <!-- End Ezoic - under_page_title - under_page_title -->
     <span class="post-date">
         Sat 10 May 2014
-| Last updated on Sun 13 September 2020
+| Last updated on Tue 06 December 2022
     </span>
     <p>A server behind a firewall was unaccesible from my home,
 but another server which is on the same local network had
@@ -97,7 +97,7 @@ via this public server to the server behind a firewall.</p>
 server on the private network that we want to access is 192.168.1.5. Then we
 can create an SSH tunnel from my laptop at home in the
 following way:</p>
-<div class="highlight"><pre><span></span><code>ssh<span class="w"> </span>root@8.8.8.8<span class="w"> </span>-L<span class="w"> </span><span class="m">2020</span>:192.168.1.5:22
+<div class="highlight"><pre><span></span><code>ssh root@8.8.8.8 -L <span class="m">2020</span>:192.168.1.5:22
 </code></pre></div>
 
 <p>The above command creates an SSH tunnel, where the
@@ -106,7 +106,7 @@ local port 2020 on my laptop will be forwarded to port
 <p>After the tunnel is created  you can use the following command
 to directly SSH from your home laptop to the private server
 with ip 192.168.1.5:</p>
-<div class="highlight"><pre><span></span><code>ssh<span class="w"> </span>ubuntu@localhost<span class="w"> </span>-p<span class="w"> </span><span class="m">2020</span>
+<div class="highlight"><pre><span></span><code>ssh ubuntu@localhost -p <span class="m">2020</span>
 </code></pre></div>
     <!-- Ezoic - bottom_of_page - bottom_of_page -->
     <div id="ezoic-pub-ad-placeholder-104"> </div>

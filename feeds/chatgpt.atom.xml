@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Sam Stoelinga - ChatGPT</title><link href="https://samos-it.com/" rel="alternate"></link><link href="https://samos-it.com/feeds/chatgpt.atom.xml" rel="self"></link><id>https://samos-it.com/</id><updated>2023-03-27T19:11:57+02:00</updated><entry><title>ChatGPT Python: using an unofficial library</title><link href="https://samos-it.com/posts/chatgpt-python-using-an-unofficial-library.html" rel="alternate"></link><published>2023-01-12T22:44:00+01:00</published><updated>2023-03-27T19:11:57+02:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2023-01-12:/posts/chatgpt-python-using-an-unofficial-library.html</id><summary type="html">&lt;iframe width="560" height="315" src="https://www.youtube.com/embed/Im6mh2ZFWx8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen&gt;&lt;/iframe&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Sam Stoelinga - ChatGPT</title><link href="https://samos-it.com/" rel="alternate"></link><link href="https://samos-it.com/feeds/chatgpt.atom.xml" rel="self"></link><id>https://samos-it.com/</id><updated>2023-01-13T10:56:52+01:00</updated><entry><title>ChatGPT Python: using an unofficial library</title><link href="https://samos-it.com/posts/chatgpt-python-using-an-unofficial-library.html" rel="alternate"></link><published>2023-01-12T22:44:00+01:00</published><updated>2023-01-13T10:56:52+01:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2023-01-12:/posts/chatgpt-python-using-an-unofficial-library.html</id><summary type="html">&lt;iframe width="560" height="315" src="https://www.youtube.com/embed/Im6mh2ZFWx8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen&gt;&lt;/iframe&gt;
 
 &lt;p&gt;ChatGPT at the time of writing this blog does not have an official API nor
 libraries published. Luckily, many folks have inspected the API calls made
@@ -19,14 +19,14 @@ by &lt;a href="https://github.com/acheong08/ChatGPT"&gt;acheong08&lt;/a&gt;.&lt;
 &lt;/ol&gt;
 &lt;h2&gt;1. Installing the ChatGPT Python Library&lt;/h2&gt;
 &lt;p&gt;Create a new directory named &lt;code&gt;chatgpt-python&lt;/code&gt; and create a virtualenv in &lt;code&gt;.venv&lt;/code&gt; directory:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;mkdir&lt;span class="w"&gt; &lt;/span&gt;chatgpt-python
-&lt;span class="nb"&gt;cd&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;chatgpt-python
-python3&lt;span class="w"&gt; &lt;/span&gt;-m&lt;span class="w"&gt; &lt;/span&gt;venv&lt;span class="w"&gt; &lt;/span&gt;.venv
-&lt;span class="nb"&gt;source&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;.venv/bin/activate
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;mkdir chatgpt-python
+&lt;span class="nb"&gt;cd&lt;/span&gt; chatgpt-python
+python3 -m venv .venv
+&lt;span class="nb"&gt;source&lt;/span&gt; .venv/bin/activate
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Install revChatGPT using pip:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;pip3&lt;span class="w"&gt; &lt;/span&gt;install&lt;span class="w"&gt; &lt;/span&gt;--upgrade&lt;span class="w"&gt; &lt;/span&gt;revChatGPT
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;pip3 install --upgrade revChatGPT
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;h2&gt;2. Configuring authentication&lt;/h2&gt;
@@ -39,9 +39,9 @@ python3&lt;span class="w"&gt; &lt;/span&gt;-m&lt;span class="w"&gt; &lt;/span&gt
 &lt;p&gt;You should now have the session token in your clipboard.&lt;/p&gt;
 &lt;p&gt;Create a file named &lt;code&gt;chatgpt.json&lt;/code&gt; with the following content
 (don't forget to paste your session token):&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="p"&gt;{&lt;/span&gt;
-&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;&amp;quot;session_token&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&amp;lt;COPY_PASTE_YOUR_SESSION_TOKEN_HERE&amp;gt;&amp;quot;&lt;/span&gt;
-&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;&amp;quot;session_token&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&amp;lt;COPY_PASTE_YOUR_SESSION_TOKEN_HERE&amp;gt;&amp;quot;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;h2&gt;3. Using the ChatGPT python library&lt;/h2&gt;

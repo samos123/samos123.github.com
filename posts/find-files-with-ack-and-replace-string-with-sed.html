@@ -87,11 +87,10 @@ ga('send', 'pageview');
     <!-- End Ezoic - under_page_title - under_page_title -->
     <span class="post-date">
         Fri 10 February 2023
-| Last updated on Mon 27 March 2023
     </span>
     <p>ack is a nice to tool to search in files in your current directory and subdirectores, but
 ack won't do search and replace. Luckily, we can easily combine ack and sed using xargs.</p>
-<div class="highlight"><pre><span></span><code>ack<span class="w"> </span>-l<span class="w"> </span><span class="s2">&quot;app.kubernetes.io/name: myapp&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>xargs<span class="w"> </span>sed<span class="w"> </span>-i<span class="w"> </span><span class="s1">&#39;s|app.kubernetes.io/name: myapp|app.kubernetes.io/name: &quot;{{ .Release.name }}&quot;|g&#39;</span>
+<div class="highlight"><pre><span></span><code>ack -l <span class="s2">&quot;app.kubernetes.io/name: myapp&quot;</span> <span class="p">|</span> xargs sed -i <span class="s1">&#39;s|app.kubernetes.io/name: myapp|app.kubernetes.io/name: &quot;{{ .Release.name }}&quot;|g&#39;</span>
 </code></pre></div>
 
 <p>This example searches for the string <code>app.kubernetes.io/name: myapp</code> through all files

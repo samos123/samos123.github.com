@@ -87,7 +87,7 @@ ga('send', 'pageview');
     <!-- End Ezoic - under_page_title - under_page_title -->
     <span class="post-date">
         Mon 28 December 2020
-| Last updated on Tue 29 December 2020
+| Last updated on Tue 06 December 2022
     </span>
     <p>Istio is daunting and not all use cases are well documented. The public docs
 focus mostly on using the egress gateway for TLS orignation. The use case
@@ -120,8 +120,8 @@ really convenient for me. Redislabs the creators of Redis provide similar
 service with a <a href="https://redislabs.com/try-free/">free 30MB Redis instance</a>.
 You might want to support the creators of Redis by using Redislabs.</p>
 <p>In this blog post the variables will be used:</p>
-<div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">REDIS_HOST</span><span class="o">=</span>redis-1425a1d9-google-bc39.aivencloud.com
-<span class="nb">export</span><span class="w"> </span><span class="nv">REDIS_PORT</span><span class="o">=</span><span class="m">16222</span>
+<div class="highlight"><pre><span></span><code><span class="nb">export</span> <span class="nv">REDIS_HOST</span><span class="o">=</span>redis-1425a1d9-google-bc39.aivencloud.com
+<span class="nb">export</span> <span class="nv">REDIS_PORT</span><span class="o">=</span><span class="m">16222</span>
 </code></pre></div>
 
 <p>You will need to set these variables to your environment specifics.</p>
@@ -131,13 +131,13 @@ You might want to support the creators of Redis by using Redislabs.</p>
   be handled. For example, this is how we configure the TLS settings.
 - ServiceEntry: Such that Istio knows about the external Redis service</p>
 <p>Create the Redis namespace which is used for testing:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>create<span class="w"> </span>ns<span class="w"> </span>redis
+<div class="highlight"><pre><span></span><code>kubectl create ns redis
 <span class="c1"># If you use kubectx</span>
-kubens<span class="w"> </span>redis<span class="w"> </span>
+kubens redis 
 </code></pre></div>
 
 <p>Create the following ServiceEntry:</p>
-<div class="highlight"><pre><span></span><code>cat<span class="w"> </span><span class="s">&lt;&lt;EOF | kubectl apply --namespace=redis -f -</span>
+<div class="highlight"><pre><span></span><code>cat <span class="s">&lt;&lt;EOF | kubectl apply --namespace=redis -f -</span>
 <span class="s">apiVersion: networking.istio.io/v1beta1</span>
 <span class="s">kind: ServiceEntry</span>
 <span class="s">metadata:</span>
@@ -155,7 +155,7 @@ kubens<span class="w"> </span>redis<span class="w"> </span>
 </code></pre></div>
 
 <p>Create the DestinationRule:</p>
-<div class="highlight"><pre><span></span><code>cat<span class="w"> </span><span class="s">&lt;&lt;EOF | kubectl apply -f -</span>
+<div class="highlight"><pre><span></span><code>cat <span class="s">&lt;&lt;EOF | kubectl apply -f -</span>
 <span class="s">apiVersion: networking.istio.io/v1beta1</span>
 <span class="s">kind: DestinationRule</span>
 <span class="s">metadata:</span>
@@ -179,7 +179,7 @@ means that this is using standard TLS instead of mutual TLS.</p>
 <p>That was all that's needed from the Istio side.</p>
 <h3>3. Validating that TLS origination worked</h3>
 <p>Create a pod that has redis-client installed:</p>
-<div class="highlight"><pre><span></span><code>cat<span class="w"> </span><span class="s">&lt;&lt; EOF | kubectl apply -f -</span>
+<div class="highlight"><pre><span></span><code>cat <span class="s">&lt;&lt; EOF | kubectl apply -f -</span>
 <span class="s">apiVersion: apps/v1</span>
 <span class="s">kind: Deployment</span>
 <span class="s">metadata:</span>
@@ -210,10 +210,10 @@ means that this is using standard TLS instead of mutual TLS.</p>
 
 <p>Wait for the pods to come up....</p>
 <p>Get a shell to the redis-client container:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-ti<span class="w"> </span>deploy/redis-client<span class="w"> </span>-c<span class="w"> </span>redis-client<span class="w"> </span>--<span class="w"> </span>bash
-redis-cli<span class="w"> </span>-h<span class="w"> </span>REPLACE_WITH_REDIS_HOST<span class="w"> </span>-p<span class="w"> </span>REPLACE_WITH_REDIS_PORT<span class="w"> </span>-a<span class="w"> </span>REPLACE_WITH_YOUR_PASSWORD
-<span class="nb">set</span><span class="w"> </span><span class="s2">&quot;hello&quot;</span><span class="w"> </span><span class="s2">&quot;world&quot;</span>
-get<span class="w"> </span><span class="s2">&quot;hello&quot;</span>
+<div class="highlight"><pre><span></span><code>kubectl <span class="nb">exec</span> -ti deploy/redis-client -c redis-client -- bash
+redis-cli -h REPLACE_WITH_REDIS_HOST -p REPLACE_WITH_REDIS_PORT -a REPLACE_WITH_YOUR_PASSWORD
+<span class="nb">set</span> <span class="s2">&quot;hello&quot;</span> <span class="s2">&quot;world&quot;</span>
+get <span class="s2">&quot;hello&quot;</span>
 </code></pre></div>
 
 <p>The above should return "world". The redis client is using standard TCP while the
@@ -224,7 +224,7 @@ from injecting a sidecar. After you do that you will notice that you can not
 connect to Redis anymore if your Redis is enforcing TLS.</p>
 <p>You can also Check the logs of the istio-proxy to see that Istio is indeed making
 the TLS connections.</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>logs<span class="w"> </span>deploy/redis-client<span class="w"> </span>-c<span class="w"> </span>istio-proxy
+<div class="highlight"><pre><span></span><code>kubectl logs deploy/redis-client -c istio-proxy
 </code></pre></div>
 
 <p>In my case the following logs could be seen in the Istio proxy logs:</p>

@@ -87,7 +87,7 @@ ga('send', 'pageview');
     <!-- End Ezoic - under_page_title - under_page_title -->
     <span class="post-date">
         Thu 30 May 2013
-| Last updated on Sun 13 September 2020
+| Last updated on Tue 06 December 2022
     </span>
     <p>Noticed that pip install pyqt isn't working? At least at the time of
 writing this blog it isn't..</p>
@@ -97,38 +97,38 @@ IOError: [Errno 2] No such file or directory: setup.py</p>
 install. So here is the solution to install it by using pip to download
 the files and configure and install manually.</p>
 <p><strong>Solution</strong> copied from: <a href="http://stackoverflow.com/a/13967084/376445">http://stackoverflow.com/a/13967084/376445</a></p>
-<div class="highlight"><pre><span></span><code>workon<span class="w"> </span>myProject<span class="w">  </span>
-pip<span class="w"> </span>install<span class="w"> </span>--no-install<span class="w"> </span>SIP<span class="w">  </span>
-pip<span class="w"> </span>install<span class="w"> </span>--no-install<span class="w"> </span>PyQt<span class="w">  </span>
-<span class="nb">cd</span><span class="w"> </span>~/.virtualenvs/myProject/build/SIP<span class="w">  </span>
-python<span class="w"> </span>configure.py<span class="w">  </span>
-make<span class="w">  </span>
-make<span class="w"> </span>install<span class="w">  </span>
-<span class="nb">cd</span><span class="w"> </span>~/.virtualenvs/myProject/build/PyQt<span class="w">  </span>
-python<span class="w"> </span>configure.py<span class="w">  </span>
-make<span class="w">  </span>
-make<span class="w"> </span>install<span class="w">  </span>
-<span class="nb">cd</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>rm<span class="w"> </span>-rf<span class="w"> </span>~/.virtualenvs/myProject/build<span class="w"> </span><span class="c1"># Optional.</span>
+<div class="highlight"><pre><span></span><code>workon myProject  
+pip install --no-install SIP  
+pip install --no-install PyQt  
+<span class="nb">cd</span> ~/.virtualenvs/myProject/build/SIP  
+python configure.py  
+make  
+make install  
+<span class="nb">cd</span> ~/.virtualenvs/myProject/build/PyQt  
+python configure.py  
+make  
+make install  
+<span class="nb">cd</span> <span class="o">&amp;&amp;</span> rm -rf ~/.virtualenvs/myProject/build <span class="c1"># Optional.</span>
 </code></pre></div>
 
 <p><strong>Issues I encountered</strong>:</p>
 <ul>
-<li>Missing development headers for qt: <div class="highlight"><pre><span></span><code>~/.virtualenvs/scrapy/build/PyQt#<span class="w"> </span>python<span class="w"> </span>configure.py<span class="w"> </span>--verbose<span class="w">  </span>
-Determining<span class="w"> </span>the<span class="w"> </span>layout<span class="w"> </span>of<span class="w"> </span>your<span class="w"> </span>Qt<span class="w"> </span>installation...<span class="w">  </span>
-/usr/bin/qmake<span class="w"> </span>-o<span class="w"> </span>qtdirs.mk<span class="w"> </span>qtdirs.pro<span class="w">  </span>
-make<span class="w"> </span>-f<span class="w"> </span>qtdirs.mk<span class="w"> </span>
-g++<span class="w"> </span>-c<span class="w"> </span>-m64<span class="w"> </span>-pipe<span class="w"> </span>-O2<span class="w"> </span>-Wall<span class="w"> </span>-W<span class="w"> </span>-D_REENTRANT<span class="w"> </span>-DQT_NO_DEBUG
--DQT_CORE_LIB<span class="w"> </span>-I/usr/share/qt4/mkspecs/linux-g++-64<span class="w"> </span>-I.
--I/usr/includ<span class="w"> </span>e/qt4/QtCore<span class="w"> </span>-I/usr/include/qt4<span class="w"> </span>-I.<span class="w"> </span>-o<span class="w"> </span>qtdirs.o<span class="w"> </span>qtdirs.cpp<span class="w">  </span>
-qtdirs.cpp:1:28:<span class="w"> </span>fatal<span class="w"> </span>error:<span class="w"> </span>QCoreApplication:<span class="w"> </span>No<span class="w"> </span>such<span class="w"> </span>file<span class="w"> </span>or<span class="w"> </span>directory<span class="w"> </span>compilation<span class="w"> </span>terminated.<span class="w">  </span>
-make:<span class="w"> </span>***<span class="w"> </span><span class="o">[</span>qtdirs.o<span class="o">]</span><span class="w"> </span>Error<span class="w"> </span><span class="m">1</span><span class="w">  </span>
-Error:<span class="w"> </span>Failed<span class="w"> </span>to<span class="w"> </span>determine<span class="w"> </span>the<span class="w"> </span>layout<span class="w"> </span>of<span class="w"> </span>your<span class="w"> </span>Qt<span class="w"> </span>installation.<span class="w"> </span>Try<span class="w"> </span>again<span class="w"> </span>using<span class="w">  </span>the<span class="w"> </span>--verbose<span class="w"> </span>flag<span class="w"> </span>to<span class="w"> </span>see<span class="w"> </span>more<span class="w"> </span>detail<span class="w"> </span>about<span class="w"> </span>the<span class="w"> </span>problem.
+<li>Missing development headers for qt: <div class="highlight"><pre><span></span><code>~/.virtualenvs/scrapy/build/PyQt# python configure.py --verbose  
+Determining the layout of your Qt installation...  
+/usr/bin/qmake -o qtdirs.mk qtdirs.pro  
+make -f qtdirs.mk 
+g++ -c -m64 -pipe -O2 -Wall -W -D_REENTRANT -DQT_NO_DEBUG
+-DQT_CORE_LIB -I/usr/share/qt4/mkspecs/linux-g++-64 -I.
+-I/usr/includ e/qt4/QtCore -I/usr/include/qt4 -I. -o qtdirs.o qtdirs.cpp  
+qtdirs.cpp:1:28: fatal error: QCoreApplication: No such file or directory compilation terminated.  
+make: *** <span class="o">[</span>qtdirs.o<span class="o">]</span> Error <span class="m">1</span>  
+Error: Failed to determine the layout of your Qt installation. Try again using  the --verbose flag to see more detail about the problem.
 </code></pre></div>
 
 </li>
 </ul>
 <p><strong>Soltution:</strong> Install the development headers (Ubuntu 12.04)</p>
-<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>libqt4-dev
+<div class="highlight"><pre><span></span><code>sudo apt-get install libqt4-dev
 </code></pre></div>
     <!-- Ezoic - bottom_of_page - bottom_of_page -->
     <div id="ezoic-pub-ad-placeholder-104"> </div>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Sam Stoelinga - Google Cloud</title><link href="https://samos-it.com/" rel="alternate"></link><link href="https://samos-it.com/feeds/google-cloud.atom.xml" rel="self"></link><id>https://samos-it.com/</id><updated>2020-11-10T18:01:28+01:00</updated><entry><title>Deploying OpenStack on GCP</title><link href="https://samos-it.com/posts/deploying-openstack-on-gcp.html" rel="alternate"></link><published>2020-11-07T22:42:00+01:00</published><updated>2020-11-10T18:01:28+01:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2020-11-07:/posts/deploying-openstack-on-gcp.html</id><summary type="html">&lt;p&gt;You want private cloud inside public cloud for additional security,
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Sam Stoelinga - Google Cloud</title><link href="https://samos-it.com/" rel="alternate"></link><link href="https://samos-it.com/feeds/google-cloud.atom.xml" rel="self"></link><id>https://samos-it.com/</id><updated>2022-12-06T14:44:00+01:00</updated><entry><title>Deploying OpenStack on GCP</title><link href="https://samos-it.com/posts/deploying-openstack-on-gcp.html" rel="alternate"></link><published>2020-11-07T22:42:00+01:00</published><updated>2022-12-06T14:44:00+01:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2020-11-07:/posts/deploying-openstack-on-gcp.html</id><summary type="html">&lt;p&gt;You want private cloud inside public cloud for additional security,
 improved agility, lower opex and ultimate flexibility? I present you
 OpenStack running on Google Compute Engine (GCE). I hope you got the
 joke, if not, let me explain there are no benefits to running OpenStack
@@ -22,29 +22,29 @@ for testing the OpenStack K8s Cloud Provider with K8s.&lt;/p&gt;
 &lt;p&gt;Let's create a VM called &lt;code&gt;openstack-1&lt;/code&gt; with 32 vCPUs. This VM will be used to run additional VMs
 that are spawned by OpenStack. The GCE VM itself will run the OpenStack control plane and serve
 as an OpenStack compute node. Run the following commands:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;gcloud&lt;span class="w"&gt; &lt;/span&gt;compute&lt;span class="w"&gt; &lt;/span&gt;disks&lt;span class="w"&gt; &lt;/span&gt;create&lt;span class="w"&gt; &lt;/span&gt;ubuntu2004disk&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
-&lt;span class="w"&gt;  &lt;/span&gt;--image-project&lt;span class="w"&gt; &lt;/span&gt;ubuntu-os-cloud&lt;span class="w"&gt; &lt;/span&gt;--image-family&lt;span class="w"&gt; &lt;/span&gt;ubuntu-2004-lts&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
-&lt;span class="w"&gt;  &lt;/span&gt;--zone&lt;span class="w"&gt; &lt;/span&gt;us-central1-a
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;gcloud compute disks create ubuntu2004disk &lt;span class="se"&gt;\&lt;/span&gt;
+  --image-project ubuntu-os-cloud --image-family ubuntu-2004-lts &lt;span class="se"&gt;\&lt;/span&gt;
+  --zone us-central1-a
 
-gcloud&lt;span class="w"&gt; &lt;/span&gt;compute&lt;span class="w"&gt; &lt;/span&gt;images&lt;span class="w"&gt; &lt;/span&gt;create&lt;span class="w"&gt; &lt;/span&gt;ubuntu-2004-nested&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
-&lt;span class="w"&gt;  &lt;/span&gt;--source-disk&lt;span class="w"&gt; &lt;/span&gt;ubuntu2004disk&lt;span class="w"&gt; &lt;/span&gt;--source-disk-zone&lt;span class="w"&gt; &lt;/span&gt;us-central1-a&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
-&lt;span class="w"&gt;  &lt;/span&gt;--licenses&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;https://www.googleapis.com/compute/v1/projects/vm-options/global/licenses/enable-vmx&amp;quot;&lt;/span&gt;
+gcloud compute images create ubuntu-2004-nested &lt;span class="se"&gt;\&lt;/span&gt;
+  --source-disk ubuntu2004disk --source-disk-zone us-central1-a &lt;span class="se"&gt;\&lt;/span&gt;
+  --licenses &lt;span class="s2"&gt;&amp;quot;https://www.googleapis.com/compute/v1/projects/vm-options/global/licenses/enable-vmx&amp;quot;&lt;/span&gt;
 
-gcloud&lt;span class="w"&gt; &lt;/span&gt;compute&lt;span class="w"&gt; &lt;/span&gt;instances&lt;span class="w"&gt; &lt;/span&gt;create&lt;span class="w"&gt; &lt;/span&gt;openstack-1&lt;span class="w"&gt; &lt;/span&gt;--zone&lt;span class="w"&gt; &lt;/span&gt;us-central1-a&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
-&lt;span class="w"&gt;              &lt;/span&gt;--image&lt;span class="w"&gt; &lt;/span&gt;ubuntu-2004-nested&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
-&lt;span class="w"&gt;              &lt;/span&gt;--boot-disk-size&lt;span class="w"&gt; &lt;/span&gt;600G&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
-&lt;span class="w"&gt;              &lt;/span&gt;--boot-disk-type&lt;span class="w"&gt; &lt;/span&gt;pd-ssd&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
-&lt;span class="w"&gt;              &lt;/span&gt;--can-ip-forward&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
-&lt;span class="w"&gt;              &lt;/span&gt;--network&lt;span class="w"&gt; &lt;/span&gt;default&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
-&lt;span class="w"&gt;              &lt;/span&gt;--tags&lt;span class="w"&gt; &lt;/span&gt;http-server,https-server,novnc,openstack-apis&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
-&lt;span class="w"&gt;              &lt;/span&gt;--min-cpu-platform&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;Intel Haswell&amp;quot;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
-&lt;span class="w"&gt;              &lt;/span&gt;--machine-type&lt;span class="w"&gt; &lt;/span&gt;n1-standard-32
+gcloud compute instances create openstack-1 --zone us-central1-a &lt;span class="se"&gt;\&lt;/span&gt;
+              --image ubuntu-2004-nested &lt;span class="se"&gt;\&lt;/span&gt;
+              --boot-disk-size 600G &lt;span class="se"&gt;\&lt;/span&gt;
+              --boot-disk-type pd-ssd &lt;span class="se"&gt;\&lt;/span&gt;
+              --can-ip-forward &lt;span class="se"&gt;\&lt;/span&gt;
+              --network default &lt;span class="se"&gt;\&lt;/span&gt;
+              --tags http-server,https-server,novnc,openstack-apis &lt;span class="se"&gt;\&lt;/span&gt;
+              --min-cpu-platform &lt;span class="s2"&gt;&amp;quot;Intel Haswell&amp;quot;&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
+              --machine-type n1-standard-32
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Now verify that nested KVM is enabled:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;gcloud&lt;span class="w"&gt; &lt;/span&gt;compute&lt;span class="w"&gt; &lt;/span&gt;ssh&lt;span class="w"&gt; &lt;/span&gt;openstack-1&lt;span class="w"&gt; &lt;/span&gt;--zone&lt;span class="w"&gt; &lt;/span&gt;us-central1-a
-sudo&lt;span class="w"&gt; &lt;/span&gt;-i
-apt-get&lt;span class="w"&gt; &lt;/span&gt;update&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;apt-get&lt;span class="w"&gt; &lt;/span&gt;install&lt;span class="w"&gt; &lt;/span&gt;qemu-kvm&lt;span class="w"&gt; &lt;/span&gt;-y
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;gcloud compute ssh openstack-1 --zone us-central1-a
+sudo -i
+apt-get update &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; apt-get install qemu-kvm -y
 kvm-ok
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
@@ -58,8 +58,8 @@ KVM acceleration can be used
 &lt;h3&gt;2. Deploying OpenStack&lt;/h3&gt;
 &lt;p&gt;Now let's deploy OpenStack using OpenStack Ansible with all in one(aio) mode.
 Ensure you're still SSHed into the &lt;code&gt;openstack-1&lt;/code&gt; VM, if not run:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;gcloud&lt;span class="w"&gt; &lt;/span&gt;compute&lt;span class="w"&gt; &lt;/span&gt;ssh&lt;span class="w"&gt; &lt;/span&gt;openstack-1&lt;span class="w"&gt; &lt;/span&gt;--zone&lt;span class="w"&gt; &lt;/span&gt;us-central1-a
-sudo&lt;span class="w"&gt; &lt;/span&gt;-i
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;gcloud compute ssh openstack-1 --zone us-central1-a
+sudo -i
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Start a screen or tmux session because deploying OpenStack can take 30 min to 
@@ -68,10 +68,10 @@ sudo&lt;span class="w"&gt; &lt;/span&gt;-i
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Clone openstack-ansible repo to openstack-1:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;git&lt;span class="w"&gt; &lt;/span&gt;clone&lt;span class="w"&gt; &lt;/span&gt;https://opendev.org/openstack/openstack-ansible&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
-&lt;span class="w"&gt;    &lt;/span&gt;/opt/openstack-ansible
-&lt;span class="nb"&gt;cd&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;/opt/openstack-ansible
-git&lt;span class="w"&gt; &lt;/span&gt;checkout&lt;span class="w"&gt; &lt;/span&gt;stable/ussuri
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;git clone https://opendev.org/openstack/openstack-ansible &lt;span class="se"&gt;\&lt;/span&gt;
+    /opt/openstack-ansible
+&lt;span class="nb"&gt;cd&lt;/span&gt; /opt/openstack-ansible
+git checkout stable/ussuri
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Install Ansible on the VM and install all the required Ansible roles:&lt;/p&gt;
@@ -79,15 +79,15 @@ git&lt;span class="w"&gt; &lt;/span&gt;checkout&lt;span class="w"&gt; &lt;/span&
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Bootstrap the AIO configuration for openstack ansible&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nb"&gt;export&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;SCENARIO&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;aio_lxc_barbican_octavia&amp;#39;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nb"&gt;export&lt;/span&gt; &lt;span class="nv"&gt;SCENARIO&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;aio_lxc_barbican_octavia&amp;#39;&lt;/span&gt;
 scripts/bootstrap-aio.sh
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Create the LXC containers that run the different OpenStack components
 and install OpenStack:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;openstack-ansible&lt;span class="w"&gt; &lt;/span&gt;playbooks/setup-hosts.yml&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
-&lt;span class="w"&gt;    &lt;/span&gt;playbooks/setup-infrastructure.yml&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
-&lt;span class="w"&gt;    &lt;/span&gt;playbooks/setup-openstack.yml
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;openstack-ansible playbooks/setup-hosts.yml &lt;span class="se"&gt;\&lt;/span&gt;
+    playbooks/setup-infrastructure.yml &lt;span class="se"&gt;\&lt;/span&gt;
+    playbooks/setup-openstack.yml
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Now OpenStack should have been succesfully deployed on the openstack-1 VM.&lt;/p&gt;
@@ -98,21 +98,21 @@ let's setup a tunnel to the &lt;code&gt;openstack-1&lt;/code&gt; VM to be able t
 newly deployed environment. One way to create a tunnel is to use sshuttle.&lt;/p&gt;
 &lt;p&gt;On your local machine (laptop, desktop etc), run the following commands
 to setup the tunnel with sshuttle:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nv"&gt;PUBLIC_IP&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;gcloud&lt;span class="w"&gt; &lt;/span&gt;compute&lt;span class="w"&gt; &lt;/span&gt;instances&lt;span class="w"&gt; &lt;/span&gt;describe&lt;span class="w"&gt; &lt;/span&gt;openstack-1&lt;span class="w"&gt; &lt;/span&gt;--zone&lt;span class="w"&gt; &lt;/span&gt;us-central1-a&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
-&lt;span class="w"&gt;         &lt;/span&gt;--format&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;get(networkInterfaces[0].accessConfigs[0].natIP)&amp;#39;&lt;/span&gt;&lt;span class="k"&gt;)&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nv"&gt;PUBLIC_IP&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;gcloud compute instances describe openstack-1 --zone us-central1-a &lt;span class="se"&gt;\&lt;/span&gt;
+         --format&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;get(networkInterfaces[0].accessConfigs[0].natIP)&amp;#39;&lt;/span&gt;&lt;span class="k"&gt;)&lt;/span&gt;
 &lt;span class="c1"&gt;# note that you may need to add your public SSH key in GCP&lt;/span&gt;
-sshuttle&lt;span class="w"&gt; &lt;/span&gt;-r&lt;span class="w"&gt; &lt;/span&gt;sam@&lt;span class="nv"&gt;$PUBLIC_IP&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;10&lt;/span&gt;.0.0.0/8&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;172&lt;/span&gt;.16.0.0/12&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;192&lt;/span&gt;.168.0.0/16
+sshuttle -r sam@&lt;span class="nv"&gt;$PUBLIC_IP&lt;/span&gt; &lt;span class="m"&gt;10&lt;/span&gt;.0.0.0/8 &lt;span class="m"&gt;172&lt;/span&gt;.16.0.0/12 &lt;span class="m"&gt;192&lt;/span&gt;.168.0.0/16
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Now you should be able to access the web UI on the private VPC IP address
 of your VM. Get the private address of your &lt;code&gt;openstack-1&lt;/code&gt; VM with the
 following command:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;gcloud&lt;span class="w"&gt; &lt;/span&gt;compute&lt;span class="w"&gt; &lt;/span&gt;instances&lt;span class="w"&gt; &lt;/span&gt;describe&lt;span class="w"&gt; &lt;/span&gt;openstack-1&lt;span class="w"&gt; &lt;/span&gt;--zone&lt;span class="w"&gt; &lt;/span&gt;us-central1-a&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
-&lt;span class="w"&gt;         &lt;/span&gt;--format&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;get(networkInterfaces[0].networkIP)&amp;#39;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;gcloud compute instances describe openstack-1 --zone us-central1-a &lt;span class="se"&gt;\&lt;/span&gt;
+         --format&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;get(networkInterfaces[0].networkIP)&amp;#39;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;In your browser go to &lt;code&gt;https://$PRIVATE_IP&lt;/code&gt; and you should be able to
-see the Horizon UI. &lt;/p&gt;</content><category term="Google Cloud"></category><category term="google cloud"></category><category term="gcp"></category><category term="openstack"></category><category term="kvm"></category></entry><entry><title>Creating L2 connectivity between GCE VMs in GCP using VXLAN</title><link href="https://samos-it.com/posts/gce-vm-vxlan-l2-connectivity.html" rel="alternate"></link><published>2020-09-13T22:42:00+02:00</published><updated>2020-09-13T21:48:49+02:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2020-09-13:/posts/gce-vm-vxlan-l2-connectivity.html</id><summary type="html">&lt;p&gt;Cloud providers often prevent you from using L2 protocols such as ARP. These
+see the Horizon UI. &lt;/p&gt;</content><category term="Google Cloud"></category><category term="google cloud"></category><category term="gcp"></category><category term="openstack"></category><category term="kvm"></category></entry><entry><title>Creating L2 connectivity between GCE VMs in GCP using VXLAN</title><link href="https://samos-it.com/posts/gce-vm-vxlan-l2-connectivity.html" rel="alternate"></link><published>2020-09-13T22:42:00+02:00</published><updated>2022-12-06T14:44:00+01:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2020-09-13:/posts/gce-vm-vxlan-l2-connectivity.html</id><summary type="html">&lt;p&gt;Cloud providers often prevent you from using L2 protocols such as ARP. These
 protocols however are heavily used in existing software such as keepalived.
 This can make it hard for to move certain workloads to the cloud.
 This blog post demonstrates a method for creating L2 connectivity between
@@ -131,34 +131,34 @@ be using the &lt;code&gt;10.200.0.0/24&lt;/code&gt; subnet.&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;
 &lt;p&gt;Let's start by creating &lt;code&gt;vm-1&lt;/code&gt;&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;gcloud&lt;span class="w"&gt; &lt;/span&gt;compute&lt;span class="w"&gt; &lt;/span&gt;instances&lt;span class="w"&gt; &lt;/span&gt;create&lt;span class="w"&gt; &lt;/span&gt;vm-1&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
-&lt;span class="w"&gt;          &lt;/span&gt;--image-family&lt;span class="o"&gt;=&lt;/span&gt;ubuntu-2004-lts&lt;span class="w"&gt; &lt;/span&gt;--image-project&lt;span class="o"&gt;=&lt;/span&gt;ubuntu-os-cloud&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
-&lt;span class="w"&gt;          &lt;/span&gt;--zone&lt;span class="o"&gt;=&lt;/span&gt;us-central1-a&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
-&lt;span class="w"&gt;          &lt;/span&gt;--boot-disk-size&lt;span class="w"&gt; &lt;/span&gt;20G&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
-&lt;span class="w"&gt;          &lt;/span&gt;--boot-disk-type&lt;span class="w"&gt; &lt;/span&gt;pd-ssd&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
-&lt;span class="w"&gt;          &lt;/span&gt;--can-ip-forward&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
-&lt;span class="w"&gt;          &lt;/span&gt;--network&lt;span class="w"&gt; &lt;/span&gt;default&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
-&lt;span class="w"&gt;          &lt;/span&gt;--machine-type&lt;span class="w"&gt; &lt;/span&gt;n1-standard-2
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;gcloud compute instances create vm-1 &lt;span class="se"&gt;\&lt;/span&gt;
+          --image-family&lt;span class="o"&gt;=&lt;/span&gt;ubuntu-2004-lts --image-project&lt;span class="o"&gt;=&lt;/span&gt;ubuntu-os-cloud &lt;span class="se"&gt;\&lt;/span&gt;
+          --zone&lt;span class="o"&gt;=&lt;/span&gt;us-central1-a &lt;span class="se"&gt;\&lt;/span&gt;
+          --boot-disk-size 20G &lt;span class="se"&gt;\&lt;/span&gt;
+          --boot-disk-type pd-ssd &lt;span class="se"&gt;\&lt;/span&gt;
+          --can-ip-forward &lt;span class="se"&gt;\&lt;/span&gt;
+          --network default &lt;span class="se"&gt;\&lt;/span&gt;
+          --machine-type n1-standard-2
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;Repeat the same command creating &lt;code&gt;vm-2&lt;/code&gt; this time:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;gcloud&lt;span class="w"&gt; &lt;/span&gt;compute&lt;span class="w"&gt; &lt;/span&gt;instances&lt;span class="w"&gt; &lt;/span&gt;create&lt;span class="w"&gt; &lt;/span&gt;vm-2&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
-&lt;span class="w"&gt;          &lt;/span&gt;--image-family&lt;span class="o"&gt;=&lt;/span&gt;ubuntu-2004-lts&lt;span class="w"&gt; &lt;/span&gt;--image-project&lt;span class="o"&gt;=&lt;/span&gt;ubuntu-os-cloud&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
-&lt;span class="w"&gt;          &lt;/span&gt;--zone&lt;span class="o"&gt;=&lt;/span&gt;us-central1-a&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
-&lt;span class="w"&gt;          &lt;/span&gt;--boot-disk-size&lt;span class="w"&gt; &lt;/span&gt;20G&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
-&lt;span class="w"&gt;          &lt;/span&gt;--boot-disk-type&lt;span class="w"&gt; &lt;/span&gt;pd-ssd&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
-&lt;span class="w"&gt;          &lt;/span&gt;--can-ip-forward&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
-&lt;span class="w"&gt;          &lt;/span&gt;--network&lt;span class="w"&gt; &lt;/span&gt;default&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
-&lt;span class="w"&gt;          &lt;/span&gt;--machine-type&lt;span class="w"&gt; &lt;/span&gt;n1-standard-2
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;gcloud compute instances create vm-2 &lt;span class="se"&gt;\&lt;/span&gt;
+          --image-family&lt;span class="o"&gt;=&lt;/span&gt;ubuntu-2004-lts --image-project&lt;span class="o"&gt;=&lt;/span&gt;ubuntu-os-cloud &lt;span class="se"&gt;\&lt;/span&gt;
+          --zone&lt;span class="o"&gt;=&lt;/span&gt;us-central1-a &lt;span class="se"&gt;\&lt;/span&gt;
+          --boot-disk-size 20G &lt;span class="se"&gt;\&lt;/span&gt;
+          --boot-disk-type pd-ssd &lt;span class="se"&gt;\&lt;/span&gt;
+          --can-ip-forward &lt;span class="se"&gt;\&lt;/span&gt;
+          --network default &lt;span class="se"&gt;\&lt;/span&gt;
+          --machine-type n1-standard-2
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;Verify that SSH to both VMs is available and up. You might need o be patient.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;gcloud&lt;span class="w"&gt; &lt;/span&gt;compute&lt;span class="w"&gt; &lt;/span&gt;ssh&lt;span class="w"&gt; &lt;/span&gt;root@vm-1&lt;span class="w"&gt; &lt;/span&gt;--zone&lt;span class="w"&gt; &lt;/span&gt;us-central1-a&lt;span class="w"&gt; &lt;/span&gt;--command&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;echo &amp;#39;SSH to vm-1 succeeded&amp;#39;&amp;quot;&lt;/span&gt;
-gcloud&lt;span class="w"&gt; &lt;/span&gt;compute&lt;span class="w"&gt; &lt;/span&gt;ssh&lt;span class="w"&gt; &lt;/span&gt;root@vm-2&lt;span class="w"&gt; &lt;/span&gt;--zone&lt;span class="w"&gt; &lt;/span&gt;us-central1-a&lt;span class="w"&gt; &lt;/span&gt;--command&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;echo &amp;#39;SSH to vm-2 succeeded&amp;#39;&amp;quot;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;gcloud compute ssh root@vm-1 --zone us-central1-a --command &lt;span class="s2"&gt;&amp;quot;echo &amp;#39;SSH to vm-1 succeeded&amp;#39;&amp;quot;&lt;/span&gt;
+gcloud compute ssh root@vm-2 --zone us-central1-a --command &lt;span class="s2"&gt;&amp;quot;echo &amp;#39;SSH to vm-2 succeeded&amp;#39;&amp;quot;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;/li&gt;
@@ -169,18 +169,18 @@ that you just created.&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;
 &lt;p&gt;Create bash variables that will be used for setting up the VXLAN mesh&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nv"&gt;VM1_VPC_IP&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;gcloud&lt;span class="w"&gt; &lt;/span&gt;compute&lt;span class="w"&gt; &lt;/span&gt;instances&lt;span class="w"&gt; &lt;/span&gt;describe&lt;span class="w"&gt; &lt;/span&gt;vm-1&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
-&lt;span class="w"&gt;               &lt;/span&gt;--format&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;get(networkInterfaces[0].networkIP)&amp;#39;&lt;/span&gt;&lt;span class="k"&gt;)&lt;/span&gt;
-&lt;span class="nv"&gt;VM2_VPC_IP&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;gcloud&lt;span class="w"&gt; &lt;/span&gt;compute&lt;span class="w"&gt; &lt;/span&gt;instances&lt;span class="w"&gt; &lt;/span&gt;describe&lt;span class="w"&gt; &lt;/span&gt;vm-2&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
-&lt;span class="w"&gt;               &lt;/span&gt;--format&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;get(networkInterfaces[0].networkIP)&amp;#39;&lt;/span&gt;&lt;span class="k"&gt;)&lt;/span&gt;
-&lt;span class="nb"&gt;echo&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;$VM1_VPC_IP&lt;/span&gt;
-&lt;span class="nb"&gt;echo&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;$VM2_VPC_IP&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nv"&gt;VM1_VPC_IP&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;gcloud compute instances describe vm-1 &lt;span class="se"&gt;\&lt;/span&gt;
+               --format&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;get(networkInterfaces[0].networkIP)&amp;#39;&lt;/span&gt;&lt;span class="k"&gt;)&lt;/span&gt;
+&lt;span class="nv"&gt;VM2_VPC_IP&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;gcloud compute instances describe vm-2 &lt;span class="se"&gt;\&lt;/span&gt;
+               --format&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;get(networkInterfaces[0].networkIP)&amp;#39;&lt;/span&gt;&lt;span class="k"&gt;)&lt;/span&gt;
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="nv"&gt;$VM1_VPC_IP&lt;/span&gt;
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="nv"&gt;$VM2_VPC_IP&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;Create the VXLAN device and mesh on &lt;code&gt;vm-1&lt;/code&gt;&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;gcloud&lt;span class="w"&gt; &lt;/span&gt;compute&lt;span class="w"&gt; &lt;/span&gt;ssh&lt;span class="w"&gt; &lt;/span&gt;root@vm-1&lt;span class="w"&gt; &lt;/span&gt;--zone&lt;span class="w"&gt; &lt;/span&gt;us-central1-a&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="s"&gt;&amp;lt;&amp;lt; EOF&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;gcloud compute ssh root@vm-1 --zone us-central1-a  &lt;span class="s"&gt;&amp;lt;&amp;lt; EOF&lt;/span&gt;
 &lt;span class="s"&gt;set -x&lt;/span&gt;
 &lt;span class="s"&gt;ip link add vxlan0 type vxlan id 42 dev ens4 dstport 0&lt;/span&gt;
 &lt;span class="s"&gt;bridge fdb append to 00:00:00:00:00:00 dst $VM2_VPC_IP dev vxlan0&lt;/span&gt;
@@ -192,7 +192,7 @@ that you just created.&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;Create the VXLAN device and mesh on &lt;code&gt;vm-2&lt;/code&gt;&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;gcloud&lt;span class="w"&gt; &lt;/span&gt;compute&lt;span class="w"&gt; &lt;/span&gt;ssh&lt;span class="w"&gt; &lt;/span&gt;root@vm-2&lt;span class="w"&gt; &lt;/span&gt;--zone&lt;span class="w"&gt; &lt;/span&gt;us-central1-a&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="s"&gt;&amp;lt;&amp;lt; EOF&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;gcloud compute ssh root@vm-2 --zone us-central1-a  &lt;span class="s"&gt;&amp;lt;&amp;lt; EOF&lt;/span&gt;
 &lt;span class="s"&gt;set -x&lt;/span&gt;
 &lt;span class="s"&gt;ip link add vxlan0 type vxlan id 42 dev ens4 dstport 0&lt;/span&gt;
 &lt;span class="s"&gt;bridge fdb append to 00:00:00:00:00:00 dst $VM1_VPC_IP dev vxlan0&lt;/span&gt;
@@ -204,15 +204,15 @@ that you just created.&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;Start a tcpdump on vm-1&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;gcloud&lt;span class="w"&gt; &lt;/span&gt;compute&lt;span class="w"&gt; &lt;/span&gt;ssh&lt;span class="w"&gt; &lt;/span&gt;root@vm-1&lt;span class="w"&gt; &lt;/span&gt;--zone&lt;span class="w"&gt; &lt;/span&gt;us-central1-a
-tcpdump&lt;span class="w"&gt; &lt;/span&gt;-i&lt;span class="w"&gt; &lt;/span&gt;vxlan0&lt;span class="w"&gt; &lt;/span&gt;-n
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;gcloud compute ssh root@vm-1 --zone us-central1-a
+tcpdump -i vxlan0 -n
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;In another session ping &lt;code&gt;vm-2&lt;/code&gt; from &lt;code&gt;vm-1&lt;/code&gt;  and take a look at tcpdump output. Notice the arp.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;gcloud&lt;span class="w"&gt; &lt;/span&gt;compute&lt;span class="w"&gt; &lt;/span&gt;ssh&lt;span class="w"&gt; &lt;/span&gt;root@vm-1&lt;span class="w"&gt; &lt;/span&gt;--zone&lt;span class="w"&gt; &lt;/span&gt;us-central1-a
-ping&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;10&lt;/span&gt;.200.0.3
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;gcloud compute ssh root@vm-1 --zone us-central1-a
+ping &lt;span class="m"&gt;10&lt;/span&gt;.200.0.3
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;/li&gt;
@@ -222,7 +222,7 @@ ping&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;10&lt;/span&gt;.20
 more VMs. If you want to have a mesh between more VMs than for each additional
 VM you would need to run &lt;code&gt;bridge fdp append&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;This blog post wouldn't have been possible without Mikal's blog on
-&lt;a href="https://www.madebymikal.com/setting-up-vxlan-on-google-compute-engine/"&gt;Setting up VXLAN on Google Compute Engine&lt;/a&gt;.&lt;/p&gt;</content><category term="Google Cloud"></category><category term="google cloud"></category><category term="gcp"></category><category term="vxlan"></category><category term="networking"></category><category term="gce"></category></entry><entry><title>Custom GCP Cloud Shell image with Terraform and Helm</title><link href="https://samos-it.com/posts/custom-GCP-Cloud-Shell-image-with-Terraform-Helm.html" rel="alternate"></link><published>2019-06-10T13:01:00+02:00</published><updated>2020-09-13T20:01:23+02:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2019-06-10:/posts/custom-GCP-Cloud-Shell-image-with-Terraform-Helm.html</id><summary type="html">&lt;p&gt;Inpatient people who just want the end-result, please go to:
+&lt;a href="https://www.madebymikal.com/setting-up-vxlan-on-google-compute-engine/"&gt;Setting up VXLAN on Google Compute Engine&lt;/a&gt;.&lt;/p&gt;</content><category term="Google Cloud"></category><category term="google cloud"></category><category term="gcp"></category><category term="vxlan"></category><category term="networking"></category><category term="gce"></category></entry><entry><title>Custom GCP Cloud Shell image with Terraform and Helm</title><link href="https://samos-it.com/posts/custom-GCP-Cloud-Shell-image-with-Terraform-Helm.html" rel="alternate"></link><published>2019-06-10T13:01:00+02:00</published><updated>2022-12-06T14:44:00+01:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2019-06-10:/posts/custom-GCP-Cloud-Shell-image-with-Terraform-Helm.html</id><summary type="html">&lt;p&gt;Inpatient people who just want the end-result, please go to:
 &lt;a href="https://github.com/samos123/gcp-terraform-cloud-shell"&gt;GitHub: GCP Cloud Shell image with Terraform and Helm&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;Cloud Shell is one of the convenient features of Google Cloud providing
 you with a secure CLI directly from the browser. The default image contains
@@ -245,8 +245,8 @@ Container Registry.&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;
 &lt;p&gt;Let's start by creating a new repo and setting the project ID where the Docker image should be published:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;mkdir&lt;span class="w"&gt; &lt;/span&gt;gcp-cloud-shell-custom-image
-&lt;span class="nb"&gt;cd&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;gcp-cloud-shell-custom-image
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;mkdir gcp-cloud-shell-custom-image
+&lt;span class="nb"&gt;cd&lt;/span&gt; gcp-cloud-shell-custom-image
 &lt;span class="nv"&gt;GCP_PROJECT_ID&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;your-project-ID
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
@@ -256,16 +256,16 @@ Container Registry.&lt;/p&gt;
 following content:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;FROM&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;gcr.io/cloudshell-images/cloudshell:latest&lt;/span&gt;
 
-&lt;span class="k"&gt;ENV&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;TERRAFORM_VERSION&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;0.11.10&amp;quot;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
-&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nv"&gt;HELM_VERSION&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;v2.14.0&amp;quot;&lt;/span&gt;
+&lt;span class="k"&gt;ENV&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;TERRAFORM_VERSION&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;0.11.10&amp;quot;&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
+    &lt;span class="nv"&gt;HELM_VERSION&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;v2.14.0&amp;quot;&lt;/span&gt;
 
 &lt;span class="k"&gt;WORKDIR&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;/tmp&lt;/span&gt;
 
-&lt;span class="k"&gt;RUN&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;curl&lt;span class="w"&gt; &lt;/span&gt;https://releases.hashicorp.com/terraform/&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;TERRAFORM_VERSION&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;/terraform_&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;TERRAFORM_VERSION&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;_linux_amd64.zip&lt;span class="w"&gt; &lt;/span&gt;&amp;gt;&lt;span class="w"&gt; &lt;/span&gt;terraform_&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;TERRAFORM_VERSION&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;_linux_amd64.zip&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
-&lt;span class="w"&gt;    &lt;/span&gt;unzip&lt;span class="w"&gt; &lt;/span&gt;terraform_&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;TERRAFORM_VERSION&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;_linux_amd64.zip&lt;span class="w"&gt; &lt;/span&gt;-d&lt;span class="w"&gt; &lt;/span&gt;/bin&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
-&lt;span class="w"&gt;    &lt;/span&gt;wget&lt;span class="w"&gt; &lt;/span&gt;-q&lt;span class="w"&gt; &lt;/span&gt;https://storage.googleapis.com/kubernetes-helm/helm-&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;HELM_VERSION&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;-linux-amd64.tar.gz&lt;span class="w"&gt; &lt;/span&gt;-O&lt;span class="w"&gt; &lt;/span&gt;-&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;|&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;tar&lt;span class="w"&gt; &lt;/span&gt;-xzO&lt;span class="w"&gt; &lt;/span&gt;linux-amd64/helm&lt;span class="w"&gt; &lt;/span&gt;&amp;gt;&lt;span class="w"&gt; &lt;/span&gt;/usr/local/bin/helm&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
-&lt;span class="w"&gt;    &lt;/span&gt;chmod&lt;span class="w"&gt; &lt;/span&gt;+x&lt;span class="w"&gt; &lt;/span&gt;/usr/local/bin/helm&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
-&lt;span class="w"&gt;    &lt;/span&gt;rm&lt;span class="w"&gt; &lt;/span&gt;-f&lt;span class="w"&gt; &lt;/span&gt;terraform_&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;TERRAFORM_VERSION&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;_linux_amd64.zip
+&lt;span class="k"&gt;RUN&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;curl https://releases.hashicorp.com/terraform/&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;TERRAFORM_VERSION&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;/terraform_&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;TERRAFORM_VERSION&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;_linux_amd64.zip &amp;gt; terraform_&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;TERRAFORM_VERSION&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;_linux_amd64.zip &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
+    unzip terraform_&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;TERRAFORM_VERSION&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;_linux_amd64.zip -d /bin &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
+    wget -q https://storage.googleapis.com/kubernetes-helm/helm-&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;HELM_VERSION&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;-linux-amd64.tar.gz -O - &lt;span class="p"&gt;|&lt;/span&gt; tar -xzO linux-amd64/helm &amp;gt; /usr/local/bin/helm &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
+    chmod +x /usr/local/bin/helm &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="se"&gt;\&lt;/span&gt;
+    rm -f terraform_&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;TERRAFORM_VERSION&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;_linux_amd64.zip
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;/li&gt;

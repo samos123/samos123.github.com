@@ -87,7 +87,7 @@ ga('send', 'pageview');
     <!-- End Ezoic - under_page_title - under_page_title -->
     <span class="post-date">
         Fri 22 January 2016
-| Last updated on Sun 13 September 2020
+| Last updated on Tue 06 December 2022
     </span>
     <p>This post shows several computer vision steps implemented on top of Spark.
 OpenCV is used to extract features on top of OpenStack and Spark MLLib KMeans
@@ -109,14 +109,14 @@ tested with HDFS and OpenStack Swift.</p>
 <p>The following commands show how to download Caltech-256 dataset consisting of JPG images.
 Then upload the downloaded images to OpenStack Swift in sequence file format:</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Download and compile the hadoop sequencefile upload tool</span>
-git<span class="w"> </span>clone<span class="w"> </span>https://github.com/samos123/hadoop-sequence-file-upload
-<span class="nb">cd</span><span class="w"> </span>hadoop-sequence-file-upload
-mvn<span class="w"> </span>clean<span class="w"> </span>compile<span class="w"> </span>assembly:single
+git clone https://github.com/samos123/hadoop-sequence-file-upload
+<span class="nb">cd</span> hadoop-sequence-file-upload
+mvn clean compile assembly:single
 <span class="c1">#  Download / extract calltech-256 dataset</span>
-axel<span class="w"> </span>http://www.vision.caltech.edu/Image_Datasets/Caltech256/256_ObjectCategories.tar
-tar<span class="w"> </span>xf<span class="w"> </span>256_ObjectCategories.tar
+axel http://www.vision.caltech.edu/Image_Datasets/Caltech256/256_ObjectCategories.tar
+tar xf 256_ObjectCategories.tar
 <span class="c1"># Upload to Swift, this assumes /etc/hadoop/conf/core-site.xml is used to store Swift details</span>
-./upload-to-sequence-file.sh<span class="w"> </span>256_ObjectCategories/<span class="w"> </span>swift://spark.swift1/caltech-256.hseq
+./upload-to-sequence-file.sh 256_ObjectCategories/ swift://spark.swift1/caltech-256.hseq
 </code></pre></div>
 
 <p>The dataset is also accessible through Tachyon as we configured it to use Swift as underFS.</p>
@@ -183,7 +183,7 @@ to extract SURF or SIFT features from an image.</p>
 <p>Using the above Spark application we can start to extract features from our image dataset in Swift.
 As input we provide the sequencefile containing <code>&lt;fileName: String, image: Bytes&gt;</code>. The extracted
 features we write out as parquet file. The following command extracts the sift features from our dataset:</p>
-<div class="highlight"><pre><span></span><code>spark-submit<span class="w"> </span>--executor-memory<span class="w"> </span>8g<span class="w"> </span>feature_extraction.py<span class="w"> </span>sift<span class="w"> </span>swift://spark.swift1/caltech-256.hseq<span class="w"> </span>swift://spark.swift1/caltech-256-sift1.parquet<span class="w"> </span><span class="m">100</span>
+<div class="highlight"><pre><span></span><code>spark-submit --executor-memory 8g feature_extraction.py sift swift://spark.swift1/caltech-256.hseq swift://spark.swift1/caltech-256-sift1.parquet <span class="m">100</span>
 </code></pre></div>
 
 <h3>K-Means Dictionary generation on SIFT features</h3>
@@ -229,7 +229,7 @@ previous step as input dataset.</p>
 </code></pre></div>
 
 <p>Start the spark job with:</p>
-<div class="highlight"><pre><span></span><code>spark-submit<span class="w"> </span>--executor-memory<span class="w"> </span>8g<span class="w"> </span>kmeans.py<span class="w"> </span><span class="m">1000</span><span class="w"> </span>swift://spark.swift1/caltech-256-sift1.parquet<span class="w"> </span>swift://spark.swift1/caltech-256-dictionary
+<div class="highlight"><pre><span></span><code>spark-submit --executor-memory 8g kmeans.py <span class="m">1000</span> swift://spark.swift1/caltech-256-sift1.parquet swift://spark.swift1/caltech-256-dictionary
 </code></pre></div>
 
 <h3>Feature coding and pooling with trained KMeans model</h3>
@@ -303,7 +303,7 @@ utilizing coding and pooling. For pooling we've implemented a simple max and sum
 </code></pre></div>
 
 <p>Execute the spark applicaiton with:</p>
-<div class="highlight"><pre><span></span><code>spark-submit<span class="w"> </span>--executor-memory<span class="w"> </span>8g<span class="w"> </span>feature_coding_pooling.py<span class="w"> </span>swift://spark.swift1/caltech-256-sift1.parquet<span class="w"> </span>swift://spark.swift1/caltech-256-dictionary<span class="w"> </span>swift://spark.swift1/caltech-256-bow.parquet<span class="w"> </span>sum
+<div class="highlight"><pre><span></span><code>spark-submit --executor-memory 8g feature_coding_pooling.py swift://spark.swift1/caltech-256-sift1.parquet swift://spark.swift1/caltech-256-dictionary swift://spark.swift1/caltech-256-bow.parquet sum
 </code></pre></div>
     <!-- Ezoic - bottom_of_page - bottom_of_page -->
     <div id="ezoic-pub-ad-placeholder-104"> </div>

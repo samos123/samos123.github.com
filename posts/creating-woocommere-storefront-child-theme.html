@@ -109,8 +109,8 @@ are kept separate from the parent theme, so updates won't affect them.</p>
 <h2>1. Creating a new <code>style.css</code> file with metadata</h2>
 <p>Create a new directory/folder called <code>mychildtheme</code> and change your working
 directory to it:</p>
-<div class="highlight"><pre><span></span><code>mkdir<span class="w"> </span>mychildtheme
-<span class="nb">cd</span><span class="w"> </span>mychildtheme
+<div class="highlight"><pre><span></span><code>mkdir mychildtheme
+<span class="nb">cd</span> mychildtheme
 </code></pre></div>
 
 <p>Create a file <code>style.css</code> inside the <code>mychildtheme</code> directory with the following
@@ -121,17 +121,17 @@ content:</p>
 <span class="c">Author: Sam Stoelinga</span>
 <span class="c">Author URI: https://samos-it.com</span>
 <span class="c">Template: storefront</span>
-<span class="c">*/</span>
+<span class="c">*/</span><span class="w"></span>
 
-<span class="c">/* optional just an example of how you can change the style */</span>
-<span class="p">.</span><span class="nc">product_title</span><span class="w"> </span><span class="nt">h1</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="k">color</span><span class="p">:</span><span class="w"> </span><span class="kc">pink</span><span class="p">;</span>
-<span class="p">}</span>
+<span class="c">/* optional just an example of how you can change the style */</span><span class="w"></span>
+<span class="p">.</span><span class="nc">product_title</span><span class="w"> </span><span class="nt">h1</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">color</span><span class="p">:</span><span class="w"> </span><span class="kc">pink</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 </code></pre></div>
 
 <p>That's all you need for your child theme to get started. You might wonder, how
 does it specify the parent theme? That's done through this line:</p>
-<div class="highlight"><pre><span></span><code><span class="n">Template</span><span class="o">:</span><span class="w"> </span><span class="n">storefront</span>
+<div class="highlight"><pre><span></span><code><span class="n">Template</span><span class="o">:</span><span class="w"> </span><span class="n">storefront</span><span class="w"></span>
 </code></pre></div>
 
 <p>It tells Wordpress that the parent theme of our theme is <code>storefront</code>. You can
@@ -150,7 +150,7 @@ how easy it is to add additional CSS rules to storefront this way.</p>
 </ol>
 <p>I think the zip file is the most straight forward so that's what we'll use here.</p>
 <p>Create a zip file named <code>mychildtheme.zip</code> by running:</p>
-<div class="highlight"><pre><span></span><code>zip<span class="w"> </span>-r<span class="w"> </span>mychildtheme.zip<span class="w"> </span>mychildtheme
+<div class="highlight"><pre><span></span><code>zip -r mychildtheme.zip mychildtheme
 </code></pre></div>
 
 <p>Steps to upload theme as zip:</p>

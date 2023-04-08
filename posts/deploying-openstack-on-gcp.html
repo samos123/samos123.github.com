@@ -87,7 +87,7 @@ ga('send', 'pageview');
     <!-- End Ezoic - under_page_title - under_page_title -->
     <span class="post-date">
         Sat 07 November 2020
-| Last updated on Tue 10 November 2020
+| Last updated on Tue 06 December 2022
     </span>
     <p>You want private cloud inside public cloud for additional security,
 improved agility, lower opex and ultimate flexibility? I present you
@@ -108,29 +108,29 @@ for testing the OpenStack K8s Cloud Provider with K8s.</p>
 <p>Let's create a VM called <code>openstack-1</code> with 32 vCPUs. This VM will be used to run additional VMs
 that are spawned by OpenStack. The GCE VM itself will run the OpenStack control plane and serve
 as an OpenStack compute node. Run the following commands:</p>
-<div class="highlight"><pre><span></span><code>gcloud<span class="w"> </span>compute<span class="w"> </span>disks<span class="w"> </span>create<span class="w"> </span>ubuntu2004disk<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--image-project<span class="w"> </span>ubuntu-os-cloud<span class="w"> </span>--image-family<span class="w"> </span>ubuntu-2004-lts<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--zone<span class="w"> </span>us-central1-a
+<div class="highlight"><pre><span></span><code>gcloud compute disks create ubuntu2004disk <span class="se">\</span>
+  --image-project ubuntu-os-cloud --image-family ubuntu-2004-lts <span class="se">\</span>
+  --zone us-central1-a
 
-gcloud<span class="w"> </span>compute<span class="w"> </span>images<span class="w"> </span>create<span class="w"> </span>ubuntu-2004-nested<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--source-disk<span class="w"> </span>ubuntu2004disk<span class="w"> </span>--source-disk-zone<span class="w"> </span>us-central1-a<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--licenses<span class="w"> </span><span class="s2">&quot;https://www.googleapis.com/compute/v1/projects/vm-options/global/licenses/enable-vmx&quot;</span>
+gcloud compute images create ubuntu-2004-nested <span class="se">\</span>
+  --source-disk ubuntu2004disk --source-disk-zone us-central1-a <span class="se">\</span>
+  --licenses <span class="s2">&quot;https://www.googleapis.com/compute/v1/projects/vm-options/global/licenses/enable-vmx&quot;</span>
 
-gcloud<span class="w"> </span>compute<span class="w"> </span>instances<span class="w"> </span>create<span class="w"> </span>openstack-1<span class="w"> </span>--zone<span class="w"> </span>us-central1-a<span class="w"> </span><span class="se">\</span>
-<span class="w">              </span>--image<span class="w"> </span>ubuntu-2004-nested<span class="w"> </span><span class="se">\</span>
-<span class="w">              </span>--boot-disk-size<span class="w"> </span>600G<span class="w"> </span><span class="se">\</span>
-<span class="w">              </span>--boot-disk-type<span class="w"> </span>pd-ssd<span class="w"> </span><span class="se">\</span>
-<span class="w">              </span>--can-ip-forward<span class="w"> </span><span class="se">\</span>
-<span class="w">              </span>--network<span class="w"> </span>default<span class="w"> </span><span class="se">\</span>
-<span class="w">              </span>--tags<span class="w"> </span>http-server,https-server,novnc,openstack-apis<span class="w"> </span><span class="se">\</span>
-<span class="w">              </span>--min-cpu-platform<span class="w"> </span><span class="s2">&quot;Intel Haswell&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">              </span>--machine-type<span class="w"> </span>n1-standard-32
+gcloud compute instances create openstack-1 --zone us-central1-a <span class="se">\</span>
+              --image ubuntu-2004-nested <span class="se">\</span>
+              --boot-disk-size 600G <span class="se">\</span>
+              --boot-disk-type pd-ssd <span class="se">\</span>
+              --can-ip-forward <span class="se">\</span>
+              --network default <span class="se">\</span>
+              --tags http-server,https-server,novnc,openstack-apis <span class="se">\</span>
+              --min-cpu-platform <span class="s2">&quot;Intel Haswell&quot;</span> <span class="se">\</span>
+              --machine-type n1-standard-32
 </code></pre></div>
 
 <p>Now verify that nested KVM is enabled:</p>
-<div class="highlight"><pre><span></span><code>gcloud<span class="w"> </span>compute<span class="w"> </span>ssh<span class="w"> </span>openstack-1<span class="w"> </span>--zone<span class="w"> </span>us-central1-a
-sudo<span class="w"> </span>-i
-apt-get<span class="w"> </span>update<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>qemu-kvm<span class="w"> </span>-y
+<div class="highlight"><pre><span></span><code>gcloud compute ssh openstack-1 --zone us-central1-a
+sudo -i
+apt-get update <span class="o">&amp;&amp;</span> apt-get install qemu-kvm -y
 kvm-ok
 </code></pre></div>
 
@@ -144,8 +144,8 @@ KVM acceleration can be used
 <h3>2. Deploying OpenStack</h3>
 <p>Now let's deploy OpenStack using OpenStack Ansible with all in one(aio) mode.
 Ensure you're still SSHed into the <code>openstack-1</code> VM, if not run:</p>
-<div class="highlight"><pre><span></span><code>gcloud<span class="w"> </span>compute<span class="w"> </span>ssh<span class="w"> </span>openstack-1<span class="w"> </span>--zone<span class="w"> </span>us-central1-a
-sudo<span class="w"> </span>-i
+<div class="highlight"><pre><span></span><code>gcloud compute ssh openstack-1 --zone us-central1-a
+sudo -i
 </code></pre></div>
 
 <p>Start a screen or tmux session because deploying OpenStack can take 30 min to 
@@ -154,10 +154,10 @@ sudo<span class="w"> </span>-i
 </code></pre></div>
 
 <p>Clone openstack-ansible repo to openstack-1:</p>
-<div class="highlight"><pre><span></span><code>git<span class="w"> </span>clone<span class="w"> </span>https://opendev.org/openstack/openstack-ansible<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>/opt/openstack-ansible
-<span class="nb">cd</span><span class="w"> </span>/opt/openstack-ansible
-git<span class="w"> </span>checkout<span class="w"> </span>stable/ussuri
+<div class="highlight"><pre><span></span><code>git clone https://opendev.org/openstack/openstack-ansible <span class="se">\</span>
+    /opt/openstack-ansible
+<span class="nb">cd</span> /opt/openstack-ansible
+git checkout stable/ussuri
 </code></pre></div>
 
 <p>Install Ansible on the VM and install all the required Ansible roles:</p>
@@ -165,15 +165,15 @@ git<span class="w"> </span>checkout<span class="w"> </span>stable/ussuri
 </code></pre></div>
 
 <p>Bootstrap the AIO configuration for openstack ansible</p>
-<div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">SCENARIO</span><span class="o">=</span><span class="s1">&#39;aio_lxc_barbican_octavia&#39;</span>
+<div class="highlight"><pre><span></span><code><span class="nb">export</span> <span class="nv">SCENARIO</span><span class="o">=</span><span class="s1">&#39;aio_lxc_barbican_octavia&#39;</span>
 scripts/bootstrap-aio.sh
 </code></pre></div>
 
 <p>Create the LXC containers that run the different OpenStack components
 and install OpenStack:</p>
-<div class="highlight"><pre><span></span><code>openstack-ansible<span class="w"> </span>playbooks/setup-hosts.yml<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>playbooks/setup-infrastructure.yml<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>playbooks/setup-openstack.yml
+<div class="highlight"><pre><span></span><code>openstack-ansible playbooks/setup-hosts.yml <span class="se">\</span>
+    playbooks/setup-infrastructure.yml <span class="se">\</span>
+    playbooks/setup-openstack.yml
 </code></pre></div>
 
 <p>Now OpenStack should have been succesfully deployed on the openstack-1 VM.</p>
@@ -184,17 +184,17 @@ let's setup a tunnel to the <code>openstack-1</code> VM to be able to access the
 newly deployed environment. One way to create a tunnel is to use sshuttle.</p>
 <p>On your local machine (laptop, desktop etc), run the following commands
 to setup the tunnel with sshuttle:</p>
-<div class="highlight"><pre><span></span><code><span class="nv">PUBLIC_IP</span><span class="o">=</span><span class="k">$(</span>gcloud<span class="w"> </span>compute<span class="w"> </span>instances<span class="w"> </span>describe<span class="w"> </span>openstack-1<span class="w"> </span>--zone<span class="w"> </span>us-central1-a<span class="w"> </span><span class="se">\</span>
-<span class="w">         </span>--format<span class="o">=</span><span class="s1">&#39;get(networkInterfaces[0].accessConfigs[0].natIP)&#39;</span><span class="k">)</span>
+<div class="highlight"><pre><span></span><code><span class="nv">PUBLIC_IP</span><span class="o">=</span><span class="k">$(</span>gcloud compute instances describe openstack-1 --zone us-central1-a <span class="se">\</span>
+         --format<span class="o">=</span><span class="s1">&#39;get(networkInterfaces[0].accessConfigs[0].natIP)&#39;</span><span class="k">)</span>
 <span class="c1"># note that you may need to add your public SSH key in GCP</span>
-sshuttle<span class="w"> </span>-r<span class="w"> </span>sam@<span class="nv">$PUBLIC_IP</span><span class="w"> </span><span class="m">10</span>.0.0.0/8<span class="w"> </span><span class="m">172</span>.16.0.0/12<span class="w"> </span><span class="m">192</span>.168.0.0/16
+sshuttle -r sam@<span class="nv">$PUBLIC_IP</span> <span class="m">10</span>.0.0.0/8 <span class="m">172</span>.16.0.0/12 <span class="m">192</span>.168.0.0/16
 </code></pre></div>
 
 <p>Now you should be able to access the web UI on the private VPC IP address
 of your VM. Get the private address of your <code>openstack-1</code> VM with the
 following command:</p>
-<div class="highlight"><pre><span></span><code>gcloud<span class="w"> </span>compute<span class="w"> </span>instances<span class="w"> </span>describe<span class="w"> </span>openstack-1<span class="w"> </span>--zone<span class="w"> </span>us-central1-a<span class="w"> </span><span class="se">\</span>
-<span class="w">         </span>--format<span class="o">=</span><span class="s1">&#39;get(networkInterfaces[0].networkIP)&#39;</span>
+<div class="highlight"><pre><span></span><code>gcloud compute instances describe openstack-1 --zone us-central1-a <span class="se">\</span>
+         --format<span class="o">=</span><span class="s1">&#39;get(networkInterfaces[0].networkIP)&#39;</span>
 </code></pre></div>
 
 <p>In your browser go to <code>https://$PRIVATE_IP</code> and you should be able to

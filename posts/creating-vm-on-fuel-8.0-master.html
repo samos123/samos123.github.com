@@ -87,7 +87,7 @@ ga('send', 'pageview');
     <!-- End Ezoic - under_page_title - under_page_title -->
     <span class="post-date">
         Wed 01 June 2016
-| Last updated on Sun 13 September 2020
+| Last updated on Tue 06 December 2022
     </span>
     <p>Creating a KVM VM on the Fuel master node is a nice way
 to better utilize server resources for small environments
@@ -155,7 +155,7 @@ gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
 </li>
 <li>
 <p>Now install the required packages from CentOS repo</p>
-<div class="highlight"><pre><span></span><code>yum<span class="w"> </span>install<span class="w"> </span>libvirt<span class="w"> </span>qemu-kvm<span class="w"> </span>kvm
+<div class="highlight"><pre><span></span><code>yum install libvirt qemu-kvm kvm
 </code></pre></div>
 
 </li>
@@ -166,7 +166,7 @@ gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
 <li>
 <p>Prevent libvirt from starting dnsmasq. Execute the following command, delete the parts with dhcp
    and change forwarding to none:</p>
-<div class="highlight"><pre><span></span><code>virsh<span class="w"> </span>net-edit<span class="w"> </span>default
+<div class="highlight"><pre><span></span><code>virsh net-edit default
 </code></pre></div>
 
 </li>
@@ -186,18 +186,18 @@ so here we go with a hacky script.</p>
 <span class="nv">ETH0ADDR</span><span class="o">=</span><span class="m">10</span>.20.0.2/24
 
 <span class="c1"># Rename eth0 to net0</span>
-ip<span class="w"> </span>a<span class="w"> </span>flush<span class="w"> </span>dev<span class="w"> </span>eth0
-ip<span class="w"> </span>link<span class="w"> </span><span class="nb">set</span><span class="w"> </span>eth0<span class="w"> </span>down
-ip<span class="w"> </span>link<span class="w"> </span><span class="nb">set</span><span class="w"> </span>eth0<span class="w"> </span>name<span class="w"> </span>net0
-ip<span class="w"> </span>link<span class="w"> </span><span class="nb">set</span><span class="w"> </span>net0<span class="w"> </span>up
+ip a flush dev eth0
+ip link <span class="nb">set</span> eth0 down
+ip link <span class="nb">set</span> eth0 name net0
+ip link <span class="nb">set</span> net0 up
 
 <span class="c1"># Create bridge eth0 with net0 as interface</span>
-brctl<span class="w"> </span>addbr<span class="w"> </span>eth0
-ip<span class="w"> </span>link<span class="w"> </span><span class="nb">set</span><span class="w"> </span>eth0<span class="w"> </span>up
-brctl<span class="w"> </span>addif<span class="w"> </span>eth0<span class="w"> </span>net0
+brctl addbr eth0
+ip link <span class="nb">set</span> eth0 up
+brctl addif eth0 net0
 
 <span class="c1"># Add original eth0addr to bridge</span>
-ip<span class="w"> </span>a<span class="w"> </span>add<span class="w"> </span><span class="nv">$ETH0ADDR</span><span class="w"> </span>dev<span class="w"> </span>eth0
+ip a add <span class="nv">$ETH0ADDR</span> dev eth0
 </code></pre></div>
 
 </li>
@@ -206,7 +206,7 @@ ip<span class="w"> </span>a<span class="w"> </span>add<span class="w"> </span><s
    Create the file <code>/etc/systemd/system/create-eth0-bridge.service</code> with
    the following content:</p>
 <div class="highlight"><pre><span></span><code><span class="o">[</span>Unit<span class="o">]</span>
-<span class="nv">Description</span><span class="o">=</span>Create<span class="w"> </span>eth0<span class="w"> </span>network<span class="w"> </span>bridge<span class="w"> </span><span class="k">for</span><span class="w"> </span>Stacklight<span class="w"> </span>VM
+<span class="nv">Description</span><span class="o">=</span>Create eth0 network bridge <span class="k">for</span> Stacklight VM
 <span class="nv">Wants</span><span class="o">=</span>network-online.target
 <span class="nv">After</span><span class="o">=</span>network-online.target
 
@@ -218,7 +218,7 @@ ip<span class="w"> </span>a<span class="w"> </span>add<span class="w"> </span><s
 </code></pre></div>
 
 <p>Now enable the service to be run on startup by executing the command:</p>
-<div class="highlight"><pre><span></span><code>systemctl<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>create-eth0-bridge
+<div class="highlight"><pre><span></span><code>systemctl <span class="nb">enable</span> create-eth0-bridge
 </code></pre></div>
 
 </li>
@@ -229,8 +229,8 @@ ip<span class="w"> </span>a<span class="w"> </span>add<span class="w"> </span><s
    which contains the management network on eth2.</p>
 <p>Create the bridge named br-eth2 and add eth2 as port to the bridge
 with the following commands:</p>
-<div class="highlight"><pre><span></span><code>brctl<span class="w"> </span>addbr<span class="w"> </span>br-eth2
-brctl<span class="w"> </span>addif<span class="w"> </span>br-eth2<span class="w"> </span>eth2
+<div class="highlight"><pre><span></span><code>brctl addbr br-eth2
+brctl addif br-eth2 eth2
 </code></pre></div>
 
 <p>To make the changes persistent accross reboots create
@@ -263,45 +263,45 @@ enables us to use Fuel's PXE booting.</p>
 <ol>
 <li>
 <p>First create the disk for our KVM VM with the following command:</p>
-<div class="highlight"><pre><span></span><code>qemu-img<span class="w"> </span>create<span class="w"> </span>-f<span class="w"> </span>qcow2<span class="w"> </span>-o<span class="w"> </span><span class="nv">preallocation</span><span class="o">=</span>metadata<span class="w"> </span>/var/lib/libvirt/images/monitoring-1.img<span class="w"> </span>300G
+<div class="highlight"><pre><span></span><code>qemu-img create -f qcow2 -o <span class="nv">preallocation</span><span class="o">=</span>metadata /var/lib/libvirt/images/monitoring-1.img 300G
 </code></pre></div>
 
 </li>
 <li>
 <p>Create a file <code>monitoring1-vm.xml</code> with the following content:</p>
-<div class="highlight"><pre><span></span><code><span class="nt">&lt;domain</span><span class="w"> </span><span class="na">type=</span><span class="s">&#39;kvm&#39;</span><span class="w"> </span><span class="na">id=</span><span class="s">&#39;2&#39;</span><span class="nt">&gt;</span>
-<span class="w">  </span><span class="nt">&lt;name&gt;</span>monitoring-1<span class="nt">&lt;/name&gt;</span>
-<span class="w">  </span><span class="nt">&lt;memory</span><span class="w"> </span><span class="na">unit=</span><span class="s">&#39;KiB&#39;</span><span class="nt">&gt;</span>8388608<span class="nt">&lt;/memory&gt;</span>
-<span class="w">  </span><span class="nt">&lt;vcpu</span><span class="w"> </span><span class="na">placement=</span><span class="s">&#39;static&#39;</span><span class="w"> </span><span class="na">cpuset=</span><span class="s">&#39;0-7&#39;</span><span class="nt">&gt;</span>8<span class="nt">&lt;/vcpu&gt;</span>
-<span class="w">  </span><span class="nt">&lt;os&gt;</span>
-<span class="w">    </span><span class="nt">&lt;type</span><span class="w"> </span><span class="na">arch=</span><span class="s">&#39;x86_64&#39;</span><span class="nt">&gt;</span>hvm<span class="nt">&lt;/type&gt;</span>
-<span class="w">    </span><span class="nt">&lt;boot</span><span class="w"> </span><span class="na">dev=</span><span class="s">&#39;network&#39;</span><span class="nt">/&gt;</span>
-<span class="w">    </span><span class="nt">&lt;boot</span><span class="w"> </span><span class="na">dev=</span><span class="s">&#39;hd&#39;</span><span class="nt">/&gt;</span>
-<span class="w">    </span><span class="nt">&lt;boot</span><span class="w"> </span><span class="na">dev=</span><span class="s">&#39;cdrom&#39;</span><span class="nt">/&gt;</span>
-<span class="w">    </span><span class="nt">&lt;bootmenu</span><span class="w"> </span><span class="na">enable=</span><span class="s">&#39;yes&#39;</span><span class="nt">/&gt;</span>
-<span class="w">  </span><span class="nt">&lt;/os&gt;</span>
-<span class="w">  </span><span class="nt">&lt;features&gt;</span>
-<span class="w">    </span><span class="nt">&lt;acpi/&gt;</span>
-<span class="w">    </span><span class="nt">&lt;apic/&gt;</span>
-<span class="w">    </span><span class="nt">&lt;pae/&gt;</span>
-<span class="w">  </span><span class="nt">&lt;/features&gt;</span>
-<span class="w">  </span><span class="nt">&lt;clock</span><span class="w"> </span><span class="na">offset=</span><span class="s">&#39;utc&#39;</span><span class="nt">/&gt;</span>
-<span class="w">  </span><span class="nt">&lt;devices&gt;</span>
-<span class="w">    </span><span class="nt">&lt;disk</span><span class="w"> </span><span class="na">type=</span><span class="s">&#39;file&#39;</span><span class="w"> </span><span class="na">device=</span><span class="s">&#39;disk&#39;</span><span class="nt">&gt;</span>
-<span class="w">      </span><span class="nt">&lt;driver</span><span class="w"> </span><span class="na">name=</span><span class="s">&#39;qemu&#39;</span><span class="w"> </span><span class="na">type=</span><span class="s">&#39;qcow2&#39;</span><span class="nt">/&gt;</span>
-<span class="w">      </span><span class="nt">&lt;source</span><span class="w"> </span><span class="na">file=</span><span class="s">&#39;/var/lib/libvirt/images/monitoring-1.img&#39;</span><span class="nt">/&gt;</span>
-<span class="w">      </span><span class="nt">&lt;target</span><span class="w"> </span><span class="na">dev=</span><span class="s">&#39;sda&#39;</span><span class="w"> </span><span class="na">bus=</span><span class="s">&#39;scsi&#39;</span><span class="nt">/&gt;</span>
-<span class="w">    </span><span class="nt">&lt;/disk&gt;</span>
-<span class="w">    </span><span class="nt">&lt;interface</span><span class="w"> </span><span class="na">type=</span><span class="s">&#39;bridge&#39;</span><span class="nt">&gt;</span>
-<span class="w">      </span><span class="nt">&lt;source</span><span class="w"> </span><span class="na">bridge=</span><span class="s">&#39;eth0&#39;</span><span class="nt">/&gt;</span>
-<span class="w">      </span><span class="nt">&lt;model</span><span class="w"> </span><span class="na">type=</span><span class="s">&#39;virtio&#39;</span><span class="nt">/&gt;</span>
-<span class="w">    </span><span class="nt">&lt;/interface&gt;</span>
-<span class="w">    </span><span class="nt">&lt;interface</span><span class="w"> </span><span class="na">type=</span><span class="s">&#39;bridge&#39;</span><span class="nt">&gt;</span>
-<span class="w">      </span><span class="nt">&lt;source</span><span class="w"> </span><span class="na">bridge=</span><span class="s">&#39;br-eth2&#39;</span><span class="nt">/&gt;</span>
-<span class="w">      </span><span class="nt">&lt;model</span><span class="w"> </span><span class="na">type=</span><span class="s">&#39;virtio&#39;</span><span class="nt">/&gt;</span>
-<span class="w">    </span><span class="nt">&lt;/interface&gt;</span>
-<span class="w">    </span><span class="nt">&lt;graphics</span><span class="w"> </span><span class="na">type=</span><span class="s">&#39;vnc&#39;</span><span class="w"> </span><span class="na">port=</span><span class="s">&#39;-1&#39;</span><span class="w"> </span><span class="na">listen=</span><span class="s">&#39;127.0.0.1&#39;</span><span class="nt">/&gt;</span>
-<span class="w">  </span><span class="nt">&lt;/devices&gt;</span>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;domain</span> <span class="na">type=</span><span class="s">&#39;kvm&#39;</span> <span class="na">id=</span><span class="s">&#39;2&#39;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;name&gt;</span>monitoring-1<span class="nt">&lt;/name&gt;</span>
+  <span class="nt">&lt;memory</span> <span class="na">unit=</span><span class="s">&#39;KiB&#39;</span><span class="nt">&gt;</span>8388608<span class="nt">&lt;/memory&gt;</span>
+  <span class="nt">&lt;vcpu</span> <span class="na">placement=</span><span class="s">&#39;static&#39;</span> <span class="na">cpuset=</span><span class="s">&#39;0-7&#39;</span><span class="nt">&gt;</span>8<span class="nt">&lt;/vcpu&gt;</span>
+  <span class="nt">&lt;os&gt;</span>
+    <span class="nt">&lt;type</span> <span class="na">arch=</span><span class="s">&#39;x86_64&#39;</span><span class="nt">&gt;</span>hvm<span class="nt">&lt;/type&gt;</span>
+    <span class="nt">&lt;boot</span> <span class="na">dev=</span><span class="s">&#39;network&#39;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;boot</span> <span class="na">dev=</span><span class="s">&#39;hd&#39;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;boot</span> <span class="na">dev=</span><span class="s">&#39;cdrom&#39;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;bootmenu</span> <span class="na">enable=</span><span class="s">&#39;yes&#39;</span><span class="nt">/&gt;</span>
+  <span class="nt">&lt;/os&gt;</span>
+  <span class="nt">&lt;features&gt;</span>
+    <span class="nt">&lt;acpi/&gt;</span>
+    <span class="nt">&lt;apic/&gt;</span>
+    <span class="nt">&lt;pae/&gt;</span>
+  <span class="nt">&lt;/features&gt;</span>
+  <span class="nt">&lt;clock</span> <span class="na">offset=</span><span class="s">&#39;utc&#39;</span><span class="nt">/&gt;</span>
+  <span class="nt">&lt;devices&gt;</span>
+    <span class="nt">&lt;disk</span> <span class="na">type=</span><span class="s">&#39;file&#39;</span> <span class="na">device=</span><span class="s">&#39;disk&#39;</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;driver</span> <span class="na">name=</span><span class="s">&#39;qemu&#39;</span> <span class="na">type=</span><span class="s">&#39;qcow2&#39;</span><span class="nt">/&gt;</span>
+      <span class="nt">&lt;source</span> <span class="na">file=</span><span class="s">&#39;/var/lib/libvirt/images/monitoring-1.img&#39;</span><span class="nt">/&gt;</span>
+      <span class="nt">&lt;target</span> <span class="na">dev=</span><span class="s">&#39;sda&#39;</span> <span class="na">bus=</span><span class="s">&#39;scsi&#39;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/disk&gt;</span>
+    <span class="nt">&lt;interface</span> <span class="na">type=</span><span class="s">&#39;bridge&#39;</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;source</span> <span class="na">bridge=</span><span class="s">&#39;eth0&#39;</span><span class="nt">/&gt;</span>
+      <span class="nt">&lt;model</span> <span class="na">type=</span><span class="s">&#39;virtio&#39;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/interface&gt;</span>
+    <span class="nt">&lt;interface</span> <span class="na">type=</span><span class="s">&#39;bridge&#39;</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;source</span> <span class="na">bridge=</span><span class="s">&#39;br-eth2&#39;</span><span class="nt">/&gt;</span>
+      <span class="nt">&lt;model</span> <span class="na">type=</span><span class="s">&#39;virtio&#39;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/interface&gt;</span>
+    <span class="nt">&lt;graphics</span> <span class="na">type=</span><span class="s">&#39;vnc&#39;</span> <span class="na">port=</span><span class="s">&#39;-1&#39;</span> <span class="na">listen=</span><span class="s">&#39;127.0.0.1&#39;</span><span class="nt">/&gt;</span>
+  <span class="nt">&lt;/devices&gt;</span>
 <span class="nt">&lt;/domain&gt;</span>
 </code></pre></div>
 
@@ -310,8 +310,8 @@ and bridges according to your actual environment.</p>
 </li>
 <li>
 <p>Launch and create the VM from the xml file:</p>
-<div class="highlight"><pre><span></span><code>virsh<span class="w"> </span>define<span class="w"> </span>monitoring-1.xml
-virsh<span class="w"> </span>start<span class="w"> </span>monitoring-1
+<div class="highlight"><pre><span></span><code>virsh define monitoring-1.xml
+virsh start monitoring-1
 </code></pre></div>
 
 </li>

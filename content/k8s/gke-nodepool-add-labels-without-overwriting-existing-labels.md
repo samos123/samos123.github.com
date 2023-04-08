@@ -40,7 +40,7 @@ gcloud container node-pools update $POOL_NAME \
 
 Make the file executable:
 ```bash
-chmod +x gke-nodepool-label.sh
+chmod +x gke-nodepool-add-label.sh
 ```
 
 Now you can run the script like this to add a label without overwriting existing labels:

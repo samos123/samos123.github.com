@@ -87,14 +87,14 @@ ga('send', 'pageview');
     <!-- End Ezoic - under_page_title - under_page_title -->
     <span class="post-date">
         Sun 08 June 2014
-| Last updated on Sun 13 September 2020
+| Last updated on Tue 06 December 2022
     </span>
     <p>Move the first word of a line to the end of line on Linux using AWK.
 We first store the first column(first word) in the variable t. Then
 we set the first column to be empty. At last we add a new column
 after the last column of the line which is stored in $NF.</p>
-<div class="highlight"><pre><span></span><code>$<span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot; move_to_end  should stay at the same place&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>awk<span class="w"> </span><span class="err">&#39;</span><span class="o">{</span><span class="nv">t</span><span class="o">=</span><span class="nv">$1</span><span class="p">;</span><span class="w"> </span><span class="nv">$1</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">;</span><span class="w"> </span><span class="k">$(</span>NF+1<span class="k">)</span><span class="o">=</span>t<span class="o">}</span><span class="m">1</span>
-should<span class="w"> </span>stay<span class="w"> </span>at<span class="w"> </span>the<span class="w"> </span>same<span class="w"> </span>place<span class="w"> </span>move_to_end
+<div class="highlight"><pre><span></span><code>$ <span class="nb">echo</span> <span class="s2">&quot; move_to_end  should stay at the same place&quot;</span> <span class="p">|</span> awk <span class="err">&#39;</span><span class="o">{</span><span class="nv">t</span><span class="o">=</span><span class="nv">$1</span><span class="p">;</span> <span class="nv">$1</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">;</span> <span class="k">$(</span>NF+1<span class="k">)</span><span class="o">=</span>t<span class="o">}</span><span class="m">1</span>
+should stay at the same place move_to_end
 </code></pre></div>
 
 <p>The idea was from a stackoverflow question which I can't find anymore.</p>

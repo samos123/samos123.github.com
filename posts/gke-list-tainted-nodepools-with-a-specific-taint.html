@@ -87,7 +87,6 @@ ga('send', 'pageview');
     <!-- End Ezoic - under_page_title - under_page_title -->
     <span class="post-date">
         Thu 09 March 2023
-| Last updated on Mon 27 March 2023
     </span>
     <p>A use case for upgrades involved being able to list all the node pools
 that have scaled down back to 0 and have a specific taint. This blog post
@@ -102,8 +101,8 @@ shows the commands you can use to get this information.</p>
 </code></pre></div>
 
 <p>Now if you want to get the number of nodes in that nodepool you could run:</p>
-<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>nodes<span class="w"> </span>-l<span class="w"> </span>cloud.google.com/gke-nodepool<span class="o">=</span>default-pool<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--output<span class="w"> </span>name<span class="w"> </span>--no-headers<span class="w"> </span><span class="p">|</span><span class="w"> </span>wc<span class="w"> </span>-l
+<div class="highlight"><pre><span></span><code>kubectl get nodes -l cloud.google.com/gke-nodepool<span class="o">=</span>default-pool <span class="se">\</span>
+  --output name --no-headers <span class="p">|</span> wc -l
 </code></pre></div>
     <!-- Ezoic - bottom_of_page - bottom_of_page -->
     <div id="ezoic-pub-ad-placeholder-104"> </div>
