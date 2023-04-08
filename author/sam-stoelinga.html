@@ -77,6 +77,20 @@ ga('send', 'pageview');
 </div>		<div class="content container">
 	<div class="posts">
 			<div class="post">
+				<h1 class="post-title" href="https://samos-it.com/posts/GKE-nodepool-add-label-without-overwriting-existing-labels.html">
+					<a href="https://samos-it.com/posts/GKE-nodepool-add-label-without-overwriting-existing-labels.html">GKE Nodepool Add Labels Without overwriting existing labels</a>
+				</h1>
+				<span class="post-date">Fri 07 April 2023</span>
+				<p>
+					<p>GKE has a feature to add node labels to all nodes in the nodepool. GKE will add the label
+to both the nodes already running in the cluster and also to newly added nodes.</p>
+<p>You can use the feature like this:</p>
+<div class="highlight"><pre><span></span><code>gcloud<span class="w"> </span>container<span class="w"> </span>node-pools<span class="w"> </span>update<span class="w"> </span>my-node-pool<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--cluster<span class="w"> </span>my-cluster<span class="w"> </span>--labels<span class="w"> </span><span class="nv">sam …</span></code></pre></div>
+				</p>
+				<a class="read-more" href="posts/GKE-nodepool-add-label-without-overwriting-existing-labels.html">Continue reading »</a>
+			</div>
+			<div class="post">
 				<h1 class="post-title" href="https://samos-it.com/posts/gke-list-tainted-nodepools-with-a-specific-taint.html">
 					<a href="https://samos-it.com/posts/gke-list-tainted-nodepools-with-a-specific-taint.html">GKE list tainted nodepools with a specific taint</a>
 				</h1>
@@ -212,22 +226,6 @@ Weaviate on GKE with replication turned on. The following topics will be covered
 has integer based IDs, however the destination …</p>
 				</p>
 				<a class="read-more" href="posts/python-create-uuid-from-integer.html">Continue reading »</a>
-			</div>
-			<div class="post">
-				<h1 class="post-title" href="https://samos-it.com/posts/Preventing-Privileged-pods-using-Pod-Security-Admission-Standards.html">
-					<a href="https://samos-it.com/posts/Preventing-Privileged-pods-using-Pod-Security-Admission-Standards.html">Preventing Privileged pods using Pod Security Admission / Standards</a>
-				</h1>
-				<span class="post-date">Sat 14 January 2023</span>
-				<p>
-					<iframe width="560" height="315" src="https://www.youtube.com/embed/D4Tw1blsQog" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-
-<p>In a Kubernetes cluster, a privileged pod is a pod that has been given
-extended permissions beyond the default set of permissions. These extended
-permissions can include the ability to access the host's network, devices,
-and other sensitive resources. While privileged pods can be useful in
-certain situations, they also …</p>
-				</p>
-				<a class="read-more" href="posts/Preventing-Privileged-pods-using-Pod-Security-Admission-Standards.html">Continue reading »</a>
 			</div>
 	</div>
 	<div class="pagination">

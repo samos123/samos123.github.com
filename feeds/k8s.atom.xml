@@ -1,5 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Sam Stoelinga - K8s</title><link href="https://samos-it.com/" rel="alternate"></link><link href="https://samos-it.com/feeds/k8s.atom.xml" rel="self"></link><id>https://samos-it.com/</id><updated>2023-03-27T19:13:00+02:00</updated><entry><title>GKE list tainted nodepools with a specific taint</title><link href="https://samos-it.com/posts/gke-list-tainted-nodepools-with-a-specific-taint.html" rel="alternate"></link><published>2023-03-09T19:47:00+01:00</published><updated>2023-03-27T19:11:57+02:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2023-03-09:/posts/gke-list-tainted-nodepools-with-a-specific-taint.html</id><summary type="html">&lt;p&gt;A use case for upgrades involved being able to list all the node pools
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Sam Stoelinga - K8s</title><link href="https://samos-it.com/" rel="alternate"></link><link href="https://samos-it.com/feeds/k8s.atom.xml" rel="self"></link><id>https://samos-it.com/</id><updated>2023-04-07T21:55:43+02:00</updated><entry><title>GKE Nodepool Add Labels Without overwriting existing labels</title><link href="https://samos-it.com/posts/GKE-nodepool-add-label-without-overwriting-existing-labels.html" rel="alternate"></link><published>2023-04-07T21:55:00+02:00</published><updated>2023-04-07T21:55:43+02:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2023-04-07:/posts/GKE-nodepool-add-label-without-overwriting-existing-labels.html</id><summary type="html">&lt;p&gt;GKE has a feature to add node labels to all nodes in the nodepool. GKE will add the label
+to both the nodes already running in the cluster and also to newly added nodes.&lt;/p&gt;
+&lt;p&gt;You can use the feature like this:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;gcloud&lt;span class="w"&gt; &lt;/span&gt;container&lt;span class="w"&gt; &lt;/span&gt;node-pools&lt;span class="w"&gt; &lt;/span&gt;update&lt;span class="w"&gt; &lt;/span&gt;my-node-pool&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;--cluster&lt;span class="w"&gt; &lt;/span&gt;my-cluster&lt;span class="w"&gt; &lt;/span&gt;--labels&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;sam …&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;GKE has a feature to add node labels to all nodes in the nodepool. GKE will add the label
+to both the nodes already running in the cluster and also to newly added nodes.&lt;/p&gt;
+&lt;p&gt;You can use the feature like this:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;gcloud&lt;span class="w"&gt; &lt;/span&gt;container&lt;span class="w"&gt; &lt;/span&gt;node-pools&lt;span class="w"&gt; &lt;/span&gt;update&lt;span class="w"&gt; &lt;/span&gt;my-node-pool&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;--cluster&lt;span class="w"&gt; &lt;/span&gt;my-cluster&lt;span class="w"&gt; &lt;/span&gt;--labels&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;sam&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nb"&gt;test&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;That would add the label &lt;code&gt;sam: test&lt;/code&gt; all your nodepools. The docs however do mention the
+following: "The label update overwrites any existing labels on the node pool. If the
+node pool has existing labels that you want to keep, you must include those
+labels along with any new labels that you want to add."&lt;/p&gt;
+&lt;p&gt;Well that's lame. But worry not. It's relatively easy to script this with a few lines 
+of bash.&lt;/p&gt;
+&lt;p&gt;Create a file named &lt;code&gt;gke-nodepool-add-label.sh&lt;/code&gt; with the following content:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="ch"&gt;#!/usr/bin/env bash&lt;/span&gt;
+
+&lt;span class="nb"&gt;set&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;-x
+
+&lt;span class="nv"&gt;CLUSTER_NAME&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$1&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;
+&lt;span class="nv"&gt;POOL_NAME&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$2&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;
+&lt;span class="nv"&gt;NEW_LABEL&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$3&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;
+&lt;span class="nv"&gt;LABELS&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;gcloud&lt;span class="w"&gt; &lt;/span&gt;container&lt;span class="w"&gt; &lt;/span&gt;node-pools&lt;span class="w"&gt; &lt;/span&gt;describe&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;$POOL_NAME&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
+&lt;span class="w"&gt;         &lt;/span&gt;--cluster&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;$CLUSTER_NAME&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;--format&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;get(config.labels)&amp;quot;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;|&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;tr&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;;&amp;quot;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;,&amp;quot;&lt;/span&gt;&lt;span class="k"&gt;)&lt;/span&gt;
+&lt;span class="nb"&gt;echo&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;Current labels: &lt;/span&gt;&lt;span class="nv"&gt;$LABELS&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;
+gcloud&lt;span class="w"&gt; &lt;/span&gt;container&lt;span class="w"&gt; &lt;/span&gt;node-pools&lt;span class="w"&gt; &lt;/span&gt;update&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;$POOL_NAME&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;--cluster&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;$CLUSTER_NAME&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;--node-labels&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$LABELS&lt;/span&gt;&lt;span class="s2"&gt;,&lt;/span&gt;&lt;span class="nv"&gt;$NEW_LABEL&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Make the file executable:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;chmod&lt;span class="w"&gt; &lt;/span&gt;+x&lt;span class="w"&gt; &lt;/span&gt;gke-nodepool-label.sh
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Now you can run the script like this to add a label without overwriting existing labels:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;./gke-nodepool-add-label.sh&lt;span class="w"&gt; &lt;/span&gt;my-cluster&lt;span class="w"&gt; &lt;/span&gt;my-nodepool&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;sam&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nb"&gt;test&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content><category term="K8s"></category><category term="k8s"></category><category term="kubernetes"></category><category term="gke"></category></entry><entry><title>GKE list tainted nodepools with a specific taint</title><link href="https://samos-it.com/posts/gke-list-tainted-nodepools-with-a-specific-taint.html" rel="alternate"></link><published>2023-03-09T19:47:00+01:00</published><updated>2023-03-27T19:11:57+02:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2023-03-09:/posts/gke-list-tainted-nodepools-with-a-specific-taint.html</id><summary type="html">&lt;p&gt;A use case for upgrades involved being able to list all the node pools
 that have scaled down back to 0 and have a specific taint. This blog post
 shows the commands you can use to get this information.&lt;/p&gt;
 &lt;p&gt;List the GKE nodepools that have been tainted with key=upgrade …&lt;/p&gt;</summary><content type="html">&lt;p&gt;A use case for upgrades involved being able to list all the node pools
