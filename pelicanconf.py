@@ -35,7 +35,7 @@ DISPLAY_CATEGORIES_ON_MENU=False
 DISPLAY_PAGES_ON_MENU=True
 
 BIO="Open source contributor and Cloud Architect. Creator of websu.io and bgdestroyer.com"
-PROFILE_IMAGE="sam-young.jpg"
+PROFILE_IMAGE="sam-profile-pic.jpg"
 
 
 
