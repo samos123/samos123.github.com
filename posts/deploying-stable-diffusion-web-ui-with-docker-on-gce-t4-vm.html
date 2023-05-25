@@ -120,7 +120,7 @@ instead by removing <code>--provisioning-model=SPOT</code> from the parameters.<
 newgrp docker
 </code></pre></div>
 
-<p>Build the docker image locally:</p>
+<p>Build the docker image inside your VM:</p>
 <div class="highlight"><pre><span></span><code>git clone https://github.com/samos123/stable-diffusion-webui-docker
 cd stable-diffusion-webui-docker
 docker build -t sd-webui-docker .
@@ -138,7 +138,11 @@ docker build -t sd-webui-docker .
 <div class="highlight"><pre><span></span><code>Running on local URL:  http://0.0.0.0:7860
 </code></pre></div>
 
-<p>Exit out of your SSH session and run the following command to setup port-forwarding:</p>
+<p>Exit out of your SSH session by running:</p>
+<div class="highlight"><pre><span></span><code><span class="k">exit</span>
+</code></pre></div>
+
+<p>Setup port-forwarding to access the Stable Diffusion Web UI securely:</p>
 <div class="highlight"><pre><span></span><code>gcloud compute ssh $INSTANCE_NAME -- -NL 7860:localhost:7860
 </code></pre></div>
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Sam Stoelinga - ML</title><link href="https://samos-it.com/" rel="alternate"></link><link href="https://samos-it.com/feeds/ml.atom.xml" rel="self"></link><id>https://samos-it.com/</id><updated>2023-05-24T20:29:44+02:00</updated><entry><title>Deploying Stable Diffusion Web UI using Docker on GCE T4 VM</title><link href="https://samos-it.com/posts/deploying-stable-diffusion-web-ui-with-docker-on-gce-t4-vm.html" rel="alternate"></link><published>2023-05-23T19:36:00+02:00</published><updated>2023-05-24T20:29:44+02:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2023-05-23:/posts/deploying-stable-diffusion-web-ui-with-docker-on-gce-t4-vm.html</id><summary type="html">&lt;p&gt;A short guide on how to deploy Stable Diffusion Web UI on a Google Cloud
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Sam Stoelinga - ML</title><link href="https://samos-it.com/" rel="alternate"></link><link href="https://samos-it.com/feeds/ml.atom.xml" rel="self"></link><id>https://samos-it.com/</id><updated>2023-05-24T21:27:15+02:00</updated><entry><title>Deploying Stable Diffusion Web UI using Docker on GCE T4 VM</title><link href="https://samos-it.com/posts/deploying-stable-diffusion-web-ui-with-docker-on-gce-t4-vm.html" rel="alternate"></link><published>2023-05-23T19:36:00+02:00</published><updated>2023-05-24T21:27:15+02:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2023-05-23:/posts/deploying-stable-diffusion-web-ui-with-docker-on-gce-t4-vm.html</id><summary type="html">&lt;p&gt;A short guide on how to deploy Stable Diffusion Web UI on a Google Cloud
 Compute Engine VM with 1 T4 GPU.&lt;/p&gt;
 &lt;p&gt;Creating the GCE VM with T4 using the Google Cloud Deep Learning Image:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;export&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;IMAGE_FAMILY&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;common-cu110-ubuntu-2004&amp;quot;&lt;/span&gt;
@@ -43,7 +43,7 @@ instead by removing &lt;code&gt;--provisioning-model=SPOT&lt;/code&gt; from the 
 newgrp docker
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;p&gt;Build the docker image locally:&lt;/p&gt;
+&lt;p&gt;Build the docker image inside your VM:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;git clone https://github.com/samos123/stable-diffusion-webui-docker
 cd stable-diffusion-webui-docker
 docker build -t sd-webui-docker .
@@ -61,7 +61,11 @@ docker build -t sd-webui-docker .
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;Running on local URL:  http://0.0.0.0:7860
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;p&gt;Exit out of your SSH session and run the following command to setup port-forwarding:&lt;/p&gt;
+&lt;p&gt;Exit out of your SSH session by running:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;exit&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Setup port-forwarding to access the Stable Diffusion Web UI securely:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;gcloud compute ssh $INSTANCE_NAME -- -NL 7860:localhost:7860
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 

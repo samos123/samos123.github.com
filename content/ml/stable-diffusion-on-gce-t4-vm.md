@@ -48,7 +48,7 @@ sudo usermod -aG docker $USER
 newgrp docker
 ```
 
-Build the docker image locally:
+Build the docker image inside your VM:
 ```
 git clone https://github.com/samos123/stable-diffusion-webui-docker
 cd stable-diffusion-webui-docker
@@ -70,7 +70,12 @@ You should see something like this after ~30 seconds in the logs:
 Running on local URL:  http://0.0.0.0:7860
 ```
 
-Exit out of your SSH session and run the following command to setup port-forwarding:
+Exit out of your SSH session by running:
+```
+exit
+```
+
+Setup port-forwarding to access the Stable Diffusion Web UI securely:
 ```
 gcloud compute ssh $INSTANCE_NAME -- -NL 7860:localhost:7860
 ```
