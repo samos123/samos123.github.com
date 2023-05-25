@@ -97,7 +97,7 @@ Compute Engine VM with 1 T4 GPU.</p>
 <span class="w">        </span><span class="o">--</span><span class="n">accelerator</span><span class="o">=</span><span class="s2">&quot;type=nvidia-tesla-t4,count=1&quot;</span><span class="w"> </span>\
 <span class="w">        </span><span class="o">--</span><span class="n">machine</span><span class="o">-</span><span class="n">type</span><span class="o">=$</span><span class="n">INSTANCE_TYPE</span><span class="w"> </span>\
 <span class="w">        </span><span class="o">--</span><span class="n">boot</span><span class="o">-</span><span class="n">disk</span><span class="o">-</span><span class="n">size</span><span class="o">=</span><span class="mi">120</span><span class="n">GB</span><span class="w"> </span>\
-<span class="w">        </span><span class="o">--</span><span class="n">boot</span><span class="o">-</span><span class="n">disk</span><span class="o">-</span><span class="n">type</span><span class="o">=</span><span class="n">PD</span><span class="o">-</span><span class="n">SSD</span><span class="w"> </span>\
+<span class="w">        </span><span class="o">--</span><span class="n">boot</span><span class="o">-</span><span class="n">disk</span><span class="o">-</span><span class="n">type</span><span class="o">=</span><span class="n">pd</span><span class="o">-</span><span class="n">ssd</span><span class="w"> </span>\
 <span class="w">        </span><span class="o">--</span><span class="n">provisioning</span><span class="o">-</span><span class="n">model</span><span class="o">=</span><span class="n">SPOT</span><span class="w"> </span>\
 <span class="w">        </span><span class="o">--</span><span class="n">instance</span><span class="o">-</span><span class="n">termination</span><span class="o">-</span><span class="n">action</span><span class="o">=</span><span class="n">STOP</span><span class="w"> </span>\
 <span class="w">        </span><span class="o">--</span><span class="n">metadata</span><span class="o">=</span><span class="s2">&quot;install-nvidia-driver=True&quot;</span>
@@ -110,25 +110,13 @@ instead by removing <code>--provisioning-model=SPOT</code> from the parameters.<
 <div class="highlight"><pre><span></span><code>gcloud compute ssh $INSTANCE_NAME
 </code></pre></div>
 
-<p>Install docker using the convenience script:</p>
-<div class="highlight"><pre><span></span><code>curl -fsSL https://get.docker.com -o get-docker.sh
-sudo sh get-docker.sh
-</code></pre></div>
-
-<p>Install the nvidia container toolkit for docker:</p>
-<div class="highlight"><pre><span></span><code><span class="n">distribution</span><span class="o">=$</span><span class="p">(</span><span class="o">.</span><span class="w"> </span><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">os</span><span class="o">-</span><span class="n">release</span><span class="p">;</span><span class="n">echo</span><span class="w"> </span><span class="o">$</span><span class="n">ID</span><span class="o">$</span><span class="n">VERSION_ID</span><span class="p">)</span><span class="w"> </span>\
-<span class="w">      </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">curl</span><span class="w"> </span><span class="o">-</span><span class="n">fsSL</span><span class="w"> </span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">nvidia</span><span class="o">.</span><span class="n">github</span><span class="o">.</span><span class="n">io</span><span class="o">/</span><span class="n">libnvidia</span><span class="o">-</span><span class="n">container</span><span class="o">/</span><span class="n">gpgkey</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">sudo</span><span class="w"> </span><span class="n">gpg</span><span class="w"> </span><span class="o">--</span><span class="n">dearmor</span><span class="w"> </span><span class="o">-</span><span class="n">o</span><span class="w"> </span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">share</span><span class="o">/</span><span class="n">keyrings</span><span class="o">/</span><span class="n">nvidia</span><span class="o">-</span><span class="n">container</span><span class="o">-</span><span class="n">toolkit</span><span class="o">-</span><span class="n">keyring</span><span class="o">.</span><span class="n">gpg</span><span class="w"> </span>\
-<span class="w">      </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">curl</span><span class="w"> </span><span class="o">-</span><span class="n">s</span><span class="w"> </span><span class="o">-</span><span class="n">L</span><span class="w"> </span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">nvidia</span><span class="o">.</span><span class="n">github</span><span class="o">.</span><span class="n">io</span><span class="o">/</span><span class="n">libnvidia</span><span class="o">-</span><span class="n">container</span><span class="o">/$</span><span class="n">distribution</span><span class="o">/</span><span class="n">libnvidia</span><span class="o">-</span><span class="n">container</span><span class="o">.</span><span class="n">list</span><span class="w"> </span><span class="o">|</span><span class="w"> </span>\
-<span class="w">            </span><span class="n">sed</span><span class="w"> </span><span class="s1">&#39;s#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g&#39;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span>\
-<span class="w">            </span><span class="n">sudo</span><span class="w"> </span><span class="n">tee</span><span class="w"> </span><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">apt</span><span class="o">/</span><span class="n">sources</span><span class="o">.</span><span class="n">list</span><span class="o">.</span><span class="n">d</span><span class="o">/</span><span class="n">nvidia</span><span class="o">-</span><span class="n">container</span><span class="o">-</span><span class="n">toolkit</span><span class="o">.</span><span class="n">list</span>
-<span class="n">sudo</span><span class="w"> </span><span class="n">apt</span><span class="w"> </span><span class="n">update</span>
-<span class="n">sudo</span><span class="w"> </span><span class="n">apt</span><span class="w"> </span><span class="n">install</span><span class="w"> </span><span class="o">-</span><span class="n">y</span><span class="w"> </span><span class="n">nvidia</span><span class="o">-</span><span class="n">container</span><span class="o">-</span><span class="n">toolkit</span>
-<span class="n">sudo</span><span class="w"> </span><span class="n">nvidia</span><span class="o">-</span><span class="n">ctk</span><span class="w"> </span><span class="n">runtime</span><span class="w"> </span><span class="n">configure</span><span class="w"> </span><span class="o">--</span><span class="n">runtime</span><span class="o">=</span><span class="n">docker</span>
-<span class="n">sudo</span><span class="w"> </span><span class="n">systemctl</span><span class="w"> </span><span class="n">restart</span><span class="w"> </span><span class="n">docker</span>
-</code></pre></div>
-
 <p>Verify that docker can use GPUs:</p>
 <div class="highlight"><pre><span></span><code>sudo docker run --rm --runtime=nvidia --gpus all nvidia/cuda:11.6.2-base-ubuntu20.04 nvidia-smi
+</code></pre></div>
+
+<p>Add yourself to the docker group so you don't have to sudo:</p>
+<div class="highlight"><pre><span></span><code>sudo usermod -aG docker $USER
+newgrp docker
 </code></pre></div>
 
 <p>Build the docker image locally:</p>
@@ -138,14 +126,14 @@ docker build -t sd-webui-docker .
 </code></pre></div>
 
 <p>Run the docker image:</p>
-<div class="highlight"><pre><span></span><code>docker run --name sd -p 7860:7860 -d --runtime=nvidia --gpus all sd-webui-docker
+<div class="highlight"><pre><span></span><code>DOCKER_BUILDKIT=1 docker run --name sd -p 7860:7860 -d --runtime=nvidia --gpus all sd-webui-docker
 </code></pre></div>
 
 <p>Verify that the Stable Diffusion web UI has launched succesfully:</p>
 <div class="highlight"><pre><span></span><code>docker logs sd
 </code></pre></div>
 
-<p>You should see something like this:</p>
+<p>You should see something like this after ~30 seconds in the logs:</p>
 <div class="highlight"><pre><span></span><code>Running on local URL:  http://0.0.0.0:7860
 </code></pre></div>
 
@@ -153,6 +141,8 @@ docker build -t sd-webui-docker .
 <div class="highlight"><pre><span></span><code>gcloud compute ssh $INSTANCE_NAME -- -NL 7860:localhost:7860
 </code></pre></div>
 
+<p>This is helpful for when your virtual machine doesn't have a public IP address or has
+firewall rules setup.</p>
 <p>You should now be able to acces the Stable Diffusion Web UI by going to the following
 URL in your browser: <a href="http://localhost:7860">http://localhost:7860</a></p>
     <!-- Ezoic - bottom_of_page - bottom_of_page -->

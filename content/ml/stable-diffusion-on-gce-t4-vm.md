@@ -22,7 +22,7 @@ gcloud compute instances create $INSTANCE_NAME \
         --accelerator="type=nvidia-tesla-t4,count=1" \
         --machine-type=$INSTANCE_TYPE \
         --boot-disk-size=120GB \
-        --boot-disk-type=PD-SSD \
+        --boot-disk-type=pd-ssd \
         --provisioning-model=SPOT \
         --instance-termination-action=STOP \
         --metadata="install-nvidia-driver=True"
@@ -37,28 +37,15 @@ SSH into the VM:
 gcloud compute ssh $INSTANCE_NAME
 ```
 
-Install docker using the convenience script:
-```
-curl -fsSL https://get.docker.com -o get-docker.sh
-sudo sh get-docker.sh
-```
-
-Install the nvidia container toolkit for docker:
-```
-distribution=$(. /etc/os-release;echo $ID$VERSION_ID) \
-      && curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | sudo gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg \
-      && curl -s -L https://nvidia.github.io/libnvidia-container/$distribution/libnvidia-container.list | \
-            sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' | \
-            sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
-sudo apt update
-sudo apt install -y nvidia-container-toolkit
-sudo nvidia-ctk runtime configure --runtime=docker
-sudo systemctl restart docker
-```
-
 Verify that docker can use GPUs:
 ```
 sudo docker run --rm --runtime=nvidia --gpus all nvidia/cuda:11.6.2-base-ubuntu20.04 nvidia-smi
+```
+
+Add yourself to the docker group so you don't have to sudo:
+```
+sudo usermod -aG docker $USER
+newgrp docker
 ```
 
 Build the docker image locally:
@@ -70,7 +57,7 @@ docker build -t sd-webui-docker .
 
 Run the docker image:
 ```
-docker run --name sd -p 7860:7860 -d --runtime=nvidia --gpus all sd-webui-docker
+DOCKER_BUILDKIT=1 docker run --name sd -p 7860:7860 -d --runtime=nvidia --gpus all sd-webui-docker
 ```
 
 Verify that the Stable Diffusion web UI has launched succesfully:
@@ -78,7 +65,7 @@ Verify that the Stable Diffusion web UI has launched succesfully:
 docker logs sd
 ```
 
-You should see something like this:
+You should see something like this after ~30 seconds in the logs:
 ```
 Running on local URL:  http://0.0.0.0:7860
 ```
@@ -87,6 +74,8 @@ Exit out of your SSH session and run the following command to setup port-forward
 ```
 gcloud compute ssh $INSTANCE_NAME -- -NL 7860:localhost:7860
 ```
+This is helpful for when your virtual machine doesn't have a public IP address or has
+firewall rules setup.
 
 You should now be able to acces the Stable Diffusion Web UI by going to the following
 URL in your browser: [http://localhost:7860](http://localhost:7860)
