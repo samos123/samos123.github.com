@@ -78,8 +78,10 @@ ga('send', 'pageview');
 	</div>
 </div>		<div class="content container">
 <div class="post">
+    <h1 class="post-title">GKE GPU timesharing and resource quotas experiment</h1>
     <span class="post-date">
         Fri 26 August 2022
+| Last updated on Tue 06 December 2022
     </span>
     <p>You only got a few GPUs and want to pretend to your end-users that you got
 many? Then GKE GPU timesharing might just be the feature for you to save
@@ -95,22 +97,22 @@ blog post you will learn:</p>
 writing the blog post this requires using the rapid release channel.
 This creates a cluster with a default CPU only nodepool using e2-medium.
 System services will run on the default CPU only nodepool.</p>
-<div class="highlight"><pre><span></span><code><span class="n">gcloud</span><span class="w"> </span><span class="n">container</span><span class="w"> </span><span class="n">clusters</span><span class="w"> </span><span class="n">create</span><span class="w"> </span><span class="n">gpu</span><span class="o">-</span><span class="n">gpu</span><span class="o">-</span><span class="n">timesharing</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span><span class="o">--</span><span class="n">region</span><span class="w"> </span><span class="n">us</span><span class="o">-</span><span class="n">central1</span><span class="w"> </span><span class="o">--</span><span class="n">node</span><span class="o">-</span><span class="n">locations</span><span class="o">=</span><span class="n">us</span><span class="o">-</span><span class="n">central1</span><span class="o">-</span><span class="n">a</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span><span class="o">--</span><span class="n">machine</span><span class="o">-</span><span class="k">type</span><span class="w"> </span><span class="n">e2</span><span class="o">-</span><span class="k">medium</span><span class="w"> </span><span class="o">--</span><span class="n">max</span><span class="o">-</span><span class="n">nodes</span><span class="o">=</span><span class="mh">3</span><span class="w"> </span><span class="o">--</span><span class="n">min</span><span class="o">-</span><span class="n">nodes</span><span class="o">=</span><span class="mh">1</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">autoscaling</span><span class="w"> </span><span class="o">--</span><span class="k">release</span><span class="o">-</span><span class="n">channel</span><span class="w"> </span><span class="n">rapid</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span><span class="o">--</span><span class="n">shielded</span><span class="o">-</span><span class="n">integrity</span><span class="o">-</span><span class="n">monitoring</span><span class="w"> </span><span class="o">--</span><span class="n">shielded</span><span class="o">-</span><span class="n">secure</span><span class="o">-</span><span class="n">boot</span>
+<div class="highlight"><pre><span></span><code><span class="nx">gcloud</span><span class="w"> </span><span class="nx">container</span><span class="w"> </span><span class="nx">clusters</span><span class="w"> </span><span class="nx">create</span><span class="w"> </span><span class="nx">gpu</span><span class="o">-</span><span class="nx">gpu</span><span class="o">-</span><span class="nx">timesharing</span><span class="w"> </span>\
+<span class="w">  </span><span class="o">--</span><span class="nx">region</span><span class="w"> </span><span class="nx">us</span><span class="o">-</span><span class="nx">central1</span><span class="w"> </span><span class="o">--</span><span class="nx">node</span><span class="o">-</span><span class="nx">locations</span><span class="p">=</span><span class="nx">us</span><span class="o">-</span><span class="nx">central1</span><span class="o">-</span><span class="nx">a</span><span class="w"> </span>\
+<span class="w">  </span><span class="o">--</span><span class="nx">machine</span><span class="o">-</span><span class="k">type</span><span class="w"> </span><span class="nx">e2</span><span class="o">-</span><span class="nx">medium</span><span class="w"> </span><span class="o">--</span><span class="nx">max</span><span class="o">-</span><span class="nx">nodes</span><span class="p">=</span><span class="mi">3</span><span class="w"> </span><span class="o">--</span><span class="nx">min</span><span class="o">-</span><span class="nx">nodes</span><span class="p">=</span><span class="mi">1</span><span class="w"> </span>\
+<span class="w">  </span><span class="o">--</span><span class="nx">enable</span><span class="o">-</span><span class="nx">autoscaling</span><span class="w"> </span><span class="o">--</span><span class="nx">release</span><span class="o">-</span><span class="nx">channel</span><span class="w"> </span><span class="nx">rapid</span><span class="w"> </span>\
+<span class="w">  </span><span class="o">--</span><span class="nx">shielded</span><span class="o">-</span><span class="nx">integrity</span><span class="o">-</span><span class="nx">monitoring</span><span class="w"> </span><span class="o">--</span><span class="nx">shielded</span><span class="o">-</span><span class="nx">secure</span><span class="o">-</span><span class="nx">boot</span>
 </code></pre></div>
 
 <p>Create the T4 GPU nodepool with timesharing enabled</p>
-<div class="highlight"><pre><span></span><code><span class="n">gcloud</span><span class="w"> </span><span class="n">container</span><span class="w"> </span><span class="n">node</span><span class="o">-</span><span class="n">pools</span><span class="w"> </span><span class="n">create</span><span class="w"> </span><span class="n">gpu</span><span class="o">-</span><span class="kt">time</span><span class="o">-</span><span class="n">sharing</span><span class="w"> </span><span class="se">\</span>
-<span class="w">    </span><span class="o">--</span><span class="n">cluster</span><span class="o">=</span><span class="n">gke</span><span class="o">-</span><span class="n">gpu</span><span class="o">-</span><span class="n">timesharing</span><span class="w"> </span><span class="se">\</span>
-<span class="w">    </span><span class="o">--</span><span class="n">machine</span><span class="o">-</span><span class="k">type</span><span class="o">=</span><span class="n">n1</span><span class="o">-</span><span class="n">standard</span><span class="o">-</span><span class="mh">4</span><span class="w"> </span><span class="se">\</span>
-<span class="w">    </span><span class="o">--</span><span class="n">num</span><span class="o">-</span><span class="n">nodes</span><span class="o">=</span><span class="mh">1</span><span class="w"> </span><span class="se">\</span>
-<span class="w">    </span><span class="o">--</span><span class="n">region</span><span class="o">=</span><span class="n">us</span><span class="o">-</span><span class="n">central1</span><span class="w"> </span><span class="se">\</span>
-<span class="w">    </span><span class="o">--</span><span class="n">node</span><span class="o">-</span><span class="n">locations</span><span class="o">=</span><span class="n">us</span><span class="o">-</span><span class="n">central1</span><span class="o">-</span><span class="n">a</span><span class="w"> </span><span class="se">\</span>
-<span class="w">    </span><span class="o">--</span><span class="n">accelerator</span><span class="o">=</span><span class="k">type</span><span class="o">=</span><span class="n">nvidia</span><span class="o">-</span><span class="n">tesla</span><span class="o">-</span><span class="n">t4</span><span class="p">,</span><span class="n">count</span><span class="o">=</span><span class="mh">1</span><span class="p">,</span><span class="n">gpu</span><span class="o">-</span><span class="n">sharing</span><span class="o">-</span><span class="n">strategy</span><span class="o">=</span><span class="kt">time</span><span class="o">-</span><span class="n">sharing</span><span class="p">,</span><span class="n">max</span><span class="o">-</span><span class="n">shared</span><span class="o">-</span><span class="n">clients</span><span class="o">-</span><span class="n">per</span><span class="o">-</span><span class="n">gpu</span><span class="o">=</span><span class="mh">8</span><span class="w"> </span><span class="se">\</span>
-<span class="w">    </span><span class="o">--</span><span class="n">shielded</span><span class="o">-</span><span class="n">secure</span><span class="o">-</span><span class="n">boot</span><span class="w"> </span><span class="o">--</span><span class="n">shielded</span><span class="o">-</span><span class="n">integrity</span><span class="o">-</span><span class="n">monitoring</span>
+<div class="highlight"><pre><span></span><code><span class="nx">gcloud</span><span class="w"> </span><span class="nx">container</span><span class="w"> </span><span class="nx">node</span><span class="o">-</span><span class="nx">pools</span><span class="w"> </span><span class="nx">create</span><span class="w"> </span><span class="nx">gpu</span><span class="o">-</span><span class="nx">time</span><span class="o">-</span><span class="nx">sharing</span><span class="w"> </span>\
+<span class="w">    </span><span class="o">--</span><span class="nx">cluster</span><span class="p">=</span><span class="nx">gke</span><span class="o">-</span><span class="nx">gpu</span><span class="o">-</span><span class="nx">timesharing</span><span class="w"> </span>\
+<span class="w">    </span><span class="o">--</span><span class="nx">machine</span><span class="o">-</span><span class="k">type</span><span class="p">=</span><span class="nx">n1</span><span class="o">-</span><span class="nx">standard</span><span class="o">-</span><span class="mi">4</span><span class="w"> </span>\
+<span class="w">    </span><span class="o">--</span><span class="nx">num</span><span class="o">-</span><span class="nx">nodes</span><span class="p">=</span><span class="mi">1</span><span class="w"> </span>\
+<span class="w">    </span><span class="o">--</span><span class="nx">region</span><span class="p">=</span><span class="nx">us</span><span class="o">-</span><span class="nx">central1</span><span class="w"> </span>\
+<span class="w">    </span><span class="o">--</span><span class="nx">node</span><span class="o">-</span><span class="nx">locations</span><span class="p">=</span><span class="nx">us</span><span class="o">-</span><span class="nx">central1</span><span class="o">-</span><span class="nx">a</span><span class="w"> </span>\
+<span class="w">    </span><span class="o">--</span><span class="nx">accelerator</span><span class="p">=</span><span class="k">type</span><span class="p">=</span><span class="nx">nvidia</span><span class="o">-</span><span class="nx">tesla</span><span class="o">-</span><span class="nx">t4</span><span class="p">,</span><span class="nx">count</span><span class="p">=</span><span class="mi">1</span><span class="p">,</span><span class="nx">gpu</span><span class="o">-</span><span class="nx">sharing</span><span class="o">-</span><span class="nx">strategy</span><span class="p">=</span><span class="nx">time</span><span class="o">-</span><span class="nx">sharing</span><span class="p">,</span><span class="nx">max</span><span class="o">-</span><span class="nx">shared</span><span class="o">-</span><span class="nx">clients</span><span class="o">-</span><span class="nx">per</span><span class="o">-</span><span class="nx">gpu</span><span class="p">=</span><span class="mi">8</span><span class="w"> </span>\
+<span class="w">    </span><span class="o">--</span><span class="nx">shielded</span><span class="o">-</span><span class="nx">secure</span><span class="o">-</span><span class="nx">boot</span><span class="w"> </span><span class="o">--</span><span class="nx">shielded</span><span class="o">-</span><span class="nx">integrity</span><span class="o">-</span><span class="nx">monitoring</span>
 </code></pre></div>
 
 <p>Install the nvidia GPU device drivers:</p>
@@ -163,33 +165,33 @@ EOF
 <p>Let's create 4 pods in tenant-a and 4 pods in tenant-b where each pod
 is requesting a single GPU.</p>
 <p>The job that we will use in both tenants.</p>
-<div class="highlight"><pre><span></span><code><span class="nt">cat</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="nt">gpu-deployment</span><span class="p">.</span><span class="nc">yml</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="nt">EOF</span>
-<span class="nt">apiVersion</span><span class="o">:</span><span class="w"> </span><span class="nt">apps</span><span class="o">/</span><span class="nt">v1</span>
-<span class="nt">kind</span><span class="o">:</span><span class="w"> </span><span class="nt">Deployment</span>
-<span class="nt">metadata</span><span class="o">:</span>
-<span class="w">  </span><span class="nt">name</span><span class="o">:</span><span class="w"> </span><span class="nt">cuda-simple</span>
-<span class="nt">spec</span><span class="o">:</span>
-<span class="w">  </span><span class="nt">replicas</span><span class="o">:</span><span class="w"> </span><span class="nt">4</span>
-<span class="w">  </span><span class="nt">selector</span><span class="o">:</span>
-<span class="w">    </span><span class="nt">matchLabels</span><span class="o">:</span>
-<span class="w">      </span><span class="nt">app</span><span class="o">:</span><span class="w"> </span><span class="nt">cuda-simple</span>
-<span class="w">  </span><span class="nt">template</span><span class="o">:</span>
-<span class="w">    </span><span class="nt">metadata</span><span class="o">:</span>
-<span class="w">      </span><span class="nt">labels</span><span class="o">:</span>
-<span class="w">        </span><span class="nt">app</span><span class="o">:</span><span class="w"> </span><span class="nt">cuda-simple</span>
-<span class="w">    </span><span class="nt">spec</span><span class="o">:</span>
-<span class="w">      </span><span class="nt">containers</span><span class="o">:</span>
-<span class="w">      </span><span class="nt">-</span><span class="w"> </span><span class="nt">name</span><span class="o">:</span><span class="w"> </span><span class="nt">cuda-simple</span>
-<span class="w">        </span><span class="nt">image</span><span class="o">:</span><span class="w"> </span><span class="nt">nvidia</span><span class="o">/</span><span class="nt">cuda</span><span class="p">:</span><span class="nd">11</span><span class="p">.</span><span class="nc">0</span><span class="p">.</span><span class="nc">3-base-ubi7</span>
-<span class="w">        </span><span class="nt">command</span><span class="o">:</span>
-<span class="w">        </span><span class="nt">-</span><span class="w"> </span><span class="nt">bash</span>
-<span class="w">        </span><span class="nt">-</span><span class="w"> </span><span class="nt">-c</span>
-<span class="w">        </span><span class="nt">-</span><span class="w"> </span><span class="o">|</span>
-<span class="w">          </span><span class="o">/</span><span class="nt">usr</span><span class="o">/</span><span class="nt">local</span><span class="o">/</span><span class="nt">nvidia</span><span class="o">/</span><span class="nt">bin</span><span class="o">/</span><span class="nt">nvidia-smi</span><span class="w"> </span><span class="nt">-L</span><span class="o">;</span><span class="w"> </span><span class="nt">sleep</span><span class="w"> </span><span class="nt">300</span>
-<span class="w">        </span><span class="nt">resources</span><span class="o">:</span>
-<span class="w">          </span><span class="nt">limits</span><span class="o">:</span>
-<span class="w">            </span><span class="nt">nvidia</span><span class="p">.</span><span class="nc">com</span><span class="o">/</span><span class="nt">gpu</span><span class="o">:</span><span class="w"> </span><span class="nt">1</span>
-<span class="nt">EOF</span>
+<div class="highlight"><pre><span></span><code><span class="nx">cat</span><span class="w"> </span><span class="p">&gt;</span><span class="w"> </span><span class="nx">gpu</span><span class="o">-</span><span class="nx">deployment</span><span class="p">.</span><span class="nx">yml</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="nx">EOF</span>
+<span class="nx">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="nx">apps</span><span class="o">/</span><span class="nx">v1</span>
+<span class="nx">kind</span><span class="p">:</span><span class="w"> </span><span class="nx">Deployment</span>
+<span class="nx">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nx">name</span><span class="p">:</span><span class="w"> </span><span class="nx">cuda</span><span class="o">-</span><span class="nx">simple</span>
+<span class="nx">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nx">replicas</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span>
+<span class="w">  </span><span class="nx">selector</span><span class="p">:</span>
+<span class="w">    </span><span class="nx">matchLabels</span><span class="p">:</span>
+<span class="w">      </span><span class="nx">app</span><span class="p">:</span><span class="w"> </span><span class="nx">cuda</span><span class="o">-</span><span class="nx">simple</span>
+<span class="w">  </span><span class="nx">template</span><span class="p">:</span>
+<span class="w">    </span><span class="nx">metadata</span><span class="p">:</span>
+<span class="w">      </span><span class="nx">labels</span><span class="p">:</span>
+<span class="w">        </span><span class="nx">app</span><span class="p">:</span><span class="w"> </span><span class="nx">cuda</span><span class="o">-</span><span class="nx">simple</span>
+<span class="w">    </span><span class="nx">spec</span><span class="p">:</span>
+<span class="w">      </span><span class="nx">containers</span><span class="p">:</span>
+<span class="w">      </span><span class="o">-</span><span class="w"> </span><span class="nx">name</span><span class="p">:</span><span class="w"> </span><span class="nx">cuda</span><span class="o">-</span><span class="nx">simple</span>
+<span class="w">        </span><span class="nx">image</span><span class="p">:</span><span class="w"> </span><span class="nx">nvidia</span><span class="o">/</span><span class="nx">cuda</span><span class="p">:</span><span class="m m-Double">11.0.3</span><span class="o">-</span><span class="kd">base</span><span class="o">-</span><span class="nx">ubi7</span>
+<span class="w">        </span><span class="nx">command</span><span class="p">:</span>
+<span class="w">        </span><span class="o">-</span><span class="w"> </span><span class="nx">bash</span>
+<span class="w">        </span><span class="o">-</span><span class="w"> </span><span class="o">-</span><span class="nx">c</span>
+<span class="w">        </span><span class="o">-</span><span class="w"> </span><span class="o">|</span>
+<span class="w">          </span><span class="o">/</span><span class="nx">usr</span><span class="o">/</span><span class="nx">local</span><span class="o">/</span><span class="nx">nvidia</span><span class="o">/</span><span class="nx">bin</span><span class="o">/</span><span class="nx">nvidia</span><span class="o">-</span><span class="nx">smi</span><span class="w"> </span><span class="o">-</span><span class="nx">L</span><span class="p">;</span><span class="w"> </span><span class="nx">sleep</span><span class="w"> </span><span class="mi">300</span>
+<span class="w">        </span><span class="nx">resources</span><span class="p">:</span>
+<span class="w">          </span><span class="nx">limits</span><span class="p">:</span>
+<span class="w">            </span><span class="nx">nvidia</span><span class="p">.</span><span class="nx">com</span><span class="o">/</span><span class="nx">gpu</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span>
+<span class="nx">EOF</span>
 </code></pre></div>
 
 <p>launch it in tenant-a and tenant-b</p>
@@ -208,15 +210,15 @@ and able to limit GPUs that are timeshared.</p>
 </code></pre></div>
 
 <p>Verify that pods in both tenant-a see the whole GPU being usable</p>
-<div class="highlight"><pre><span></span><code><span class="nv">kubectl</span><span class="w"> </span><span class="k">exec</span><span class="w"> </span><span class="o">-</span><span class="nv">n</span><span class="w"> </span><span class="nv">tenant</span><span class="o">-</span><span class="nv">a</span><span class="w"> </span><span class="nv">deploy</span><span class="o">/</span><span class="nv">cuda</span><span class="o">-</span><span class="nv">simple</span><span class="w"> </span><span class="o">-</span><span class="nv">ti</span><span class="w"> </span><span class="o">--</span><span class="w"> </span><span class="nv">sh</span>
-<span class="nv">nvidia</span><span class="o">-</span><span class="nv">smi</span>
-<span class="k">exit</span>
+<div class="highlight"><pre><span></span><code><span class="nx">kubectl</span><span class="w"> </span><span class="nx">exec</span><span class="w"> </span><span class="o">-</span><span class="nx">n</span><span class="w"> </span><span class="nx">tenant</span><span class="o">-</span><span class="nx">a</span><span class="w"> </span><span class="nx">deploy</span><span class="o">/</span><span class="nx">cuda</span><span class="o">-</span><span class="nx">simple</span><span class="w"> </span><span class="o">-</span><span class="nx">ti</span><span class="w"> </span><span class="o">--</span><span class="w"> </span><span class="nx">sh</span>
+<span class="nx">nvidia</span><span class="o">-</span><span class="nx">smi</span>
+<span class="nx">exit</span>
 </code></pre></div>
 
 <p>Verify that pods in tenant-b  see the whole GPU being usable</p>
-<div class="highlight"><pre><span></span><code><span class="nv">kubectl</span><span class="w"> </span><span class="k">exec</span><span class="w"> </span><span class="o">-</span><span class="nv">n</span><span class="w"> </span><span class="nv">tenant</span><span class="o">-</span><span class="nv">b</span><span class="w"> </span><span class="nv">deploy</span><span class="o">/</span><span class="nv">cuda</span><span class="o">-</span><span class="nv">simple</span><span class="w"> </span><span class="o">-</span><span class="nv">ti</span><span class="w"> </span><span class="o">--</span><span class="w"> </span><span class="nv">sh</span>
-<span class="nv">nvidia</span><span class="o">-</span><span class="nv">smi</span>
-<span class="k">exit</span>
+<div class="highlight"><pre><span></span><code><span class="nx">kubectl</span><span class="w"> </span><span class="nx">exec</span><span class="w"> </span><span class="o">-</span><span class="nx">n</span><span class="w"> </span><span class="nx">tenant</span><span class="o">-</span><span class="nx">b</span><span class="w"> </span><span class="nx">deploy</span><span class="o">/</span><span class="nx">cuda</span><span class="o">-</span><span class="nx">simple</span><span class="w"> </span><span class="o">-</span><span class="nx">ti</span><span class="w"> </span><span class="o">--</span><span class="w"> </span><span class="nx">sh</span>
+<span class="nx">nvidia</span><span class="o">-</span><span class="nx">smi</span>
+<span class="nx">exit</span>
 </code></pre></div>
 
 <p>You can also take a look at the GPU node to see that it will

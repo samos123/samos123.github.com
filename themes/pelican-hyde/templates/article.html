@@ -11,6 +11,7 @@
 
 {% block content %}
 <div class="post">
+    <h1 class="post-title">{{ article.title }}</h1>
     <span class="post-date">
         {{ article.locale_date }}
         {% if article.locale_date != article.locale_modified -%}
