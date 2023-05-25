@@ -87,13 +87,13 @@ ga('send', 'pageview');
     <!-- End Ezoic - under_page_title - under_page_title -->
     <span class="post-date">
         Fri 07 April 2023
-| Last updated on Sat 08 April 2023
+| Last updated on Tue 11 April 2023
     </span>
     <p>GKE has a feature to add node labels to all nodes in the nodepool. GKE will add the label
 to both the nodes already running in the cluster and also to newly added nodes.</p>
 <p>You can use the feature like this:</p>
-<div class="highlight"><pre><span></span><code>gcloud container node-pools update my-node-pool <span class="se">\</span>
-  --cluster my-cluster --labels <span class="nv">sam</span><span class="o">=</span><span class="nb">test</span>
+<div class="highlight"><pre><span></span><code>gcloud<span class="w"> </span>container<span class="w"> </span>node-pools<span class="w"> </span>update<span class="w"> </span>my-node-pool<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--cluster<span class="w"> </span>my-cluster<span class="w"> </span>--labels<span class="w"> </span><span class="nv">sam</span><span class="o">=</span><span class="nb">test</span>
 </code></pre></div>
 
 <p>That would add the label <code>sam: test</code> all your nodepools. The docs however do mention the
@@ -105,24 +105,24 @@ of bash.</p>
 <p>Create a file named <code>gke-nodepool-add-label.sh</code> with the following content:</p>
 <div class="highlight"><pre><span></span><code><span class="ch">#!/usr/bin/env bash</span>
 
-<span class="nb">set</span> -x
+<span class="nb">set</span><span class="w"> </span>-x
 
 <span class="nv">CLUSTER_NAME</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span>
 <span class="nv">POOL_NAME</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$2</span><span class="s2">&quot;</span>
 <span class="nv">NEW_LABEL</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$3</span><span class="s2">&quot;</span>
-<span class="nv">LABELS</span><span class="o">=</span><span class="k">$(</span>gcloud container node-pools describe <span class="nv">$POOL_NAME</span> <span class="se">\</span>
-         --cluster <span class="nv">$CLUSTER_NAME</span> --format <span class="s2">&quot;get(config.labels)&quot;</span> <span class="p">|</span> tr <span class="s2">&quot;;&quot;</span> <span class="s2">&quot;,&quot;</span><span class="k">)</span>
-<span class="nb">echo</span> <span class="s2">&quot;Current labels: </span><span class="nv">$LABELS</span><span class="s2">&quot;</span>
-gcloud container node-pools update <span class="nv">$POOL_NAME</span> <span class="se">\</span>
-  --cluster <span class="nv">$CLUSTER_NAME</span> --node-labels<span class="o">=</span><span class="s2">&quot;</span><span class="nv">$LABELS</span><span class="s2">,</span><span class="nv">$NEW_LABEL</span><span class="s2">&quot;</span>
+<span class="nv">LABELS</span><span class="o">=</span><span class="k">$(</span>gcloud<span class="w"> </span>container<span class="w"> </span>node-pools<span class="w"> </span>describe<span class="w"> </span><span class="nv">$POOL_NAME</span><span class="w"> </span><span class="se">\</span>
+<span class="w">         </span>--cluster<span class="w"> </span><span class="nv">$CLUSTER_NAME</span><span class="w"> </span>--format<span class="w"> </span><span class="s2">&quot;get(config.labels)&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>tr<span class="w"> </span><span class="s2">&quot;;&quot;</span><span class="w"> </span><span class="s2">&quot;,&quot;</span><span class="k">)</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Current labels: </span><span class="nv">$LABELS</span><span class="s2">&quot;</span>
+gcloud<span class="w"> </span>container<span class="w"> </span>node-pools<span class="w"> </span>update<span class="w"> </span><span class="nv">$POOL_NAME</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--cluster<span class="w"> </span><span class="nv">$CLUSTER_NAME</span><span class="w"> </span>--node-labels<span class="o">=</span><span class="s2">&quot;</span><span class="nv">$LABELS</span><span class="s2">,</span><span class="nv">$NEW_LABEL</span><span class="s2">&quot;</span>
 </code></pre></div>
 
 <p>Make the file executable:</p>
-<div class="highlight"><pre><span></span><code>chmod +x gke-nodepool-add-label.sh
+<div class="highlight"><pre><span></span><code>chmod<span class="w"> </span>+x<span class="w"> </span>gke-nodepool-add-label.sh
 </code></pre></div>
 
 <p>Now you can run the script like this to add a label without overwriting existing labels:</p>
-<div class="highlight"><pre><span></span><code>./gke-nodepool-add-label.sh my-cluster my-nodepool <span class="nv">sam</span><span class="o">=</span><span class="nb">test</span>
+<div class="highlight"><pre><span></span><code>./gke-nodepool-add-label.sh<span class="w"> </span>my-cluster<span class="w"> </span>my-nodepool<span class="w"> </span><span class="nv">sam</span><span class="o">=</span><span class="nb">test</span>
 </code></pre></div>
     <!-- Ezoic - bottom_of_page - bottom_of_page -->
     <div id="ezoic-pub-ad-placeholder-104"> </div>

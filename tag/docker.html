@@ -77,6 +77,23 @@ ga('send', 'pageview');
 </div>		<div class="content container">
 	<div class="posts">
 			<div class="post">
+				<h1 class="post-title" href="https://samos-it.com/posts/deploying-stable-diffusion-web-ui-with-docker-on-gce-t4-vm.html">
+					<a href="https://samos-it.com/posts/deploying-stable-diffusion-web-ui-with-docker-on-gce-t4-vm.html">Deploying Stable Diffusion Web UI using Docker on GCE T4 VM</a>
+				</h1>
+				<span class="post-date">Tue 23 May 2023</span>
+				<p>
+					<p>A short guide on how to deploy Stable Diffusion Web UI on a Google Cloud
+Compute Engine VM with 1 T4 GPU.</p>
+<p>Creating the GCE VM with T4 using the Google Cloud Deep Learning Image:</p>
+<div class="highlight"><pre><span></span><code><span class="k">export</span><span class="w"> </span><span class="n">IMAGE_FAMILY</span><span class="o">=</span><span class="s2">&quot;common-cu110-ubuntu-2004&quot;</span>
+<span class="k">export</span><span class="w"> </span><span class="n">ZONE</span><span class="o">=</span><span class="s2">&quot;us-west1-b&quot;</span>
+<span class="k">export</span><span class="w"> </span><span class="n">INSTANCE_NAME</span><span class="o">=</span><span class="s2">&quot;stable-diffusion&quot;</span>
+<span class="k">export</span><span class="w"> </span><span class="n">INSTANCE_TYPE</span><span class="o">=</span><span class="s2">&quot;n1-standard-4&quot;</span>
+<span class="n">gcloud</span><span class="w"> </span><span class="n">compute</span><span class="w"> </span><span class="n">instances …</span></code></pre></div>
+				</p>
+				<a class="read-more" href="posts/deploying-stable-diffusion-web-ui-with-docker-on-gce-t4-vm.html">Continue reading »</a>
+			</div>
+			<div class="post">
 				<h1 class="post-title" href="https://samos-it.com/posts/docker-get-private-ip-address-of-container.html">
 					<a href="https://samos-it.com/posts/docker-get-private-ip-address-of-container.html">Docker get private ip address of container</a>
 				</h1>
@@ -85,7 +102,7 @@ ga('send', 'pageview');
 					<p>In order to access other containers from a container it's needed
 to get the private IP address of the other containers. The following
 command is able to get the private ip address of the container.</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>docker inspect --format<span class="o">=</span><span class="s2">&quot;{{.NetworkSettings.IPAddress}}&quot;</span> <span class="nv">$CONTAINER_ID_OR_NAME</span>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>docker<span class="w"> </span>inspect<span class="w"> </span>--format<span class="o">=</span><span class="s2">&quot;{{.NetworkSettings.IPAddress}}&quot;</span><span class="w"> </span><span class="nv">$CONTAINER_ID_OR_NAME</span>
 <span class="go">172.17.0.15</span>
 </code></pre></div>
 				</p>

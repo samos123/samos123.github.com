@@ -87,7 +87,7 @@ ga('send', 'pageview');
     <!-- End Ezoic - under_page_title - under_page_title -->
     <span class="post-date">
         Thu 12 January 2023
-| Last updated on Fri 13 January 2023
+| Last updated on Mon 27 March 2023
     </span>
     <iframe width="560" height="315" src="https://www.youtube.com/embed/Im6mh2ZFWx8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
@@ -104,14 +104,14 @@ by <a href="https://github.com/acheong08/ChatGPT">acheong08</a>.</p>
 </ol>
 <h2>1. Installing the ChatGPT Python Library</h2>
 <p>Create a new directory named <code>chatgpt-python</code> and create a virtualenv in <code>.venv</code> directory:</p>
-<div class="highlight"><pre><span></span><code>mkdir chatgpt-python
-<span class="nb">cd</span> chatgpt-python
-python3 -m venv .venv
-<span class="nb">source</span> .venv/bin/activate
+<div class="highlight"><pre><span></span><code>mkdir<span class="w"> </span>chatgpt-python
+<span class="nb">cd</span><span class="w"> </span>chatgpt-python
+python3<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>.venv
+<span class="nb">source</span><span class="w"> </span>.venv/bin/activate
 </code></pre></div>
 
 <p>Install revChatGPT using pip:</p>
-<div class="highlight"><pre><span></span><code>pip3 install --upgrade revChatGPT
+<div class="highlight"><pre><span></span><code>pip3<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>revChatGPT
 </code></pre></div>
 
 <h2>2. Configuring authentication</h2>
@@ -124,9 +124,9 @@ python3 -m venv .venv
 <p>You should now have the session token in your clipboard.</p>
 <p>Create a file named <code>chatgpt.json</code> with the following content
 (don't forget to paste your session token):</p>
-<div class="highlight"><pre><span></span><code><span class="p">{</span><span class="w"></span>
-<span class="w">  </span><span class="nt">&quot;session_token&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;COPY_PASTE_YOUR_SESSION_TOKEN_HERE&gt;&quot;</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;session_token&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;COPY_PASTE_YOUR_SESSION_TOKEN_HERE&gt;&quot;</span>
+<span class="p">}</span>
 </code></pre></div>
 
 <h2>3. Using the ChatGPT python library</h2>

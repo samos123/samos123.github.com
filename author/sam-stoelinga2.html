@@ -77,6 +77,31 @@ ga('send', 'pageview');
 </div>		<div class="content container">
 	<div class="posts">
 			<div class="post">
+				<h1 class="post-title" href="https://samos-it.com/posts/python-create-uuid-from-integer.html">
+					<a href="https://samos-it.com/posts/python-create-uuid-from-integer.html">Python Create UUID from integer</a>
+				</h1>
+				<span class="post-date">Mon 06 February 2023</span>
+				<p>
+					<p>Code:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">uuid</span>
+<span class="n">my_uuid</span> <span class="o">=</span> <span class="n">uuid</span><span class="o">.</span><span class="n">UUID</span><span class="p">(</span><span class="nb">int</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">my_uuid</span><span class="p">)</span>
+</code></pre></div>
+
+<p>That should show the following string:</p>
+<div class="highlight"><pre><span></span><code><span class="mf">00000000</span><span class="o">-</span><span class="mf">0000</span><span class="o">-</span><span class="mf">0000</span><span class="o">-</span><span class="mf">0000</span><span class="o">-</span><span class="mf">000000000001</span>
+</code></pre></div>
+
+<p>You can also convert back to integer by doing:</p>
+<div class="highlight"><pre><span></span><code><span class="n">my_uuid</span><span class="o">.</span><span class="n">int</span><span class="p">()</span>
+</code></pre></div>
+
+<p>For my use case this was needed because my source database
+has integer based IDs, however the destination …</p>
+				</p>
+				<a class="read-more" href="posts/python-create-uuid-from-integer.html">Continue reading »</a>
+			</div>
+			<div class="post">
 				<h1 class="post-title" href="https://samos-it.com/posts/Preventing-Privileged-pods-using-Pod-Security-Admission-Standards.html">
 					<a href="https://samos-it.com/posts/Preventing-Privileged-pods-using-Pod-Security-Admission-Standards.html">Preventing Privileged pods using Pod Security Admission / Standards</a>
 				</h1>
@@ -213,21 +238,6 @@ rare case that the bundled GKE cluster autoscaler doesn't work for you.</p>
 <p>Note that …</p>
 				</p>
 				<a class="read-more" href="posts/gke-custom-oss-cluster-autoscaler.html">Continue reading »</a>
-			</div>
-			<div class="post">
-				<h1 class="post-title" href="https://samos-it.com/posts/custom-dns-entry-kube-dns-stubdomain-coredns.html">
-					<a href="https://samos-it.com/posts/custom-dns-entry-kube-dns-stubdomain-coredns.html">Custom DNS entry with KubeDNS stubdomain</a>
-				</h1>
-				<span class="post-date">Thu 11 March 2021</span>
-				<p>
-					<p>An example use case that I've seen is where you have a K8s service exposed
-on the ClusterIP and you want to make that service accessible over a domain
-name that you don't control.</p>
-<p>You can do to the following steps to set this up:</p>
-<ol>
-<li>Deploy CoreDNS with custom DNS …</li></ol>
-				</p>
-				<a class="read-more" href="posts/custom-dns-entry-kube-dns-stubdomain-coredns.html">Continue reading »</a>
 			</div>
 	</div>
 	<div class="pagination">

@@ -77,6 +77,20 @@ ga('send', 'pageview');
 </div>		<div class="content container">
 	<div class="posts">
 			<div class="post">
+				<h1 class="post-title" href="https://samos-it.com/posts/docker-multi-website-single-ip-host-haproxy.html">
+					<a href="https://samos-it.com/posts/docker-multi-website-single-ip-host-haproxy.html">Docker Multiple websites/domains on single ip/host tutorial using a HAproxy as reverse proxy</a>
+				</h1>
+				<span class="post-date">Mon 07 July 2014</span>
+				<p>
+					<p>This post will describe how to expose multiple docker containers
+running websites on port 80 using HAproxy as a reverse proxy.
+This makes it possible to run multiple websites on different domains
+on a single public ip of the host.</p>
+<p>The basic setup is to create 1 container for haproxy …</p>
+				</p>
+				<a class="read-more" href="posts/docker-multi-website-single-ip-host-haproxy.html">Continue reading »</a>
+			</div>
+			<div class="post">
 				<h1 class="post-title" href="https://samos-it.com/posts/move-first-word-to-end-of-line-linux-awk.html">
 					<a href="https://samos-it.com/posts/move-first-word-to-end-of-line-linux-awk.html">Move first word to end of line (Linux/awk)</a>
 				</h1>
@@ -137,7 +151,7 @@ same ofcourse, and was unable to use the …</p>
 				<span class="post-date">Sun 09 June 2013</span>
 				<p>
 					<p><strong>Answer:</strong>  </p>
-<div class="highlight"><pre><span></span><code><span class="nb">echo</span> -n <span class="s2">&quot;1&quot;</span> &gt; /sys/bus/pci/devices/0000:02:00.0/remove
+<div class="highlight"><pre><span></span><code><span class="nb">echo</span><span class="w"> </span>-n<span class="w"> </span><span class="s2">&quot;1&quot;</span><span class="w"> </span>&gt;<span class="w"> </span>/sys/bus/pci/devices/0000:02:00.0/remove
 </code></pre></div>
 
 <p>Where 0000:02:00.0 is related to your pci device address which can
@@ -170,9 +184,9 @@ install. So …</p>
 				<span class="post-date">Sat 11 May 2013</span>
 				<p>
 					<p>Tired of all those join part messages?</p>
-<div class="highlight"><pre><span></span><code>/ignore <span class="se">\*</span> joins  
-/ignore <span class="se">\*</span> parts  
-/ignore <span class="se">\*</span> quits  
+<div class="highlight"><pre><span></span><code>/ignore<span class="w"> </span><span class="se">\*</span><span class="w"> </span>joins<span class="w">  </span>
+/ignore<span class="w"> </span><span class="se">\*</span><span class="w"> </span>parts<span class="w">  </span>
+/ignore<span class="w"> </span><span class="se">\*</span><span class="w"> </span>quits<span class="w">  </span>
 /save
 </code></pre></div>
 
@@ -190,7 +204,7 @@ install. So …</p>
 				<p>
 					<p>The following command first gets the changed and added files of a git
 commit and then creates a tar archive of those changed files.</p>
-<div class="highlight"><pre><span></span><code>git show <span class="o">{{</span>COMMIT_ID<span class="o">}}</span> --name-status <span class="p">|</span> grep -Ew <span class="s1">&#39;^M|A&#39;</span> <span class="p">|</span> awk <span class="s1">&#39;{ print $2 }&#39;</span> <span class="p">|</span> xargs tar czf usb-passthrough.tar.gz
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>show<span class="w"> </span><span class="o">{{</span>COMMIT_ID<span class="o">}}</span><span class="w"> </span>--name-status<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-Ew<span class="w"> </span><span class="s1">&#39;^M|A&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>awk<span class="w"> </span><span class="s1">&#39;{ print $2 }&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>xargs<span class="w"> </span>tar<span class="w"> </span>czf<span class="w"> </span>usb-passthrough.tar.gz
 </code></pre></div>
 				</p>
 				<a class="read-more" href="posts/create-tar-archive-of-changedadded-files-in-a-git-commit.html">Continue reading »</a>
@@ -209,21 +223,6 @@ the steps and issues I encountered while doing so.</p>
 <p><strong>Summary …</strong></p>
 				</p>
 				<a class="read-more" href="posts/full-migration-of-archlinux-installation-to-a-new-system.html">Continue reading »</a>
-			</div>
-			<div class="post">
-				<h1 class="post-title" href="https://samos-it.com/posts/only-use-worker-when-required-on-heroku-with-djangopython.html">
-					<a href="https://samos-it.com/posts/only-use-worker-when-required-on-heroku-with-djangopython.html">Only use worker when required on heroku with Django/Python</a>
-				</h1>
-				<span class="post-date">Fri 13 April 2012</span>
-				<p>
-					<p>For a mobile project I required a background worker which sents an email
-with 300 generated QR codes zipped together as attachment. This costs
-quite some time so we need a background worker to execute this task.</p>
-<p>I wanted to achieve the following result:</p>
-<ul>
-<li>When the user wants to generate …</li></ul>
-				</p>
-				<a class="read-more" href="posts/only-use-worker-when-required-on-heroku-with-djangopython.html">Continue reading »</a>
 			</div>
 	</div>
 	<div class="pagination">

@@ -77,6 +77,23 @@ ga('send', 'pageview');
 </div>		<div class="content container">
 	<div class="posts">
 			<div class="post">
+				<h1 class="post-title" href="https://samos-it.com/posts/deploying-stable-diffusion-web-ui-with-docker-on-gce-t4-vm.html">
+					<a href="https://samos-it.com/posts/deploying-stable-diffusion-web-ui-with-docker-on-gce-t4-vm.html">Deploying Stable Diffusion Web UI using Docker on GCE T4 VM</a>
+				</h1>
+				<span class="post-date">Tue 23 May 2023</span>
+				<p>
+					<p>A short guide on how to deploy Stable Diffusion Web UI on a Google Cloud
+Compute Engine VM with 1 T4 GPU.</p>
+<p>Creating the GCE VM with T4 using the Google Cloud Deep Learning Image:</p>
+<div class="highlight"><pre><span></span><code><span class="k">export</span><span class="w"> </span><span class="n">IMAGE_FAMILY</span><span class="o">=</span><span class="s2">&quot;common-cu110-ubuntu-2004&quot;</span>
+<span class="k">export</span><span class="w"> </span><span class="n">ZONE</span><span class="o">=</span><span class="s2">&quot;us-west1-b&quot;</span>
+<span class="k">export</span><span class="w"> </span><span class="n">INSTANCE_NAME</span><span class="o">=</span><span class="s2">&quot;stable-diffusion&quot;</span>
+<span class="k">export</span><span class="w"> </span><span class="n">INSTANCE_TYPE</span><span class="o">=</span><span class="s2">&quot;n1-standard-4&quot;</span>
+<span class="n">gcloud</span><span class="w"> </span><span class="n">compute</span><span class="w"> </span><span class="n">instances …</span></code></pre></div>
+				</p>
+				<a class="read-more" href="posts/deploying-stable-diffusion-web-ui-with-docker-on-gce-t4-vm.html">Continue reading »</a>
+			</div>
+			<div class="post">
 				<h1 class="post-title" href="https://samos-it.com/posts/GKE-nodepool-add-label-without-overwriting-existing-labels.html">
 					<a href="https://samos-it.com/posts/GKE-nodepool-add-label-without-overwriting-existing-labels.html">GKE Nodepool Add Labels Without overwriting existing labels</a>
 				</h1>
@@ -85,8 +102,8 @@ ga('send', 'pageview');
 					<p>GKE has a feature to add node labels to all nodes in the nodepool. GKE will add the label
 to both the nodes already running in the cluster and also to newly added nodes.</p>
 <p>You can use the feature like this:</p>
-<div class="highlight"><pre><span></span><code>gcloud container node-pools update my-node-pool <span class="se">\</span>
-  --cluster my-cluster --labels <span class="nv">sam …</span></code></pre></div>
+<div class="highlight"><pre><span></span><code>gcloud<span class="w"> </span>container<span class="w"> </span>node-pools<span class="w"> </span>update<span class="w"> </span>my-node-pool<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--cluster<span class="w"> </span>my-cluster<span class="w"> </span>--labels<span class="w"> </span><span class="nv">sam …</span></code></pre></div>
 				</p>
 				<a class="read-more" href="posts/GKE-nodepool-add-label-without-overwriting-existing-labels.html">Continue reading »</a>
 			</div>
@@ -168,7 +185,7 @@ This blog post will …</p>
 				<p>
 					<p>ack is a nice to tool to search in files in your current directory and subdirectores, but
 ack won't do search and replace. Luckily, we can easily combine ack and sed using xargs.</p>
-<div class="highlight"><pre><span></span><code>ack -l <span class="s2">&quot;app.kubernetes.io/name: myapp&quot;</span> <span class="p">|</span> xargs sed -i <span class="s1">&#39;s|app.kubernetes.io/name: myapp|app …</span></code></pre></div>
+<div class="highlight"><pre><span></span><code>ack<span class="w"> </span>-l<span class="w"> </span><span class="s2">&quot;app.kubernetes.io/name: myapp&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>xargs<span class="w"> </span>sed<span class="w"> </span>-i<span class="w"> </span><span class="s1">&#39;s|app.kubernetes.io/name: myapp|app …</span></code></pre></div>
 				</p>
 				<a class="read-more" href="posts/find-files-with-ack-and-replace-string-with-sed.html">Continue reading »</a>
 			</div>
@@ -201,31 +218,6 @@ Weaviate on GKE with replication turned on. The following topics will be covered
 <li>Tweaking the Weaviate helm …</li></ul>
 				</p>
 				<a class="read-more" href="posts/weaviate-on-gke.html">Continue reading »</a>
-			</div>
-			<div class="post">
-				<h1 class="post-title" href="https://samos-it.com/posts/python-create-uuid-from-integer.html">
-					<a href="https://samos-it.com/posts/python-create-uuid-from-integer.html">Python Create UUID from integer</a>
-				</h1>
-				<span class="post-date">Mon 06 February 2023</span>
-				<p>
-					<p>Code:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">uuid</span>
-<span class="n">my_uuid</span> <span class="o">=</span> <span class="n">uuid</span><span class="o">.</span><span class="n">UUID</span><span class="p">(</span><span class="nb">int</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">my_uuid</span><span class="p">)</span>
-</code></pre></div>
-
-<p>That should show the following string:</p>
-<div class="highlight"><pre><span></span><code><span class="mf">00000000</span><span class="o">-</span><span class="mf">0000</span><span class="o">-</span><span class="mf">0000</span><span class="o">-</span><span class="mf">0000</span><span class="o">-</span><span class="mf">000000000001</span><span class="w"></span>
-</code></pre></div>
-
-<p>You can also convert back to integer by doing:</p>
-<div class="highlight"><pre><span></span><code><span class="n">my_uuid</span><span class="o">.</span><span class="n">int</span><span class="p">()</span>
-</code></pre></div>
-
-<p>For my use case this was needed because my source database
-has integer based IDs, however the destination …</p>
-				</p>
-				<a class="read-more" href="posts/python-create-uuid-from-integer.html">Continue reading »</a>
 			</div>
 	</div>
 	<div class="pagination">

@@ -111,15 +111,15 @@ decommission of nodepool is as follows:</p>
 This feature allows us to taint all existing nodes in the nodepool and
 also apply the taint on any newly added nodes.</p>
 <p>Let's try this feature on the nodepool named <code>default-pool</code> in the cluster <code>test-drain</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="nb">export</span> <span class="nv">POOL</span><span class="o">=</span>default-pool
-<span class="nb">export</span> <span class="nv">CLUSTER</span><span class="o">=</span>test-np-upgrades
-gcloud container nodepools update <span class="nv">$POOL</span> --cluster <span class="nv">$CLUSTER</span> <span class="se">\</span>
-  --node-taints <span class="nv">upgrade</span><span class="o">=</span>true:NoSchedule
+<div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">POOL</span><span class="o">=</span>default-pool
+<span class="nb">export</span><span class="w"> </span><span class="nv">CLUSTER</span><span class="o">=</span>test-np-upgrades
+gcloud<span class="w"> </span>container<span class="w"> </span>nodepools<span class="w"> </span>update<span class="w"> </span><span class="nv">$POOL</span><span class="w"> </span>--cluster<span class="w"> </span><span class="nv">$CLUSTER</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--node-taints<span class="w"> </span><span class="nv">upgrade</span><span class="o">=</span>true:NoSchedule
 </code></pre></div>
 
 <p>Note: You might have to set a zone or region using <code>gcloud config set compute/region us-central1</code>.</p>
 <p>You would get the following error if cluster autoscaler is enabled on the nodepool:</p>
-<div class="highlight"><pre><span></span><code><span class="nv">ERROR</span>:<span class="w"> </span><span class="ss">(</span><span class="nv">gcloud</span>.<span class="nv">container</span>.<span class="nv">node</span><span class="o">-</span><span class="nv">pools</span>.<span class="nv">update</span><span class="ss">)</span><span class="w"> </span><span class="nv">ResponseError</span>:<span class="w"> </span><span class="nv">code</span><span class="o">=</span><span class="mi">400</span>,<span class="w"> </span><span class="nv">message</span><span class="o">=</span><span class="nv">Updates</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="s1">&#39;taints&#39;</span><span class="w"> </span><span class="nv">are</span><span class="w"> </span><span class="nv">not</span><span class="w"> </span><span class="nv">supported</span><span class="w"> </span><span class="nv">in</span><span class="w"> </span><span class="nv">node</span><span class="w"> </span><span class="nv">pools</span><span class="w"> </span><span class="nv">with</span><span class="w"> </span><span class="nv">autoscaling</span><span class="w"> </span><span class="nv">enabled</span><span class="w"> </span><span class="ss">(</span><span class="nv">as</span><span class="w"> </span><span class="nv">a</span><span class="w"> </span><span class="nv">workaround</span>,<span class="w"> </span><span class="nv">consider</span><span class="w"> </span><span class="nv">temporarily</span><span class="w"> </span><span class="nv">disabling</span><span class="w"> </span><span class="nv">autoscaling</span><span class="w"> </span><span class="nv">or</span><span class="w"> </span><span class="nv">recreating</span><span class="w"> </span><span class="nv">the</span><span class="w"> </span><span class="nv">node</span><span class="w"> </span><span class="nv">pool</span><span class="w"> </span><span class="nv">with</span><span class="w"> </span><span class="nv">the</span><span class="w"> </span><span class="nv">updated</span><span class="w"> </span><span class="nv">values</span>.<span class="ss">)</span>.<span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="nv">ERROR</span>:<span class="w"> </span><span class="ss">(</span><span class="nv">gcloud</span>.<span class="nv">container</span>.<span class="nv">node</span><span class="o">-</span><span class="nv">pools</span>.<span class="nv">update</span><span class="ss">)</span><span class="w"> </span><span class="nv">ResponseError</span>:<span class="w"> </span><span class="nv">code</span><span class="o">=</span><span class="mi">400</span>,<span class="w"> </span><span class="nv">message</span><span class="o">=</span><span class="nv">Updates</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="s1">&#39;taints&#39;</span><span class="w"> </span><span class="nv">are</span><span class="w"> </span><span class="nv">not</span><span class="w"> </span><span class="nv">supported</span><span class="w"> </span><span class="nv">in</span><span class="w"> </span><span class="nv">node</span><span class="w"> </span><span class="nv">pools</span><span class="w"> </span><span class="nv">with</span><span class="w"> </span><span class="nv">autoscaling</span><span class="w"> </span><span class="nv">enabled</span><span class="w"> </span><span class="ss">(</span><span class="nv">as</span><span class="w"> </span><span class="nv">a</span><span class="w"> </span><span class="nv">workaround</span>,<span class="w"> </span><span class="nv">consider</span><span class="w"> </span><span class="nv">temporarily</span><span class="w"> </span><span class="nv">disabling</span><span class="w"> </span><span class="nv">autoscaling</span><span class="w"> </span><span class="nv">or</span><span class="w"> </span><span class="nv">recreating</span><span class="w"> </span><span class="nv">the</span><span class="w"> </span><span class="nv">node</span><span class="w"> </span><span class="nv">pool</span><span class="w"> </span><span class="nv">with</span><span class="w"> </span><span class="nv">the</span><span class="w"> </span><span class="nv">updated</span><span class="w"> </span><span class="nv">values</span>.<span class="ss">)</span>.
 </code></pre></div>
 
 <p>In our case the nodepools all have cluster autoscaler enabled since this is a ML/batch
@@ -128,12 +128,12 @@ platform. So disabling autoscaler isn't an option.</p>
 message. It says as a workaround consider <strong>temporarily</strong> disabling autoscaling.</p>
 <p>Let's give that a try, disable autoscaler, apply taints, enable autoscaler again.
 Run the following commands:</p>
-<div class="highlight"><pre><span></span><code>gcloud container node-pools update <span class="nv">$POOL</span> <span class="se">\</span>
-  --cluster <span class="nv">$CLUSTER</span> --no-enable-autoscaling 
-gcloud container node-pools update <span class="nv">$POOL</span> <span class="se">\</span>
-  --cluster <span class="nv">$CLUSTER</span> --node-taints <span class="nv">upgrade</span><span class="o">=</span>true:NoSchedule
-gcloud container node-pools update <span class="nv">$POOL</span> <span class="se">\</span>
-  --cluster <span class="nv">$CLUSTER</span> --enable-autoscaling --max-nodes <span class="m">1000</span> --min-nodes <span class="m">0</span>
+<div class="highlight"><pre><span></span><code>gcloud<span class="w"> </span>container<span class="w"> </span>node-pools<span class="w"> </span>update<span class="w"> </span><span class="nv">$POOL</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--cluster<span class="w"> </span><span class="nv">$CLUSTER</span><span class="w"> </span>--no-enable-autoscaling<span class="w"> </span>
+gcloud<span class="w"> </span>container<span class="w"> </span>node-pools<span class="w"> </span>update<span class="w"> </span><span class="nv">$POOL</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--cluster<span class="w"> </span><span class="nv">$CLUSTER</span><span class="w"> </span>--node-taints<span class="w"> </span><span class="nv">upgrade</span><span class="o">=</span>true:NoSchedule
+gcloud<span class="w"> </span>container<span class="w"> </span>node-pools<span class="w"> </span>update<span class="w"> </span><span class="nv">$POOL</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--cluster<span class="w"> </span><span class="nv">$CLUSTER</span><span class="w"> </span>--enable-autoscaling<span class="w"> </span>--max-nodes<span class="w"> </span><span class="m">1000</span><span class="w"> </span>--min-nodes<span class="w"> </span><span class="m">0</span>
 </code></pre></div>
 
 <p>The <code>--max-nodes</code> value doesn't matter because the nodepool got tainted so it will never scale up again.</p>
@@ -164,34 +164,34 @@ pod4   1/1     Running  gke-test-np-upgrades-default-pool-a6056569-dqff
 <p>Let's try spinning up another pod that's targeting this tainted
 nodepool.</p>
 <p>Create a file named <code>pod5.yaml</code> with the following content:</p>
-<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span><span class="w"></span>
-<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Pod</span><span class="w"></span>
-<span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pod5</span><span class="w"></span>
-<span class="nt">spec</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="nt">nodeSelector</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">cloud.google.com/gke-nodepool</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default-pool</span><span class="w"></span>
-<span class="w">  </span><span class="nt">containers</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sleepy</span><span class="w"></span>
-<span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gcr.io/google_containers/pause-amd64:3.2</span><span class="w"></span>
-<span class="w">    </span><span class="nt">resources</span><span class="p">:</span><span class="w"></span>
-<span class="w">      </span><span class="nt">requests</span><span class="p">:</span><span class="w"></span>
-<span class="w">        </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;2000Mi&quot;</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Pod</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pod5</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">nodeSelector</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">cloud.google.com/gke-nodepool</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default-pool</span>
+<span class="w">  </span><span class="nt">containers</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sleepy</span>
+<span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gcr.io/google_containers/pause-amd64:3.2</span>
+<span class="w">    </span><span class="nt">resources</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">requests</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;2000Mi&quot;</span>
 </code></pre></div>
 
 <p>Create the pod:</p>
-<div class="highlight"><pre><span></span><code>kubectl apply -f pod5.yaml
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>pod5.yaml
 </code></pre></div>
 
 <p>Check to ensure cluster autoscaler won't scale up the nodepool. Run the following:</p>
-<div class="highlight"><pre><span></span><code>kubectl describe pod pod5
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>describe<span class="w"> </span>pod<span class="w"> </span>pod5
 </code></pre></div>
 
 <p>You should see this included in the output:</p>
-<div class="highlight"><pre><span></span><code>Status: Pending
+<div class="highlight"><pre><span></span><code>Status:<span class="w"> </span>Pending
 ..
-Warning  FailedScheduling   default-scheduler   <span class="m">0</span>/4 nodes are available: <span class="m">4</span> node<span class="o">(</span>s<span class="o">)</span> had taint <span class="o">{</span>upgrade: true<span class="o">}</span>, that the pod didn<span class="s1">&#39;t tolerate.</span>
-<span class="s1">Normal   NotTriggerScaleUp  cluster-autoscaler  pod didn&#39;</span>t trigger scale-up: <span class="m">2</span> max node group size reached
+Warning<span class="w">  </span>FailedScheduling<span class="w">   </span>default-scheduler<span class="w">   </span><span class="m">0</span>/4<span class="w"> </span>nodes<span class="w"> </span>are<span class="w"> </span>available:<span class="w"> </span><span class="m">4</span><span class="w"> </span>node<span class="o">(</span>s<span class="o">)</span><span class="w"> </span>had<span class="w"> </span>taint<span class="w"> </span><span class="o">{</span>upgrade:<span class="w"> </span>true<span class="o">}</span>,<span class="w"> </span>that<span class="w"> </span>the<span class="w"> </span>pod<span class="w"> </span>didn<span class="s1">&#39;t tolerate.</span>
+<span class="s1">Normal   NotTriggerScaleUp  cluster-autoscaler  pod didn&#39;</span>t<span class="w"> </span>trigger<span class="w"> </span>scale-up:<span class="w"> </span><span class="m">2</span><span class="w"> </span>max<span class="w"> </span>node<span class="w"> </span>group<span class="w"> </span>size<span class="w"> </span>reached
 </code></pre></div>
 
 <p>This shows that the pod is pending and not triggering a scale up event. This is
@@ -206,7 +206,7 @@ pods are deleted.</p>
 instead of having to delete them. Once finished, the pod automatically is deleted
 and autoscaler does the same scale down logic.</p>
 <p>Wait for 10 to 15 minutes and then run:</p>
-<div class="highlight"><pre><span></span><code>kubectl get nodes
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>nodes
 </code></pre></div>
 
 <p>In my case, there seems to be 1 node still running. You might wonder why that is?

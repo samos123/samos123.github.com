@@ -87,7 +87,7 @@ ga('send', 'pageview');
     <!-- End Ezoic - under_page_title - under_page_title -->
     <span class="post-date">
         Thu 03 November 2022
-| Last updated on Tue 06 December 2022
+| Last updated on Mon 27 March 2023
     </span>
     <p>Many applications require searching through large text fields
 in your firestore database. For example, you might need to search
@@ -112,83 +112,83 @@ is set to "Disabled". Note that this endpoint is accessible by anyone
 on the internet and doesn't require authentication. So this
 isn't suitable for production and for demo purposes only</p>
 <p>Install Weaviate Javascript client:</p>
-<div class="highlight"><pre><span></span><code>mkdir firestore-weaviate-test
-<span class="nb">cd</span> firestore-weaviate-test
-npm install weaviate-client
+<div class="highlight"><pre><span></span><code>mkdir<span class="w"> </span>firestore-weaviate-test
+<span class="nb">cd</span><span class="w"> </span>firestore-weaviate-test
+npm<span class="w"> </span>install<span class="w"> </span>weaviate-client
 </code></pre></div>
 
 <p>Let's define the Weaviate Schema for our Note taking application. Currently this
 is stored in Firestore in the following way:</p>
-<div class="highlight"><pre><span></span><code>// /notes/<span class="cp">${</span><span class="n">ID</span><span class="cp">}</span>
+<div class="highlight"><pre><span></span><code>//<span class="w"> </span>/notes/<span class="cp">${</span><span class="n">ID</span><span class="cp">}</span>
 {
-  owner: &quot;{UID}&quot;, // Firebase Authentication&#39;s User ID of note owner
-  text: &quot;This is my first note!&quot;
+<span class="w">  </span>owner:<span class="w"> </span>&quot;{UID}&quot;,<span class="w"> </span>//<span class="w"> </span>Firebase<span class="w"> </span>Authentication&#39;s<span class="w"> </span>User<span class="w"> </span>ID<span class="w"> </span>of<span class="w"> </span>note<span class="w"> </span>owner
+<span class="w">  </span>text:<span class="w"> </span>&quot;This<span class="w"> </span>is<span class="w"> </span>my<span class="w"> </span>first<span class="w"> </span>note!&quot;
 }
 </code></pre></div>
 
 <p>Now let's define our Schema to index the Firestore Note. Create a file named
 <code>schema-creation.js</code> with the following content:</p>
-<div class="highlight"><pre><span></span><code><span class="k">const</span><span class="w"> </span><span class="n">weaviate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">require</span><span class="p">(</span><span class="s2">&quot;weaviate-client&quot;</span><span class="p">);</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="k">const</span><span class="w"> </span><span class="n">weaviate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">require</span><span class="p">(</span><span class="s2">&quot;weaviate-client&quot;</span><span class="p">);</span>
 
-<span class="k">const</span><span class="w"> </span><span class="n">client</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">weaviate</span><span class="o">.</span><span class="n">client</span><span class="p">({</span><span class="w"></span>
-<span class="w">    </span><span class="n">scheme</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="n">host</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;your-wcs-instance.semi.network&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="p">});</span><span class="w"></span>
+<span class="k">const</span><span class="w"> </span><span class="n">client</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">weaviate</span><span class="o">.</span><span class="n">client</span><span class="p">({</span>
+<span class="w">    </span><span class="n">scheme</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="n">host</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;your-wcs-instance.semi.network&quot;</span><span class="p">,</span>
+<span class="p">});</span>
 
-<span class="k">var</span><span class="w"> </span><span class="n">classObj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="k">class</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Note&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="n">description</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;An index for Full-Search of notes in Firestore&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="n">vectorizer</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;text2vec-openai&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="n">moduleConfig</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">        </span><span class="s2">&quot;text2vec-openai&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">            </span><span class="n">model</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;babbage&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">            </span><span class="n">type</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;text&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">        </span><span class="p">},</span><span class="w"></span>
-<span class="w">    </span><span class="p">},</span><span class="w"></span>
-<span class="w">    </span><span class="n">properties</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
-<span class="w">        </span><span class="p">{</span><span class="w"></span>
-<span class="w">            </span><span class="n">dataType</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;string&quot;</span><span class="p">],</span><span class="w"></span>
-<span class="w">            </span><span class="n">description</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;The ID of the note&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">            </span><span class="n">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;nid&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">        </span><span class="p">},</span><span class="w"></span>
-<span class="w">        </span><span class="p">{</span><span class="w"></span>
-<span class="w">            </span><span class="n">dataType</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;string&quot;</span><span class="p">],</span><span class="w"></span>
-<span class="w">            </span><span class="n">description</span><span class="p">:</span><span class="w"></span>
-<span class="w">                </span><span class="s2">&quot;The Firebase Authentication UID of the creator of the note&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">            </span><span class="n">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;uid&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">        </span><span class="p">},</span><span class="w"></span>
-<span class="w">        </span><span class="p">{</span><span class="w"></span>
-<span class="w">            </span><span class="n">dataType</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">],</span><span class="w"></span>
-<span class="w">            </span><span class="n">description</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;The content of the note&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">            </span><span class="n">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;text&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">            </span><span class="n">moduleConfig</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">                </span><span class="s2">&quot;text2vec-openai&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">                    </span><span class="n">skip</span><span class="p">:</span><span class="w"> </span><span class="bp">false</span><span class="p">,</span><span class="w"></span>
-<span class="w">                    </span><span class="n">vectorizePropertyName</span><span class="p">:</span><span class="w"> </span><span class="bp">false</span><span class="p">,</span><span class="w"></span>
-<span class="w">                </span><span class="p">},</span><span class="w"></span>
-<span class="w">            </span><span class="p">},</span><span class="w"></span>
-<span class="w">        </span><span class="p">},</span><span class="w"></span>
-<span class="w">    </span><span class="p">],</span><span class="w"></span>
-<span class="p">};</span><span class="w"></span>
+<span class="k">var</span><span class="w"> </span><span class="n">classObj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">class</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Note&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="n">description</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;An index for Full-Search of notes in Firestore&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="n">vectorizer</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;text2vec-openai&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="n">moduleConfig</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="s2">&quot;text2vec-openai&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">model</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;babbage&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="n">type</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;text&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="n">properties</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">dataType</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;string&quot;</span><span class="p">],</span>
+<span class="w">            </span><span class="n">description</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;The ID of the note&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="n">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;nid&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">dataType</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;string&quot;</span><span class="p">],</span>
+<span class="w">            </span><span class="n">description</span><span class="p">:</span>
+<span class="w">                </span><span class="s2">&quot;The Firebase Authentication UID of the creator of the note&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="n">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;uid&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">dataType</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">],</span>
+<span class="w">            </span><span class="n">description</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;The content of the note&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="n">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;text&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="n">moduleConfig</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="s2">&quot;text2vec-openai&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                    </span><span class="n">skip</span><span class="p">:</span><span class="w"> </span><span class="bp">false</span><span class="p">,</span>
+<span class="w">                    </span><span class="n">vectorizePropertyName</span><span class="p">:</span><span class="w"> </span><span class="bp">false</span><span class="p">,</span>
+<span class="w">                </span><span class="p">},</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">    </span><span class="p">],</span>
+<span class="p">};</span>
 
 
-<span class="n">client</span><span class="o">.</span><span class="n">schema</span><span class="w"></span>
-<span class="w">    </span><span class="o">.</span><span class="n">classCreator</span><span class="p">()</span><span class="w"></span>
-<span class="w">    </span><span class="o">.</span><span class="n">withClass</span><span class="p">(</span><span class="n">classObj</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="o">.</span><span class="n">do</span><span class="p">()</span><span class="w"></span>
-<span class="w">    </span><span class="o">.</span><span class="n">then</span><span class="p">((</span><span class="n">res</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">        </span><span class="n">console</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">res</span><span class="p">);</span><span class="w"></span>
-<span class="w">    </span><span class="p">})</span><span class="w"></span>
-<span class="w">    </span><span class="o">.</span><span class="n">catch</span><span class="p">((</span><span class="n">err</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">        </span><span class="n">console</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">err</span><span class="p">);</span><span class="w"></span>
-<span class="w">    </span><span class="p">});</span><span class="w"></span>
+<span class="n">client</span><span class="o">.</span><span class="n">schema</span>
+<span class="w">    </span><span class="o">.</span><span class="n">classCreator</span><span class="p">()</span>
+<span class="w">    </span><span class="o">.</span><span class="n">withClass</span><span class="p">(</span><span class="n">classObj</span><span class="p">)</span>
+<span class="w">    </span><span class="o">.</span><span class="n">do</span><span class="p">()</span>
+<span class="w">    </span><span class="o">.</span><span class="n">then</span><span class="p">((</span><span class="n">res</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">console</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">res</span><span class="p">);</span>
+<span class="w">    </span><span class="p">})</span>
+<span class="w">    </span><span class="o">.</span><span class="n">catch</span><span class="p">((</span><span class="n">err</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">console</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">err</span><span class="p">);</span>
+<span class="w">    </span><span class="p">});</span>
 </code></pre></div>
 
 <p>Review the file and make sure you changed <code>your-wcs-instance</code> to your actual
 instance name. Alternatively, change the connection section to connect to
 your self deployed Weaviate instance.</p>
 <p>Execute the Schema creation script by running:</p>
-<div class="highlight"><pre><span></span><code>node schema-creation.js
+<div class="highlight"><pre><span></span><code>node<span class="w"> </span>schema-creation.js
 </code></pre></div>
 
 <p>Weaviate is now ready to start indexing notes. You can import existing
@@ -205,108 +205,108 @@ firebase init functions # say no to eslint
 <p>The above command will create a directory named functions inside your
 current working directory.</p>
 <p>Change to the functions directory and install weaviate-client:</p>
-<div class="highlight"><pre><span></span><code><span class="nb">cd</span> functions
-npm install weaviate-client
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>functions
+npm<span class="w"> </span>install<span class="w"> </span>weaviate-client
 </code></pre></div>
 
 <p>Open the file <code>index.js</code> and replace it with the following content:</p>
-<div class="highlight"><pre><span></span><code><span class="k">const</span><span class="w"> </span><span class="n">functions</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">require</span><span class="p">(</span><span class="s2">&quot;firebase-functions&quot;</span><span class="p">);</span><span class="w"></span>
-<span class="k">const</span><span class="w"> </span><span class="n">weaviate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">require</span><span class="p">(</span><span class="s2">&quot;weaviate-client&quot;</span><span class="p">);</span><span class="w"></span>
-<span class="k">const</span><span class="w"> </span><span class="n">WEAVIATE_HOST</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">functions</span><span class="o">.</span><span class="n">config</span><span class="p">()</span><span class="o">.</span><span class="n">weaviate</span><span class="o">.</span><span class="n">host</span><span class="p">;</span><span class="w"></span>
-<span class="k">const</span><span class="w"> </span><span class="n">OPENAI_APIKEY</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">functions</span><span class="o">.</span><span class="n">config</span><span class="p">()</span><span class="o">.</span><span class="n">weaviate</span><span class="o">.</span><span class="n">openaiapikey</span><span class="p">;</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="k">const</span><span class="w"> </span><span class="n">functions</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">require</span><span class="p">(</span><span class="s2">&quot;firebase-functions&quot;</span><span class="p">);</span>
+<span class="k">const</span><span class="w"> </span><span class="n">weaviate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">require</span><span class="p">(</span><span class="s2">&quot;weaviate-client&quot;</span><span class="p">);</span>
+<span class="k">const</span><span class="w"> </span><span class="n">WEAVIATE_HOST</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">functions</span><span class="o">.</span><span class="n">config</span><span class="p">()</span><span class="o">.</span><span class="n">weaviate</span><span class="o">.</span><span class="n">host</span><span class="p">;</span>
+<span class="k">const</span><span class="w"> </span><span class="n">OPENAI_APIKEY</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">functions</span><span class="o">.</span><span class="n">config</span><span class="p">()</span><span class="o">.</span><span class="n">weaviate</span><span class="o">.</span><span class="n">openaiapikey</span><span class="p">;</span>
 
-<span class="k">const</span><span class="w"> </span><span class="n">client</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">weaviate</span><span class="o">.</span><span class="n">client</span><span class="p">({</span><span class="w"></span>
-<span class="w">    </span><span class="n">scheme</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="n">http</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="n">https</span><span class="w"></span>
-<span class="w">    </span><span class="n">host</span><span class="p">:</span><span class="w"> </span><span class="n">WEAVIATE_HOST</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="n">headers</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="s2">&quot;X-OpenAI-Api-Key&quot;</span><span class="p">:</span><span class="w"> </span><span class="n">OPENAI_APIKEY</span><span class="w"> </span><span class="p">},</span><span class="w"></span>
-<span class="p">});</span><span class="w"></span>
+<span class="k">const</span><span class="w"> </span><span class="n">client</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">weaviate</span><span class="o">.</span><span class="n">client</span><span class="p">({</span>
+<span class="w">    </span><span class="n">scheme</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="n">http</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="n">https</span>
+<span class="w">    </span><span class="n">host</span><span class="p">:</span><span class="w"> </span><span class="n">WEAVIATE_HOST</span><span class="p">,</span>
+<span class="w">    </span><span class="n">headers</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="s2">&quot;X-OpenAI-Api-Key&quot;</span><span class="p">:</span><span class="w"> </span><span class="n">OPENAI_APIKEY</span><span class="w"> </span><span class="p">},</span>
+<span class="p">});</span>
 
-<span class="o">//</span><span class="w"> </span><span class="n">Update</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">search</span><span class="w"> </span><span class="n">index</span><span class="w"> </span><span class="n">every</span><span class="w"> </span><span class="n">time</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">note</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">created</span><span class="o">.</span><span class="w"></span>
-<span class="n">exports</span><span class="o">.</span><span class="n">onNoteCreated</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">functions</span><span class="o">.</span><span class="n">firestore</span><span class="w"></span>
-<span class="w">    </span><span class="o">.</span><span class="n">document</span><span class="p">(</span><span class="s2">&quot;notes/{noteId}&quot;</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="o">.</span><span class="n">onCreate</span><span class="p">(</span><span class="n">async</span><span class="w"> </span><span class="p">(</span><span class="n">snap</span><span class="p">,</span><span class="w"> </span><span class="n">context</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">        </span><span class="o">//</span><span class="w"> </span><span class="n">Get</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">note</span><span class="w"> </span><span class="n">document</span><span class="w"></span>
-<span class="w">        </span><span class="k">const</span><span class="w"> </span><span class="n">note</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">snap</span><span class="o">.</span><span class="n">data</span><span class="p">();</span><span class="w"></span>
+<span class="o">//</span><span class="w"> </span><span class="n">Update</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">search</span><span class="w"> </span><span class="n">index</span><span class="w"> </span><span class="n">every</span><span class="w"> </span><span class="n">time</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">note</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">created</span><span class="o">.</span>
+<span class="n">exports</span><span class="o">.</span><span class="n">onNoteCreated</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">functions</span><span class="o">.</span><span class="n">firestore</span>
+<span class="w">    </span><span class="o">.</span><span class="n">document</span><span class="p">(</span><span class="s2">&quot;notes/{noteId}&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="o">.</span><span class="n">onCreate</span><span class="p">(</span><span class="n">async</span><span class="w"> </span><span class="p">(</span><span class="n">snap</span><span class="p">,</span><span class="w"> </span><span class="n">context</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="o">//</span><span class="w"> </span><span class="n">Get</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">note</span><span class="w"> </span><span class="n">document</span>
+<span class="w">        </span><span class="k">const</span><span class="w"> </span><span class="n">note</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">snap</span><span class="o">.</span><span class="n">data</span><span class="p">();</span>
 
-<span class="w">        </span><span class="o">//</span><span class="w"> </span><span class="n">Use</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="s1">&#39;nodeId&#39;</span><span class="w"> </span><span class="n">path</span><span class="w"> </span><span class="n">segment</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">identifier</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">Elastic</span><span class="w"></span>
-<span class="w">        </span><span class="k">const</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">context</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">noteId</span><span class="p">;</span><span class="w"></span>
-<span class="w">        </span><span class="n">client</span><span class="o">.</span><span class="n">data</span><span class="w"></span>
-<span class="w">            </span><span class="o">.</span><span class="n">creator</span><span class="p">()</span><span class="w"></span>
-<span class="w">            </span><span class="o">.</span><span class="n">withClassName</span><span class="p">(</span><span class="s2">&quot;Note&quot;</span><span class="p">)</span><span class="w"></span>
-<span class="w">            </span><span class="o">.</span><span class="n">withProperties</span><span class="p">({</span><span class="w"></span>
-<span class="w">                </span><span class="n">nid</span><span class="p">:</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"></span>
-<span class="w">                </span><span class="n">uid</span><span class="p">:</span><span class="w"> </span><span class="n">note</span><span class="o">.</span><span class="n">uid</span><span class="p">,</span><span class="w"></span>
-<span class="w">                </span><span class="n">text</span><span class="p">:</span><span class="w"> </span><span class="n">note</span><span class="o">.</span><span class="n">text</span><span class="p">,</span><span class="w"></span>
-<span class="w">            </span><span class="p">})</span><span class="w"></span>
-<span class="w">            </span><span class="o">.</span><span class="n">do</span><span class="p">()</span><span class="w"></span>
-<span class="w">            </span><span class="o">.</span><span class="n">then</span><span class="p">((</span><span class="n">res</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">                </span><span class="n">console</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">res</span><span class="p">);</span><span class="w"></span>
-<span class="w">            </span><span class="p">})</span><span class="w"></span>
-<span class="w">            </span><span class="o">.</span><span class="n">catch</span><span class="p">((</span><span class="n">err</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">                </span><span class="n">console</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">err</span><span class="p">);</span><span class="w"></span>
-<span class="w">            </span><span class="p">});</span><span class="w"></span>
-<span class="w">    </span><span class="p">});</span><span class="w"></span>
+<span class="w">        </span><span class="o">//</span><span class="w"> </span><span class="n">Use</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="s1">&#39;nodeId&#39;</span><span class="w"> </span><span class="n">path</span><span class="w"> </span><span class="n">segment</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">identifier</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">Elastic</span>
+<span class="w">        </span><span class="k">const</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">context</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">noteId</span><span class="p">;</span>
+<span class="w">        </span><span class="n">client</span><span class="o">.</span><span class="n">data</span>
+<span class="w">            </span><span class="o">.</span><span class="n">creator</span><span class="p">()</span>
+<span class="w">            </span><span class="o">.</span><span class="n">withClassName</span><span class="p">(</span><span class="s2">&quot;Note&quot;</span><span class="p">)</span>
+<span class="w">            </span><span class="o">.</span><span class="n">withProperties</span><span class="p">({</span>
+<span class="w">                </span><span class="n">nid</span><span class="p">:</span><span class="w"> </span><span class="n">id</span><span class="p">,</span>
+<span class="w">                </span><span class="n">uid</span><span class="p">:</span><span class="w"> </span><span class="n">note</span><span class="o">.</span><span class="n">uid</span><span class="p">,</span>
+<span class="w">                </span><span class="n">text</span><span class="p">:</span><span class="w"> </span><span class="n">note</span><span class="o">.</span><span class="n">text</span><span class="p">,</span>
+<span class="w">            </span><span class="p">})</span>
+<span class="w">            </span><span class="o">.</span><span class="n">do</span><span class="p">()</span>
+<span class="w">            </span><span class="o">.</span><span class="n">then</span><span class="p">((</span><span class="n">res</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="n">console</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">res</span><span class="p">);</span>
+<span class="w">            </span><span class="p">})</span>
+<span class="w">            </span><span class="o">.</span><span class="n">catch</span><span class="p">((</span><span class="n">err</span><span class="p">)</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="n">console</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">err</span><span class="p">);</span>
+<span class="w">            </span><span class="p">});</span>
+<span class="w">    </span><span class="p">});</span>
 </code></pre></div>
 
 <p>Configure the Firebase Environment based on your own values. Run the following
 command but replace the values to match your environment:</p>
-<div class="highlight"><pre><span></span><code>firebase functions:config:set weaviate.host<span class="o">=</span><span class="s2">&quot;your-wcs-instance.semi.network&quot;</span> weaviate.openaiapikey<span class="o">=</span><span class="s2">&quot;yourverysecretAPIkey&quot;</span>
+<div class="highlight"><pre><span></span><code>firebase<span class="w"> </span>functions:config:set<span class="w"> </span>weaviate.host<span class="o">=</span><span class="s2">&quot;your-wcs-instance.semi.network&quot;</span><span class="w"> </span>weaviate.openaiapikey<span class="o">=</span><span class="s2">&quot;yourverysecretAPIkey&quot;</span>
 </code></pre></div>
 
 <p>Deploy the function by running:</p>
-<div class="highlight"><pre><span></span><code>firebase deploy --only functions
+<div class="highlight"><pre><span></span><code>firebase<span class="w"> </span>deploy<span class="w"> </span>--only<span class="w"> </span>functions
 </code></pre></div>
 
 <p>Let's try creating many notes (7k+) in Firestore to test the function. Create a file
 named <code>create-notes.js</code> with the following content:</p>
-<div class="highlight"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="nx">initializeApp</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="nx">applicationDefault</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="nx">cert</span><span class="p">,</span><span class="w"></span>
-<span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s2">&quot;firebase-admin/app&quot;</span><span class="p">);</span><span class="w"></span>
-<span class="kd">const</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="nx">getFirestore</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="nx">Timestamp</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="nx">FieldValue</span><span class="p">,</span><span class="w"></span>
-<span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s2">&quot;firebase-admin/firestore&quot;</span><span class="p">);</span><span class="w"></span>
-<span class="kd">const</span><span class="w"> </span><span class="nx">fs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s2">&quot;fs&quot;</span><span class="p">);</span><span class="w"></span>
-<span class="kd">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">parse</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s2">&quot;csv-parse&quot;</span><span class="p">);</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">initializeApp</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">applicationDefault</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">cert</span><span class="p">,</span>
+<span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s2">&quot;firebase-admin/app&quot;</span><span class="p">);</span>
+<span class="kd">const</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">getFirestore</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">Timestamp</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">FieldValue</span><span class="p">,</span>
+<span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s2">&quot;firebase-admin/firestore&quot;</span><span class="p">);</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">fs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s2">&quot;fs&quot;</span><span class="p">);</span>
+<span class="kd">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">parse</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s2">&quot;csv-parse&quot;</span><span class="p">);</span>
 
-<span class="nx">initializeApp</span><span class="p">({</span><span class="w"></span>
-<span class="w">    </span><span class="nx">credential</span><span class="o">:</span><span class="w"> </span><span class="nx">applicationDefault</span><span class="p">(),</span><span class="w"></span>
-<span class="p">});</span><span class="w"></span>
+<span class="nx">initializeApp</span><span class="p">({</span>
+<span class="w">    </span><span class="nx">credential</span><span class="o">:</span><span class="w"> </span><span class="nx">applicationDefault</span><span class="p">(),</span>
+<span class="p">});</span>
 
-<span class="kd">const</span><span class="w"> </span><span class="nx">db</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">getFirestore</span><span class="p">();</span><span class="w"></span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">db</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">getFirestore</span><span class="p">();</span>
 
-<span class="kd">var</span><span class="w"> </span><span class="nx">parser</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">parse</span><span class="p">({</span><span class="w"> </span><span class="nx">columns</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="p">(</span><span class="nx">err</span><span class="p">,</span><span class="w"> </span><span class="nx">records</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="nx">records</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="k">async</span><span class="w"> </span><span class="p">(</span><span class="nx">record</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">        </span><span class="kd">const</span><span class="w"> </span><span class="nx">docRef</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">db</span><span class="p">.</span><span class="nx">collection</span><span class="p">(</span><span class="s2">&quot;notes&quot;</span><span class="p">).</span><span class="nx">add</span><span class="p">({</span><span class="w"></span>
-<span class="w">            </span><span class="nx">uid</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;same&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">            </span><span class="nx">text</span><span class="o">:</span><span class="w"> </span><span class="nx">record</span><span class="p">.</span><span class="nx">description</span><span class="p">,</span><span class="w"></span>
-<span class="w">        </span><span class="p">});</span><span class="w"></span>
-<span class="w">    </span><span class="p">});</span><span class="w"></span>
-<span class="p">});</span><span class="w"></span>
+<span class="kd">var</span><span class="w"> </span><span class="nx">parser</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">parse</span><span class="p">({</span><span class="w"> </span><span class="nx">columns</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="p">(</span><span class="nx">err</span><span class="p">,</span><span class="w"> </span><span class="nx">records</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">records</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="k">async</span><span class="w"> </span><span class="p">(</span><span class="nx">record</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kd">const</span><span class="w"> </span><span class="nx">docRef</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">db</span><span class="p">.</span><span class="nx">collection</span><span class="p">(</span><span class="s2">&quot;notes&quot;</span><span class="p">).</span><span class="nx">add</span><span class="p">({</span>
+<span class="w">            </span><span class="nx">uid</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;same&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nx">text</span><span class="o">:</span><span class="w"> </span><span class="nx">record</span><span class="p">.</span><span class="nx">description</span><span class="p">,</span>
+<span class="w">        </span><span class="p">});</span>
+<span class="w">    </span><span class="p">});</span>
+<span class="p">});</span>
 
-<span class="nx">fs</span><span class="p">.</span><span class="nx">createReadStream</span><span class="p">(</span><span class="nx">__dirname</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s2">&quot;/wine_reviews.csv&quot;</span><span class="p">).</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">parser</span><span class="p">);</span><span class="w"></span>
+<span class="nx">fs</span><span class="p">.</span><span class="nx">createReadStream</span><span class="p">(</span><span class="nx">__dirname</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s2">&quot;/wine_reviews.csv&quot;</span><span class="p">).</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">parser</span><span class="p">);</span>
 </code></pre></div>
 
 <p>Download a demo dataset that contains wine reviews. We'll use the content
 for the notes.</p>
-<div class="highlight"><pre><span></span><code>curl -O https://raw.githubusercontent.com/semi-technologies/weaviate-examples/main/semanticsearch-transformers-wines/data/wine_reviews.csv
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-O<span class="w"> </span>https://raw.githubusercontent.com/semi-technologies/weaviate-examples/main/semanticsearch-transformers-wines/data/wine_reviews.csv
 </code></pre></div>
 
 <p>The code for creating notes requires application default credentials. Let's
 configure your Google Application Default credentials by running the following:</p>
-<div class="highlight"><pre><span></span><code>gcloud config <span class="nb">set</span> project your-firebase-project-name
-gcloud auth application-default login
+<div class="highlight"><pre><span></span><code>gcloud<span class="w"> </span>config<span class="w"> </span><span class="nb">set</span><span class="w"> </span>project<span class="w"> </span>your-firebase-project-name
+gcloud<span class="w"> </span>auth<span class="w"> </span>application-default<span class="w"> </span>login
 </code></pre></div>
 
 <p>Install the node-csv dependency by running:</p>
-<div class="highlight"><pre><span></span><code>npm install csv-parse
+<div class="highlight"><pre><span></span><code>npm<span class="w"> </span>install<span class="w"> </span>csv-parse
 </code></pre></div>
 
 <p>Create the notes in Firestore by running:</p>
-<div class="highlight"><pre><span></span><code>node create-notes.js
+<div class="highlight"><pre><span></span><code>node<span class="w"> </span>create-notes.js
 </code></pre></div>
 
 <p>Verify the notes have also been created in Weaviate by running this GraphQL
@@ -322,35 +322,35 @@ query in Weaviate:</p>
 
 <h3>Creating a Firebase Function to search using Weaviate</h3>
 <p>Let's add another firebase function by adding the following code at the bottom of <code>index.js</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="nx">exports</span><span class="p">.</span><span class="nx">searchNotes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">functions</span><span class="p">.</span><span class="nx">https</span><span class="p">.</span><span class="nx">onCall</span><span class="p">(</span><span class="k">async</span><span class="w"> </span><span class="p">(</span><span class="nx">data</span><span class="p">,</span><span class="w"> </span><span class="nx">context</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">concepts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">data</span><span class="p">.</span><span class="nx">concepts</span><span class="p">;</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="nx">exports</span><span class="p">.</span><span class="nx">searchNotes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">functions</span><span class="p">.</span><span class="nx">https</span><span class="p">.</span><span class="nx">onCall</span><span class="p">(</span><span class="k">async</span><span class="w"> </span><span class="p">(</span><span class="nx">data</span><span class="p">,</span><span class="w"> </span><span class="nx">context</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">concepts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">data</span><span class="p">.</span><span class="nx">concepts</span><span class="p">;</span>
 
-<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">notes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">client</span><span class="p">.</span><span class="nx">graphql</span><span class="w"></span>
-<span class="w">        </span><span class="p">.</span><span class="nx">get</span><span class="p">()</span><span class="w"></span>
-<span class="w">        </span><span class="p">.</span><span class="nx">withClassName</span><span class="p">(</span><span class="s2">&quot;Note&quot;</span><span class="p">)</span><span class="w"></span>
-<span class="w">        </span><span class="p">.</span><span class="nx">withFields</span><span class="p">(</span><span class="s2">&quot;nid uid text&quot;</span><span class="p">)</span><span class="w"></span>
-<span class="w">        </span><span class="p">.</span><span class="nx">withNearText</span><span class="p">({</span><span class="w"></span>
-<span class="w">            </span><span class="nx">concepts</span><span class="o">:</span><span class="w"> </span><span class="nx">concepts</span><span class="p">,</span><span class="w"></span>
-<span class="w">            </span><span class="nx">distance</span><span class="o">:</span><span class="w"> </span><span class="mf">0.6</span><span class="p">,</span><span class="w"></span>
-<span class="w">        </span><span class="p">})</span><span class="w"></span>
-<span class="w">        </span><span class="p">.</span><span class="k">do</span><span class="p">();</span><span class="w"></span>
-<span class="w">    </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">notes</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">notes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">client</span><span class="p">.</span><span class="nx">graphql</span>
+<span class="w">        </span><span class="p">.</span><span class="nx">get</span><span class="p">()</span>
+<span class="w">        </span><span class="p">.</span><span class="nx">withClassName</span><span class="p">(</span><span class="s2">&quot;Note&quot;</span><span class="p">)</span>
+<span class="w">        </span><span class="p">.</span><span class="nx">withFields</span><span class="p">(</span><span class="s2">&quot;nid uid text&quot;</span><span class="p">)</span>
+<span class="w">        </span><span class="p">.</span><span class="nx">withNearText</span><span class="p">({</span>
+<span class="w">            </span><span class="nx">concepts</span><span class="o">:</span><span class="w"> </span><span class="nx">concepts</span><span class="p">,</span>
+<span class="w">            </span><span class="nx">distance</span><span class="o">:</span><span class="w"> </span><span class="mf">0.6</span><span class="p">,</span>
+<span class="w">        </span><span class="p">})</span>
+<span class="w">        </span><span class="p">.</span><span class="k">do</span><span class="p">();</span>
+<span class="w">    </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">notes</span><span class="p">)</span>
 
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="p">{</span><span class="nx">notes</span><span class="o">:</span><span class="w"> </span><span class="nx">notes</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">Get</span><span class="p">.</span><span class="nx">Note</span><span class="p">};</span><span class="w"></span>
-<span class="p">});</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="p">{</span><span class="nx">notes</span><span class="o">:</span><span class="w"> </span><span class="nx">notes</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">Get</span><span class="p">.</span><span class="nx">Note</span><span class="p">};</span>
+<span class="p">});</span>
 </code></pre></div>
 
 <p>Deploy the updated functions to Firebase by running:</p>
-<div class="highlight"><pre><span></span><code>firebase deploy --only functions
+<div class="highlight"><pre><span></span><code>firebase<span class="w"> </span>deploy<span class="w"> </span>--only<span class="w"> </span>functions
 </code></pre></div>
 
 <p>Afterwards, you can use the firebase callable function in your Firebase
 app like this:</p>
-<div class="highlight"><pre><span></span><code><span class="kd">var</span><span class="w"> </span><span class="nx">searchNotes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">firebase</span><span class="p">.</span><span class="nx">functions</span><span class="p">().</span><span class="nx">httpsCallable</span><span class="p">(</span><span class="s1">&#39;searchNotes&#39;</span><span class="p">);</span><span class="w"></span>
-<span class="nx">searchNotes</span><span class="p">({</span><span class="nx">concepts</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;light fruity wine&quot;</span><span class="p">]}).</span><span class="nx">then</span><span class="p">(</span><span class="w"> </span><span class="p">(</span><span class="nx">result</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">notes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">result</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">notes</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">notes</span><span class="p">[</span><span class="mf">0</span><span class="p">]);</span><span class="w"> </span><span class="c1">// print the 1st result</span><span class="w"></span>
-<span class="p">});</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="kd">var</span><span class="w"> </span><span class="nx">searchNotes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">firebase</span><span class="p">.</span><span class="nx">functions</span><span class="p">().</span><span class="nx">httpsCallable</span><span class="p">(</span><span class="s1">&#39;searchNotes&#39;</span><span class="p">);</span>
+<span class="nx">searchNotes</span><span class="p">({</span><span class="nx">concepts</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;light fruity wine&quot;</span><span class="p">]}).</span><span class="nx">then</span><span class="p">(</span><span class="w"> </span><span class="p">(</span><span class="nx">result</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">notes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">result</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">notes</span><span class="p">;</span>
+<span class="w">    </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">notes</span><span class="p">[</span><span class="mf">0</span><span class="p">]);</span><span class="w"> </span><span class="c1">// print the 1st result</span>
+<span class="p">});</span>
 </code></pre></div>
 
 <h3>Conclusion</h3>

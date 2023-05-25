@@ -87,30 +87,30 @@ ga('send', 'pageview');
     <!-- End Ezoic - under_page_title - under_page_title -->
     <span class="post-date">
         Fri 19 June 2015
-| Last updated on Tue 06 December 2022
+| Last updated on Sun 13 September 2020
     </span>
     <p>The dillemma: You're accessing your server via SSH through interface eth1.102 with the ip 10.20.0.2/24 and gateway 10.20.0.1.
 Now you want to add eth1 to a linux bridge so you can hookin VMs on a vlan trunk.</p>
 <p>Solution: Create a script which does everything in 1 go and call this script from screen. Make sure the script is flawless else you still loose your connection.</p>
 <p>This is the script I create-bridge.sh used:</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># First remove the old vlan device</span>
-ip link <span class="nb">set</span> dev eth1.102 down
-ip link delete eth1.102
+ip<span class="w"> </span>link<span class="w"> </span><span class="nb">set</span><span class="w"> </span>dev<span class="w"> </span>eth1.102<span class="w"> </span>down
+ip<span class="w"> </span>link<span class="w"> </span>delete<span class="w"> </span>eth1.102
 
 
 <span class="c1"># Create the bridge </span>
-brctl addbr br-eth1
-brctl addif br-eth1 eth1
+brctl<span class="w"> </span>addbr<span class="w"> </span>br-eth1
+brctl<span class="w"> </span>addif<span class="w"> </span>br-eth1<span class="w"> </span>eth1
 
-ip link <span class="nb">set</span> eth1 up
-ip link <span class="nb">set</span> br-eth1 up
+ip<span class="w"> </span>link<span class="w"> </span><span class="nb">set</span><span class="w"> </span>eth1<span class="w"> </span>up
+ip<span class="w"> </span>link<span class="w"> </span><span class="nb">set</span><span class="w"> </span>br-eth1<span class="w"> </span>up
 
 <span class="c1"># Add the vlan tagging ontop of the bridge</span>
-vconfig add br-eth1 <span class="m">102</span>
+vconfig<span class="w"> </span>add<span class="w"> </span>br-eth1<span class="w"> </span><span class="m">102</span>
 
-ip link <span class="nb">set</span> br-eth1.102 up
-ip a add <span class="m">166</span>.111./24 dev br-eth1.102
-ip route add default via <span class="m">166</span>.111.80.10
+ip<span class="w"> </span>link<span class="w"> </span><span class="nb">set</span><span class="w"> </span>br-eth1.102<span class="w"> </span>up
+ip<span class="w"> </span>a<span class="w"> </span>add<span class="w"> </span><span class="m">166</span>.111./24<span class="w"> </span>dev<span class="w"> </span>br-eth1.102
+ip<span class="w"> </span>route<span class="w"> </span>add<span class="w"> </span>default<span class="w"> </span>via<span class="w"> </span><span class="m">166</span>.111.80.10
 </code></pre></div>
 
 <p>Now you should first open a screen session(maybe optional) and then call <code>./create-bridge.sh</code>, which create your bridge and setup the previous interface ontop of the bridge without losing your SSH connection :)</p>
