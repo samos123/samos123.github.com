@@ -77,6 +77,28 @@ ga('send', 'pageview');
 </div>		<div class="content container">
 	<div class="posts">
 			<div class="post">
+				<h1 class="post-title" href="https://samos-it.com/posts/deploying-stable-diffusion-gke-autopilot.html">
+					<a href="https://samos-it.com/posts/deploying-stable-diffusion-gke-autopilot.html">Deploying Stable Diffusion Web UI on GKE Autopilot</a>
+				</h1>
+				<span class="post-date">Tue 30 May 2023</span>
+				<p>
+					<p>Deploying Stable Diffusion WebUI on K8s can be challenging, but no more.
+Learn how to do it by:</p>
+<ol>
+<li>Creating a GKE autopilot cluster</li>
+<li>Deploying AUTOMATIC1111 Stable Diffusion Web UI</li>
+<li>Accessing the UI through port forwarding</li>
+</ol>
+<p>Create a GKE Autopilot cluster:</p>
+<div class="highlight"><pre><span></span><code><span class="n">gcloud</span><span class="w"> </span><span class="n">container</span><span class="w"> </span><span class="n">clusters</span><span class="w"> </span><span class="n">create</span><span class="o">-</span><span class="n">auto</span><span class="w"> </span><span class="n">sd</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span><span class="o">--</span><span class="n">region</span><span class="w"> </span><span class="n">us</span><span class="o">-</span><span class="n">central1</span>
+</code></pre></div>
+
+<p>Create …</p>
+				</p>
+				<a class="read-more" href="posts/deploying-stable-diffusion-gke-autopilot.html">Continue reading »</a>
+			</div>
+			<div class="post">
 				<h1 class="post-title" href="https://samos-it.com/posts/GKE-nodepool-add-label-without-overwriting-existing-labels.html">
 					<a href="https://samos-it.com/posts/GKE-nodepool-add-label-without-overwriting-existing-labels.html">GKE Nodepool Add Labels Without overwriting existing labels</a>
 				</h1>
@@ -211,19 +233,6 @@ your where your applications are running. This blog post provides instructions
 on how …</p>
 				</p>
 				<a class="read-more" href="posts/gke-system-services-kube-dns-dedicated-nodepool.html">Continue reading »</a>
-			</div>
-			<div class="post">
-				<h1 class="post-title" href="https://samos-it.com/posts/gke-docker-registry-http-proxy.html">
-					<a href="https://samos-it.com/posts/gke-docker-registry-http-proxy.html">GKE docker registry with HTTP proxy</a>
-				</h1>
-				<span class="post-date">Fri 21 May 2021</span>
-				<p>
-					<p>You are at one of those places that requires you to use a proxy to access
-your company wide Docker registry. Sometimes HTTP proxies are used to supposedly
-improve security or to workaround IP based rate limits.
-Well good luck, you're in for a ride on how to do this …</p>
-				</p>
-				<a class="read-more" href="posts/gke-docker-registry-http-proxy.html">Continue reading »</a>
 			</div>
 	</div>
 	<div class="pagination">

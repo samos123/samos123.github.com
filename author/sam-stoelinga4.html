@@ -77,6 +77,20 @@ ga('send', 'pageview');
 </div>		<div class="content container">
 	<div class="posts">
 			<div class="post">
+				<h1 class="post-title" href="https://samos-it.com/posts/fuel-separate-ceph-public-from-management.html">
+					<a href="https://samos-it.com/posts/fuel-separate-ceph-public-from-management.html">Fuel: Separate Ceph Public from Management using Network Templates</a>
+				</h1>
+				<span class="post-date">Sat 27 August 2016</span>
+				<p>
+					<p>This post will demonstrate using Network Templates in Fuel to
+separate Ceph Public Network from Management Network. By default
+Fuel combines the ceph public network with the management network.
+The Ceph Public network is used for communicating from the compute nodes
+to the Ceph nodes. So in high performant storage …</p>
+				</p>
+				<a class="read-more" href="posts/fuel-separate-ceph-public-from-management.html">Continue reading »</a>
+			</div>
+			<div class="post">
 				<h1 class="post-title" href="https://samos-it.com/posts/creating-vm-on-fuel-8.0-master.html">
 					<a href="https://samos-it.com/posts/creating-vm-on-fuel-8.0-master.html">Creating a KVM VM for StackLight on Fuel 8.0 master node</a>
 				</h1>
@@ -212,21 +226,6 @@ public routable IP addresses in a single subnet. For example I got access to the
 </ul>
 				</p>
 				<a class="read-more" href="posts/openstack-networking-study-notes.html">Continue reading »</a>
-			</div>
-			<div class="post">
-				<h1 class="post-title" href="https://samos-it.com/posts/docker-get-private-ip-address-of-container.html">
-					<a href="https://samos-it.com/posts/docker-get-private-ip-address-of-container.html">Docker get private ip address of container</a>
-				</h1>
-				<span class="post-date">Tue 08 July 2014</span>
-				<p>
-					<p>In order to access other containers from a container it's needed
-to get the private IP address of the other containers. The following
-command is able to get the private ip address of the container.</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>docker<span class="w"> </span>inspect<span class="w"> </span>--format<span class="o">=</span><span class="s2">&quot;{{.NetworkSettings.IPAddress}}&quot;</span><span class="w"> </span><span class="nv">$CONTAINER_ID_OR_NAME</span>
-<span class="go">172.17.0.15</span>
-</code></pre></div>
-				</p>
-				<a class="read-more" href="posts/docker-get-private-ip-address-of-container.html">Continue reading »</a>
 			</div>
 	</div>
 	<div class="pagination">
