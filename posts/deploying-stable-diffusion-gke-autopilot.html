@@ -81,6 +81,7 @@ ga('send', 'pageview');
     <h1 class="post-title">Deploying Stable Diffusion Web UI on GKE Autopilot</h1>
     <span class="post-date">
         Tue 30 May 2023
+| Last updated on Wed 31 May 2023
     </span>
     <p>Deploying Stable Diffusion WebUI on K8s can be challenging, but no more.
 Learn how to do it by:</p>
@@ -94,6 +95,15 @@ Learn how to do it by:</p>
 <span class="w">    </span><span class="o">--</span><span class="n">region</span><span class="w"> </span><span class="n">us</span><span class="o">-</span><span class="n">central1</span>
 </code></pre></div>
 
+<p>Build and push the docker image to Google Artifact Registry:</p>
+<div class="highlight"><pre><span></span><code><span class="k">export</span><span class="w"> </span><span class="n">PROJECT_ID</span><span class="o">=$</span><span class="p">(</span><span class="n">gcloud</span><span class="w"> </span><span class="n">config</span><span class="w"> </span><span class="n">get</span><span class="w"> </span><span class="n">project</span><span class="p">)</span>
+<span class="k">export</span><span class="w"> </span><span class="n">IMAGE</span><span class="o">=</span><span class="n">gcr</span><span class="o">.</span><span class="n">io</span><span class="o">/$</span><span class="n">PROJECT_ID</span><span class="o">/</span><span class="n">sd</span><span class="o">-</span><span class="n">webui</span><span class="p">:</span><span class="n">latest</span>
+<span class="n">git</span><span class="w"> </span><span class="n">clone</span><span class="w"> </span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">samos123</span><span class="o">/</span><span class="n">stable</span><span class="o">-</span><span class="n">diffusion</span><span class="o">-</span><span class="n">webui</span><span class="o">-</span><span class="n">docker</span>
+<span class="n">cd</span><span class="w"> </span><span class="n">stable</span><span class="o">-</span><span class="n">diffusion</span><span class="o">-</span><span class="n">webui</span><span class="o">-</span><span class="n">docker</span>
+<span class="n">gcloud</span><span class="w"> </span><span class="n">builds</span><span class="w"> </span><span class="n">submit</span>
+</code></pre></div>
+
+<p>Your Stable Diffusion Web UI image will now be available in Google Container Registry.</p>
 <p>Create a file named <code>stable-diffusion.yaml</code> with the following content:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">apps/v1</span>
 <span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Deployment</span>
@@ -115,17 +125,34 @@ Learn how to do it by:</p>
 <span class="w">        </span><span class="nt">cloud.google.com/gke-spot</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;true&quot;</span>
 <span class="w">      </span><span class="nt">containers</span><span class="p">:</span>
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sd</span>
-<span class="w">        </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ghcr.io/samos123/stable-diffusion-webui</span>
+<span class="w">        </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">$IMAGE</span>
+<span class="w">        </span><span class="nt">env</span><span class="p">:</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">LD_LIBRARY_PATH</span>
+<span class="w">          </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/usr/local/nvidia/lib64</span>
 <span class="w">        </span><span class="nt">resources</span><span class="p">:</span>
 <span class="w">          </span><span class="nt">limits</span><span class="p">:</span>
 <span class="w">            </span><span class="nt">nvidia.com/gpu</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
 <span class="w">          </span><span class="nt">requests</span><span class="p">:</span>
 <span class="w">            </span><span class="nt">cpu</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;3500m&quot;</span>
 <span class="w">            </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;14Gi&quot;</span>
+<span class="w">            </span><span class="nt">ephemeral-storage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10Gi</span>
 </code></pre></div>
 
 <p>Create the deployment:</p>
-<div class="highlight"><pre><span></span><code>kubectl apply -f stable-diffusion.yaml
+<div class="highlight"><pre><span></span><code>envsubst &lt; stable-diffusion.yaml | kubectl apply -f -
+</code></pre></div>
+
+<p>Creating the pod will take a while, because GKE Autopilot will create nodepool
+that meets your pod resource requirements. You can check the latest status
+by running:</p>
+<div class="highlight"><pre><span></span><code>kubectl describe pod -l app=stable-diffusion-webui
+</code></pre></div>
+
+<p>After a few minutes you should see an event that the pod triggered scale up
+and the pod should become running. This might take up to 15 minutes due to
+scale up being slow and pulling a 17GB docker image isn't fast.</p>
+<p>Verify that Stable Diffusion is running:</p>
+<div class="highlight"><pre><span></span><code>kubectl logs deployment/stable-diffusion-webui
 </code></pre></div>
 
 <p>Access the Stable Diffusion WebUI by forwarding ports:</p>
@@ -134,9 +161,13 @@ Learn how to do it by:</p>
 
 <p>In your browser go to the following URL:
 <a href="http://localhost:7860">http://localhost:7860</a></p>
-<p>You should now see Stable Diffusion Web UI like this:</p>
-<div class="highlight"><pre><span></span><code>
-</code></pre></div>
+<p>You should now see Stable Diffusion Web UI like this:
+<img alt="sd-webui-screenshot" src="/images/sd-webui-screenshot.png"></p>
+<p>Relevant resources:</p>
+<ul>
+<li>Source for the docker image: <a href="https://github.com/samos123/stable-diffusion-webui-docker">https://github.com/samos123/stable-diffusion-webui-docker</a>.</li>
+<li>Instructions on <a href="https://samos-it.com/posts/deploying-stable-diffusion-web-ui-with-docker-on-gce-t4-vm.html">how to build the stable diffusion webui docker image in GCE</a>.</li>
+</ul>
     <!-- Ezoic - bottom_of_page - bottom_of_page -->
     <div id="ezoic-pub-ad-placeholder-104"> </div>
     <!-- End Ezoic - bottom_of_page - bottom_of_page -->

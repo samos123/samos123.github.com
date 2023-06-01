@@ -19,6 +19,16 @@ gcloud container clusters create-auto sd \
     --region us-central1
 ```
 
+Build and push the docker image to Google Artifact Registry:
+```
+export PROJECT_ID=$(gcloud config get project)
+export IMAGE=gcr.io/$PROJECT_ID/sd-webui:latest
+git clone https://github.com/samos123/stable-diffusion-webui-docker
+cd stable-diffusion-webui-docker
+gcloud builds submit
+```
+Your Stable Diffusion Web UI image will now be available in Google Container Registry.
+
 Create a file named `stable-diffusion.yaml` with the following content:
 ```yaml
 apiVersion: apps/v1
@@ -41,18 +51,37 @@ spec:
         cloud.google.com/gke-spot: "true"
       containers:
       - name: sd
-        image: ghcr.io/samos123/stable-diffusion-webui
+        image: $IMAGE
+        env:
+        - name: LD_LIBRARY_PATH
+          value: /usr/local/nvidia/lib64
         resources:
           limits:
             nvidia.com/gpu: 1
           requests:
             cpu: "3500m"
             memory: "14Gi"
+            ephemeral-storage: 10Gi
 ```
 
 Create the deployment:
 ```
-kubectl apply -f stable-diffusion.yaml
+envsubst < stable-diffusion.yaml | kubectl apply -f -
+```
+
+Creating the pod will take a while, because GKE Autopilot will create nodepool
+that meets your pod resource requirements. You can check the latest status
+by running:
+```
+kubectl describe pod -l app=stable-diffusion-webui
+```
+After a few minutes you should see an event that the pod triggered scale up
+and the pod should become running. This might take up to 15 minutes due to
+scale up being slow and pulling a 17GB docker image isn't fast.
+
+Verify that Stable Diffusion is running:
+```
+kubectl logs deployment/stable-diffusion-webui
 ```
 
 Access the Stable Diffusion WebUI by forwarding ports:
@@ -64,6 +93,10 @@ In your browser go to the following URL:
 [http://localhost:7860](http://localhost:7860)
 
 You should now see Stable Diffusion Web UI like this:
-```
+![sd-webui-screenshot](/images/sd-webui-screenshot.png)
 
-```
+Relevant resources:
+
+- Source for the docker image: [https://github.com/samos123/stable-diffusion-webui-docker](https://github.com/samos123/stable-diffusion-webui-docker).
+- Instructions on [how to build the stable diffusion webui docker image in GCE](https://samos-it.com/posts/deploying-stable-diffusion-web-ui-with-docker-on-gce-t4-vm.html).
+

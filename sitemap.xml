@@ -5,7 +5,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://samos-it.com/</loc>
-<lastmod>2023-05-30T11:51:21-00:00</lastmod>
+<lastmod>2023-05-31T21:25:46-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -33,7 +33,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://samos-it.com/posts/deploying-stable-diffusion-gke-autopilot.html</loc>
-<lastmod>2023-05-30T11:51:03+02:00</lastmod>
+<lastmod>2023-05-31T21:25:36+02:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
@@ -586,7 +586,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://samos-it.com/category/ml.html</loc>
-<lastmod>2023-05-30T19:36:00+00:09</lastmod>
+<lastmod>2023-05-31T21:25:36+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -621,21 +621,21 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://samos-it.com/tag/ml.html</loc>
-<lastmod>2023-05-30T19:36:00+00:09</lastmod>
+<lastmod>2023-05-31T21:25:36+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/k8s.html</loc>
-<lastmod>2023-05-30T19:36:00+00:09</lastmod>
+<lastmod>2023-05-31T21:25:36+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://samos-it.com/tag/stable-diffusion.html</loc>
-<lastmod>2023-05-30T19:36:00+00:09</lastmod>
+<lastmod>2023-05-31T21:25:36+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -1251,7 +1251,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://samos-it.com/author/sam-stoelinga.html</loc>
-<lastmod>2023-05-30T19:36:00+00:09</lastmod>
+<lastmod>2023-05-31T21:25:36+00:09</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
