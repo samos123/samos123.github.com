@@ -84,3 +84,6 @@ firewall rules setup.
 
 You should now be able to acces the Stable Diffusion Web UI by going to the following
 URL in your browser: [http://localhost:7860](http://localhost:7860)
+
+Want to be even cooler? Learn [how to deploy Stable Diffusion on GKE autopilot](
+https://samos-it.com/posts/deploying-stable-diffusion-gke-autopilot.html)

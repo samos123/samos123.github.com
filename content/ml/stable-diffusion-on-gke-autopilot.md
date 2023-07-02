@@ -12,6 +12,10 @@ Learn how to do it by:
 2. Deploying AUTOMATIC1111 Stable Diffusion Web UI
 3. Accessing the UI through port forwarding
 
+Not up for a challenge? Maybe deploying [Stable Diffusion on a GCE VM](
+https://samos-it.com/posts/deploying-stable-diffusion-web-ui-with-docker-on-gce-t4-vm.html)
+is easier for you.
+
 
 Create a GKE Autopilot cluster:
 ```

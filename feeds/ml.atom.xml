@@ -1,23 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Sam Stoelinga - ML</title><link href="https://samos-it.com/" rel="alternate"></link><link href="https://samos-it.com/feeds/ml.atom.xml" rel="self"></link><id>https://samos-it.com/</id><updated>2023-05-31T21:25:36+02:00</updated><entry><title>Deploying Stable Diffusion Web UI on GKE Autopilot</title><link href="https://samos-it.com/posts/deploying-stable-diffusion-gke-autopilot.html" rel="alternate"></link><published>2023-05-30T19:36:00+02:00</published><updated>2023-05-31T21:25:36+02:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2023-05-30:/posts/deploying-stable-diffusion-gke-autopilot.html</id><summary type="html">&lt;p&gt;Deploying Stable Diffusion WebUI on K8s can be challenging, but no more.
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Sam Stoelinga - ML</title><link href="https://samos-it.com/" rel="alternate"></link><link href="https://samos-it.com/feeds/ml.atom.xml" rel="self"></link><id>https://samos-it.com/</id><updated>2023-07-01T17:29:49+02:00</updated><entry><title>Deploying Stable Diffusion Web UI on GKE Autopilot</title><link href="https://samos-it.com/posts/deploying-stable-diffusion-gke-autopilot.html" rel="alternate"></link><published>2023-05-30T19:36:00+02:00</published><updated>2023-07-01T17:29:49+02:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2023-05-30:/posts/deploying-stable-diffusion-gke-autopilot.html</id><summary type="html">&lt;p&gt;Deploying Stable Diffusion WebUI on K8s can be challenging, but no more.
 Learn how to do it by:&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;Creating a GKE autopilot cluster&lt;/li&gt;
 &lt;li&gt;Deploying AUTOMATIC1111 Stable Diffusion Web UI&lt;/li&gt;
 &lt;li&gt;Accessing the UI through port forwarding&lt;/li&gt;
 &lt;/ol&gt;
-&lt;p&gt;Create a GKE Autopilot cluster:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;gcloud&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;container&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;clusters&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;create&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;auto&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;sd&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
-&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;region&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;us&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;central1&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Build …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Deploying Stable Diffusion WebUI on K8s can be challenging, but no more.
+&lt;p&gt;Not up for a challenge? Maybe deploying &lt;a href="https://samos-it.com/posts/deploying-stable-diffusion-web-ui-with-docker-on-gce-t4-vm.html"&gt;Stable Diffusion on a GCE VM&lt;/a&gt;
+is easier …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Deploying Stable Diffusion WebUI on K8s can be challenging, but no more.
 Learn how to do it by:&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;Creating a GKE autopilot cluster&lt;/li&gt;
 &lt;li&gt;Deploying AUTOMATIC1111 Stable Diffusion Web UI&lt;/li&gt;
 &lt;li&gt;Accessing the UI through port forwarding&lt;/li&gt;
 &lt;/ol&gt;
+&lt;p&gt;Not up for a challenge? Maybe deploying &lt;a href="https://samos-it.com/posts/deploying-stable-diffusion-web-ui-with-docker-on-gce-t4-vm.html"&gt;Stable Diffusion on a GCE VM&lt;/a&gt;
+is easier for you.&lt;/p&gt;
 &lt;p&gt;Create a GKE Autopilot cluster:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;gcloud&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;container&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;clusters&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;create&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;auto&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;sd&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
 &lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;region&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;us&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;central1&lt;/span&gt;
@@ -95,7 +93,7 @@ scale up being slow and pulling a 17GB docker image isn't fast.&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;Source for the docker image: &lt;a href="https://github.com/samos123/stable-diffusion-webui-docker"&gt;https://github.com/samos123/stable-diffusion-webui-docker&lt;/a&gt;.&lt;/li&gt;
 &lt;li&gt;Instructions on &lt;a href="https://samos-it.com/posts/deploying-stable-diffusion-web-ui-with-docker-on-gce-t4-vm.html"&gt;how to build the stable diffusion webui docker image in GCE&lt;/a&gt;.&lt;/li&gt;
-&lt;/ul&gt;</content><category term="ML"></category><category term="ml"></category><category term="k8s"></category><category term="stable-diffusion"></category></entry><entry><title>Deploying Stable Diffusion Web UI using Docker on GCE T4 VM</title><link href="https://samos-it.com/posts/deploying-stable-diffusion-web-ui-with-docker-on-gce-t4-vm.html" rel="alternate"></link><published>2023-05-23T19:36:00+02:00</published><updated>2023-05-30T10:39:45+02:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2023-05-23:/posts/deploying-stable-diffusion-web-ui-with-docker-on-gce-t4-vm.html</id><summary type="html">&lt;p&gt;A short guide on how to deploy Stable Diffusion Web UI on a Google Cloud
+&lt;/ul&gt;</content><category term="ML"></category><category term="ml"></category><category term="k8s"></category><category term="stable-diffusion"></category></entry><entry><title>Deploying Stable Diffusion Web UI using Docker on GCE T4 VM</title><link href="https://samos-it.com/posts/deploying-stable-diffusion-web-ui-with-docker-on-gce-t4-vm.html" rel="alternate"></link><published>2023-05-23T19:36:00+02:00</published><updated>2023-07-01T17:28:36+02:00</updated><author><name>Sam Stoelinga</name></author><id>tag:samos-it.com,2023-05-23:/posts/deploying-stable-diffusion-web-ui-with-docker-on-gce-t4-vm.html</id><summary type="html">&lt;p&gt;A short guide on how to deploy Stable Diffusion Web UI on a Google Cloud
 Compute Engine VM with 1 T4 GPU.&lt;/p&gt;
 &lt;p&gt;Creating the GCE VM with T4 using the Google Cloud Deep Learning Image:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;export&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;IMAGE_FAMILY&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;common-cu110-ubuntu-2004&amp;quot;&lt;/span&gt;
@@ -168,4 +166,5 @@ docker build -t sd-webui-docker .
 &lt;p&gt;This is helpful for when your virtual machine doesn't have a public IP address or has
 firewall rules setup.&lt;/p&gt;
 &lt;p&gt;You should now be able to acces the Stable Diffusion Web UI by going to the following
-URL in your browser: &lt;a href="http://localhost:7860"&gt;http://localhost:7860&lt;/a&gt;&lt;/p&gt;</content><category term="ML"></category><category term="ml"></category><category term="docker"></category><category term="stable-diffusion"></category></entry></feed>
+URL in your browser: &lt;a href="http://localhost:7860"&gt;http://localhost:7860&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Want to be even cooler? Learn &lt;a href="https://samos-it.com/posts/deploying-stable-diffusion-gke-autopilot.html"&gt;how to deploy Stable Diffusion on GKE autopilot&lt;/a&gt;&lt;/p&gt;</content><category term="ML"></category><category term="ml"></category><category term="docker"></category><category term="stable-diffusion"></category></entry></feed>
