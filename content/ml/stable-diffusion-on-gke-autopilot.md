@@ -99,6 +99,25 @@ In your browser go to the following URL:
 You should now see Stable Diffusion Web UI like this:
 ![sd-webui-screenshot](/images/sd-webui-screenshot.png)
 
+## Exposing Stable Diffusion Web UI to the internet
+This isn't recommended and there is a risk that your
+service will get abused by others unless you add
+some form of authentication.
+
+You can expose the deployment using the following:
+```sh
+kubectl expose deployment stable-diffusion-webui \
+  --type=LoadBalancer --name=stable-diffusion-webui \
+  --port=80 --target-port=7860
+```
+
+After a while you should see an external IP address assigned to the service. Verify by running:
+```sh
+kubectl get services stable-diffusion-webui
+```
+
+Now you should be able to go to `http://external_ip` to access Stable Diffusion Web UI
+
 Relevant resources:
 
 - Source for the docker image: [https://github.com/samos123/stable-diffusion-webui-docker](https://github.com/samos123/stable-diffusion-webui-docker).

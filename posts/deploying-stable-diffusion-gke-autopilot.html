@@ -81,7 +81,7 @@ ga('send', 'pageview');
     <h1 class="post-title">Deploying Stable Diffusion Web UI on GKE Autopilot</h1>
     <span class="post-date">
         Tue 30 May 2023
-| Last updated on Sat 01 July 2023
+| Last updated on Sun 09 July 2023
     </span>
     <p>Deploying Stable Diffusion WebUI on K8s can be challenging, but no more.
 Learn how to do it by:</p>
@@ -165,6 +165,21 @@ scale up being slow and pulling a 17GB docker image isn't fast.</p>
 <a href="http://localhost:7860">http://localhost:7860</a></p>
 <p>You should now see Stable Diffusion Web UI like this:
 <img alt="sd-webui-screenshot" src="/images/sd-webui-screenshot.png"></p>
+<h2>Exposing Stable Diffusion Web UI to the internet</h2>
+<p>This isn't recommended and there is a risk that your
+service will get abused by others unless you add
+some form of authentication.</p>
+<p>You can expose the deployment using the following:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>expose<span class="w"> </span>deployment<span class="w"> </span>stable-diffusion-webui<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--type<span class="o">=</span>LoadBalancer<span class="w"> </span>--name<span class="o">=</span>stable-diffusion-webui<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--port<span class="o">=</span><span class="m">80</span><span class="w"> </span>--target-port<span class="o">=</span><span class="m">7860</span>
+</code></pre></div>
+
+<p>After a while you should see an external IP address assigned to the service. Verify by running:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>services<span class="w"> </span>stable-diffusion-webui
+</code></pre></div>
+
+<p>Now you should be able to go to <code>http://external_ip</code> to access Stable Diffusion Web UI</p>
 <p>Relevant resources:</p>
 <ul>
 <li>Source for the docker image: <a href="https://github.com/samos123/stable-diffusion-webui-docker">https://github.com/samos123/stable-diffusion-webui-docker</a>.</li>

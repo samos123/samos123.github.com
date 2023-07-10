@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0"><channel><title>Sam Stoelinga - Sam Stoelinga</title><link>https://samos-it.com/</link><description></description><lastBuildDate>Sat, 01 Jul 2023 17:29:49 +0200</lastBuildDate><item><title>Deploying Stable Diffusion Web UI on GKE Autopilot</title><link>https://samos-it.com/posts/deploying-stable-diffusion-gke-autopilot.html</link><description>&lt;p&gt;Deploying Stable Diffusion WebUI on K8s can be challenging, but no more.
+<rss version="2.0"><channel><title>Sam Stoelinga - Sam Stoelinga</title><link>https://samos-it.com/</link><description></description><lastBuildDate>Sun, 09 Jul 2023 20:31:28 +0200</lastBuildDate><item><title>Deploying Stable Diffusion Web UI on GKE Autopilot</title><link>https://samos-it.com/posts/deploying-stable-diffusion-gke-autopilot.html</link><description>&lt;p&gt;Deploying Stable Diffusion WebUI on K8s can be challenging, but no more.
 Learn how to do it by:&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;Creating a GKE autopilot cluster&lt;/li&gt;
