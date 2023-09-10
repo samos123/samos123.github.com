@@ -1,22 +1,18 @@
-Title: Hire Me
+Title: Want my help?
 Author: Sam Stoelinga
 Slug: hire-me
 
-Need a strong K8s, GCP, GKE, CI/CD, Weaviate, DevOps expert? Hire me as a part-time
-consultant for $200/hr.
+Need a strong K8s, GCP, GKE, CI/CD, Weaviate, DevOps expert?
+I am considering high impact (no time commitment) consultancy. Open Source
+companies strongly preferred.
 
 Please reach out to me on [LinkedIn](https://www.linkedin.com/in/samstoelinga/): 
 [https://www.linkedin.com/in/samstoelinga/](https://www.linkedin.com/in/samstoelinga/)
 
 Example of services provided:
-
-- Weaviate use case validation
+- LLM Finetuning on K8s
+- Go to market strategy for OSS companies
+- Contributing to an Open Source project
+- Spark Connector Development
 - Weaviate module development
-- Anything you can think of that you want
-- Web Backend API Development
 - K8s Controller/Operator development
-- Containerization of existing applications
-- Migration to K8s
-- Write Terraform scripts for any cloud
-- GCP Cloud Architecture review
-- K8s Security Best Practices Review
