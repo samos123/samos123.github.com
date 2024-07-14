@@ -2,26 +2,29 @@ Title: About Me
 Author: Sam Stoelinga
 Slug: about
 
-Hello, I'm Sam Stoelinga, a passionate Open Source advocate and contributor.
+I'm Sam Stoelinga, a passionate Open Source contributor focusing on cloud, K8s and ML platforms.
 I've contributed to open source projects such as Weaviate, K8s, OpenStack and Kaniko.
-I'm the creator of [https://websu.io](https://websu.io) and [bgdestroyer.com](https://www.bgdestroyer.com).
-Need some help? That's possible, you can [hire me](/pages/hire-me.html) as consultant.
 
-My day job at Google Cloud is to help customers with adopting GCP, specifically focusing
-on K8s, Istio and other related technologies. This allows me to help customers with solving
-their challenging use cases and problems. Opinions and solutions provided on this blog
-are provided by me as an individual and do not represent my employer.
+I'm the creator or co-creator of the following OSS projects:
 
-In my free time I enjoy soccer, skateboarding, working on open source and playing things
+* [substratusai/lingo](https://github.com/substratusai/lingo) - Lightweight ML Proxy & autoscaler for K8s
+* [Websu.io](https://websu.io): website performance check as a service
+* [bgdestroyer.com](https://www.bgdestroyer.com)
+
+Need some help? Feel free to DM me anytime on LinkedIn.
+
+My day job at Google Cloud is to help customers with K8s and ML Platforms.
+This blog only contains my personal opinion.
 
 I'm trying to become a better public speaker by publicly speaking. See some appearances here:
 
+* [NVIDIA GTC 2024 fine-tuning and serving Gemma](https://resources.nvidia.com/en-us-ai-inference-content/gtc24-s62006)
 * [Hybrid vs Multi-Cloud 2019](https://youtu.be/F5JIJX6Ra8A)
 * [Kubecon/ServerlessCon: Multi-Cloud Messaging with Functions 2019](https://youtu.be/GY0cHfDhpF4)
 * [IstioCon 2021: Redis TLS origination with a sidecar](https://www.youtube.com/watch?v=N9rZ6Suk7so)
 * [Kubecon 2022: Migrating from PodSecurityPolicy](https://www.youtube.com/watch?v=OIQrp_LyFDk)
 
-Highlights of my recent open source contributions:
+Some example open source contributions:
 
 * [Created the Weaviate Spark Connector](https://github.com/semi-technologies/weaviate-spark-connector)
 * [Kaniko: Move from Google internal CI to Public CI and various other Prs](https://github.com/GoogleContainerTools/kaniko/pulls?q=is%3Apr+author%3Asamos123+is%3Aclosed)
